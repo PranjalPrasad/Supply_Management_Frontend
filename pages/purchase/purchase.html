@@ -1,0 +1,991 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Purchase Management — Supply Management Admin</title>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css"/>
+  <link rel="stylesheet" href="/pages/purchase/purchase.css"/>
+</head>
+<body>
+
+<!-- ════════════════════════════════════════════════════════
+     SIDEBAR
+════════════════════════════════════════════════════════ -->
+<aside id="sidebar">
+  <div class="sidebar-header">
+    <div class="sidebar-logo">
+      <div class="sidebar-icon"><i class="fas fa-cubes"></i></div>
+      <span class="sidebar-brand-text">SupplyManager</span>
+    </div>
+    <button id="sidebar-toggle" title="Toggle sidebar"><i class="fas fa-chevron-left"></i></button>
+  </div>
+
+  <nav class="sidebar-nav">
+
+    <a href="index.html" class="nav-item">
+      <span class="nav-icon"><i class="fas fa-chart-pie"></i></span>
+      <span class="nav-label">Dashboard</span>
+    </a>
+
+    <!-- Master Management -->
+    <div>
+      <div class="nav-group-header">
+        <span class="nav-icon"><i class="fas fa-database"></i></span>
+        <span class="nav-label">Master Management</span>
+        <i class="fas fa-chevron-down nav-chevron"></i>
+      </div>
+      <div class="group-items">
+        <a href="#" class="nav-item"><span class="nav-icon"><i class="fas fa-box"></i></span><span class="nav-label">Products</span></a>
+        <a href="#" class="nav-item"><span class="nav-icon"><i class="fas fa-sitemap"></i></span><span class="nav-label">Categories</span></a>
+        <a href="#" class="nav-item"><span class="nav-icon"><i class="fas fa-truck-loading"></i></span><span class="nav-label">Suppliers</span></a>
+        <a href="#" class="nav-item"><span class="nav-icon"><i class="fas fa-users"></i></span><span class="nav-label">Customers</span></a>
+        <a href="#" class="nav-item"><span class="nav-icon"><i class="fas fa-warehouse"></i></span><span class="nav-label">Warehouses</span></a>
+        <a href="#" class="nav-item"><span class="nav-icon"><i class="fas fa-balance-scale"></i></span><span class="nav-label">Units</span></a>
+      </div>
+    </div>
+
+    <a href="purchase.html" class="nav-item active">
+      <span class="nav-icon"><i class="fas fa-shopping-cart"></i></span>
+      <span class="nav-label">Purchase Management</span>
+    </a>
+
+    <a href="#" class="nav-item">
+      <span class="nav-icon"><i class="fas fa-boxes-stacked"></i></span>
+      <span class="nav-label">Inventory Management</span>
+    </a>
+
+    <a href="#" class="nav-item">
+      <span class="nav-icon"><i class="fas fa-warehouse"></i></span>
+      <span class="nav-label">Warehouse Management</span>
+    </a>
+
+    <!-- Sales & Dispatch -->
+    <div>
+      <div class="nav-group-header">
+        <span class="nav-icon"><i class="fas fa-truck"></i></span>
+        <span class="nav-label">Sales &amp; Dispatch</span>
+        <i class="fas fa-chevron-down nav-chevron"></i>
+      </div>
+      <div class="group-items">
+        <a href="#" class="nav-item"><span class="nav-icon"><i class="fas fa-receipt"></i></span><span class="nav-label">Sales Orders</span></a>
+        <a href="#" class="nav-item"><span class="nav-icon"><i class="fas fa-calendar-alt"></i></span><span class="nav-label">Dispatch Planning</span></a>
+        <a href="#" class="nav-item"><span class="nav-icon"><i class="fas fa-file-alt"></i></span><span class="nav-label">Delivery Challan</span></a>
+        <a href="#" class="nav-item"><span class="nav-icon"><i class="fas fa-file-invoice-dollar"></i></span><span class="nav-label">Invoices</span></a>
+        <a href="#" class="nav-item"><span class="nav-icon"><i class="fas fa-location-dot"></i></span><span class="nav-label">Shipment Tracking</span></a>
+      </div>
+    </div>
+
+    <a href="#" class="nav-item">
+      <span class="nav-icon"><i class="fas fa-rotate-left"></i></span>
+      <span class="nav-label">Returns Management</span>
+    </a>
+
+    <!-- Finance -->
+    <div>
+      <div class="nav-group-header">
+        <span class="nav-icon"><i class="fas fa-coins"></i></span>
+        <span class="nav-label">Finance &amp; Billing</span>
+        <i class="fas fa-chevron-down nav-chevron"></i>
+      </div>
+      <div class="group-items">
+        <a href="#" class="nav-item"><span class="nav-icon"><i class="fas fa-hand-holding-usd"></i></span><span class="nav-label">Receivables</span></a>
+        <a href="#" class="nav-item"><span class="nav-icon"><i class="fas fa-money-bill-wave"></i></span><span class="nav-label">Payables</span></a>
+        <a href="#" class="nav-item"><span class="nav-icon"><i class="fas fa-chart-line"></i></span><span class="nav-label">Expenses</span></a>
+        <a href="#" class="nav-item"><span class="nav-icon"><i class="fas fa-percent"></i></span><span class="nav-label">GST Management</span></a>
+        <a href="#" class="nav-item"><span class="nav-icon"><i class="fas fa-chart-simple"></i></span><span class="nav-label">Profitability</span></a>
+      </div>
+    </div>
+
+    <a href="#" class="nav-item">
+      <span class="nav-icon"><i class="fas fa-chart-bar"></i></span>
+      <span class="nav-label">Reports &amp; Analytics</span>
+    </a>
+
+    <!-- User Management -->
+    <div>
+      <div class="nav-group-header">
+        <span class="nav-icon"><i class="fas fa-users-gear"></i></span>
+        <span class="nav-label">User Management</span>
+        <i class="fas fa-chevron-down nav-chevron"></i>
+      </div>
+      <div class="group-items">
+        <a href="#" class="nav-item"><span class="nav-icon"><i class="fas fa-user"></i></span><span class="nav-label">Users</span></a>
+        <a href="#" class="nav-item"><span class="nav-icon"><i class="fas fa-lock"></i></span><span class="nav-label">Roles &amp; Permissions</span></a>
+      </div>
+    </div>
+
+  </nav>
+
+  <div class="sidebar-footer">
+    <div class="avatar">AD</div>
+    <div class="sidebar-brand-text sidebar-user-info">
+      <div class="name">Admin</div>
+      <div class="email">admin@supplymanager.com</div>
+    </div>
+  </div>
+</aside>
+
+<div id="sidebar-overlay"></div>
+
+<!-- ════════════════════════════════════════════════════════
+     MAIN WRAPPER
+════════════════════════════════════════════════════════ -->
+<div id="main-wrapper">
+
+  <!-- TOPBAR -->
+  <header class="topbar">
+    <div class="topbar-left">
+      <h1>Purchase Management</h1>
+      <p>Requisitions · Purchase Orders · GRN · Returns</p>
+    </div>
+    <div class="topbar-right">
+
+      <!-- Notifications -->
+      <div style="position:relative">
+        <button id="notif-btn" class="icon-btn">
+          <i class="fas fa-bell"></i>
+          <span class="notif-badge"></span>
+        </button>
+        <div id="notif-dropdown" class="dropdown notif-dropdown">
+          <div class="dropdown-header">
+            Notifications <span class="badge-sm">4 new</span>
+          </div>
+          <div style="max-height:240px;overflow-y:auto">
+            <div class="notif-item">
+              <div class="notif-icon" style="background:#fee2e2;color:#dc2626"><i class="fas fa-times-circle"></i></div>
+              <div><div class="notif-title">Out of stock: Aluminium Sheets</div><div class="notif-desc">Restock required immediately</div><div class="notif-time">10 min ago</div></div>
+            </div>
+            <div class="notif-item">
+              <div class="notif-icon" style="background:#fef3c7;color:#d97706"><i class="fas fa-exclamation-triangle"></i></div>
+              <div><div class="notif-title">Low stock: Steel Pipes (25mm)</div><div class="notif-desc">Only 5 units remaining</div><div class="notif-time">42 min ago</div></div>
+            </div>
+            <div class="notif-item">
+              <div class="notif-icon" style="background:#d1fae5;color:#065f46"><i class="fas fa-truck"></i></div>
+              <div><div class="notif-title">PO-2041 delivered</div><div class="notif-desc">142 units received at Warehouse A</div><div class="notif-time">1 hr ago</div></div>
+            </div>
+            <div class="notif-item">
+              <div class="notif-icon" style="background:#dbeafe;color:#1e40af"><i class="fas fa-receipt"></i></div>
+              <div><div class="notif-title">New sales order #SO-3187</div><div class="notif-desc">Placed by Ramesh Traders</div><div class="notif-time">2 hr ago</div></div>
+            </div>
+          </div>
+          <div class="dropdown-footer"><a href="#">View all notifications</a></div>
+        </div>
+      </div>
+
+      <!-- User -->
+      <div style="position:relative">
+        <button id="user-btn" class="user-btn">
+          <div class="avatar">AD</div>
+          <span>Admin</span>
+          <i class="fas fa-chevron-down" style="font-size:10px;color:#4B5694"></i>
+        </button>
+        <div id="user-dropdown" class="dropdown user-dropdown">
+          <a href="#"><i class="fas fa-user-circle"></i> My Profile</a>
+          <a href="#"><i class="fas fa-cog"></i> Settings</a>
+          <hr/>
+          <a href="#" class="danger"><i class="fas fa-sign-out-alt"></i> Logout</a>
+        </div>
+      </div>
+
+    </div>
+  </header>
+
+  <!-- PAGE CONTENT -->
+  <div class="page-content">
+
+    <!-- Breadcrumb -->
+    <div class="breadcrumb">
+      <a href="index.html"><i class="fas fa-house"></i> Home</a>
+      <span class="sep"><i class="fas fa-chevron-right"></i></span>
+      <span class="current" id="bc-current">Purchase Requisition</span>
+    </div>
+
+    <!-- Tab Bar -->
+    <div class="tab-bar">
+      <button class="tab-btn active" data-tab="tab-requisition">
+        <i class="fas fa-clipboard-list"></i>
+        <span class="tab-label">Purchase Requisition</span>
+      </button>
+      <button class="tab-btn" data-tab="tab-po">
+        <i class="fas fa-file-invoice"></i>
+        <span class="tab-label">Purchase Orders</span>
+      </button>
+      <button class="tab-btn" data-tab="tab-grn">
+        <i class="fas fa-boxes-stacked"></i>
+        <span class="tab-label">GRN</span>
+      </button>
+      <button class="tab-btn" data-tab="tab-return">
+        <i class="fas fa-rotate-left"></i>
+        <span class="tab-label">Purchase Return</span>
+      </button>
+      <button class="tab-btn" data-tab="tab-approval">
+        <i class="fas fa-clipboard-check"></i>
+        <span class="tab-label">Approval Screen</span>
+      </button>
+    </div>
+
+    <!-- ══════════════════════════════════════════════════
+         TAB 1: PURCHASE REQUISITION
+    ══════════════════════════════════════════════════ -->
+    <div id="tab-requisition" class="tab-pane">
+      <div class="card">
+        <div class="card-header">
+          <div>
+            <div class="title"><i class="fas fa-clipboard-list" style="color:#4B5694;margin-right:6px"></i>Purchase Requisitions</div>
+            <div class="subtitle">Internal purchase requests raised by departments</div>
+          </div>
+          <div style="display:flex;gap:8px;flex-wrap:wrap">
+            <button class="btn btn-secondary btn-sm"><i class="fas fa-file-excel"></i> Export</button>
+            <button class="btn btn-primary btn-sm" id="btn-create-req"><i class="fas fa-plus"></i> New Requisition</button>
+          </div>
+        </div>
+        <div class="card-body">
+          <div class="filter-bar">
+            <div class="search-wrap">
+              <i class="fas fa-search"></i>
+              <input type="text" id="req-search" class="filter-input" placeholder="Search requisition…">
+            </div>
+            <select class="filter-input" id="req-filter-dept">
+              <option value="">All Departments</option>
+              <option>Production</option><option>Maintenance</option>
+              <option>Logistics</option><option>Admin</option><option>Quality</option>
+            </select>
+            <select class="filter-input" id="req-filter-status">
+              <option value="">All Status</option>
+              <option>Draft</option><option>Submitted</option>
+              <option>Approved</option><option>Rejected</option>
+            </select>
+            <input type="date" class="filter-input">
+            <input type="date" class="filter-input">
+          </div>
+          <div class="table-wrap">
+            <table>
+              <thead>
+                <tr>
+                  <th>Req No</th><th>Date</th><th>Department</th><th>Requested By</th>
+                  <th>Items</th><th>Priority</th><th>Status</th><th>Approved By</th><th>Actions</th>
+                </tr>
+              </thead>
+              <tbody id="req-tbody"></tbody>
+            </table>
+          </div>
+          <div class="pagination">
+            <span>Showing 1–5 of 5 records</span>
+            <div class="page-btns">
+              <button class="page-btn"><i class="fas fa-chevron-left"></i></button>
+              <button class="page-btn active">1</button>
+              <button class="page-btn"><i class="fas fa-chevron-right"></i></button>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- ══════════════════════════════════════════════════
+         TAB 2: PURCHASE ORDER
+    ══════════════════════════════════════════════════ -->
+    <div id="tab-po" class="tab-pane hidden">
+      <div class="card">
+        <div class="card-header">
+          <div>
+            <div class="title"><i class="fas fa-file-invoice" style="color:#4B5694;margin-right:6px"></i>Purchase Orders</div>
+            <div class="subtitle">Official purchase documents sent to suppliers</div>
+          </div>
+          <div style="display:flex;gap:8px;flex-wrap:wrap">
+            <button class="btn btn-secondary btn-sm"><i class="fas fa-file-pdf"></i> Export PDF</button>
+            <button class="btn btn-primary btn-sm" id="btn-create-po"><i class="fas fa-plus"></i> Create PO</button>
+          </div>
+        </div>
+        <div class="card-body">
+          <div class="filter-bar">
+            <div class="search-wrap">
+              <i class="fas fa-search"></i>
+              <input type="text" id="po-search" class="filter-input" placeholder="Search PO or supplier…">
+            </div>
+            <select class="filter-input" id="po-filter-status">
+              <option value="">All Status</option>
+              <option>Draft</option><option>Approved</option><option>Sent To Supplier</option>
+              <option>Partially Received</option><option>Completed</option><option>Cancelled</option>
+            </select>
+            <input type="date" class="filter-input">
+            <input type="date" class="filter-input">
+          </div>
+          <div class="table-wrap">
+            <table>
+              <thead>
+                <tr>
+                  <th>PO Number</th><th>PO Date</th><th>Supplier</th>
+                  <th>Total Amount</th><th>Expected Delivery</th><th>Status</th><th>Actions</th>
+                </tr>
+              </thead>
+              <tbody id="po-tbody"></tbody>
+            </table>
+          </div>
+          <div class="pagination">
+            <span>Showing 1–5 of 5 records</span>
+            <div class="page-btns">
+              <button class="page-btn"><i class="fas fa-chevron-left"></i></button>
+              <button class="page-btn active">1</button>
+              <button class="page-btn"><i class="fas fa-chevron-right"></i></button>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- ══════════════════════════════════════════════════
+         TAB 3: GRN
+    ══════════════════════════════════════════════════ -->
+    <div id="tab-grn" class="tab-pane hidden">
+      <div class="card">
+        <div class="card-header">
+          <div>
+            <div class="title"><i class="fas fa-boxes-stacked" style="color:#4B5694;margin-right:6px"></i>Goods Receipt Notes</div>
+            <div class="subtitle">Records of goods received from suppliers</div>
+          </div>
+          <div style="display:flex;gap:8px;flex-wrap:wrap">
+            <button class="btn btn-secondary btn-sm"><i class="fas fa-file-excel"></i> Export</button>
+            <button class="btn btn-primary btn-sm" id="btn-receive-goods"><i class="fas fa-plus"></i> Receive Goods</button>
+          </div>
+        </div>
+        <div class="card-body">
+          <div class="filter-bar">
+            <div class="search-wrap">
+              <i class="fas fa-search"></i>
+              <input type="text" id="grn-search" class="filter-input" placeholder="Search GRN, PO or supplier…">
+            </div>
+            <select class="filter-input">
+              <option value="">All Status</option>
+              <option>Pending</option><option>Verified</option><option>Completed</option>
+            </select>
+          </div>
+          <div class="table-wrap">
+            <table>
+              <thead>
+                <tr>
+                  <th>GRN No</th><th>PO No</th><th>Supplier</th>
+                  <th>Receipt Date</th><th>Status</th><th>Actions</th>
+                </tr>
+              </thead>
+              <tbody id="grn-tbody"></tbody>
+            </table>
+          </div>
+          <div class="pagination">
+            <span>Showing 1–3 of 3 records</span>
+            <div class="page-btns">
+              <button class="page-btn"><i class="fas fa-chevron-left"></i></button>
+              <button class="page-btn active">1</button>
+              <button class="page-btn"><i class="fas fa-chevron-right"></i></button>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- ══════════════════════════════════════════════════
+         TAB 4: PURCHASE RETURN
+    ══════════════════════════════════════════════════ -->
+    <div id="tab-return" class="tab-pane hidden">
+      <div class="card">
+        <div class="card-header">
+          <div>
+            <div class="title"><i class="fas fa-rotate-left" style="color:#4B5694;margin-right:6px"></i>Purchase Returns</div>
+            <div class="subtitle">Return defective or incorrect goods to suppliers</div>
+          </div>
+          <div style="display:flex;gap:8px;flex-wrap:wrap">
+            <button class="btn btn-secondary btn-sm"><i class="fas fa-file-excel"></i> Export</button>
+            <button class="btn btn-primary btn-sm" id="btn-create-return"><i class="fas fa-plus"></i> New Return</button>
+          </div>
+        </div>
+        <div class="card-body">
+          <div class="filter-bar">
+            <div class="search-wrap">
+              <i class="fas fa-search"></i>
+              <input type="text" class="filter-input" placeholder="Search return…">
+            </div>
+            <select class="filter-input">
+              <option value="">All Status</option>
+              <option>Draft</option><option>Submitted</option><option>Approved</option>
+              <option>Returned</option><option>Closed</option>
+            </select>
+          </div>
+          <div class="table-wrap">
+            <table>
+              <thead>
+                <tr>
+                  <th>Return No</th><th>Supplier</th><th>Return Date</th><th>Status</th><th>Actions</th>
+                </tr>
+              </thead>
+              <tbody id="return-tbody"></tbody>
+            </table>
+          </div>
+          <div class="pagination">
+            <span>Showing 1–2 of 2 records</span>
+            <div class="page-btns">
+              <button class="page-btn"><i class="fas fa-chevron-left"></i></button>
+              <button class="page-btn active">1</button>
+              <button class="page-btn"><i class="fas fa-chevron-right"></i></button>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- ══════════════════════════════════════════════════
+         TAB 5: APPROVAL SCREEN
+    ══════════════════════════════════════════════════ -->
+    <div id="tab-approval" class="tab-pane hidden">
+      <div class="card">
+        <div class="card-header">
+          <div>
+            <div class="title"><i class="fas fa-clipboard-check" style="color:#4B5694;margin-right:6px"></i>Approval Screen</div>
+            <div class="subtitle">Review and approve pending purchase requisitions</div>
+          </div>
+        </div>
+        <div class="card-body">
+          <div class="table-wrap">
+            <table>
+              <thead>
+                <tr>
+                  <th>Req No</th><th>Department</th><th>Requested By</th>
+                  <th>Date</th><th>Status</th><th>Actions</th>
+                </tr>
+              </thead>
+              <tbody id="approval-tbody"></tbody>
+            </table>
+          </div>
+        </div>
+      </div>
+    </div>
+
+  </div><!-- /page-content -->
+</div><!-- /main-wrapper -->
+
+<!-- ════════════════════════════════════════════════════════
+     MODALS — PURCHASE REQUISITION
+════════════════════════════════════════════════════════ -->
+
+<!-- Create / Edit Requisition -->
+<div class="overlay" id="modal-create-req">
+  <div class="modal modal-lg">
+    <div class="modal-header">
+      <div>
+        <div class="modal-title" id="editReqId">New Purchase Requisition</div>
+        <div class="modal-subtitle">Fill in the details below and add products</div>
+      </div>
+      <button class="modal-close" onclick="closeOverlay('modal-create-req')"><i class="fas fa-times"></i></button>
+    </div>
+    <div class="modal-body">
+      <form id="create-req-form">
+
+        <div class="form-section-title"><i class="fas fa-info-circle"></i> Header Information</div>
+        <div class="form-grid form-grid-3" style="margin-bottom:16px">
+          <div class="form-group">
+            <label>Requisition No</label>
+            <input id="editReqNo" class="form-control" readonly placeholder="Auto Generated">
+          </div>
+          <div class="form-group">
+            <label>Request Date</label>
+            <input type="date" class="form-control" value="2026-06-13">
+          </div>
+          <div class="form-group">
+            <label>Department *</label>
+            <select id="editReqDept" class="form-control">
+              <option value="">Select department…</option>
+              <option>Production</option><option>Maintenance</option>
+              <option>Logistics</option><option>Admin</option><option>Quality</option>
+            </select>
+          </div>
+          <div class="form-group">
+            <label>Priority</label>
+            <select id="editReqPriority" class="form-control">
+              <option>Low</option><option selected>Medium</option><option>High</option>
+            </select>
+          </div>
+          <div class="form-group">
+            <label>Required Date</label>
+            <input type="date" class="form-control">
+          </div>
+          <div class="form-group span-3">
+            <label>Remarks</label>
+            <textarea class="form-control" placeholder="Additional notes or justification…"></textarea>
+          </div>
+        </div>
+
+        <div class="form-section-title"><i class="fas fa-box"></i> Products Required</div>
+        <div class="product-table-wrap">
+          <table class="product-table">
+            <thead>
+              <tr>
+                <th style="min-width:180px">Product</th>
+                <th style="min-width:90px">SKU</th>
+                <th style="width:70px">Qty</th>
+                <th style="width:70px">Unit</th>
+                <th style="min-width:140px">Remarks</th>
+                <th style="width:36px"></th>
+              </tr>
+            </thead>
+            <tbody id="req-product-tbody"></tbody>
+          </table>
+        </div>
+        <button type="button" class="btn btn-outline btn-sm" id="btn-add-req-row" style="margin-top:8px">
+          <i class="fas fa-plus"></i> Add Product
+        </button>
+
+      </form>
+    </div>
+    <div class="modal-footer">
+      <button class="btn btn-secondary" onclick="closeOverlay('modal-create-req')">Cancel</button>
+      <button class="btn btn-outline" id="btn-save-req"><i class="fas fa-save"></i> Save Draft</button>
+      <button class="btn btn-primary" id="btn-submit-req"><i class="fas fa-paper-plane"></i> Submit for Approval</button>
+    </div>
+  </div>
+</div>
+
+<!-- Requisition Detail -->
+<div class="overlay" id="modal-req-detail">
+  <div class="modal modal-sm">
+    <div class="modal-header">
+      <div>
+        <div class="modal-title">Requisition Detail</div>
+        <div class="modal-subtitle" id="reqDetailId"></div>
+      </div>
+      <button class="modal-close" onclick="closeOverlay('modal-req-detail')"><i class="fas fa-times"></i></button>
+    </div>
+    <div class="modal-body">
+      <div class="detail-grid" style="margin-bottom:12px">
+        <div class="detail-item"><div class="dl">Date</div><div class="dv" id="reqDetailDate"></div></div>
+        <div class="detail-item"><div class="dl">Department</div><div class="dv" id="reqDetailDept"></div></div>
+        <div class="detail-item"><div class="dl">Requested By</div><div class="dv" id="reqDetailBy"></div></div>
+        <div class="detail-item"><div class="dl">Status</div><div class="dv" id="reqDetailStatus"></div></div>
+        <div class="detail-item"><div class="dl">Priority</div><div class="dv" id="reqDetailPriority"></div></div>
+        <div class="detail-item"><div class="dl">Approved By</div><div class="dv" id="reqDetailApproved"></div></div>
+      </div>
+      <div class="form-section-title" style="margin-bottom:8px"><i class="fas fa-history"></i> Status Timeline</div>
+      <div class="timeline">
+        <div class="tl-item"><div class="tl-dot done"><i class="fas fa-check"></i></div><div class="tl-content"><div class="tl-label">Draft Created</div><div class="tl-time">Jun 01, 2026</div></div></div>
+        <div class="tl-item"><div class="tl-dot done"><i class="fas fa-check"></i></div><div class="tl-content"><div class="tl-label">Submitted for Approval</div><div class="tl-time">Jun 02, 2026</div></div></div>
+        <div class="tl-item"><div class="tl-dot done"><i class="fas fa-check"></i></div><div class="tl-content"><div class="tl-label">Approved by Director</div><div class="tl-time">Jun 03, 2026</div></div></div>
+      </div>
+    </div>
+    <div class="modal-footer">
+      <button class="btn btn-secondary" onclick="closeOverlay('modal-req-detail')">Close</button>
+      <button class="btn btn-primary"><i class="fas fa-print"></i> Print</button>
+    </div>
+  </div>
+</div>
+
+<!-- ════════════════════════════════════════════════════════
+     MODALS — PURCHASE ORDER
+════════════════════════════════════════════════════════ -->
+
+<!-- Create / Edit PO -->
+<div class="overlay" id="modal-create-po">
+  <div class="modal modal-xl">
+    <div class="modal-header">
+      <div>
+        <div class="modal-title" id="createPOTitle">Create Purchase Order</div>
+        <div class="modal-subtitle">Complete all sections and generate the PO</div>
+      </div>
+      <button class="modal-close" onclick="closeOverlay('modal-create-po')"><i class="fas fa-times"></i></button>
+    </div>
+    <div class="modal-body">
+      <form id="create-po-form">
+
+        <div class="form-section-title"><i class="fas fa-building"></i> Supplier Information</div>
+        <div class="form-grid form-grid-3" style="margin-bottom:16px">
+          <div class="form-group">
+            <label>Supplier *</label>
+            <select id="poSupplier" class="form-control">
+              <option value="">Select supplier…</option>
+              <option>Ramesh Metal Traders</option><option>Global Steel Corp</option>
+              <option>Prime Bearings Ltd</option><option>Horizon Packing Co.</option>
+            </select>
+          </div>
+          <div class="form-group">
+            <label>Contact Person</label>
+            <input class="form-control" placeholder="e.g. Mr. Ramesh">
+          </div>
+          <div class="form-group">
+            <label>Payment Terms</label>
+            <select class="form-control">
+              <option>30 Days Net</option><option>45 Days Net</option>
+              <option>15 Days Net</option><option>Cash</option>
+            </select>
+          </div>
+          <div class="form-group">
+            <label>PO Date</label>
+            <input type="date" class="form-control" value="2026-06-13">
+          </div>
+          <div class="form-group">
+            <label>Expected Delivery</label>
+            <input type="date" class="form-control">
+          </div>
+          <div class="form-group">
+            <label>Delivery Address</label>
+            <input class="form-control" placeholder="Warehouse address">
+          </div>
+        </div>
+
+        <div class="form-section-title"><i class="fas fa-boxes-stacked"></i> Products</div>
+        <div class="product-table-wrap">
+          <table class="product-table">
+            <thead>
+              <tr>
+                <th style="min-width:180px">Product</th>
+                <th style="min-width:80px">SKU</th>
+                <th style="width:70px">Qty</th>
+                <th style="width:70px">Unit</th>
+                <th style="width:100px">Unit Price (₹)</th>
+                <th style="width:70px">GST %</th>
+                <th style="width:100px">Amount (₹)</th>
+                <th style="min-width:120px">Remarks</th>
+                <th style="width:36px"></th>
+              </tr>
+            </thead>
+            <tbody id="po-product-tbody"></tbody>
+          </table>
+        </div>
+        <button type="button" class="btn btn-outline btn-sm" id="btn-add-po-row" style="margin-top:8px">
+          <i class="fas fa-plus"></i> Add Product
+        </button>
+
+        <div class="divider"></div>
+        <div class="form-section-title"><i class="fas fa-calculator"></i> Order Summary</div>
+        <div class="summary-card" style="max-width:320px;margin-left:auto">
+          <div class="summary-row"><span class="label">Subtotal</span><span class="value" id="sumSubtotal">₹0.00</span></div>
+          <div class="summary-row"><span class="label">GST Amount</span><span class="value" id="sumGST">₹0.00</span></div>
+          <div class="summary-row"><span class="label">Discount</span><span class="value">₹0.00</span></div>
+          <div class="summary-row total"><span class="label">Grand Total</span><span class="value" id="sumGrand">₹0.00</span></div>
+        </div>
+
+      </form>
+    </div>
+    <div class="modal-footer">
+      <button class="btn btn-secondary" onclick="closeOverlay('modal-create-po')">Cancel</button>
+      <button class="btn btn-outline" id="btn-save-po-draft"><i class="fas fa-save"></i> Save Draft</button>
+      <button class="btn btn-warning"><i class="fas fa-check"></i> Submit Approval</button>
+      <button class="btn btn-primary" id="btn-generate-po"><i class="fas fa-file-invoice"></i> Generate PO</button>
+    </div>
+  </div>
+</div>
+
+<!-- PO Detail -->
+<div class="overlay" id="modal-po-detail">
+  <div class="modal">
+    <div class="modal-header">
+      <div>
+        <div class="modal-title">Purchase Order Detail</div>
+        <div class="modal-subtitle" id="poDetailId"></div>
+      </div>
+      <button class="modal-close" onclick="closeOverlay('modal-po-detail')"><i class="fas fa-times"></i></button>
+    </div>
+    <div class="modal-body">
+      <div class="form-section-title" style="margin-bottom:10px"><i class="fas fa-info-circle"></i> PO Information</div>
+      <div class="detail-grid" style="margin-bottom:14px">
+        <div class="detail-item"><div class="dl">PO Date</div><div class="dv" id="poDetailDate"></div></div>
+        <div class="detail-item"><div class="dl">Status</div><div class="dv" id="poDetailStatus"></div></div>
+        <div class="detail-item"><div class="dl">Expected Delivery</div><div class="dv" id="poDetailDelivery"></div></div>
+        <div class="detail-item"><div class="dl">Total Amount</div><div class="dv" id="poDetailAmount"></div></div>
+      </div>
+      <div class="form-section-title" style="margin-bottom:10px"><i class="fas fa-building"></i> Supplier Information</div>
+      <div class="detail-grid" style="margin-bottom:14px">
+        <div class="detail-item"><div class="dl">Supplier Name</div><div class="dv" id="poDetailSupplier"></div></div>
+        <div class="detail-item"><div class="dl">Payment Terms</div><div class="dv">30 Days Net</div></div>
+      </div>
+      <div class="form-section-title" style="margin-bottom:10px"><i class="fas fa-box"></i> Ordered Items</div>
+      <table class="product-table">
+        <thead><tr><th>Product</th><th>SKU</th><th>Qty</th><th>Unit</th><th>Price</th><th>GST</th><th>Amount</th></tr></thead>
+        <tbody>
+          <tr><td>Steel Pipes (25mm)</td><td>SP-25</td><td>50</td><td>Pcs</td><td>₹840</td><td>18%</td><td>₹49,560</td></tr>
+          <tr><td>Industrial Bearings</td><td>IB-01</td><td>20</td><td>Pcs</td><td>₹1,230</td><td>18%</td><td>₹29,028</td></tr>
+        </tbody>
+      </table>
+    </div>
+    <div class="modal-footer">
+      <button class="btn btn-secondary" onclick="closeOverlay('modal-po-detail')">Close</button>
+      <button class="btn btn-outline"><i class="fas fa-envelope"></i> Send Email</button>
+      <button class="btn btn-outline"><i class="fas fa-file-pdf"></i> Download PDF</button>
+      <button class="btn btn-primary"><i class="fas fa-print"></i> Print PO</button>
+    </div>
+  </div>
+</div>
+
+<!-- ════════════════════════════════════════════════════════
+     MODALS — GRN
+════════════════════════════════════════════════════════ -->
+
+<!-- Receive Goods -->
+<div class="overlay" id="modal-receive-goods">
+  <div class="modal modal-xl">
+    <div class="modal-header">
+      <div>
+        <div class="modal-title">Receive Goods (Create GRN)</div>
+        <div class="modal-subtitle">Select a purchase order and record received quantities</div>
+      </div>
+      <button class="modal-close" onclick="closeOverlay('modal-receive-goods')"><i class="fas fa-times"></i></button>
+    </div>
+    <div class="modal-body">
+      <form id="create-grn-form">
+
+        <div class="form-section-title"><i class="fas fa-search"></i> Select Purchase Order</div>
+        <div class="form-grid form-grid-3" style="margin-bottom:16px">
+          <div class="form-group">
+            <label>PO Number *</label>
+            <select id="grnPO" class="form-control">
+              <option value="">Select PO…</option>
+              <option>PO-2042</option><option>PO-2043</option><option>PO-2044</option><option>PO-2045</option>
+            </select>
+          </div>
+          <div class="form-group">
+            <label>GRN Number</label>
+            <input class="form-control" readonly placeholder="Auto Generated">
+          </div>
+          <div class="form-group">
+            <label>Receipt Date</label>
+            <input type="date" class="form-control" value="2026-06-13">
+          </div>
+          <div class="form-group">
+            <label>Warehouse</label>
+            <select class="form-control">
+              <option>Warehouse A</option><option>Warehouse B</option>
+              <option>Warehouse C</option><option>Warehouse D</option>
+            </select>
+          </div>
+          <div class="form-group">
+            <label>Received By</label>
+            <input class="form-control" value="Admin" placeholder="Receiver name">
+          </div>
+        </div>
+
+        <div class="form-section-title"><i class="fas fa-clipboard-check"></i> Item Verification</div>
+        <div class="product-table-wrap">
+          <table class="product-table">
+            <thead>
+              <tr>
+                <th style="min-width:180px">Product</th>
+                <th style="min-width:80px">SKU</th>
+                <th style="width:80px">Ordered</th>
+                <th style="width:70px">Unit</th>
+                <th style="width:80px">Received</th>
+                <th style="width:80px">Accepted</th>
+                <th style="width:80px">Rejected</th>
+                <th style="min-width:120px">Remarks</th>
+                <th style="width:36px"></th>
+              </tr>
+            </thead>
+            <tbody id="grn-product-tbody"></tbody>
+          </table>
+        </div>
+        <button type="button" class="btn btn-outline btn-sm" id="btn-add-grn-row" style="margin-top:8px">
+          <i class="fas fa-plus"></i> Add Item
+        </button>
+
+      </form>
+    </div>
+    <div class="modal-footer">
+      <button class="btn btn-secondary" onclick="closeOverlay('modal-receive-goods')">Cancel</button>
+      <button class="btn btn-outline" id="btn-save-grn"><i class="fas fa-save"></i> Save GRN</button>
+      <button class="btn btn-primary"><i class="fas fa-clipboard-check"></i> Verify Goods</button>
+    </div>
+  </div>
+</div>
+
+<!-- GRN Verify -->
+<div class="overlay" id="modal-verify-grn">
+  <div class="modal modal-sm">
+    <div class="modal-header">
+      <div>
+        <div class="modal-title">Verify GRN</div>
+        <div class="modal-subtitle">Quality check and final approval</div>
+      </div>
+      <button class="modal-close" onclick="closeOverlay('modal-verify-grn')"><i class="fas fa-times"></i></button>
+    </div>
+    <div class="modal-body">
+      <div class="detail-grid" style="margin-bottom:14px">
+        <div class="detail-item"><div class="dl">GRN No</div><div class="dv" id="verifyGRNId"></div></div>
+        <div class="detail-item"><div class="dl">PO No</div><div class="dv" id="verifyGRNPO"></div></div>
+        <div class="detail-item"><div class="dl">Supplier</div><div class="dv" id="verifyGRNSupplier"></div></div>
+      </div>
+      <div class="form-section-title" style="margin-bottom:10px"><i class="fas fa-microscope"></i> Quality Check</div>
+      <table class="product-table" style="margin-bottom:12px">
+        <thead><tr><th>Product</th><th>Qty</th><th>Quality Status</th></tr></thead>
+        <tbody>
+          <tr>
+            <td>Steel Pipes (25mm)</td>
+            <td>50</td>
+            <td>
+              <select class="form-control" style="font-size:11px">
+                <option class="quality-pass">Pass</option>
+                <option class="quality-fail">Fail</option>
+              </select>
+            </td>
+          </tr>
+          <tr>
+            <td>Industrial Bearings</td>
+            <td>20</td>
+            <td>
+              <select class="form-control" style="font-size:11px">
+                <option class="quality-pass">Pass</option>
+                <option class="quality-fail">Fail</option>
+              </select>
+            </td>
+          </tr>
+        </tbody>
+      </table>
+      <div class="form-group">
+        <label>Verification Remarks</label>
+        <textarea class="form-control" placeholder="Quality check notes…"></textarea>
+      </div>
+      <div style="margin-top:12px;padding:10px;background:#d1fae5;border-radius:8px;font-size:11px;color:#065f46;display:flex;align-items:center;gap:8px">
+        <i class="fas fa-info-circle"></i>
+        Approving this GRN will automatically update stock in the Inventory module.
+      </div>
+    </div>
+    <div class="modal-footer">
+      <button class="btn btn-secondary" onclick="closeOverlay('modal-verify-grn')">Cancel</button>
+      <button class="btn btn-danger" id="btn-reject-grn"><i class="fas fa-times"></i> Reject Receipt</button>
+      <button class="btn btn-success" id="btn-approve-grn"><i class="fas fa-check"></i> Approve Receipt</button>
+    </div>
+  </div>
+</div>
+
+<!-- GRN Detail -->
+<div class="overlay" id="modal-grn-detail">
+  <div class="modal modal-sm">
+    <div class="modal-header">
+      <div>
+        <div class="modal-title">GRN Detail</div>
+        <div class="modal-subtitle" id="grnDetailId"></div>
+      </div>
+      <button class="modal-close" onclick="closeOverlay('modal-grn-detail')"><i class="fas fa-times"></i></button>
+    </div>
+    <div class="modal-body">
+      <div class="detail-grid">
+        <div class="detail-item"><div class="dl">PO No</div><div class="dv" id="grnDetailPO"></div></div>
+        <div class="detail-item"><div class="dl">Supplier</div><div class="dv" id="grnDetailSupplier"></div></div>
+        <div class="detail-item"><div class="dl">Receipt Date</div><div class="dv" id="grnDetailDate"></div></div>
+        <div class="detail-item"><div class="dl">Status</div><div class="dv" id="grnDetailStatus"></div></div>
+      </div>
+    </div>
+    <div class="modal-footer">
+      <button class="btn btn-secondary" onclick="closeOverlay('modal-grn-detail')">Close</button>
+      <button class="btn btn-primary"><i class="fas fa-print"></i> Print</button>
+    </div>
+  </div>
+</div>
+
+<!-- ════════════════════════════════════════════════════════
+     MODALS — PURCHASE RETURN
+════════════════════════════════════════════════════════ -->
+
+<!-- Create Return -->
+<div class="overlay" id="modal-create-return">
+  <div class="modal modal-lg">
+    <div class="modal-header">
+      <div>
+        <div class="modal-title">New Purchase Return</div>
+        <div class="modal-subtitle">Initiate return of defective or incorrect goods</div>
+      </div>
+      <button class="modal-close" onclick="closeOverlay('modal-create-return')"><i class="fas fa-times"></i></button>
+    </div>
+    <div class="modal-body">
+      <form id="create-return-form">
+
+        <div class="form-section-title"><i class="fas fa-info-circle"></i> Return Header</div>
+        <div class="form-grid form-grid-3" style="margin-bottom:16px">
+          <div class="form-group">
+            <label>Return Number</label>
+            <input class="form-control" readonly placeholder="Auto Generated">
+          </div>
+          <div class="form-group">
+            <label>Supplier *</label>
+            <select id="returnSupplier" class="form-control">
+              <option value="">Select supplier…</option>
+              <option>Ramesh Metal Traders</option><option>Global Steel Corp</option>
+              <option>Prime Bearings Ltd</option><option>Horizon Packing Co.</option>
+            </select>
+          </div>
+          <div class="form-group">
+            <label>Reference GRN</label>
+            <select class="form-control">
+              <option value="">Select GRN…</option>
+              <option>GRN-101</option><option>GRN-102</option><option>GRN-103</option>
+            </select>
+          </div>
+          <div class="form-group">
+            <label>Return Date</label>
+            <input type="date" class="form-control" value="2026-06-13">
+          </div>
+        </div>
+
+        <div class="form-section-title"><i class="fas fa-box-open"></i> Items to Return</div>
+        <div class="product-table-wrap">
+          <table class="product-table">
+            <thead>
+              <tr>
+                <th style="min-width:180px">Product</th>
+                <th style="min-width:80px">SKU</th>
+                <th style="width:80px">Received Qty</th>
+                <th style="width:70px">Unit</th>
+                <th style="width:80px">Return Qty</th>
+                <th style="width:120px">Reason</th>
+                <th style="min-width:120px">Remarks</th>
+                <th style="width:36px"></th>
+              </tr>
+            </thead>
+            <tbody id="return-product-tbody"></tbody>
+          </table>
+        </div>
+        <button type="button" class="btn btn-outline btn-sm" id="btn-add-return-row" style="margin-top:8px">
+          <i class="fas fa-plus"></i> Add Item
+        </button>
+
+      </form>
+    </div>
+    <div class="modal-footer">
+      <button class="btn btn-secondary" onclick="closeOverlay('modal-create-return')">Cancel</button>
+      <button class="btn btn-outline" id="btn-save-return-draft"><i class="fas fa-save"></i> Save Draft</button>
+      <button class="btn btn-primary" id="btn-submit-return"><i class="fas fa-paper-plane"></i> Submit Return</button>
+    </div>
+  </div>
+</div>
+
+<!-- Return Detail -->
+<div class="overlay" id="modal-return-detail">
+  <div class="modal modal-sm">
+    <div class="modal-header">
+      <div>
+        <div class="modal-title">Return Detail</div>
+        <div class="modal-subtitle" id="retDetailId"></div>
+      </div>
+      <button class="modal-close" onclick="closeOverlay('modal-return-detail')"><i class="fas fa-times"></i></button>
+    </div>
+    <div class="modal-body">
+      <div class="detail-grid">
+        <div class="detail-item"><div class="dl">Supplier</div><div class="dv" id="retDetailSupplier"></div></div>
+        <div class="detail-item"><div class="dl">Reference GRN</div><div class="dv" id="retDetailGRN"></div></div>
+        <div class="detail-item"><div class="dl">Return Date</div><div class="dv" id="retDetailDate"></div></div>
+        <div class="detail-item"><div class="dl">Status</div><div class="dv" id="retDetailStatus"></div></div>
+      </div>
+      <div class="form-section-title" style="margin:14px 0 8px"><i class="fas fa-history"></i> Return Timeline</div>
+      <div class="timeline">
+        <div class="tl-item"><div class="tl-dot done"><i class="fas fa-check"></i></div><div class="tl-content"><div class="tl-label">Return Initiated</div><div class="tl-time">Jun 11, 2026</div></div></div>
+        <div class="tl-item"><div class="tl-dot done"><i class="fas fa-check"></i></div><div class="tl-content"><div class="tl-label">Approved</div><div class="tl-time">Jun 12, 2026</div></div></div>
+        <div class="tl-item"><div class="tl-dot"><i class="fas fa-truck"></i></div><div class="tl-content"><div class="tl-label">Goods Dispatched to Supplier</div><div class="tl-time">Pending</div></div></div>
+      </div>
+    </div>
+    <div class="modal-footer">
+      <button class="btn btn-secondary" onclick="closeOverlay('modal-return-detail')">Close</button>
+      <button class="btn btn-primary"><i class="fas fa-print"></i> Print</button>
+    </div>
+  </div>
+</div>
+
+<!-- Toast Container -->
+<div id="toast-container"></div>
+
+<script src="/pages/purchase/purchase.js"></script>
+</body>
+</html>

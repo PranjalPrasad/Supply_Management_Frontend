@@ -1,0 +1,298 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Supplier Management — Supply Chain Admin</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script>tailwind.config = { theme: { extend: { colors: { active: '#111844', border2: '#4B5694', bg: '#FAFAFA', hover2: '#7288AE', card: '#FFFCFC', dark: '#1a2155' } } } }</script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@300;400;500;700&display=swap" rel="stylesheet" />
+    <link rel="stylesheet" href="/pages/suppliers/supplier.css" />
+</head>
+
+<body class="bg-[#ebe6e6] text-[#111844] min-h-screen">
+
+<!-- SIDEBAR - EXACT MATCH TO REF CODE -->
+<aside id="sidebar" class="fixed top-0 left-0 h-full w-[260px] bg-[#FFFCFC] z-[100] flex flex-col transition-all duration-300 overflow-hidden shadow-lg">
+  <div class="flex items-center justify-between px-5 h-16 border border-[#4B5694]/20 shadow-sm">
+    <div class="flex items-center gap-3">
+        <div class="w-9 h-9 rounded-lg bg-[#111844] flex items-center justify-center text-[#FAFAFA] flex-shrink-0">
+            <i class="fas fa-cubes"></i>
+        </div>
+        <span class="sidebar-brand-text text-sm font-bold text-[#111844]">SupplyManager</span>
+    </div>
+    <button id="sidebar-toggle" class="w-7 h-7 flex items-center justify-center rounded-lg text-[#4B5694] hover:bg-[#4B5694]/10 transition-colors">
+        <i class="fas fa-chevron-left text-sm"></i>
+    </button>
+  </div>
+  
+  <nav class="flex-1 overflow-y-auto py-3 px-2 space-y-0.5">
+    <a href="#" class="nav-item flex items-center gap-3 px-3 py-2.5 rounded-lg text-sm cursor-pointer border-b border-[#4B5694]/20 shadow-sm text-[#111844]/70 hover:bg-[#7288AE]/20 transition-colors duration-150">
+      <span class="nav-icon text-base flex-shrink-0 w-5"><i class="fas fa-chart-pie"></i></span>
+      <span class="nav-label">Dashboard</span>
+    </a>
+
+    <div class="nav-group">
+      <div class="nav-group-header flex items-center justify-between gap-3 px-3 py-2.5 rounded-lg text-[#111844]/70 hover:bg-[#7288AE]/20 hover:text-[#111844] transition-colors duration-150 text-sm cursor-pointer border-b border-[#4B5694]/20 shadow-sm">
+        <div class="flex items-center gap-3">
+          <span class="nav-icon text-base flex-shrink-0 w-5"><i class="fas fa-database"></i></span>
+          <span class="nav-label">Master Management</span>
+        </div>
+        <i class="fas fa-chevron-down text-xs transition-transform duration-200"></i>
+      </div>
+      <div class="nav-group-items ml-7 space-y-0.5 mt-1 hidden">
+        <a href="#" class="nav-item flex items-center gap-3 px-3 py-2 rounded-lg text-[#111844]/70 hover:bg-[#7288AE]/20 hover:text-[#111844] transition-colors duration-150 text-xs cursor-pointer">
+          <span class="nav-icon text-sm flex-shrink-0 w-4"><i class="fas fa-box"></i></span>
+          <span class="nav-label">Products</span>
+        </a>
+        <a href="#" class="nav-item flex items-center gap-3 px-3 py-2 rounded-lg text-[#111844]/70 hover:bg-[#7288AE]/20 hover:text-[#111844] transition-colors duration-150 text-xs cursor-pointer nav-active">
+          <span class="nav-icon text-sm flex-shrink-0 w-4"><i class="fas fa-truck-loading"></i></span>
+          <span class="nav-label">Suppliers</span>
+        </a>
+        <a href="#" class="nav-item flex items-center gap-3 px-3 py-2 rounded-lg text-[#111844]/70 hover:bg-[#7288AE]/20 hover:text-[#111844] transition-colors duration-150 text-xs cursor-pointer">
+          <span class="nav-icon text-sm flex-shrink-0 w-4"><i class="fas fa-users"></i></span>
+          <span class="nav-label">Customers</span>
+        </a>
+      </div>
+    </div>
+
+    <a href="#" class="nav-item flex items-center gap-3 px-3 py-2.5 rounded-lg text-[#111844]/70 hover:bg-[#7288AE]/20 hover:text-[#111844] transition-colors duration-150 text-sm cursor-pointer border-b border-[#4B5694]/20 shadow-sm">
+        <span class="nav-icon text-base flex-shrink-0 w-5"><i class="fas fa-shopping-cart"></i></span>
+        <span class="nav-label">Purchase Management</span>
+    </a>
+
+    <a href="#" class="nav-item flex items-center gap-3 px-3 py-2.5 rounded-lg text-[#111844]/70 hover:bg-[#7288AE]/20 hover:text-[#111844] transition-colors duration-150 text-sm cursor-pointer border-b border-[#4B5694]/20 shadow-sm">
+        <span class="nav-icon text-base flex-shrink-0 w-5"><i class="fas fa-boxes-stacked"></i></span>
+        <span class="nav-label">Inventory Management</span>
+    </a>
+
+    <div class="nav-group">
+      <div class="nav-group-header flex items-center justify-between gap-3 px-3 py-2.5 rounded-lg text-[#111844]/70 hover:bg-[#7288AE]/20 hover:text-[#111844] transition-colors duration-150 text-sm cursor-pointer border-b border-[#4B5694]/20 shadow-sm">
+        <div class="flex items-center gap-3">
+          <span class="nav-icon text-base flex-shrink-0 w-5"><i class="fas fa-coins"></i></span>
+          <span class="nav-label">Finance & Billing</span>
+        </div>
+        <i class="fas fa-chevron-down text-xs transition-transform duration-200"></i>
+      </div>
+      <div class="nav-group-items ml-7 space-y-0.5 mt-1 hidden">
+        <a href="#" class="nav-item flex items-center gap-3 px-3 py-2 rounded-lg text-[#111844]/70 hover:bg-[#7288AE]/20 hover:text-[#111844] transition-colors duration-150 text-xs cursor-pointer">
+          <span class="nav-icon text-sm flex-shrink-0 w-4"><i class="fas fa-money-bill-wave"></i></span>
+          <span class="nav-label">Payables</span>
+        </a>
+      </div>
+    </div>
+  </nav>
+
+  <div class="px-4 py-3 border-t border-[#4B5694]/20 bg-[#FAFAFA]/30">
+    <div class="flex items-center gap-3">
+      <div class="w-8 h-8 rounded-full bg-[#111844] flex items-center justify-center text-[#FAFAFA] text-xs font-bold flex-shrink-0">AD</div>
+      <div class="sidebar-brand-text min-w-0">
+        <div class="text-[#111844] text-xs font-medium truncate">Admin User</div>
+        <div class="text-[#7288AE] text-xs truncate">admin@supplymanager.com</div>
+      </div>
+    </div>
+  </div>
+</aside>
+
+<div id="sidebar-overlay" class="hidden fixed inset-0 bg-[#111844]/50 z-[90] lg:hidden"></div>
+
+<div id="main-wrapper" class="ml-[260px] flex flex-col min-h-screen transition-all duration-300">
+    <!-- TOPBAR EXACT MATCH TO REF CODE -->
+    <header class="sticky top-0 z-[200] h-16 bg-[#FFFCFC] border-b border-[#4B5694]/20 flex items-center justify-between px-5 shadow-sm">
+        <div class="flex items-center gap-4">
+            <div>
+                <h1 class="text-sm font-semibold text-[#111844]">Supplier Management</h1>
+                <p class="text-xs text-[#7288AE]">Manage vendors, track purchases & payments</p>
+            </div>
+        </div>
+        <div class="flex items-center gap-2">
+            <div class="relative">
+                <button id="notif-btn" class="w-9 h-9 flex items-center justify-center rounded-lg text-[#4B5694] hover:bg-[#4B5694]/10 transition-colors relative">
+                    <i class="fas fa-bell text-base"></i>
+                    <span class="notif-badge"></span>
+                </button>
+                <div id="notif-menu" class="hidden absolute right-0 top-full mt-1 w-80 bg-[#FFFCFC] border border-[#4B5694]/20 rounded-xl shadow-lg z-50 overflow-hidden">
+                    <div class="flex items-center justify-between px-4 py-3 border-b border-[#4B5694]/15">
+                        <span class="text-xs font-semibold text-[#111844]">Notifications</span>
+                        <span class="text-[10px] px-2 py-0.5 rounded-full bg-[#111844]/10 text-[#111844] font-medium">3 new</span>
+                    </div>
+                    <div class="max-h-80 overflow-y-auto divide-y divide-[#4B5694]/10">
+                        <div class="notif-item"><div class="notif-icon bg-amber-100 text-amber-600"><i class="fas fa-exclamation-triangle"></i></div><div><div class="notif-title">Low stock alert</div><div class="notif-desc">Steel Pipes stock running low</div><div class="notif-time">10 min ago</div></div></div>
+                        <div class="notif-item"><div class="notif-icon bg-emerald-100 text-emerald-700"><i class="fas fa-truck"></i></div><div><div class="notif-title">PO #PO-2041 delivered</div><div class="notif-desc">Supplier shipment received</div><div class="notif-time">1 hour ago</div></div></div>
+                    </div>
+                </div>
+            </div>
+            <div class="relative">
+                <button id="user-menu-btn" class="flex items-center gap-2 px-3 py-1.5 rounded-lg hover:bg-[#4B5694]/10 transition-colors">
+                    <div class="w-7 h-7 rounded-full bg-[#111844] flex items-center justify-center text-[#FAFAFA] text-xs font-bold">AD</div>
+                    <span class="text-xs font-medium text-[#111844] hidden sm:block">Admin</span>
+                    <i class="fas fa-chevron-down text-[10px] text-[#4B5694]"></i>
+                </button>
+                <div id="user-menu" class="hidden absolute right-0 top-full mt-1 w-44 bg-[#FFFCFC] border border-[#4B5694]/20 rounded-xl shadow-lg py-1 z-50">
+                    <a href="#" class="flex items-center gap-2 px-4 py-2 text-xs text-[#111844] hover:bg-[#7288AE]/10 transition-colors"><i class="fas fa-user-circle w-4"></i> My Profile</a>
+                    <div class="border-t border-[#4B5694]/10 my-1"></div>
+                    <a href="#" id="logout-btn" class="flex items-center gap-2 px-4 py-2 text-xs text-red-600 hover:bg-red-50 transition-colors"><i class="fas fa-sign-out-alt w-4"></i> Logout</a>
+                </div>
+            </div>
+        </div>
+    </header>
+
+    <main class="flex-1 p-5 space-y-5">
+        <!-- SUPPLIER LIST VIEW -->
+        <div id="supplier-list-view">
+            <div class="chart-card">
+                <!-- Filters Row -->
+                <div class="flex flex-wrap justify-between items-center gap-3 mb-5">
+                    <div class="flex flex-wrap gap-2">
+                        <input type="text" id="search-supplier" placeholder="Supplier Name / Code / GST" class="form-input w-64 text-sm">
+                        <select id="filter-status" class="form-select w-36 text-sm">
+                            <option value="">All Status</option>
+                            <option value="Active">Active</option>
+                            <option value="Inactive">Inactive</option>
+                        </select>
+                        <select id="filter-city" class="form-select w-36 text-sm">
+                            <option value="">All Cities</option>
+                        </select>
+                    </div>
+                    <div class="flex gap-2">
+                        <button id="add-supplier-btn" class="btn-primary flex items-center gap-2"><i class="fas fa-plus"></i> Add Supplier</button>
+                        <button id="export-excel-btn" class="btn-secondary flex items-center gap-2"><i class="fas fa-file-excel"></i> Export Excel</button>
+                        <button id="import-suppliers-btn" class="btn-secondary flex items-center gap-2"><i class="fas fa-upload"></i> Import Suppliers</button>
+                    </div>
+                </div>
+
+                <!-- Table -->
+                <div class="overflow-auto">
+                    <table class="w-full text-sm">
+                        <thead class="bg-[#FAFAFA] border-b border-[#4B5694]/20">
+                            <tr class="text-left text-[#111844] text-xs font-semibold">
+                                <th class="p-3">Supplier Code</th>
+                                <th class="p-3">Supplier Name</th>
+                                <th class="p-3">Contact Person</th>
+                                <th class="p-3">Mobile Number</th>
+                                <th class="p-3">GST Number</th>
+                                <th class="p-3">City</th>
+                                <th class="p-3">Payment Terms</th>
+                                <th class="p-3">Status</th>
+                                <th class="p-3 text-center">Actions</th>
+                            </tr>
+                        </thead>
+                        <tbody id="supplier-table-body"></tbody>
+                    </table>
+                    <div id="no-data-msg" class="text-center py-8 text-[#7288AE] hidden">No suppliers found</div>
+                </div>
+            </div>
+        </div>
+
+        <!-- CREATE/EDIT SUPPLIER FORM (ALL 5 SECTIONS) -->
+        <div id="supplier-form-view" class="chart-card hidden">
+            <div class="flex justify-between items-center border-b border-[#4B5694]/20 pb-3 mb-4">
+                <h2 class="section-title"><i class="fas fa-truck mr-2"></i> <span id="form-title">Register New Supplier</span></h2>
+                <button id="close-form-btn" class="text-red-500 hover:bg-red-50 p-2 rounded-lg transition-colors"><i class="fas fa-times"></i></button>
+            </div>
+            <form id="supplier-form">
+                <input type="hidden" id="supplier-id" value="">
+                
+                <!-- Section 1: Basic Information -->
+                <div class="mb-5">
+                    <h3 class="text-xs font-bold text-[#111844] mb-3 pb-1 border-b border-[#4B5694]/20">Section 1: Basic Information</h3>
+                    <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                        <div><label class="text-xs font-semibold text-[#111844]">Supplier Code</label><input type="text" id="supplier-code" class="form-input bg-gray-100" readonly placeholder="Auto generated"></div>
+                        <div><label class="text-xs font-semibold text-[#111844]">Supplier Name *</label><input type="text" id="supplier-name" class="form-input" required></div>
+                        <div><label class="text-xs font-semibold text-[#111844]">Business Type</label><select id="business-type" class="form-select"><option>Individual</option><option>Partnership</option><option>Private Limited</option><option>Public Limited</option><option>LLP</option></select></div>
+                        <div><label class="text-xs font-semibold text-[#111844]">Contact Person</label><input type="text" id="contact-person" class="form-input"></div>
+                        <div><label class="text-xs font-semibold text-[#111844]">Mobile Number *</label><input type="tel" id="mobile" class="form-input" required></div>
+                        <div><label class="text-xs font-semibold text-[#111844]">Email Address</label><input type="email" id="email" class="form-input"></div>
+                    </div>
+                </div>
+
+                <!-- Section 2: GST & Tax Information -->
+                <div class="mb-5">
+                    <h3 class="text-xs font-bold text-[#111844] mb-3 pb-1 border-b border-[#4B5694]/20">Section 2: GST & Tax Information</h3>
+                    <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                        <div><label class="text-xs font-semibold text-[#111844]">GST Number</label><input type="text" id="gst" class="form-input"></div>
+                        <div><label class="text-xs font-semibold text-[#111844]">PAN Number</label><input type="text" id="pan" class="form-input"></div>
+                    </div>
+                </div>
+
+                <!-- Section 3: Address Information -->
+                <div class="mb-5">
+                    <h3 class="text-xs font-bold text-[#111844] mb-3 pb-1 border-b border-[#4B5694]/20">Section 3: Address Information</h3>
+                    <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                        <div><label class="text-xs font-semibold text-[#111844]">Address Line 1</label><input type="text" id="address1" class="form-input"></div>
+                        <div><label class="text-xs font-semibold text-[#111844]">Address Line 2</label><input type="text" id="address2" class="form-input"></div>
+                        <div><label class="text-xs font-semibold text-[#111844]">City</label><input type="text" id="city" class="form-input"></div>
+                        <div><label class="text-xs font-semibold text-[#111844]">State</label><input type="text" id="state" class="form-input"></div>
+                        <div><label class="text-xs font-semibold text-[#111844]">Pincode</label><input type="text" id="pincode" class="form-input"></div>
+                        <div><label class="text-xs font-semibold text-[#111844]">Country</label><input type="text" id="country" class="form-input" value="India"></div>
+                    </div>
+                </div>
+
+                <!-- Section 4: Payment Information -->
+                <div class="mb-5">
+                    <h3 class="text-xs font-bold text-[#111844] mb-3 pb-1 border-b border-[#4B5694]/20">Section 4: Payment Information</h3>
+                    <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                        <div><label class="text-xs font-semibold text-[#111844]">Payment Terms</label><select id="payment-terms" class="form-select"><option>Net 30</option><option>Net 15</option><option>Net 45</option><option>COD</option><option>Advance</option></select></div>
+                        <div><label class="text-xs font-semibold text-[#111844]">Credit Days</label><input type="number" id="credit-days" class="form-input" value="30"></div>
+                        <div><label class="text-xs font-semibold text-[#111844]">Bank Name</label><input type="text" id="bank-name" class="form-input"></div>
+                        <div><label class="text-xs font-semibold text-[#111844]">Account Number</label><input type="text" id="account-no" class="form-input"></div>
+                        <div><label class="text-xs font-semibold text-[#111844]">IFSC Code</label><input type="text" id="ifsc" class="form-input"></div>
+                    </div>
+                </div>
+
+                <!-- Section 5: Purchase Configuration -->
+                <div class="mb-5">
+                    <h3 class="text-xs font-bold text-[#111844] mb-3 pb-1 border-b border-[#4B5694]/20">Section 5: Purchase Configuration</h3>
+                    <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                        <div><label class="text-xs font-semibold text-[#111844]">Preferred Supplier</label><select id="preferred" class="form-select"><option value="No">No</option><option value="Yes">Yes</option></select></div>
+                        <div><label class="text-xs font-semibold text-[#111844]">Active Status</label><select id="active-status" class="form-select"><option value="Active">Active</option><option value="Inactive">Inactive</option></select></div>
+                        <div class="md:col-span-2"><label class="text-xs font-semibold text-[#111844]">Notes</label><textarea id="notes" rows="2" class="form-textarea" placeholder="Additional notes about the supplier..."></textarea></div>
+                    </div>
+                </div>
+
+                <div class="flex gap-3 mt-6 justify-end">
+                    <button type="submit" class="btn-primary"><i class="fas fa-save mr-1"></i> Save Supplier</button>
+                    <button type="button" id="save-draft-btn" class="btn-secondary"><i class="fas fa-pen mr-1"></i> Save Draft</button>
+                    <button type="button" id="cancel-form-btn" class="btn-secondary"><i class="fas fa-times mr-1"></i> Cancel</button>
+                </div>
+            </form>
+        </div>
+    </main>
+</div>
+
+<!-- SUPPLIER DETAILS MODAL WITH TABS -->
+<div id="details-modal" class="fixed inset-0 bg-black/40 z-[300] hidden items-center justify-center p-4">
+    <div class="bg-white rounded-xl w-full max-w-4xl max-h-[85vh] overflow-auto shadow-2xl">
+        <div class="flex justify-between items-center p-4 border-b border-[#4B5694]/20">
+            <h3 class="font-bold text-[#111844]">Supplier Details</h3>
+            <button id="close-modal-btn" class="text-gray-500 hover:text-red-500 text-2xl">&times;</button>
+        </div>
+        <div class="px-4 border-b border-[#4B5694]/20 flex gap-6 text-sm" id="detail-tabs">
+            <button class="tab-btn py-2 px-1 font-medium tab-active" data-tab="overview">Overview</button>
+            <button class="tab-btn py-2 px-1" data-tab="purchase">Purchase History</button>
+            <button class="tab-btn py-2 px-1" data-tab="payment">Payment History</button>
+        </div>
+        <div id="overview-tab" class="p-4 space-y-4"></div>
+        <div id="purchase-tab" class="p-4 hidden">
+            <table class="w-full text-sm">
+                <thead class="bg-[#FAFAFA]"><tr><th class="p-2 text-left">PO Number</th><th>PO Date</th><th>Amount</th><th>Status</th><th>Actions</th></tr></thead>
+                <tbody id="purchase-history-tbody"></tbody>
+            </table>
+        </div>
+        <div id="payment-tab" class="p-4 hidden">
+            <table class="w-full text-sm">
+                <thead class="bg-[#FAFAFA]"><tr><th class="p-2 text-left">Invoice No</th><th>Invoice Date</th><th>Amount Paid</th><th>Balance</th><th>Status</th></tr></thead>
+                <tbody id="payment-history-tbody"></tbody>
+            </table>
+        </div>
+    </div>
+</div>
+
+<div id="toast-container" class="fixed bottom-5 right-5 z-[400] space-y-2"></div>
+
+<script src="/pages/suppliers/supplier.js"></script>
+</body>
+
+</html>

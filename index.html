@@ -1,0 +1,1106 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Dashboard — Supply Management Admin</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script>tailwind.config = { theme: { extend: { colors: { active: '#111844', border2: '#4B5694', bg: '#FAFAFA', hover2: '#7288AE', card: '#FFFCFC', dark: '#1a2155' } } } }</script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@300;400;500;700&display=swap" rel="stylesheet" />
+    <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.1/dist/chart.umd.min.js"></script>
+    <style>
+        body {
+            font-family: 'Roboto', sans-serif
+        }
+
+        .sidebar-collapsed {
+            width: 68px !important
+        }
+
+        .sidebar-collapsed .nav-label,
+        .sidebar-collapsed .sidebar-brand-text,
+        .sidebar-collapsed .sidebar-section-label {
+            display: none !important
+        }
+
+        .sidebar-collapsed .nav-item {
+            justify-content: center;
+            padding-left: 0;
+            padding-right: 0
+        }
+
+        .sidebar-collapsed .nav-icon {
+            margin: 0
+        }
+
+        .main-expanded {
+            margin-left: 68px !important
+        }
+
+        @media(max-width:1023px) {
+            #sidebar {
+                transform: translateX(-100%)
+            }
+
+            #sidebar.sidebar-open {
+                transform: translateX(0)
+            }
+
+            #main-wrapper {
+                margin-left: 0 !important
+            }
+        }
+
+        .nav-active {
+            background: #111844 !important;
+            color: #FAFAFA !important
+        }
+
+        .nav-active .nav-icon {
+            color: #FAFAFA !important
+        }
+
+        .toast-animate {
+            animation: slideIn 0.2s ease-out
+        }
+
+        @keyframes slideIn {
+            from {
+                opacity: 0;
+                transform: translateY(-10px)
+            }
+
+            to {
+                opacity: 1;
+                transform: translateY(0)
+            }
+        }
+
+        .loading-spinner {
+            display: inline-block;
+            width: 20px;
+            height: 20px;
+            border: 2px solid rgba(17, 24, 68, 0.3);
+            border-radius: 50%;
+            border-top-color: #111844;
+            animation: spin 0.8s linear infinite;
+        }
+
+        @keyframes spin {
+            to {
+                transform: rotate(360deg);
+            }
+        }
+
+        .widget-card {
+            background: #FFFCFC;
+            border: 1px solid rgba(75, 86, 148, 0.18);
+            border-radius: 12px;
+            padding: 13px 14px;
+            display: flex;
+            align-items: flex-start;
+            justify-content: space-between;
+            gap: 8px;
+            transition: transform .25s cubic-bezier(.34, 1.56, .64, 1), box-shadow .2s ease, border-color .2s ease;
+            box-shadow: 0 1px 2px rgba(17,24,68,0.04);
+        }
+
+        .widget-card:hover {
+            transform: translateY(-4px) scale(1.02);
+            box-shadow: 0 8px 18px rgba(17,24,68,0.12);
+            border-color: #111844;
+        }
+
+        .widget-icon {
+            width: 36px;
+            height: 36px;
+            border-radius: 9px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 14px;
+            flex-shrink: 0;
+        }
+
+        .widget-value {
+            font-size: 18px;
+            font-weight: 700;
+            color: #111844;
+            line-height: 1.1;
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
+        }
+
+        .widget-label {
+            font-size: 10.5px;
+            color: #7288AE;
+            font-weight: 500;
+            margin-top: 2px;
+            line-height: 1.3;
+        }
+
+        .widget-trend {
+            font-size: 9.5px;
+            font-weight: 600;
+            padding: 2px 5px;
+            border-radius: 5px;
+            display: inline-flex;
+            align-items: center;
+            gap: 2px;
+            margin-top: 4px;
+        }
+
+        .chart-card {
+            background: #FFFCFC;
+            border: 1px solid rgba(75, 86, 148, 0.18);
+            border-radius: 12px;
+            padding: 12px 14px;
+            box-shadow: 0 1px 2px rgba(17,24,68,0.04);
+            transition: transform .25s cubic-bezier(.34, 1.56, .64, 1), box-shadow .2s ease, border-color .2s ease;
+        }
+
+        .chart-card:hover {
+            transform: translateY(-4px) scale(1.01);
+            box-shadow: 0 8px 18px rgba(17,24,68,0.12);
+            border-color: #111844;
+        }
+
+        .alert-row {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 8px 10px;
+            border-radius: 8px;
+            font-size: 11px;
+        }
+
+        .section-title {
+            font-size: 13px;
+            font-weight: 600;
+            color: #111844;
+        }
+
+        .section-sub {
+            font-size: 11px;
+            color: #7288AE;
+        }
+
+        ::-webkit-scrollbar { width: 6px; height: 6px; }
+        ::-webkit-scrollbar-thumb { background: rgba(75,86,148,0.25); border-radius: 10px; }
+
+        .notif-badge {
+            position: absolute;
+            top: 4px;
+            right: 4px;
+            width: 8px;
+            height: 8px;
+            border-radius: 50%;
+            background: #ef4444;
+            border: 1.5px solid #FFFCFC;
+        }
+
+        .notif-item {
+            display: flex;
+            gap: 10px;
+            padding: 10px 16px;
+            transition: background-color .15s ease;
+            cursor: pointer;
+        }
+
+        .notif-item:hover {
+            background: rgba(114, 136, 174, 0.12);
+        }
+
+        .notif-icon {
+            width: 32px;
+            height: 32px;
+            border-radius: 8px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 13px;
+            flex-shrink: 0;
+        }
+
+        .notif-title {
+            font-size: 12px;
+            font-weight: 600;
+            color: #111844;
+        }
+
+        .notif-desc {
+            font-size: 11px;
+            color: #7288AE;
+            margin-top: 1px;
+        }
+
+        .notif-time {
+            font-size: 10px;
+            color: #7288AE;
+            margin-top: 3px;
+        }
+
+        #sidebar-toggle {
+    transition: all 0.3s ease;
+}
+
+.sidebar-collapsed #sidebar-toggle i {
+    transform: rotate(180deg);
+}
+    </style>
+</head>
+
+<body class="bg-[#ebe6e6] text-[#111844] min-h-screen">
+
+<!-- SIDEBAR -->
+<aside id="sidebar" class="fixed top-0 left-0 h-full w-[260px] bg-[#FFFCFC] z-[100] flex flex-col transition-all duration-300 overflow-hidden shadow-lg">
+  <div class="flex items-center justify-between px-5 h-16 border border-[#4B5694]/20 shadow-sm">
+    <div class="flex items-center gap-3">
+        <div class="w-9 h-9 rounded-lg bg-[#111844] flex items-center justify-center text-[#FAFAFA] flex-shrink-0">
+            <i class="fas fa-cubes"></i>
+        </div>
+        <img src="/assets/logo.png" alt="Logo" class="sidebar-brand-text h-8 w-auto object-contain">    </div>
+        <button id="sidebar-toggle" class="w-7 h-7 flex items-center justify-center rounded-lg text-[#4B5694] hover:bg-[#4B5694]/10 transition-colors">
+        <i class="fas fa-chevron-left text-sm"></i>
+        </button>
+    </div>
+  
+  <nav class="flex-1 overflow-y-auto py-3 px-2 space-y-0.5">
+    
+    <!-- 📊 DASHBOARD -->
+    <a href="/index.html" class="nav-item flex items-center gap-3 px-3 py-2.5 rounded-lg text-sm cursor-pointer border-b border-[#4B5694]/20 shadow-sm nav-active">
+      <span class="nav-icon text-base flex-shrink-0 w-5"><i class="fas fa-chart-pie"></i></span>
+      <span class="nav-label">Dashboard</span>
+    </a>
+
+    <!-- 📦 MASTER MANAGEMENT -->
+    <div class="nav-group">
+      <div class="nav-group-header flex items-center justify-between gap-3 px-3 py-2.5 rounded-lg text-[#111844]/70 hover:bg-[#7288AE]/20 hover:text-[#111844] transition-colors duration-150 text-sm cursor-pointer border-b border-[#4B5694]/20 shadow-sm">
+        <div class="flex items-center gap-3" >
+          <span class="nav-icon text-base flex-shrink-0 w-5"><i class="fas fa-database"></i></span>
+          <span class="nav-label">Master Management</span>
+        </div>
+        <i class="fas fa-chevron-down text-xs transition-transform duration-200"></i>
+      </div>
+      <div class="nav-group-items ml-7 space-y-0.5 mt-1 hidden">
+        <a href="/pages/Product/product.html" class="nav-item flex items-center gap-3 px-3 py-2 rounded-lg text-[#111844]/70 hover:bg-[#7288AE]/20 hover:text-[#111844] transition-colors duration-150 text-xs cursor-pointer">
+          <span class="nav-icon text-sm flex-shrink-0 w-4"><i class="fas fa-box"></i></span>
+          <span class="nav-label">Products</span>
+        </a>
+        <!-- <a href="/pages/category/category.html" class="nav-item flex items-center gap-3 px-3 py-2 rounded-lg text-[#111844]/70 hover:bg-[#7288AE]/20 hover:text-[#111844] transition-colors duration-150 text-xs cursor-pointer">
+          <span class="nav-icon text-sm flex-shrink-0 w-4"><i class="fas fa-sitemap"></i></span>
+          <span class="nav-label">Categories</span>
+        </a> -->
+        <a href="/pages/suppliers/suppliers.html" class="nav-item flex items-center gap-3 px-3 py-2 rounded-lg text-[#111844]/70 hover:bg-[#7288AE]/20 hover:text-[#111844] transition-colors duration-150 text-xs cursor-pointer">
+          <span class="nav-icon text-sm flex-shrink-0 w-4"><i class="fas fa-truck-loading"></i></span>
+          <span class="nav-label">Suppliers</span>
+        </a>
+        <a href="/pages/customers/customers.html" class="nav-item flex items-center gap-3 px-3 py-2 rounded-lg text-[#111844]/70 hover:bg-[#7288AE]/20 hover:text-[#111844] transition-colors duration-150 text-xs cursor-pointer">
+          <span class="nav-icon text-sm flex-shrink-0 w-4"><i class="fas fa-users"></i></span>
+          <span class="nav-label">Customers</span>
+        </a>
+        <a href="/pages/warehouse/warehouse.html" class="nav-item flex items-center gap-3 px-3 py-2 rounded-lg text-[#111844]/70 hover:bg-[#7288AE]/20 hover:text-[#111844] transition-colors duration-150 text-xs cursor-pointer">
+          <span class="nav-icon text-sm flex-shrink-0 w-4"><i class="fas fa-warehouse"></i></span>
+          <span class="nav-label">Warehouses</span>
+        </a>
+        <a href="/pages/units/units.html" class="nav-item flex items-center gap-3 px-3 py-2 rounded-lg text-[#111844]/70 hover:bg-[#7288AE]/20 hover:text-[#111844] transition-colors duration-150 text-xs cursor-pointer">
+          <span class="nav-icon text-sm flex-shrink-0 w-4"><i class="fas fa-balance-scale"></i></span>
+          <span class="nav-label">Units</span>
+        </a>
+      </div>
+    </div>
+
+    <!-- 🛒 PURCHASE MANAGEMENT -->
+    <a href="/purchase.html" class="nav-item flex items-center gap-3 px-3 py-2.5 rounded-lg text-[#111844]/70 hover:bg-[#7288AE]/20 hover:text-[#111844] transition-colors duration-150 text-sm cursor-pointer border-b border-[#4B5694]/20 shadow-sm">
+        <span class="nav-icon text-base flex-shrink-0 w-5"><i class="fas fa-shopping-cart"></i></span>
+        <span class="nav-label">Purchase Management</span>
+    </a>
+
+
+    <!-- 🏭 INVENTORY MANAGEMENT -->
+    <a href="/inventory.html" class="nav-item flex items-center gap-3 px-3 py-2.5 rounded-lg text-[#111844]/70 hover:bg-[#7288AE]/20 hover:text-[#111844] transition-colors duration-150 text-sm cursor-pointer border-b border-[#4B5694]/20 shadow-sm">
+        <span class="nav-icon text-base flex-shrink-0 w-5"><i class="fas fa-boxes-stacked"></i></span>
+        <span class="nav-label">Inventory Management</span>
+    </a>
+
+    <!-- 🚚 WAREHOUSE OPERATIONS -->
+    <a href="/warehouse.html" class="nav-item flex items-center gap-3 px-3 py-2.5 rounded-lg text-[#111844]/70 hover:bg-[#7288AE]/20 hover:text-[#111844] transition-colors duration-150 text-sm cursor-pointer border-b border-[#4B5694]/20 shadow-sm">
+        <span class="nav-icon text-base flex-shrink-0 w-5"><i class="fas fa-warehouse"></i></span>
+        <span class="nav-label">Warehouse Management</span>
+    </a>
+
+    <!-- 📝 SALES & DISPATCH -->
+    <div class="nav-group">
+      <div class="nav-group-header flex items-center justify-between gap-3 px-3 py-2.5 rounded-lg text-[#111844]/70 hover:bg-[#7288AE]/20 hover:text-[#111844] transition-colors duration-150 text-sm cursor-pointer border-b border-[#4B5694]/20 shadow-sm">
+        <div class="flex items-center gap-3">
+          <span class="nav-icon text-base flex-shrink-0 w-5"><i class="fas fa-truck"></i></span>
+          <span class="nav-label">Sales & Dispatch</span>
+        </div>
+        <i class="fas fa-chevron-down text-xs transition-transform duration-200"></i>
+      </div>
+      <div class="nav-group-items ml-7 space-y-0.5 mt-1 hidden">
+        <a href="/sales-orders.html" class="nav-item flex items-center gap-3 px-3 py-2 rounded-lg text-[#111844]/70 hover:bg-[#7288AE]/20 hover:text-[#111844] transition-colors duration-150 text-xs cursor-pointer">
+          <span class="nav-icon text-sm flex-shrink-0 w-4"><i class="fas fa-receipt"></i></span>
+          <span class="nav-label">Sales Orders</span>
+        </a>
+        <a href="/dispatch-planning.html" class="nav-item flex items-center gap-3 px-3 py-2 rounded-lg text-[#111844]/70 hover:bg-[#7288AE]/20 hover:text-[#111844] transition-colors duration-150 text-xs cursor-pointer">
+          <span class="nav-icon text-sm flex-shrink-0 w-4"><i class="fas fa-calendar-alt"></i></span>
+          <span class="nav-label">Dispatch Planning</span>
+        </a>
+        <a href="/delivery-challan.html" class="nav-item flex items-center gap-3 px-3 py-2 rounded-lg text-[#111844]/70 hover:bg-[#7288AE]/20 hover:text-[#111844] transition-colors duration-150 text-xs cursor-pointer">
+          <span class="nav-icon text-sm flex-shrink-0 w-4"><i class="fas fa-file-alt"></i></span>
+          <span class="nav-label">Delivery Challan</span>
+        </a>
+        <a href="/invoices.html" class="nav-item flex items-center gap-3 px-3 py-2 rounded-lg text-[#111844]/70 hover:bg-[#7288AE]/20 hover:text-[#111844] transition-colors duration-150 text-xs cursor-pointer">
+          <span class="nav-icon text-sm flex-shrink-0 w-4"><i class="fas fa-file-invoice-dollar"></i></span>
+          <span class="nav-label">Invoices</span>
+        </a>
+        <a href="/shipment-tracking.html" class="nav-item flex items-center gap-3 px-3 py-2 rounded-lg text-[#111844]/70 hover:bg-[#7288AE]/20 hover:text-[#111844] transition-colors duration-150 text-xs cursor-pointer">
+          <span class="nav-icon text-sm flex-shrink-0 w-4"><i class="fas fa-location-dot"></i></span>
+          <span class="nav-label">Shipment Tracking</span>
+        </a>
+      </div>
+    </div>
+
+    <!-- ↩️ RETURNS MANAGEMENT -->
+    <a href="/inventory.html" class="nav-item flex items-center gap-3 px-3 py-2.5 rounded-lg text-[#111844]/70 hover:bg-[#7288AE]/20 hover:text-[#111844] transition-colors duration-150 text-sm cursor-pointer border-b border-[#4B5694]/20 shadow-sm">
+          <span class="nav-icon text-base flex-shrink-0 w-5"><i class="fas fa-rotate-left"></i></span>
+          <span class="nav-label">Returns Management</span>
+    </a>
+
+   
+
+    <!-- 💰 FINANCE & BILLING -->
+    <div class="nav-group">
+      <div class="nav-group-header flex items-center justify-between gap-3 px-3 py-2.5 rounded-lg text-[#111844]/70 hover:bg-[#7288AE]/20 hover:text-[#111844] transition-colors duration-150 text-sm cursor-pointer border-b border-[#4B5694]/20 shadow-sm">
+        <div class="flex items-center gap-3">
+          <span class="nav-icon text-base flex-shrink-0 w-5"><i class="fas fa-coins"></i></span>
+          <span class="nav-label">Finance & Billing</span>
+        </div>
+        <i class="fas fa-chevron-down text-xs transition-transform duration-200"></i>
+      </div>
+      <div class="nav-group-items ml-7 space-y-0.5 mt-1 hidden">
+        <a href="/accounts-receivable.html" class="nav-item flex items-center gap-3 px-3 py-2 rounded-lg text-[#111844]/70 hover:bg-[#7288AE]/20 hover:text-[#111844] transition-colors duration-150 text-xs cursor-pointer">
+          <span class="nav-icon text-sm flex-shrink-0 w-4"><i class="fas fa-hand-holding-usd"></i></span>
+          <span class="nav-label">Receivables</span>
+        </a>
+        <a href="/accounts-payable.html" class="nav-item flex items-center gap-3 px-3 py-2 rounded-lg text-[#111844]/70 hover:bg-[#7288AE]/20 hover:text-[#111844] transition-colors duration-150 text-xs cursor-pointer">
+          <span class="nav-icon text-sm flex-shrink-0 w-4"><i class="fas fa-money-bill-wave"></i></span>
+          <span class="nav-label">Payables</span>
+        </a>
+        <a href="/expenses.html" class="nav-item flex items-center gap-3 px-3 py-2 rounded-lg text-[#111844]/70 hover:bg-[#7288AE]/20 hover:text-[#111844] transition-colors duration-150 text-xs cursor-pointer">
+          <span class="nav-icon text-sm flex-shrink-0 w-4"><i class="fas fa-chart-line"></i></span>
+          <span class="nav-label">Expenses</span>
+        </a>
+        <a href="/gst-management.html" class="nav-item flex items-center gap-3 px-3 py-2 rounded-lg text-[#111844]/70 hover:bg-[#7288AE]/20 hover:text-[#111844] transition-colors duration-150 text-xs cursor-pointer">
+          <span class="nav-icon text-sm flex-shrink-0 w-4"><i class="fas fa-percent"></i></span>
+          <span class="nav-label">GST Management</span>
+        </a>
+        <a href="/profitability.html" class="nav-item flex items-center gap-3 px-3 py-2 rounded-lg text-[#111844]/70 hover:bg-[#7288AE]/20 hover:text-[#111844] transition-colors duration-150 text-xs cursor-pointer">
+          <span class="nav-icon text-sm flex-shrink-0 w-4"><i class="fas fa-chart-simple"></i></span>
+          <span class="nav-label">Profitability</span>
+        </a>
+      </div>
+    </div>
+
+    <!-- 📈 REPORTS & ANALYTICS -->
+    <a href="/inventory.html" class="nav-item flex items-center gap-3 px-3 py-2.5 rounded-lg text-[#111844]/70 hover:bg-[#7288AE]/20 hover:text-[#111844] transition-colors duration-150 text-sm cursor-pointer border-b border-[#4B5694]/20 shadow-sm">
+          <span class="nav-icon text-base flex-shrink-0 w-5"><i class="fas fa-chart-bar"></i></span>
+          <span class="nav-label">Reports & Analytics</span>
+    </a>
+
+   
+
+    <!-- 👥 USER MANAGEMENT -->
+    <div class="nav-group">
+      <div class="nav-group-header flex items-center justify-between gap-3 px-3 py-2.5 rounded-lg text-[#111844]/70 hover:bg-[#7288AE]/20 hover:text-[#111844] transition-colors duration-150 text-sm cursor-pointer border-b border-[#4B5694]/20 shadow-sm">
+        <div class="flex items-center gap-3">
+          <span class="nav-icon text-base flex-shrink-0 w-5"><i class="fas fa-users-gear"></i></span>
+          <span class="nav-label">User Management</span>
+        </div>
+        <i class="fas fa-chevron-down text-xs transition-transform duration-200"></i>
+      </div>
+      <div class="nav-group-items ml-7 space-y-0.5 mt-1 hidden">
+        <a href="/users.html" class="nav-item flex items-center gap-3 px-3 py-2 rounded-lg text-[#111844]/70 hover:bg-[#7288AE]/20 hover:text-[#111844] transition-colors duration-150 text-xs cursor-pointer">
+          <span class="nav-icon text-sm flex-shrink-0 w-4"><i class="fas fa-user"></i></span>
+          <span class="nav-label">Users</span>
+        </a>
+        <a href="/roles.html" class="nav-item flex items-center gap-3 px-3 py-2 rounded-lg text-[#111844]/70 hover:bg-[#7288AE]/20 hover:text-[#111844] transition-colors duration-150 text-xs cursor-pointer">
+          <span class="nav-icon text-sm flex-shrink-0 w-4"><i class="fas fa-lock"></i></span>
+          <span class="nav-label">Roles & Permissions</span>
+        </a>
+      </div>
+    </div>
+
+  </nav>
+
+  <!-- User Footer -->
+  <div class="px-4 py-3 border-t border-[#4B5694]/20 bg-[#FAFAFA]/30">
+    <div class="flex items-center gap-3">
+      <div class="w-8 h-8 rounded-full bg-[#111844] flex items-center justify-center text-[#FAFAFA] text-xs font-bold flex-shrink-0">AD</div>
+      <div class="sidebar-brand-text min-w-0">
+        <div class="text-[#111844] text-xs font-medium truncate">Admin</div>
+        <div class="text-[#7288AE] text-xs truncate">admin@supplymanager.com</div>
+      </div>
+    </div>
+  </div>
+</aside>
+
+    <div id="sidebar-overlay" class="hidden fixed inset-0 bg-[#111844]/50 z-[90] lg:hidden"></div>
+
+    <div id="main-wrapper" class="ml-[260px] flex flex-col min-h-screen transition-all duration-300">
+        <header
+            class="sticky top-0 z-[200] h-16 bg-[#FFFCFC] border-b border-[#4B5694]/20 flex items-center justify-between px-5 shadow-sm">
+            <div class="flex items-center gap-4">
+                <div>
+                    <h1 class="text-sm font-semibold text-[#111844]">Dashboard</h1>
+                    <p class="text-xs text-[#7288AE]">Overview of supply chain, inventory & operations</p>
+                </div>
+            </div>
+            <div class="flex items-center gap-2">
+                <div class="relative">
+                    <button id="notif-btn"
+                        class="w-9 h-9 flex items-center justify-center rounded-lg text-[#4B5694] hover:bg-[#4B5694]/10 transition-colors relative">
+                        <i class="fas fa-bell text-base"></i>
+                        <span class="notif-badge"></span>
+                    </button>
+                    <div id="notif-menu"
+                        class="hidden absolute right-0 top-full mt-1 w-80 bg-[#FFFCFC] border border-[#4B5694]/20 rounded-xl shadow-lg z-50 overflow-hidden">
+                        <div class="flex items-center justify-between px-4 py-3 border-b border-[#4B5694]/15">
+                            <span class="text-xs font-semibold text-[#111844]">Notifications</span>
+                            <span class="text-[10px] px-2 py-0.5 rounded-full bg-[#111844]/10 text-[#111844] font-medium">4 new</span>
+                        </div>
+                        <div class="max-h-80 overflow-y-auto divide-y divide-[#4B5694]/10">
+                            <div class="notif-item">
+                                <div class="notif-icon bg-red-100 text-red-600"><i class="fas fa-times-circle"></i></div>
+                                <div>
+                                    <div class="notif-title">Out of stock: Aluminium Sheets (4mm)</div>
+                                    <div class="notif-desc">Restock required immediately</div>
+                                    <div class="notif-time">10 minutes ago</div>
+                                </div>
+                            </div>
+                            <div class="notif-item">
+                                <div class="notif-icon bg-amber-100 text-amber-600"><i class="fas fa-exclamation-triangle"></i></div>
+                                <div>
+                                    <div class="notif-title">Low stock: Steel Pipes (25mm)</div>
+                                    <div class="notif-desc">Only 5 units remaining</div>
+                                    <div class="notif-time">42 minutes ago</div>
+                                </div>
+                            </div>
+                            <div class="notif-item">
+                                <div class="notif-icon bg-emerald-100 text-emerald-700"><i class="fas fa-truck"></i></div>
+                                <div>
+                                    <div class="notif-title">Purchase order #PO-2041 delivered</div>
+                                    <div class="notif-desc">142 units received at Warehouse A</div>
+                                    <div class="notif-time">1 hour ago</div>
+                                </div>
+                            </div>
+                            <div class="notif-item">
+                                <div class="notif-icon bg-indigo-100 text-indigo-700"><i class="fas fa-receipt"></i></div>
+                                <div>
+                                    <div class="notif-title">New sales order #SO-3187</div>
+                                    <div class="notif-desc">Placed by customer Ramesh Traders</div>
+                                    <div class="notif-time">2 hours ago</div>
+                                </div>
+                            </div>
+                            <div class="notif-item">
+                                <div class="notif-icon bg-[#7288AE]/15 text-[#4B5694]"><i class="fas fa-file-invoice"></i></div>
+                                <div>
+                                    <div class="notif-title">Pending purchase order #PO-2045</div>
+                                    <div class="notif-desc">Awaiting supplier confirmation</div>
+                                    <div class="notif-time">5 hours ago</div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="px-4 py-2.5 border-t border-[#4B5694]/15 text-center">
+                            <a href="#" class="text-xs font-medium text-[#111844] hover:underline">View all notifications</a>
+                        </div>
+                    </div>
+                </div>
+                <div class="relative">
+                    <button id="user-menu-btn"
+                        class="flex items-center gap-2 px-3 py-1.5 rounded-lg hover:bg-[#4B5694]/10 transition-colors">
+                        <div
+                            class="w-7 h-7 rounded-full bg-[#111844] flex items-center justify-center text-[#FAFAFA] text-xs font-bold">
+                            AD</div>
+                        <span class="text-xs font-medium text-[#111844] hidden sm:block">Admin</span>
+                        <i class="fas fa-chevron-down text-[10px] text-[#4B5694]"></i>
+                    </button>
+                    <div id="user-menu"
+                        class="hidden absolute right-0 top-full mt-1 w-44 bg-[#FFFCFC] border border-[#4B5694]/20 rounded-xl shadow-lg py-1 z-50">
+                        <a href="/profile.html"
+                            class="flex items-center gap-2 px-4 py-2 text-xs text-[#111844] hover:bg-[#7288AE]/10 transition-colors">
+                            <i class="fas fa-user-circle w-4"></i> My Profile
+                        </a>
+                        <div class="border-t border-[#4B5694]/10 my-1"></div>
+                        <a href="/login.html" id="logout-btn"
+                            class="flex items-center gap-2 px-4 py-2 text-xs text-red-600 hover:bg-red-50 transition-colors">
+                            <i class="fas fa-sign-out-alt w-4"></i> Logout
+                        </a>
+                    </div>
+                </div>
+            </div>
+        </header>
+
+        <main class="flex-1 p-5 space-y-5">
+
+            <!-- ============ Top KPI Widgets ============ -->
+            <div class="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-4 xl:grid-cols-6 gap-3">
+
+                <!-- Total Products -->
+                <div class="widget-card">
+                    <div>
+                        <div class="widget-value">1,248</div>
+                        <div class="widget-label">Total Products</div>
+                    </div>
+                    <div class="widget-icon bg-[#111844]/10 text-[#111844]"><i class="fas fa-box"></i></div>
+                </div>
+
+                <!-- Total Suppliers -->
+                <div class="widget-card">
+                    <div>
+                        <div class="widget-value">86</div>
+                        <div class="widget-label">Total Suppliers</div>
+                    </div>
+                    <div class="widget-icon bg-[#4B5694]/10 text-[#4B5694]"><i class="fas fa-truck-loading"></i></div>
+                </div>
+
+                <!-- Total Customers -->
+                <div class="widget-card">
+                    <div>
+                        <div class="widget-value">3,512</div>
+                        <div class="widget-label">Total Customers</div>
+                    </div>
+                    <div class="widget-icon bg-[#7288AE]/15 text-[#4B5694]"><i class="fas fa-users"></i></div>
+                </div>
+
+                <!-- Total Inventory Value -->
+                <div class="widget-card">
+                    <div>
+                        <div class="widget-value">₹18.4L</div>
+                        <div class="widget-label">Inventory Value</div>
+                    </div>
+                    <div class="widget-icon bg-emerald-100 text-emerald-700"><i class="fas fa-warehouse"></i></div>
+                </div>
+
+                <!-- Today's Inward Stock -->
+                <div class="widget-card">
+                    <div>
+                        <div class="widget-value">142</div>
+                        <div class="widget-label">Today's Inward Stock</div>
+                        <div class="widget-trend bg-emerald-100 text-emerald-700"><i class="fas fa-arrow-down"></i> +12 units</div>
+                    </div>
+                    <div class="widget-icon bg-emerald-100 text-emerald-700"><i class="fas fa-dolly"></i></div>
+                </div>
+
+                <!-- Today's Outward Stock -->
+                <div class="widget-card">
+                    <div>
+                        <div class="widget-value">97</div>
+                        <div class="widget-label">Today's Outward Stock</div>
+                        <div class="widget-trend bg-amber-100 text-amber-700"><i class="fas fa-arrow-up"></i> +5 units</div>
+                    </div>
+                    <div class="widget-icon bg-amber-100 text-amber-700"><i class="fas fa-shipping-fast"></i></div>
+                </div>
+
+                <!-- Pending Purchase Orders -->
+                <div class="widget-card">
+                    <div>
+                        <div class="widget-value">14</div>
+                        <div class="widget-label">Pending Purchase Orders</div>
+                    </div>
+                    <div class="widget-icon bg-purple-100 text-purple-700"><i class="fas fa-file-invoice"></i></div>
+                </div>
+
+                <!-- Pending Sales Orders -->
+                <div class="widget-card">
+                    <div>
+                        <div class="widget-value">27</div>
+                        <div class="widget-label">Pending Sales Orders</div>
+                    </div>
+                    <div class="widget-icon bg-indigo-100 text-indigo-700"><i class="fas fa-receipt"></i></div>
+                </div>
+
+                <!-- Low Stock Alerts -->
+                <div class="widget-card">
+                    <div>
+                        <div class="widget-value">9</div>
+                        <div class="widget-label">Low Stock Alerts</div>
+                    </div>
+                    <div class="widget-icon bg-amber-100 text-amber-700"><i class="fas fa-exclamation-triangle"></i></div>
+                </div>
+
+                <!-- Out of Stock Alerts -->
+                <div class="widget-card">
+                    <div>
+                        <div class="widget-value">4</div>
+                        <div class="widget-label">Out of Stock Alerts</div>
+                    </div>
+                    <div class="widget-icon bg-red-100 text-red-700"><i class="fas fa-times-circle"></i></div>
+                </div>
+
+                <!-- Revenue Summary -->
+                <div class="widget-card">
+                    <div>
+                        <div class="widget-value">₹6.2L</div>
+                        <div class="widget-label">Revenue (This Month)</div>
+                        <div class="widget-trend bg-emerald-100 text-emerald-700"><i class="fas fa-arrow-up"></i> 8.4%</div>
+                    </div>
+                    <div class="widget-icon bg-emerald-100 text-emerald-700"><i class="fas fa-rupee-sign"></i></div>
+                </div>
+
+                <!-- Expense Summary -->
+                <div class="widget-card">
+                    <div>
+                        <div class="widget-value">₹2.8L</div>
+                        <div class="widget-label">Expenses (This Month)</div>
+                        <div class="widget-trend bg-red-100 text-red-700"><i class="fas fa-arrow-up"></i> 3.1%</div>
+                    </div>
+                    <div class="widget-icon bg-red-100 text-red-700"><i class="fas fa-wallet"></i></div>
+                </div>
+            </div>
+
+            <!-- ============ Warehouse Utilization ============ -->
+            <div class="chart-card">
+                <div class="flex items-center justify-between mb-3">
+                    <div>
+                        <div class="section-title"><i class="fas fa-warehouse mr-1.5 text-[#4B5694]"></i>Warehouse Utilization</div>
+                        <div class="section-sub">Current capacity usage across warehouses</div>
+                    </div>
+                    <span class="text-xs font-semibold text-[#111844]">72% used</span>
+                </div>
+                <div class="w-full h-3 rounded-full bg-[#FAFAFA] overflow-hidden">
+                    <div class="h-full rounded-full bg-gradient-to-r from-[#4B5694] to-[#111844]" style="width:72%"></div>
+                </div>
+                <div class="grid grid-cols-2 sm:grid-cols-4 gap-3 mt-4 text-xs">
+                    <div class="flex items-center justify-between bg-[#FAFAFA]/60 rounded-lg px-3 py-2">
+                        <span class="text-[#7288AE]">Warehouse A</span>
+                        <span class="font-semibold text-[#111844]">85%</span>
+                    </div>
+                    <div class="flex items-center justify-between bg-[#FAFAFA]/60 rounded-lg px-3 py-2">
+                        <span class="text-[#7288AE]">Warehouse B</span>
+                        <span class="font-semibold text-[#111844]">64%</span>
+                    </div>
+                    <div class="flex items-center justify-between bg-[#FAFAFA]/60 rounded-lg px-3 py-2">
+                        <span class="text-[#7288AE]">Warehouse C</span>
+                        <span class="font-semibold text-[#111844]">58%</span>
+                    </div>
+                    <div class="flex items-center justify-between bg-[#FAFAFA]/60 rounded-lg px-3 py-2">
+                        <span class="text-[#7288AE]">Warehouse D</span>
+                        <span class="font-semibold text-[#111844]">81%</span>
+                    </div>
+                </div>
+            </div>
+
+            <!-- ============ Charts Row 1 ============ -->
+            <div class="grid grid-cols-1 lg:grid-cols-2 gap-4">
+                <div class="chart-card">
+                    <div class="flex items-center justify-between mb-3">
+                        <div>
+                            <div class="section-title"><i class="fas fa-chart-bar mr-1.5 text-[#4B5694]"></i>Monthly Purchase</div>
+                            <div class="section-sub">Purchase value over the last 6 months</div>
+                        </div>
+                    </div>
+                    <canvas id="chartPurchase" height="180"></canvas>
+                </div>
+
+                <div class="chart-card">
+                    <div class="flex items-center justify-between mb-3">
+                        <div>
+                            <div class="section-title"><i class="fas fa-chart-line mr-1.5 text-[#4B5694]"></i>Monthly Sales</div>
+                            <div class="section-sub">Sales value over the last 6 months</div>
+                        </div>
+                    </div>
+                    <canvas id="chartSales" height="180"></canvas>
+                </div>
+            </div>
+
+            <!-- ============ Charts Row 2 ============ -->
+            <div class="grid grid-cols-1 lg:grid-cols-2 gap-4">
+                <div class="chart-card">
+                    <div class="flex items-center justify-between mb-3">
+                        <div>
+                            <div class="section-title"><i class="fas fa-exchange-alt mr-1.5 text-[#4B5694]"></i>Inventory Movement</div>
+                            <div class="section-sub">Inward vs outward stock (last 7 days)</div>
+                        </div>
+                    </div>
+                    <canvas id="chartMovement" height="140"></canvas>
+                </div>
+
+                <div class="chart-card">
+                    <div class="flex items-center justify-between mb-3">
+                        <div>
+                            <div class="section-title"><i class="fas fa-fire mr-1.5 text-[#4B5694]"></i>Top Selling Products</div>
+                            <div class="section-sub">Units sold this month</div>
+                        </div>
+                    </div>
+                    <canvas id="chartTopProducts" height="140"></canvas>
+                </div>
+            </div>
+
+            <!-- ============ Alerts Row ============ -->
+            <div class="grid grid-cols-1 lg:grid-cols-2 gap-4">
+                <div class="chart-card">
+                    <div class="section-title mb-3"><i class="fas fa-exclamation-triangle mr-1.5 text-amber-600"></i>Low Stock Alerts</div>
+                    <div class="space-y-1.5">
+                        <div class="alert-row bg-amber-50">
+                            <span class="font-medium text-[#111844]">Steel Pipes (25mm)</span>
+                            <span class="text-amber-700 font-semibold">5 left</span>
+                        </div>
+                        <div class="alert-row bg-amber-50">
+                            <span class="font-medium text-[#111844]">Industrial Bearings</span>
+                            <span class="text-amber-700 font-semibold">3 left</span>
+                        </div>
+                        <div class="alert-row bg-amber-50">
+                            <span class="font-medium text-[#111844]">Packaging Cartons (L)</span>
+                            <span class="text-amber-700 font-semibold">8 left</span>
+                        </div>
+                        <div class="alert-row bg-amber-50">
+                            <span class="font-medium text-[#111844]">Hydraulic Hoses</span>
+                            <span class="text-amber-700 font-semibold">6 left</span>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="chart-card">
+                    <div class="section-title mb-3"><i class="fas fa-times-circle mr-1.5 text-red-600"></i>Out of Stock Alerts</div>
+                    <div class="space-y-1.5">
+                        <div class="alert-row bg-red-50">
+                            <span class="font-medium text-[#111844]">Aluminium Sheets (4mm)</span>
+                            <span class="text-red-600 font-semibold">0 in stock</span>
+                        </div>
+                        <div class="alert-row bg-red-50">
+                            <span class="font-medium text-[#111844]">Motor Coupling Set</span>
+                            <span class="text-red-600 font-semibold">0 in stock</span>
+                        </div>
+                        <div class="alert-row bg-red-50">
+                            <span class="font-medium text-[#111844]">Safety Gloves (XL)</span>
+                            <span class="text-red-600 font-semibold">0 in stock</span>
+                        </div>
+                        <div class="alert-row bg-red-50">
+                            <span class="font-medium text-[#111844]">Conveyor Belt Roll</span>
+                            <span class="text-red-600 font-semibold">0 in stock</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+        </main>
+    </div>
+
+    <!-- Toast Container -->
+    <div id="toast-container" class="fixed bottom-5 right-5 z-[400] space-y-2"></div>
+
+    <!-- <script src="/js/auth.js"></script> -->
+
+    <script>
+        // Initialize auth and display
+        (async function init() {
+            await requireAuth();
+            const admin = getAdminInfo();
+            const adminNameEl = document.getElementById('adminName');
+            const adminEmailEl = document.getElementById('adminEmail');
+            if (adminNameEl) adminNameEl.textContent = admin.name || 'Admin';
+            if (adminEmailEl) adminEmailEl.textContent = admin.email || 'admin@supplymanager.com';
+        })();
+
+        // Logout handler
+        const logoutBtn = document.getElementById('logout-btn');
+        if (logoutBtn) {
+            logoutBtn.addEventListener('click', async (e) => {
+                e.preventDefault();
+                await logout();
+            });
+        }
+
+// Sidebar toggle functionality with chevron rotation
+let isCollapsed = false;
+const sidebar = document.getElementById('sidebar');
+const mainWrapper = document.getElementById('main-wrapper');
+const sidebarToggle = document.getElementById('sidebar-toggle');
+const overlay = document.getElementById('sidebar-overlay');
+
+function updateChevron() {
+    const chevronIcon = sidebarToggle?.querySelector('i');
+    if (!chevronIcon) return;
+
+    if (isCollapsed) {
+        chevronIcon.classList.remove('fa-chevron-right');
+        chevronIcon.classList.add('fa-chevron-leftt');
+    } else {
+        chevronIcon.classList.remove('fa-chevron-right');
+        chevronIcon.classList.add('fa-chevron-leftt');
+    }
+}
+
+sidebarToggle?.addEventListener('click', () => {
+    if (window.innerWidth < 1024) {
+        sidebar.classList.toggle('sidebar-open');
+        overlay?.classList.toggle('hidden');
+        updateChevron();
+    } else {
+        isCollapsed = !isCollapsed;
+        if (isCollapsed) {
+            sidebar.classList.add('sidebar-collapsed');
+            mainWrapper.classList.add('main-expanded');
+            mainWrapper.style.marginLeft = '68px';
+        } else {
+            sidebar.classList.remove('sidebar-collapsed');
+            mainWrapper.classList.remove('main-expanded');
+            mainWrapper.style.marginLeft = '';
+        }
+        updateChevron();
+    }
+});
+
+overlay?.addEventListener('click', () => {
+    sidebar?.classList.remove('sidebar-open');
+    overlay.classList.add('hidden');
+    updateChevron();
+});
+
+// Initialize chevron on page load
+updateChevron();
+
+// Update chevron on window resize
+window.addEventListener('resize', () => {
+    updateChevron();
+    if (window.innerWidth >= 1024 && sidebar.classList.contains('sidebar-open')) {
+        sidebar.classList.remove('sidebar-open');
+        overlay?.classList.add('hidden');
+    }
+});
+
+        overlay?.addEventListener('click', () => {
+            sidebar?.classList.remove('sidebar-open');
+            overlay.classList.add('hidden');
+        });
+
+        const userBtn = document.getElementById('user-menu-btn');
+        const userMenu = document.getElementById('user-menu');
+        userBtn?.addEventListener('click', (e) => {
+            e.stopPropagation();
+            userMenu.classList.toggle('hidden');
+        });
+
+        const notifBtn = document.getElementById('notif-btn');
+        const notifMenu = document.getElementById('notif-menu');
+        notifBtn?.addEventListener('click', (e) => {
+            e.stopPropagation();
+            notifMenu.classList.toggle('hidden');
+            userMenu?.classList.add('hidden');
+        });
+
+        document.addEventListener('click', (e) => {
+            if (!userBtn?.contains(e.target) && !userMenu?.contains(e.target))
+                userMenu?.classList.add('hidden');
+            if (!notifBtn?.contains(e.target) && !notifMenu?.contains(e.target))
+                notifMenu?.classList.add('hidden');
+        });
+
+        function setActiveNav() {
+            const currentPath = window.location.pathname;
+            document.querySelectorAll('[data-nav-link]').forEach(link => {
+                link.classList.remove('nav-active');
+                const linkPath = link.getAttribute('href');
+                if (linkPath === currentPath || ((currentPath === '/' || currentPath.includes('index')) && linkPath.includes('index'))) {
+                    link.classList.add('nav-active');
+                }
+            });
+        }
+        setActiveNav();
+
+        // ============ Charts ============
+        const navy = '#111844';
+        const slate = '#4B5694';
+        const lavender = '#7288AE';
+        const cream = '#FAFAFA';
+        const gridColor = 'rgba(75, 86, 148, 0.12)';
+        const fontColor = '#7288AE';
+
+        Chart.defaults.font.family = "'Roboto', sans-serif";
+        Chart.defaults.font.size = 11;
+
+        const months = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun'];
+
+        // Monthly Purchase
+        new Chart(document.getElementById('chartPurchase'), {
+            type: 'bar',
+            data: {
+                labels: months,
+                datasets: [{
+                    label: 'Purchase (₹ in Lakhs)',
+                    data: [3.2, 4.1, 3.8, 4.6, 5.0, 4.4],
+                    backgroundColor: slate,
+                    borderRadius: 6,
+                    maxBarThickness: 36
+                }]
+            },
+            options: {
+                responsive: true,
+                plugins: { legend: { display: false } },
+                scales: {
+                    x: { grid: { display: false }, ticks: { color: fontColor } },
+                    y: { grid: { color: gridColor }, ticks: { color: fontColor } }
+                }
+            }
+        });
+
+        // Monthly Sales
+        new Chart(document.getElementById('chartSales'), {
+            type: 'line',
+            data: {
+                labels: months,
+                datasets: [{
+                    label: 'Sales (₹ in Lakhs)',
+                    data: [4.5, 5.0, 4.8, 5.6, 6.0, 6.2],
+                    borderColor: navy,
+                    backgroundColor: 'rgba(17, 24, 68, 0.10)',
+                    fill: true,
+                    tension: 0.35,
+                    pointBackgroundColor: navy,
+                    pointRadius: 4
+                }]
+            },
+            options: {
+                responsive: true,
+                plugins: { legend: { display: false } },
+                scales: {
+                    x: { grid: { display: false }, ticks: { color: fontColor } },
+                    y: { grid: { color: gridColor }, ticks: { color: fontColor } }
+                }
+            }
+        });
+
+        // Inventory Movement
+        new Chart(document.getElementById('chartMovement'), {
+            type: 'bar',
+            data: {
+                labels: ['Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat', 'Sun'],
+                datasets: [
+                    {
+                        label: 'Inward',
+                        data: [120, 95, 130, 110, 142, 80, 60],
+                        backgroundColor: '#10b981',
+                        borderRadius: 5,
+                        maxBarThickness: 22
+                    },
+                    {
+                        label: 'Outward',
+                        data: [90, 100, 85, 105, 97, 70, 55],
+                        backgroundColor: '#f59e0b',
+                        borderRadius: 5,
+                        maxBarThickness: 22
+                    }
+                ]
+            },
+            options: {
+                responsive: true,
+                plugins: {
+                    legend: {
+                        position: 'bottom',
+                        labels: { color: fontColor, boxWidth: 12, usePointStyle: true, pointStyle: 'circle' }
+                    }
+                },
+                scales: {
+                    x: { grid: { display: false }, ticks: { color: fontColor } },
+                    y: { grid: { color: gridColor }, ticks: { color: fontColor } }
+                }
+            }
+        });
+
+        // Top Selling Products
+        new Chart(document.getElementById('chartTopProducts'), {
+            type: 'doughnut',
+            data: {
+                labels: ['Steel Pipes', 'Bearings', 'Packaging Material', 'Industrial Tools', 'Others'],
+                datasets: [{
+                    data: [320, 260, 190, 140, 110],
+                    backgroundColor: [navy, slate, lavender, '#a78bfa', '#f0c987'],
+                    borderColor: cream,
+                    borderWidth: 3
+                }]
+            },
+            options: {
+                responsive: true,
+                cutout: '62%',
+                plugins: {
+                    legend: {
+                        position: 'bottom',
+                        labels: { color: fontColor, boxWidth: 12, usePointStyle: true, pointStyle: 'circle' }
+                    }
+                }
+            }
+        });
+
+        
+        // Sidebar Dropdown Toggle
+        document.querySelectorAll('.nav-group-header').forEach(header => {
+            header.addEventListener('click', function(e) {
+                e.stopPropagation();
+                const groupItems = this.nextElementSibling;
+                const chevron = this.querySelector('.fa-chevron-down');
+                
+                if (groupItems) {
+                    groupItems.classList.toggle('hidden');
+                    if (chevron) {
+                        chevron.style.transform = groupItems.classList.contains('hidden') ? 'rotate(0deg)' : 'rotate(180deg)';
+                    }
+                }
+            });
+        });
+
+        // Active menu highlighting based on current page
+        const currentPath = window.location.pathname;
+        document.querySelectorAll('.nav-item').forEach(item => {
+            const href = item.getAttribute('href');
+            if (href && currentPath.includes(href.replace('/', ''))) {
+                item.classList.add('nav-active');
+                item.classList.remove('text-[#111844]/70');
+                
+                const parentGroup = item.closest('.nav-group-items');
+                if (parentGroup) {
+                    parentGroup.classList.remove('hidden');
+                    const parentHeader = parentGroup.previousElementSibling;
+                    if (parentHeader) {
+                        parentHeader.classList.add('nav-active');
+                        const chevron = parentHeader.querySelector('.fa-chevron-down');
+                        if (chevron) chevron.style.transform = 'rotate(180deg)';
+                    }
+                }
+            }
+        });
+
+        const initializeChevron = () => {
+    const chevronIcon = sidebarToggle?.querySelector('i');
+    if (chevronIcon && window.innerWidth >= 1024) {
+        if (isCollapsed) {
+            chevronIcon.classList.remove('fa-chevron-left');
+            chevronIcon.classList.add('fa-chevron-right');
+        } else {
+            chevronIcon.classList.remove('fa-chevron-right');
+            chevronIcon.classList.add('fa-chevron-left');
+        }
+    }
+};
+
+// Also update chevron on window resize
+window.addEventListener('resize', () => {
+    const chevronIcon = sidebarToggle?.querySelector('i');
+    if (window.innerWidth < 1024) {
+        if (chevronIcon) {
+            chevronIcon.classList.remove('fa-chevron-right');
+            chevronIcon.classList.add('fa-chevron-left');
+        }
+    } else {
+        initializeChevron();
+    }
+});
+
+    </script>
+</body>
+
+</html>

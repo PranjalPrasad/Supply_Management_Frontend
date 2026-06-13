@@ -1,0 +1,739 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Warehouse Operations — Supply Management Admin</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script>
+    tailwind.config = {
+      theme: {
+        extend: {
+          colors: {
+            active: '#111844', border2: '#4B5694', bg: '#FAFAFA',
+            hover2: '#7288AE', card: '#FFFCFC', dark: '#1a2155'
+          }
+        }
+      }
+    }
+  </script>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+  <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@300;400;500;700&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="/pages/warehouse/warehouse.css" />
+</head>
+<body class="bg-[#ebe6e6] text-[#111844] min-h-screen">
+
+  <!-- SIDEBAR -->
+<aside id="sidebar" class="fixed top-0 left-0 h-full w-[260px] bg-[#FFFCFC] z-[100] flex flex-col transition-all duration-300 overflow-hidden shadow-lg">
+  <div class="flex items-center gap-3 px-5 h-16 border border-[#4B5694]/20 shadow-sm">
+    <div class="w-9 h-9 rounded-lg bg-[#111844] flex items-center justify-center text-[#FAFAFA] flex-shrink-0">
+      <i class="fas fa-cubes"></i>
+    </div>
+    <span class="sidebar-brand-text text-sm font-semibold text-[#111844] truncate">Supply Manager</span>
+  </div>
+  
+  <nav class="flex-1 overflow-y-auto py-3 px-2 space-y-0.5">
+    
+    <!-- 📊 DASHBOARD -->
+    <a href="/index.html" class="nav-item flex items-center gap-3 px-3 py-2.5 rounded-lg text-[#111844]/70 hover:bg-[#7288AE]/20 hover:text-[#111844] transition-colors duration-150 text-sm cursor-pointer border-b border-[#4B5694]/20 shadow-sm">
+      <span class="nav-icon text-base flex-shrink-0 w-5"><i class="fas fa-chart-pie"></i></span>
+      <span class="nav-label">Dashboard</span>
+    </a>
+
+    <!-- 📦 MASTER MANAGEMENT -->
+    <div class="nav-group">
+      <div class="nav-group-header flex items-center justify-between gap-3 px-3 py-2.5 rounded-lg text-[#111844]/70 hover:bg-[#7288AE]/20 hover:text-[#111844] transition-colors duration-150 text-sm cursor-pointer border-b border-[#4B5694]/20 shadow-sm">
+        <div class="flex items-center gap-3" >
+          <span class="nav-icon text-base flex-shrink-0 w-5"><i class="fas fa-database"></i></span>
+          <span class="nav-label">Master Management</span>
+        </div>
+        <i class="fas fa-chevron-down text-xs transition-transform duration-200"></i>
+      </div>
+      <div class="nav-group-items ml-7 space-y-0.5 mt-1 hidden">
+        <a href="/pages/Product/product.html" class="nav-item flex items-center gap-3 px-3 py-2 rounded-lg text-[#111844]/70 hover:bg-[#7288AE]/20 hover:text-[#111844] transition-colors duration-150 text-sm cursor-pointer border-b border-[#4B5694]/20 shadow-smr">
+          <span class="nav-icon text-sm flex-shrink-0 w-4"><i class="fas fa-box"></i></span>
+          <span class="nav-label">Products</span>
+        </a>
+        <a href="/pages/category/category.html" class="nav-item flex items-center gap-3 px-3 py-2 rounded-lg text-[#111844]/70 hover:bg-[#7288AE]/20 hover:text-[#111844] transition-colors duration-150 text-xs cursor-pointer">
+          <span class="nav-icon text-sm flex-shrink-0 w-4"><i class="fas fa-sitemap"></i></span>
+          <span class="nav-label">Categories</span>
+        </a>
+        <a href="/pages/suppliers/suppliers.html" class="nav-item flex items-center gap-3 px-3 py-2 rounded-lg text-[#111844]/70 hover:bg-[#7288AE]/20 hover:text-[#111844] transition-colors duration-150 text-xs cursor-pointer">
+          <span class="nav-icon text-sm flex-shrink-0 w-4"><i class="fas fa-truck-loading"></i></span>
+          <span class="nav-label">Suppliers</span>
+        </a>
+        <a href="/pages/customers/customers.html" class="nav-item flex items-center gap-3 px-3 py-2 rounded-lg text-[#111844]/70 hover:bg-[#7288AE]/20 hover:text-[#111844] transition-colors duration-150 text-xs cursor-pointer">
+          <span class="nav-icon text-sm flex-shrink-0 w-4"><i class="fas fa-users"></i></span>
+          <span class="nav-label">Customers</span>
+        </a>
+        <a href="/pages/warehouse/warehouse.html" class="nav-item flex items-center gap-3 px-3 py-2 rounded-lg text-[#111844]/70 hover:bg-[#7288AE]/20 hover:text-[#111844] transition-colors duration-150 text-xs cursor-pointer">
+          <span class="nav-icon text-sm flex-shrink-0 w-4"><i class="fas fa-warehouse"></i></span>
+          <span class="nav-label">Warehouses</span>
+        </a>
+        <a href="/pages/units/units.html" class="nav-item flex items-center gap-3 px-3 py-2 rounded-lg text-[#111844]/70 hover:bg-[#7288AE]/20 hover:text-[#111844] transition-colors duration-150 text-xs cursor-pointer">
+          <span class="nav-icon text-sm flex-shrink-0 w-4"><i class="fas fa-balance-scale"></i></span>
+          <span class="nav-label">Units</span>
+        </a>
+      </div>
+    </div>
+
+    <!-- 🛒 PURCHASE MANAGEMENT -->
+<a href="/purchase.html" class="nav-item flex items-center gap-3 px-3 py-2.5 rounded-lg text-[#111844]/70 hover:bg-[#7288AE]/20 hover:text-[#111844] transition-colors duration-150 text-sm cursor-pointer border-b border-[#4B5694]/20 shadow-sm">
+  <span class="nav-icon text-base flex-shrink-0 w-5"><i class="fas fa-shopping-cart"></i></span>
+  <span class="nav-label">PURCHASE MANAGEMENT</span>
+</a>
+
+
+    <!-- 🏭 INVENTORY MANAGEMENT -->
+<a href="/inventory.html" class="nav-item flex items-center gap-3 px-3 py-2.5 rounded-lg text-[#111844]/70 hover:bg-[#7288AE]/20 hover:text-[#111844] transition-colors duration-150 text-sm cursor-pointer border-b border-[#4B5694]/20 shadow-sm">
+  <span class="nav-icon text-base flex-shrink-0 w-5"><i class="fas fa-boxes-stacked"></i></span>
+  <span class="nav-label">Inventory Management</span>
+</a>
+
+    <!-- 🚚 WAREHOUSE OPERATIONS -->
+    <a href="/warehouse.html" class="nav-item flex items-center gap-3 px-3 py-2.5 rounded-lg text-sm cursor-pointer border-b border-[#4B5694]/20 shadow-sm nav-active">
+  <span class="nav-icon text-base flex-shrink-0 w-5"><i class="fas fa-warehouse"></i></span>
+  <span class="nav-label">Warehouse Management</span>
+</a>
+
+    <!-- 📝 SALES & DISPATCH -->
+    <div class="nav-group">
+      <div class="nav-group-header flex items-center justify-between gap-3 px-3 py-2.5 rounded-lg text-[#111844]/70 hover:bg-[#7288AE]/20 hover:text-[#111844] transition-colors duration-150 text-sm cursor-pointer border-b border-[#4B5694]/20 shadow-sm">
+        <div class="flex items-center gap-3">
+          <span class="nav-icon text-base flex-shrink-0 w-5"><i class="fas fa-truck"></i></span>
+          <span class="nav-label">Sales & Dispatch</span>
+        </div>
+        <i class="fas fa-chevron-down text-xs transition-transform duration-200"></i>
+      </div>
+      <div class="nav-group-items ml-7 space-y-0.5 mt-1 hidden">
+        <a href="/sales-orders.html" class="nav-item flex items-center gap-3 px-3 py-2 rounded-lg text-[#111844]/70 hover:bg-[#7288AE]/20 hover:text-[#111844] transition-colors duration-150 text-xs cursor-pointer">
+          <span class="nav-icon text-sm flex-shrink-0 w-4"><i class="fas fa-receipt"></i></span>
+          <span class="nav-label">Sales Orders</span>
+        </a>
+        <a href="/dispatch-planning.html" class="nav-item flex items-center gap-3 px-3 py-2 rounded-lg text-[#111844]/70 hover:bg-[#7288AE]/20 hover:text-[#111844] transition-colors duration-150 text-xs cursor-pointer">
+          <span class="nav-icon text-sm flex-shrink-0 w-4"><i class="fas fa-calendar-alt"></i></span>
+          <span class="nav-label">Dispatch Planning</span>
+        </a>
+        <a href="/delivery-challan.html" class="nav-item flex items-center gap-3 px-3 py-2 rounded-lg text-[#111844]/70 hover:bg-[#7288AE]/20 hover:text-[#111844] transition-colors duration-150 text-xs cursor-pointer">
+          <span class="nav-icon text-sm flex-shrink-0 w-4"><i class="fas fa-file-alt"></i></span>
+          <span class="nav-label">Delivery Challan</span>
+        </a>
+        <a href="/invoices.html" class="nav-item flex items-center gap-3 px-3 py-2 rounded-lg text-[#111844]/70 hover:bg-[#7288AE]/20 hover:text-[#111844] transition-colors duration-150 text-xs cursor-pointer">
+          <span class="nav-icon text-sm flex-shrink-0 w-4"><i class="fas fa-file-invoice-dollar"></i></span>
+          <span class="nav-label">Invoices</span>
+        </a>
+        <a href="/shipment-tracking.html" class="nav-item flex items-center gap-3 px-3 py-2 rounded-lg text-[#111844]/70 hover:bg-[#7288AE]/20 hover:text-[#111844] transition-colors duration-150 text-xs cursor-pointer">
+          <span class="nav-icon text-sm flex-shrink-0 w-4"><i class="fas fa-location-dot"></i></span>
+          <span class="nav-label">Shipment Tracking</span>
+        </a>
+      </div>
+    </div>
+
+    <!-- ↩️ RETURNS MANAGEMENT -->
+<a href="/inventory.html" class="nav-item flex items-center gap-3 px-3 py-2.5 rounded-lg text-[#111844]/70 hover:bg-[#7288AE]/20 hover:text-[#111844] transition-colors duration-150 text-sm cursor-pointer border-b border-[#4B5694]/20 shadow-sm">
+          <span class="nav-icon text-base flex-shrink-0 w-5"><i class="fas fa-rotate-left"></i></span>
+  <span class="nav-label">RETURNS MANAGEMENT</span>
+</a>
+
+   
+
+    <!-- 💰 FINANCE & BILLING -->
+    <div class="nav-group">
+      <div class="nav-group-header flex items-center justify-between gap-3 px-3 py-2.5 rounded-lg text-[#111844]/70 hover:bg-[#7288AE]/20 hover:text-[#111844] transition-colors duration-150 text-sm cursor-pointer border-b border-[#4B5694]/20 shadow-sm">
+        <div class="flex items-center gap-3">
+          <span class="nav-icon text-base flex-shrink-0 w-5"><i class="fas fa-coins"></i></span>
+          <span class="nav-label">Finance & Billing</span>
+        </div>
+        <i class="fas fa-chevron-down text-xs transition-transform duration-200"></i>
+      </div>
+      <div class="nav-group-items ml-7 space-y-0.5 mt-1 hidden">
+        <a href="/accounts-receivable.html" class="nav-item flex items-center gap-3 px-3 py-2 rounded-lg text-[#111844]/70 hover:bg-[#7288AE]/20 hover:text-[#111844] transition-colors duration-150 text-xs cursor-pointer">
+          <span class="nav-icon text-sm flex-shrink-0 w-4"><i class="fas fa-hand-holding-usd"></i></span>
+          <span class="nav-label">Receivables</span>
+        </a>
+        <a href="/accounts-payable.html" class="nav-item flex items-center gap-3 px-3 py-2 rounded-lg text-[#111844]/70 hover:bg-[#7288AE]/20 hover:text-[#111844] transition-colors duration-150 text-xs cursor-pointer">
+          <span class="nav-icon text-sm flex-shrink-0 w-4"><i class="fas fa-money-bill-wave"></i></span>
+          <span class="nav-label">Payables</span>
+        </a>
+        <a href="/expenses.html" class="nav-item flex items-center gap-3 px-3 py-2 rounded-lg text-[#111844]/70 hover:bg-[#7288AE]/20 hover:text-[#111844] transition-colors duration-150 text-xs cursor-pointer">
+          <span class="nav-icon text-sm flex-shrink-0 w-4"><i class="fas fa-chart-line"></i></span>
+          <span class="nav-label">Expenses</span>
+        </a>
+        <a href="/gst-management.html" class="nav-item flex items-center gap-3 px-3 py-2 rounded-lg text-[#111844]/70 hover:bg-[#7288AE]/20 hover:text-[#111844] transition-colors duration-150 text-xs cursor-pointer">
+          <span class="nav-icon text-sm flex-shrink-0 w-4"><i class="fas fa-percent"></i></span>
+          <span class="nav-label">GST Management</span>
+        </a>
+        <a href="/profitability.html" class="nav-item flex items-center gap-3 px-3 py-2 rounded-lg text-[#111844]/70 hover:bg-[#7288AE]/20 hover:text-[#111844] transition-colors duration-150 text-xs cursor-pointer">
+          <span class="nav-icon text-sm flex-shrink-0 w-4"><i class="fas fa-chart-simple"></i></span>
+          <span class="nav-label">Profitability</span>
+        </a>
+      </div>
+    </div>
+
+    <!-- 📈 REPORTS & ANALYTICS -->
+<a href="/inventory.html" class="nav-item flex items-center gap-3 px-3 py-2.5 rounded-lg text-[#111844]/70 hover:bg-[#7288AE]/20 hover:text-[#111844] transition-colors duration-150 text-sm cursor-pointer border-b border-[#4B5694]/20 shadow-sm">
+          <span class="nav-icon text-base flex-shrink-0 w-5"><i class="fas fa-chart-bar"></i></span>
+  <span class="nav-label">REPORTS & ANALYTICS</span>
+</a>
+
+   
+
+    <!-- 👥 USER MANAGEMENT -->
+    <div class="nav-group">
+      <div class="nav-group-header flex items-center justify-between gap-3 px-3 py-2.5 rounded-lg text-[#111844]/70 hover:bg-[#7288AE]/20 hover:text-[#111844] transition-colors duration-150 text-sm cursor-pointer border-b border-[#4B5694]/20 shadow-sm">
+        <div class="flex items-center gap-3">
+          <span class="nav-icon text-base flex-shrink-0 w-5"><i class="fas fa-users-gear"></i></span>
+          <span class="nav-label">User Management</span>
+        </div>
+        <i class="fas fa-chevron-down text-xs transition-transform duration-200"></i>
+      </div>
+      <div class="nav-group-items ml-7 space-y-0.5 mt-1 hidden">
+        <a href="/users.html" class="nav-item flex items-center gap-3 px-3 py-2 rounded-lg text-[#111844]/70 hover:bg-[#7288AE]/20 hover:text-[#111844] transition-colors duration-150 text-xs cursor-pointer">
+          <span class="nav-icon text-sm flex-shrink-0 w-4"><i class="fas fa-user"></i></span>
+          <span class="nav-label">Users</span>
+        </a>
+        <a href="/roles.html" class="nav-item flex items-center gap-3 px-3 py-2 rounded-lg text-[#111844]/70 hover:bg-[#7288AE]/20 hover:text-[#111844] transition-colors duration-150 text-xs cursor-pointer">
+          <span class="nav-icon text-sm flex-shrink-0 w-4"><i class="fas fa-lock"></i></span>
+          <span class="nav-label">Roles & Permissions</span>
+        </a>
+      </div>
+    </div>
+
+  </nav>
+
+  <!-- User Footer -->
+  <div class="px-4 py-3 border-t border-[#4B5694]/20 bg-[#FAFAFA]/30">
+    <div class="flex items-center gap-3">
+      <div class="w-8 h-8 rounded-full bg-[#111844] flex items-center justify-center text-[#FAFAFA] text-xs font-bold flex-shrink-0">AD</div>
+      <div class="sidebar-brand-text min-w-0">
+        <div class="text-[#111844] text-xs font-medium truncate">Admin</div>
+        <div class="text-[#7288AE] text-xs truncate">admin@supplymanager.com</div>
+      </div>
+    </div>
+  </div>
+</aside>
+
+
+  <div id="sidebar-overlay" class="hidden fixed inset-0 bg-[#111844]/50 z-[90] lg:hidden"></div>
+
+  <!-- MAIN -->
+  <div id="main-wrapper" class="ml-[260px] flex flex-col min-h-screen transition-all duration-300">
+
+    <!-- HEADER -->
+    <header class="sticky top-0 z-[200] h-16 bg-[#FFFCFC] border-b border-[#4B5694]/20 flex items-center justify-between px-5 shadow-sm">
+      <div class="flex items-center gap-4">
+        <button id="sidebar-toggle" class="w-9 h-9 flex items-center justify-center rounded-lg text-[#4B5694] hover:bg-[#4B5694]/10 transition-colors">
+          <i class="fas fa-bars text-lg"></i>
+        </button>
+        <div>
+          <h1 class="text-sm font-semibold text-[#111844]">Warehouse Operations</h1>
+          <p class="text-xs text-[#7288AE]">Putaway · Rack &amp; Bin · Picking · Packing · Cycle Count</p>
+        </div>
+      </div>
+      <div class="flex items-center gap-2">
+        <div class="relative">
+          <button id="notif-btn" class="w-9 h-9 flex items-center justify-center rounded-lg text-[#4B5694] hover:bg-[#4B5694]/10 transition-colors relative">
+            <i class="fas fa-bell text-base"></i>
+            <span class="notif-badge"></span>
+          </button>
+          <div id="notif-menu" class="hidden absolute right-0 top-full mt-1 w-80 bg-[#FFFCFC] border border-[#4B5694]/20 rounded-xl shadow-lg z-50 overflow-hidden">
+            <div class="flex items-center justify-between px-4 py-3 border-b border-[#4B5694]/15">
+              <span class="text-xs font-semibold text-[#111844]">Notifications</span>
+              <span class="text-[10px] px-2 py-0.5 rounded-full bg-[#111844]/10 text-[#111844] font-medium">3 new</span>
+            </div>
+            <div class="max-h-64 overflow-y-auto divide-y divide-[#4B5694]/10">
+              <div class="notif-item">
+                <div class="notif-icon bg-amber-100 text-amber-600"><i class="fas fa-boxes-stacked"></i></div>
+                <div>
+                  <div class="notif-title">Putaway pending: PO-2041</div>
+                  <div class="notif-desc">142 units awaiting rack assignment</div>
+                  <div class="notif-time">15 minutes ago</div>
+                </div>
+              </div>
+              <div class="notif-item">
+                <div class="notif-icon bg-indigo-100 text-indigo-600"><i class="fas fa-list-check"></i></div>
+                <div>
+                  <div class="notif-title">Pick list #PL-0089 ready</div>
+                  <div class="notif-desc">Assigned to picker Ravi Kumar</div>
+                  <div class="notif-time">40 minutes ago</div>
+                </div>
+              </div>
+              <div class="notif-item">
+                <div class="notif-icon bg-red-100 text-red-600"><i class="fas fa-triangle-exclamation"></i></div>
+                <div>
+                  <div class="notif-title">Cycle count discrepancy</div>
+                  <div class="notif-desc">Bin B-204 shows -12 variance</div>
+                  <div class="notif-time">2 hours ago</div>
+                </div>
+              </div>
+            </div>
+            <div class="px-4 py-2.5 border-t border-[#4B5694]/15 text-center">
+              <a href="#" class="text-xs font-medium text-[#111844] hover:underline">View all notifications</a>
+            </div>
+          </div>
+        </div>
+        <div class="relative">
+          <button id="user-menu-btn" class="flex items-center gap-2 px-3 py-1.5 rounded-lg hover:bg-[#4B5694]/10 transition-colors">
+            <div class="w-7 h-7 rounded-full bg-[#111844] flex items-center justify-center text-[#FAFAFA] text-xs font-bold">AD</div>
+            <span class="text-xs font-medium text-[#111844] hidden sm:block">Admin</span>
+            <i class="fas fa-chevron-down text-[10px] text-[#4B5694]"></i>
+          </button>
+          <div id="user-menu" class="hidden absolute right-0 top-full mt-1 w-44 bg-[#FFFCFC] border border-[#4B5694]/20 rounded-xl shadow-lg py-1 z-50">
+            <a href="/profile.html" class="flex items-center gap-2 px-4 py-2 text-xs text-[#111844] hover:bg-[#7288AE]/10 transition-colors"><i class="fas fa-user-circle w-4"></i> My Profile</a>
+            <div class="border-t border-[#4B5694]/10 my-1"></div>
+            <a href="/login.html" class="flex items-center gap-2 px-4 py-2 text-xs text-red-600 hover:bg-red-50 transition-colors"><i class="fas fa-sign-out-alt w-4"></i> Logout</a>
+          </div>
+        </div>
+      </div>
+    </header>
+
+    <!-- MAIN CONTENT -->
+    <main class="flex-1 p-5 space-y-4">
+
+      <!-- Module Tabs -->
+      <div class="flex flex-wrap gap-1 bg-[#FFFCFC] border border-[#4B5694]/20 rounded-xl p-1.5 shadow-sm" id="module-tabs">
+        <button class="module-tab active" data-module="putaway"><i class="fas fa-boxes-stacked mr-1.5"></i>Putaway</button>
+        <button class="module-tab" data-module="rack"><i class="fas fa-layer-group mr-1.5"></i>Rack &amp; Bin</button>
+        <button class="module-tab" data-module="picking"><i class="fas fa-hand-pointer mr-1.5"></i>Picking</button>
+        <button class="module-tab" data-module="packing"><i class="fas fa-box-open mr-1.5"></i>Packing</button>
+        <button class="module-tab" data-module="cycle"><i class="fas fa-rotate mr-1.5"></i>Cycle Count</button>
+      </div>
+
+      <!-- ======== PUTAWAY MODULE ======== -->
+      <div id="module-putaway" class="module-content space-y-4">
+        <!-- Stats -->
+        <div class="grid grid-cols-2 sm:grid-cols-4 gap-3">
+          <div class="widget-card">
+            <div><div class="widget-value">18</div><div class="widget-label">Pending Putaways</div></div>
+            <div class="widget-icon bg-amber-100 text-amber-700"><i class="fas fa-clock"></i></div>
+          </div>
+          <div class="widget-card">
+            <div><div class="widget-value">142</div><div class="widget-label">Units to Place</div></div>
+            <div class="widget-icon bg-[#111844]/10 text-[#111844]"><i class="fas fa-boxes-stacked"></i></div>
+          </div>
+          <div class="widget-card">
+            <div><div class="widget-value">6</div><div class="widget-label">Completed Today</div></div>
+            <div class="widget-icon bg-emerald-100 text-emerald-700"><i class="fas fa-circle-check"></i></div>
+          </div>
+          <div class="widget-card">
+            <div><div class="widget-value">3</div><div class="widget-label">In Progress</div></div>
+            <div class="widget-icon bg-indigo-100 text-indigo-700"><i class="fas fa-spinner"></i></div>
+          </div>
+        </div>
+
+        <!-- Putaway sub-tabs -->
+        <div class="flex gap-2">
+          <button class="sub-tab active" data-subtab="putaway-list" data-group="putaway">Putaway List</button>
+          <button class="sub-tab" data-subtab="product-allocation" data-group="putaway">Product Allocation</button>
+        </div>
+
+        <!-- Putaway List -->
+        <div id="subtab-putaway-list" class="space-y-3">
+          <div class="flex flex-wrap items-center justify-between gap-3">
+            <div class="flex flex-wrap gap-2 flex-1 min-w-[240px]">
+              <input id="putaway-search" type="text" placeholder="Search by PO, product or SKU…" class="filter-input flex-1 min-w-[200px]" />
+              <select id="putaway-status-filter" class="filter-input">
+                <option value="">All Status</option>
+                <option>Pending</option>
+                <option>In Progress</option>
+                <option>Completed</option>
+              </select>
+            </div>
+            <button class="btn-primary" id="btn-new-putaway"><i class="fas fa-plus mr-1.5"></i>New Putaway</button>
+          </div>
+          <div class="card overflow-hidden">
+            <div class="overflow-x-auto">
+              <table class="w-full text-xs">
+                <thead>
+                  <tr class="bg-[#FAFAFA] border-b border-[#4B5694]/15">
+                    <th class="th">#</th><th class="th">PO Reference</th><th class="th">Product</th>
+                    <th class="th">SKU</th><th class="th">Qty</th><th class="th">Warehouse</th>
+                    <th class="th">Assigned Rack</th><th class="th">Status</th><th class="th">Actions</th>
+                  </tr>
+                </thead>
+                <tbody id="putaway-tbody"></tbody>
+              </table>
+            </div>
+            <div id="putaway-pagination" class="pagination-bar"></div>
+          </div>
+        </div>
+
+        <!-- Product Allocation -->
+        <div id="subtab-product-allocation" class="hidden space-y-3">
+          <div class="flex flex-wrap items-center justify-between gap-3">
+            <input type="text" placeholder="Search product or SKU…" class="filter-input flex-1 min-w-[200px]" id="alloc-search" />
+            <button class="btn-primary" id="btn-allocate"><i class="fas fa-sitemap mr-1.5"></i>Allocate Product</button>
+          </div>
+          <div class="card overflow-hidden">
+            <div class="overflow-x-auto">
+              <table class="w-full text-xs">
+                <thead>
+                  <tr class="bg-[#FAFAFA] border-b border-[#4B5694]/15">
+                    <th class="th">#</th><th class="th">Product</th><th class="th">SKU</th>
+                    <th class="th">Category</th><th class="th">Allocated Rack</th><th class="th">Allocated Bin</th>
+                    <th class="th">Qty Allocated</th><th class="th">Actions</th>
+                  </tr>
+                </thead>
+                <tbody id="allocation-tbody"></tbody>
+              </table>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- ======== RACK & BIN MODULE ======== -->
+      <div id="module-rack" class="module-content hidden space-y-4">
+        <div class="grid grid-cols-2 sm:grid-cols-4 gap-3">
+          <div class="widget-card">
+            <div><div class="widget-value">24</div><div class="widget-label">Total Racks</div></div>
+            <div class="widget-icon bg-[#111844]/10 text-[#111844]"><i class="fas fa-layer-group"></i></div>
+          </div>
+          <div class="widget-card">
+            <div><div class="widget-value">192</div><div class="widget-label">Total Bins</div></div>
+            <div class="widget-icon bg-indigo-100 text-indigo-700"><i class="fas fa-grip-dots"></i></div>
+          </div>
+          <div class="widget-card">
+            <div><div class="widget-value">68%</div><div class="widget-label">Occupancy Rate</div></div>
+            <div class="widget-icon bg-amber-100 text-amber-700"><i class="fas fa-chart-pie"></i></div>
+          </div>
+          <div class="widget-card">
+            <div><div class="widget-value">14</div><div class="widget-label">Empty Bins</div></div>
+            <div class="widget-icon bg-emerald-100 text-emerald-700"><i class="fas fa-square-dashed"></i></div>
+          </div>
+        </div>
+
+        <div class="flex gap-2">
+          <button class="sub-tab active" data-subtab="rack-list" data-group="rack">Rack List</button>
+          <button class="sub-tab" data-subtab="bin-list" data-group="rack">Bin List</button>
+        </div>
+
+        <!-- Rack List -->
+        <div id="subtab-rack-list" class="space-y-3">
+          <div class="flex flex-wrap items-center justify-between gap-3">
+            <input type="text" placeholder="Search rack…" class="filter-input flex-1 min-w-[200px]" id="rack-search" />
+            <button class="btn-primary" id="btn-add-rack"><i class="fas fa-plus mr-1.5"></i>Add Rack</button>
+          </div>
+          <div class="card overflow-hidden">
+            <div class="overflow-x-auto">
+              <table class="w-full text-xs">
+                <thead>
+                  <tr class="bg-[#FAFAFA] border-b border-[#4B5694]/15">
+                    <th class="th">#</th><th class="th">Rack ID</th><th class="th">Rack Name</th>
+                    <th class="th">Warehouse</th><th class="th">Zone</th><th class="th">Total Bins</th>
+                    <th class="th">Occupied</th><th class="th">Capacity (kg)</th><th class="th">Status</th><th class="th">Actions</th>
+                  </tr>
+                </thead>
+                <tbody id="rack-tbody"></tbody>
+              </table>
+            </div>
+            <div id="rack-pagination" class="pagination-bar"></div>
+          </div>
+        </div>
+
+        <!-- Bin List -->
+        <div id="subtab-bin-list" class="hidden space-y-3">
+          <div class="flex flex-wrap items-center justify-between gap-3">
+            <div class="flex gap-2 flex-1 min-w-[240px]">
+              <input type="text" placeholder="Search bin…" class="filter-input flex-1 min-w-[160px]" id="bin-search" />
+              <select class="filter-input" id="bin-rack-filter">
+                <option value="">All Racks</option>
+              </select>
+            </div>
+            <button class="btn-primary" id="btn-add-bin"><i class="fas fa-plus mr-1.5"></i>Add Bin</button>
+          </div>
+          <div class="card overflow-hidden">
+            <div class="overflow-x-auto">
+              <table class="w-full text-xs">
+                <thead>
+                  <tr class="bg-[#FAFAFA] border-b border-[#4B5694]/15">
+                    <th class="th">#</th><th class="th">Bin ID</th><th class="th">Bin Name</th>
+                    <th class="th">Rack</th><th class="th">Level</th><th class="th">Product</th>
+                    <th class="th">Qty Stored</th><th class="th">Max Capacity</th><th class="th">Status</th><th class="th">Actions</th>
+                  </tr>
+                </thead>
+                <tbody id="bin-tbody"></tbody>
+              </table>
+            </div>
+            <div id="bin-pagination" class="pagination-bar"></div>
+          </div>
+        </div>
+      </div>
+
+      <!-- ======== PICKING MODULE ======== -->
+      <div id="module-picking" class="module-content hidden space-y-4">
+        <div class="grid grid-cols-2 sm:grid-cols-4 gap-3">
+          <div class="widget-card">
+            <div><div class="widget-value">11</div><div class="widget-label">Open Pick Lists</div></div>
+            <div class="widget-icon bg-indigo-100 text-indigo-700"><i class="fas fa-list-check"></i></div>
+          </div>
+          <div class="widget-card">
+            <div><div class="widget-value">5</div><div class="widget-label">In Progress</div></div>
+            <div class="widget-icon bg-amber-100 text-amber-700"><i class="fas fa-person-walking"></i></div>
+          </div>
+          <div class="widget-card">
+            <div><div class="widget-value">23</div><div class="widget-label">Completed Today</div></div>
+            <div class="widget-icon bg-emerald-100 text-emerald-700"><i class="fas fa-circle-check"></i></div>
+          </div>
+          <div class="widget-card">
+            <div><div class="widget-value">98.2%</div><div class="widget-label">Pick Accuracy</div></div>
+            <div class="widget-icon bg-[#111844]/10 text-[#111844]"><i class="fas fa-bullseye"></i></div>
+          </div>
+        </div>
+
+        <div class="flex gap-2">
+          <button class="sub-tab active" data-subtab="pick-list" data-group="picking">Pick List</button>
+          <button class="sub-tab" data-subtab="pick-confirm" data-group="picking">Pick Confirmation</button>
+        </div>
+
+        <!-- Pick List -->
+        <div id="subtab-pick-list" class="space-y-3">
+          <div class="flex flex-wrap items-center justify-between gap-3">
+            <div class="flex gap-2 flex-wrap flex-1 min-w-[240px]">
+              <input type="text" placeholder="Search pick list…" class="filter-input flex-1 min-w-[200px]" id="picklist-search" />
+              <select class="filter-input" id="picklist-status-filter">
+                <option value="">All Status</option>
+                <option>Open</option><option>In Progress</option><option>Completed</option><option>Cancelled</option>
+              </select>
+            </div>
+            <button class="btn-primary" id="btn-create-picklist"><i class="fas fa-plus mr-1.5"></i>Create Pick List</button>
+          </div>
+          <div class="card overflow-hidden">
+            <div class="overflow-x-auto">
+              <table class="w-full text-xs">
+                <thead>
+                  <tr class="bg-[#FAFAFA] border-b border-[#4B5694]/15">
+                    <th class="th">#</th><th class="th">Pick List ID</th><th class="th">Sales Order</th>
+                    <th class="th">Items</th><th class="th">Picker</th><th class="th">Priority</th>
+                    <th class="th">Due Time</th><th class="th">Status</th><th class="th">Actions</th>
+                  </tr>
+                </thead>
+                <tbody id="picklist-tbody"></tbody>
+              </table>
+            </div>
+            <div id="picklist-pagination" class="pagination-bar"></div>
+          </div>
+        </div>
+
+        <!-- Pick Confirmation -->
+        <div id="subtab-pick-confirm" class="hidden space-y-3">
+          <div class="flex flex-wrap items-center justify-between gap-3">
+            <input type="text" placeholder="Scan barcode or enter Pick List ID…" class="filter-input flex-1 min-w-[200px]" id="confirm-search" />
+            <button class="btn-primary" id="btn-confirm-pick"><i class="fas fa-qrcode mr-1.5"></i>Scan &amp; Confirm</button>
+          </div>
+          <div class="card overflow-hidden">
+            <div class="overflow-x-auto">
+              <table class="w-full text-xs">
+                <thead>
+                  <tr class="bg-[#FAFAFA] border-b border-[#4B5694]/15">
+                    <th class="th">#</th><th class="th">Pick List ID</th><th class="th">Product</th>
+                    <th class="th">Bin</th><th class="th">Requested Qty</th><th class="th">Picked Qty</th>
+                    <th class="th">Picker</th><th class="th">Confirmed At</th><th class="th">Status</th>
+                  </tr>
+                </thead>
+                <tbody id="confirm-tbody"></tbody>
+              </table>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- ======== PACKING MODULE ======== -->
+      <div id="module-packing" class="module-content hidden space-y-4">
+        <div class="grid grid-cols-2 sm:grid-cols-4 gap-3">
+          <div class="widget-card">
+            <div><div class="widget-value">9</div><div class="widget-label">Ready to Pack</div></div>
+            <div class="widget-icon bg-amber-100 text-amber-700"><i class="fas fa-box-open"></i></div>
+          </div>
+          <div class="widget-card">
+            <div><div class="widget-value">4</div><div class="widget-label">Packing Now</div></div>
+            <div class="widget-icon bg-indigo-100 text-indigo-700"><i class="fas fa-person-digging"></i></div>
+          </div>
+          <div class="widget-card">
+            <div><div class="widget-value">17</div><div class="widget-label">Packed Today</div></div>
+            <div class="widget-icon bg-emerald-100 text-emerald-700"><i class="fas fa-check-double"></i></div>
+          </div>
+          <div class="widget-card">
+            <div><div class="widget-value">34</div><div class="widget-label">Labels Printed</div></div>
+            <div class="widget-icon bg-[#111844]/10 text-[#111844]"><i class="fas fa-print"></i></div>
+          </div>
+        </div>
+
+        <div class="flex gap-2">
+          <button class="sub-tab active" data-subtab="packing-list" data-group="packing">Packing List</button>
+          <button class="sub-tab" data-subtab="label-printing" data-group="packing">Label Printing</button>
+        </div>
+
+        <!-- Packing List -->
+        <div id="subtab-packing-list" class="space-y-3">
+          <div class="flex flex-wrap items-center justify-between gap-3">
+            <div class="flex gap-2 flex-wrap flex-1 min-w-[240px]">
+              <input type="text" placeholder="Search packing list…" class="filter-input flex-1 min-w-[200px]" id="packing-search" />
+              <select class="filter-input" id="packing-status-filter">
+                <option value="">All Status</option>
+                <option>Ready</option><option>Packing</option><option>Packed</option><option>Dispatched</option>
+              </select>
+            </div>
+            <button class="btn-primary" id="btn-new-pack"><i class="fas fa-plus mr-1.5"></i>New Packing Slip</button>
+          </div>
+          <div class="card overflow-hidden">
+            <div class="overflow-x-auto">
+              <table class="w-full text-xs">
+                <thead>
+                  <tr class="bg-[#FAFAFA] border-b border-[#4B5694]/15">
+                    <th class="th">#</th><th class="th">Pack ID</th><th class="th">Sales Order</th>
+                    <th class="th">Customer</th><th class="th">Items</th><th class="th">Weight (kg)</th>
+                    <th class="th">Packer</th><th class="th">Status</th><th class="th">Actions</th>
+                  </tr>
+                </thead>
+                <tbody id="packing-tbody"></tbody>
+              </table>
+            </div>
+            <div id="packing-pagination" class="pagination-bar"></div>
+          </div>
+        </div>
+
+        <!-- Label Printing -->
+        <div id="subtab-label-printing" class="hidden space-y-3">
+          <div class="flex flex-wrap items-center justify-between gap-3">
+            <input type="text" placeholder="Search by Pack ID or Order…" class="filter-input flex-1 min-w-[200px]" id="label-search" />
+            <button class="btn-primary" id="btn-print-selected"><i class="fas fa-print mr-1.5"></i>Print Selected</button>
+          </div>
+          <div class="card overflow-hidden">
+            <div class="overflow-x-auto">
+              <table class="w-full text-xs">
+                <thead>
+                  <tr class="bg-[#FAFAFA] border-b border-[#4B5694]/15">
+                    <th class="th"><input type="checkbox" id="select-all-labels" class="w-3.5 h-3.5" /></th>
+                    <th class="th">Pack ID</th><th class="th">Sales Order</th><th class="th">Customer</th>
+                    <th class="th">Label Type</th><th class="th">Barcode</th><th class="th">Printed</th><th class="th">Actions</th>
+                  </tr>
+                </thead>
+                <tbody id="label-tbody"></tbody>
+              </table>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- ======== CYCLE COUNT MODULE ======== -->
+      <div id="module-cycle" class="module-content hidden space-y-4">
+        <div class="grid grid-cols-2 sm:grid-cols-4 gap-3">
+          <div class="widget-card">
+            <div><div class="widget-value">7</div><div class="widget-label">Active Audits</div></div>
+            <div class="widget-icon bg-indigo-100 text-indigo-700"><i class="fas fa-clipboard-list"></i></div>
+          </div>
+          <div class="widget-card">
+            <div><div class="widget-value">3</div><div class="widget-label">Discrepancies</div></div>
+            <div class="widget-icon bg-red-100 text-red-700"><i class="fas fa-circle-exclamation"></i></div>
+          </div>
+          <div class="widget-card">
+            <div><div class="widget-value">94.7%</div><div class="widget-label">Count Accuracy</div></div>
+            <div class="widget-icon bg-emerald-100 text-emerald-700"><i class="fas fa-percent"></i></div>
+          </div>
+          <div class="widget-card">
+            <div><div class="widget-value">12</div><div class="widget-label">Completed This Month</div></div>
+            <div class="widget-icon bg-[#111844]/10 text-[#111844]"><i class="fas fa-calendar-check"></i></div>
+          </div>
+        </div>
+
+        <div class="flex gap-2">
+          <button class="sub-tab active" data-subtab="physical-verify" data-group="cycle">Physical Verification</button>
+          <button class="sub-tab" data-subtab="audit-screen" data-group="cycle">Audit Screen</button>
+        </div>
+
+        <!-- Physical Verification -->
+        <div id="subtab-physical-verify" class="space-y-3">
+          <div class="flex flex-wrap items-center justify-between gap-3">
+            <div class="flex gap-2 flex-wrap flex-1 min-w-[240px]">
+              <input type="text" placeholder="Search product, bin or SKU…" class="filter-input flex-1 min-w-[200px]" id="verify-search" />
+              <select class="filter-input" id="verify-status-filter">
+                <option value="">All Status</option>
+                <option>Pending</option><option>Counted</option><option>Verified</option><option>Discrepancy</option>
+              </select>
+            </div>
+            <button class="btn-primary" id="btn-new-count"><i class="fas fa-plus mr-1.5"></i>Start Count</button>
+          </div>
+          <div class="card overflow-hidden">
+            <div class="overflow-x-auto">
+              <table class="w-full text-xs">
+                <thead>
+                  <tr class="bg-[#FAFAFA] border-b border-[#4B5694]/15">
+                    <th class="th">#</th><th class="th">Count ID</th><th class="th">Product</th>
+                    <th class="th">Bin</th><th class="th">System Qty</th><th class="th">Physical Qty</th>
+                    <th class="th">Variance</th><th class="th">Counter</th><th class="th">Status</th><th class="th">Actions</th>
+                  </tr>
+                </thead>
+                <tbody id="verify-tbody"></tbody>
+              </table>
+            </div>
+            <div id="verify-pagination" class="pagination-bar"></div>
+          </div>
+        </div>
+
+        <!-- Audit Screen -->
+        <div id="subtab-audit-screen" class="hidden space-y-3">
+          <div class="flex flex-wrap items-center justify-between gap-3">
+            <input type="text" placeholder="Search audit log…" class="filter-input flex-1 min-w-[200px]" id="audit-search" />
+            <button class="btn-primary" id="btn-export-audit"><i class="fas fa-file-export mr-1.5"></i>Export Report</button>
+          </div>
+          <div class="card overflow-hidden">
+            <div class="overflow-x-auto">
+              <table class="w-full text-xs">
+                <thead>
+                  <tr class="bg-[#FAFAFA] border-b border-[#4B5694]/15">
+                    <th class="th">#</th><th class="th">Audit ID</th><th class="th">Warehouse</th>
+                    <th class="th">Zone</th><th class="th">Total Items</th><th class="th">Discrepancies</th>
+                    <th class="th">Auditor</th><th class="th">Date</th><th class="th">Status</th><th class="th">Actions</th>
+                  </tr>
+                </thead>
+                <tbody id="audit-tbody"></tbody>
+              </table>
+            </div>
+          </div>
+        </div>
+      </div>
+
+    </main>
+  </div>
+
+  <!-- ===== OVERLAY FORM MODAL (Centered) ===== -->
+<div id="overlay-modal" class="hidden fixed inset-0 z-[300] flex items-center justify-center p-4">
+  <div id="modal-backdrop" class="absolute inset-0 bg-[#111844]/60 backdrop-blur-sm"></div>
+  <div id="modal-panel" class="relative bg-[#FFFCFC] rounded-xl w-full max-w-2xl max-h-[90vh] shadow-2xl flex flex-col animate-modal-in">
+    <div class="flex items-center justify-between px-6 py-4 border-b border-[#4B5694]/20 bg-[#FFFCFC] rounded-t-xl">
+      <h3 id="modal-title" class="text-base font-semibold text-[#111844]"></h3>
+      <button id="modal-close-btn" class="w-8 h-8 flex items-center justify-center rounded-lg hover:bg-[#4B5694]/10 text-[#7288AE] transition-colors">
+        <i class="fas fa-times"></i>
+      </button>
+    </div>
+    <div id="modal-body" class="flex-1 overflow-y-auto px-6 py-5 space-y-4"></div>
+    <div class="flex justify-end gap-3 px-6 py-4 border-t border-[#4B5694]/20 bg-[#FAFAFA] rounded-b-xl">
+      <button id="modal-cancel-btn" class="px-4 py-2 text-sm rounded-lg border border-[#4B5694]/30 text-[#4B5694] hover:bg-[#4B5694]/10 transition-colors font-medium">Cancel</button>
+      <button id="modal-save-btn" class="btn-primary px-5 py-2"><i class="fas fa-save mr-2"></i>Save</button>
+    </div>
+  </div>
+</div>
+
+  <!-- ===== DELETE CONFIRM MODAL ===== -->
+  <div id="modal-root" class="hidden fixed inset-0 z-[300] flex items-center justify-center bg-[#111844]/50 backdrop-blur-sm">
+    <div class="bg-[#FFFCFC] rounded-xl w-full max-w-md mx-4 shadow-2xl">
+      <div class="flex items-center justify-between px-5 py-3 border-b border-[#4B5694]/15">
+        <h3 class="text-sm font-semibold text-[#111844]">Confirm Delete</h3>
+        <button id="modal-close" class="text-[#7288AE] hover:text-[#111844] text-lg leading-none">&times;</button>
+      </div>
+      <div class="p-5">
+        <p class="text-sm text-[#111844]"><i class="fas fa-exclamation-triangle text-amber-500 mr-2"></i>Are you sure you want to delete "<strong id="modal-item-name">Item</strong>"? This action cannot be undone.</p>
+      </div>
+      <div class="flex justify-end gap-2 px-5 py-3 border-t border-[#4B5694]/15 bg-[#FAFAFA]">
+        <button id="modal-cancel" class="px-4 py-1.5 text-xs rounded-lg border border-[#4B5694]/30 hover:bg-[#4B5694]/10 transition-colors">Cancel</button>
+        <button id="modal-confirm" class="px-4 py-1.5 text-xs rounded-lg bg-red-600 text-white hover:bg-red-700 transition-colors">Delete</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- Toast -->
+  <div id="toast-container" class="fixed bottom-5 right-5 z-[400] space-y-2"></div>
+
+  <script src="/pages/warehouse/warehouse.js"></script>
+</body>
+</html>

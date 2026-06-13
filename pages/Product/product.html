@@ -1,0 +1,1276 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Product Master — Supply Management Admin</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script>tailwind.config = { theme: { extend: { colors: { active: '#111844', border2: '#4B5694', bg: '#FAFAFA', hover2: '#7288AE', card: '#FFFCFC', dark: '#1a2155' } } } }</script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@300;400;500;700&display=swap" rel="stylesheet" />
+    <style>
+        body {
+            font-family: 'Roboto', sans-serif
+        }
+
+        .sidebar-collapsed {
+            width: 68px !important
+        }
+
+        .sidebar-collapsed .nav-label,
+        .sidebar-collapsed .sidebar-brand-text,
+        .sidebar-collapsed .sidebar-section-label {
+            display: none !important
+        }
+
+        .sidebar-collapsed .nav-item {
+            justify-content: center;
+            padding-left: 0;
+            padding-right: 0
+        }
+
+        .sidebar-collapsed .nav-icon {
+            margin: 0
+        }
+
+        .main-expanded {
+            margin-left: 68px !important
+        }
+
+        @media(max-width:1023px) {
+            #sidebar {
+                transform: translateX(-100%)
+            }
+
+            #sidebar.sidebar-open {
+                transform: translateX(0)
+            }
+
+            #main-wrapper {
+                margin-left: 0 !important
+            }
+        }
+
+        .nav-active {
+            background: #111844 !important;
+            color: #FAFAFA !important
+        }
+
+        .nav-active .nav-icon {
+            color: #FAFAFA !important
+        }
+
+        .toast-animate {
+            animation: slideIn 0.2s ease-out
+        }
+
+        @keyframes slideIn {
+            from {
+                opacity: 0;
+                transform: translateY(-10px)
+            }
+
+            to {
+                opacity: 1;
+                transform: translateY(0)
+            }
+        }
+
+        .loading-spinner {
+            display: inline-block;
+            width: 20px;
+            height: 20px;
+            border: 2px solid rgba(17, 24, 68, 0.3);
+            border-radius: 50%;
+            border-top-color: #111844;
+            animation: spin 0.8s linear infinite;
+        }
+
+        @keyframes spin {
+            to {
+                transform: rotate(360deg);
+            }
+        }
+
+        /* Widget cards */
+        .widget-card {
+            background: #FFFCFC;
+            border: 1px solid rgba(75, 86, 148, 0.18);
+            border-radius: 14px;
+            padding: 16px;
+            display: flex;
+            align-items: flex-start;
+            justify-content: space-between;
+            gap: 10px;
+            transition: transform .25s cubic-bezier(.34, 1.56, .64, 1), box-shadow .2s ease, border-color .2s ease;
+            box-shadow: 0 1px 2px rgba(17,24,68,0.04);
+        }
+
+        .widget-card:hover {
+            transform: translateY(-4px) scale(1.02);
+            box-shadow: 0 8px 18px rgba(17,24,68,0.12);
+            border-color: #111844;
+        }
+
+        .widget-icon {
+            width: 42px;
+            height: 42px;
+            border-radius: 10px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 16px;
+            flex-shrink: 0;
+        }
+
+        .widget-value {
+            font-size: 22px;
+            font-weight: 700;
+            color: #111844;
+            line-height: 1.1;
+        }
+
+        .widget-label {
+            font-size: 11px;
+            color: #7288AE;
+            font-weight: 500;
+            margin-top: 2px;
+        }
+
+        .card {
+            background: #FFFCFC;
+            border: 1px solid rgba(75, 86, 148, 0.18);
+            border-radius: 14px;
+            box-shadow: 0 1px 2px rgba(17,24,68,0.04);
+        }
+
+        .product-image {
+            width: 44px;
+            height: 44px;
+            object-fit: cover;
+            border-radius: 8px;
+            cursor: pointer;
+        }
+
+        .category-chip {
+            display: inline-flex;
+            align-items: center;
+            gap: 4px;
+            padding: 2px 8px;
+            border-radius: 20px;
+            font-size: 10px;
+            font-weight: 500;
+        }
+
+        .status-chip {
+            display: inline-flex;
+            align-items: center;
+            gap: 4px;
+            padding: 2px 8px;
+            border-radius: 20px;
+            font-size: 10px;
+            font-weight: 600;
+        }
+
+        .gst-chip {
+            display: inline-flex;
+            align-items: center;
+            padding: 2px 8px;
+            border-radius: 6px;
+            font-size: 10px;
+            font-weight: 600;
+            background: rgba(75,86,148,0.1);
+            color: #4B5694;
+        }
+
+        .tab-btn {
+            font-size: 12px;
+            font-weight: 500;
+            padding: 8px 14px;
+            border-radius: 8px;
+            color: #7288AE;
+            transition: all .15s ease;
+            cursor: pointer;
+        }
+
+        .tab-btn.active {
+            background: #111844;
+            color: #FAFAFA;
+        }
+
+        .field-label {
+            font-size: 11px;
+            font-weight: 500;
+            color: #4B5694;
+            margin-bottom: 4px;
+            display: block;
+        }
+
+        .field-input {
+            width: 100%;
+            font-size: 12px;
+            padding: 9px 12px;
+            border-radius: 8px;
+            border: 1px solid rgba(75,86,148,0.3);
+            background: #FAFAFA;
+            transition: border-color .15s ease;
+        }
+
+        .field-input:focus {
+            outline: none;
+            border-color: #111844;
+        }
+
+        ::-webkit-scrollbar { width: 6px; height: 6px; }
+        ::-webkit-scrollbar-thumb { background: rgba(75,86,148,0.25); border-radius: 10px; }
+
+        .notif-badge {
+            position: absolute;
+            top: 4px;
+            right: 4px;
+            width: 8px;
+            height: 8px;
+            border-radius: 50%;
+            background: #ef4444;
+            border: 1.5px solid #FFFCFC;
+        }
+
+        .notif-item {
+            display: flex;
+            gap: 10px;
+            padding: 10px 16px;
+            transition: background-color .15s ease;
+            cursor: pointer;
+        }
+
+        .notif-item:hover {
+            background: rgba(114, 136, 174, 0.12);
+        }
+
+        .notif-icon {
+            width: 32px;
+            height: 32px;
+            border-radius: 8px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 13px;
+            flex-shrink: 0;
+        }
+
+        .notif-title {
+            font-size: 12px;
+            font-weight: 600;
+            color: #111844;
+        }
+
+        .notif-desc {
+            font-size: 11px;
+            color: #7288AE;
+            margin-top: 1px;
+        }
+
+        .notif-time {
+            font-size: 10px;
+            color: #7288AE;
+            margin-top: 3px;
+        }
+
+        /* Drawer */
+        #drawer-panel {
+            transform: translateX(100%);
+            transition: transform .25s ease;
+        }
+        #drawer-root.open #drawer-panel {
+            transform: translateX(0);
+        }
+    </style>
+</head>
+
+<body class="bg-[#ebe6e6] text-[#111844] min-h-screen">
+
+     <!-- SIDEBAR -->
+<aside id="sidebar" class="fixed top-0 left-0 h-full w-[260px] bg-[#FFFCFC] z-[100] flex flex-col transition-all duration-300 overflow-hidden shadow-lg">
+  <div class="flex items-center justify-between px-5 h-16 border border-[#4B5694]/20 shadow-sm">
+    <div class="flex items-center gap-3">
+        <div class="w-9 h-9 rounded-lg bg-[#111844] flex items-center justify-center text-[#FAFAFA] flex-shrink-0">
+            <i class="fas fa-cubes"></i>
+        </div>
+<img src="/assets/logo.png" alt="Logo" class="sidebar-brand-text h-8 w-auto object-contain">    </div>
+    <button id="sidebar-toggle" class="w-7 h-7 flex items-center justify-center rounded-lg text-[#4B5694] hover:bg-[#4B5694]/10 transition-colors">
+    <i class="fas fa-chevron-left text-sm"></i>
+</button>
+</div>
+  
+  <nav class="flex-1 overflow-y-auto py-3 px-2 space-y-0.5">
+    
+    <!-- 📊 DASHBOARD -->
+    <a href="/index.html" class="nav-item flex items-center gap-3 px-3 py-2.5 rounded-lg text-[#111844]/70 hover:bg-[#7288AE]/20 hover:text-[#111844] transition-colors duration-150 text-sm cursor-pointer border-b border-[#4B5694]/20 shadow-sm">
+      <span class="nav-icon text-base flex-shrink-0 w-5"><i class="fas fa-chart-pie"></i></span>
+      <span class="nav-label">Dashboard</span>
+    </a>
+
+    <!-- 📦 MASTER MANAGEMENT -->
+    <div class="nav-group">
+      <div class="nav-group-header flex items-center justify-between gap-3 px-3 py-2.5 rounded-lg text-[#111844]/70 hover:bg-[#7288AE]/20 hover:text-[#111844] transition-colors duration-150 text-sm cursor-pointer border-b border-[#4B5694]/20 shadow-sm">
+        <div class="flex items-center gap-3" >
+          <span class="nav-icon text-base flex-shrink-0 w-5"><i class="fas fa-database"></i></span>
+          <span class="nav-label">Master Management</span>
+        </div>
+        <i class="fas fa-chevron-down text-xs transition-transform duration-200"></i>
+      </div>
+      <div class="nav-group-items ml-7 space-y-0.5 mt-1 hidden">
+        <a href="/pages/Product/product.html" class="nav-item flex items-center gap-3 px-3 py-2 rounded-lg text-[#111844]/70 hover:bg-[#7288AE]/20 hover:text-[#111844] transition-colors duration-150 text-xs cursor-pointer">
+          <span class="nav-icon text-sm flex-shrink-0 w-4"><i class="fas fa-box"></i></span>
+          <span class="nav-label">Products</span>
+        </a>
+        <!-- <a href="/pages/category/category.html" class="nav-item flex items-center gap-3 px-3 py-2 rounded-lg text-[#111844]/70 hover:bg-[#7288AE]/20 hover:text-[#111844] transition-colors duration-150 text-xs cursor-pointer">
+          <span class="nav-icon text-sm flex-shrink-0 w-4"><i class="fas fa-sitemap"></i></span>
+          <span class="nav-label">Categories</span>
+        </a> -->
+        <a href="/pages/suppliers/suppliers.html" class="nav-item flex items-center gap-3 px-3 py-2 rounded-lg text-[#111844]/70 hover:bg-[#7288AE]/20 hover:text-[#111844] transition-colors duration-150 text-xs cursor-pointer">
+          <span class="nav-icon text-sm flex-shrink-0 w-4"><i class="fas fa-truck-loading"></i></span>
+          <span class="nav-label">Suppliers</span>
+        </a>
+        <a href="/pages/customers/customers.html" class="nav-item flex items-center gap-3 px-3 py-2 rounded-lg text-[#111844]/70 hover:bg-[#7288AE]/20 hover:text-[#111844] transition-colors duration-150 text-xs cursor-pointer">
+          <span class="nav-icon text-sm flex-shrink-0 w-4"><i class="fas fa-users"></i></span>
+          <span class="nav-label">Customers</span>
+        </a>
+        <a href="/pages/warehouse/warehouse.html" class="nav-item flex items-center gap-3 px-3 py-2 rounded-lg text-[#111844]/70 hover:bg-[#7288AE]/20 hover:text-[#111844] transition-colors duration-150 text-xs cursor-pointer">
+          <span class="nav-icon text-sm flex-shrink-0 w-4"><i class="fas fa-warehouse"></i></span>
+          <span class="nav-label">Warehouses</span>
+        </a>
+        <a href="/pages/units/units.html" class="nav-item flex items-center gap-3 px-3 py-2 rounded-lg text-[#111844]/70 hover:bg-[#7288AE]/20 hover:text-[#111844] transition-colors duration-150 text-xs cursor-pointer">
+          <span class="nav-icon text-sm flex-shrink-0 w-4"><i class="fas fa-balance-scale"></i></span>
+          <span class="nav-label">Units</span>
+        </a>
+      </div>
+    </div>
+
+    <!-- 🛒 PURCHASE MANAGEMENT -->
+<a href="/purchase.html" class="nav-item flex items-center gap-3 px-3 py-2.5 rounded-lg text-[#111844]/70 hover:bg-[#7288AE]/20 hover:text-[#111844] transition-colors duration-150 text-sm cursor-pointer border-b border-[#4B5694]/20 shadow-sm">
+  <span class="nav-icon text-base flex-shrink-0 w-5"><i class="fas fa-shopping-cart"></i></span>
+  <span class="nav-label">PURCHASE MANAGEMENT</span>
+</a>
+
+
+    <!-- 🏭 INVENTORY MANAGEMENT -->
+<a href="/inventory.html" class="nav-item flex items-center gap-3 px-3 py-2.5 rounded-lg text-[#111844]/70 hover:bg-[#7288AE]/20 hover:text-[#111844] transition-colors duration-150 text-sm cursor-pointer border-b border-[#4B5694]/20 shadow-sm">
+  <span class="nav-icon text-base flex-shrink-0 w-5"><i class="fas fa-boxes-stacked"></i></span>
+  <span class="nav-label">Inventory Management</span>
+</a>
+
+    <!-- 🚚 WAREHOUSE OPERATIONS -->
+    <a href="/warehouse.html" class="nav-item flex items-center gap-3 px-3 py-2.5 rounded-lg text-[#111844]/70 hover:bg-[#7288AE]/20 hover:text-[#111844] transition-colors duration-150 text-sm cursor-pointer border-b border-[#4B5694]/20 shadow-sm">
+  <span class="nav-icon text-base flex-shrink-0 w-5"><i class="fas fa-warehouse"></i></span>
+  <span class="nav-label">Warehouse Management</span>
+</a>
+
+    <!-- 📝 SALES & DISPATCH -->
+    <div class="nav-group">
+      <div class="nav-group-header flex items-center justify-between gap-3 px-3 py-2.5 rounded-lg text-[#111844]/70 hover:bg-[#7288AE]/20 hover:text-[#111844] transition-colors duration-150 text-sm cursor-pointer border-b border-[#4B5694]/20 shadow-sm">
+        <div class="flex items-center gap-3">
+          <span class="nav-icon text-base flex-shrink-0 w-5"><i class="fas fa-truck"></i></span>
+          <span class="nav-label">Sales & Dispatch</span>
+        </div>
+        <i class="fas fa-chevron-down text-xs transition-transform duration-200"></i>
+      </div>
+      <div class="nav-group-items ml-7 space-y-0.5 mt-1 hidden">
+        <a href="/sales-orders.html" class="nav-item flex items-center gap-3 px-3 py-2 rounded-lg text-[#111844]/70 hover:bg-[#7288AE]/20 hover:text-[#111844] transition-colors duration-150 text-xs cursor-pointer">
+          <span class="nav-icon text-sm flex-shrink-0 w-4"><i class="fas fa-receipt"></i></span>
+          <span class="nav-label">Sales Orders</span>
+        </a>
+        <a href="/dispatch-planning.html" class="nav-item flex items-center gap-3 px-3 py-2 rounded-lg text-[#111844]/70 hover:bg-[#7288AE]/20 hover:text-[#111844] transition-colors duration-150 text-xs cursor-pointer">
+          <span class="nav-icon text-sm flex-shrink-0 w-4"><i class="fas fa-calendar-alt"></i></span>
+          <span class="nav-label">Dispatch Planning</span>
+        </a>
+        <a href="/delivery-challan.html" class="nav-item flex items-center gap-3 px-3 py-2 rounded-lg text-[#111844]/70 hover:bg-[#7288AE]/20 hover:text-[#111844] transition-colors duration-150 text-xs cursor-pointer">
+          <span class="nav-icon text-sm flex-shrink-0 w-4"><i class="fas fa-file-alt"></i></span>
+          <span class="nav-label">Delivery Challan</span>
+        </a>
+        <a href="/invoices.html" class="nav-item flex items-center gap-3 px-3 py-2 rounded-lg text-[#111844]/70 hover:bg-[#7288AE]/20 hover:text-[#111844] transition-colors duration-150 text-xs cursor-pointer">
+          <span class="nav-icon text-sm flex-shrink-0 w-4"><i class="fas fa-file-invoice-dollar"></i></span>
+          <span class="nav-label">Invoices</span>
+        </a>
+        <a href="/shipment-tracking.html" class="nav-item flex items-center gap-3 px-3 py-2 rounded-lg text-[#111844]/70 hover:bg-[#7288AE]/20 hover:text-[#111844] transition-colors duration-150 text-xs cursor-pointer">
+          <span class="nav-icon text-sm flex-shrink-0 w-4"><i class="fas fa-location-dot"></i></span>
+          <span class="nav-label">Shipment Tracking</span>
+        </a>
+      </div>
+    </div>
+
+    <!-- ↩️ RETURNS MANAGEMENT -->
+<a href="/inventory.html" class="nav-item flex items-center gap-3 px-3 py-2.5 rounded-lg text-[#111844]/70 hover:bg-[#7288AE]/20 hover:text-[#111844] transition-colors duration-150 text-sm cursor-pointer border-b border-[#4B5694]/20 shadow-sm">
+          <span class="nav-icon text-base flex-shrink-0 w-5"><i class="fas fa-rotate-left"></i></span>
+  <span class="nav-label">RETURNS MANAGEMENT</span>
+</a>
+
+   
+
+    <!-- 💰 FINANCE & BILLING -->
+    <div class="nav-group">
+      <div class="nav-group-header flex items-center justify-between gap-3 px-3 py-2.5 rounded-lg text-[#111844]/70 hover:bg-[#7288AE]/20 hover:text-[#111844] transition-colors duration-150 text-sm cursor-pointer border-b border-[#4B5694]/20 shadow-sm">
+        <div class="flex items-center gap-3">
+          <span class="nav-icon text-base flex-shrink-0 w-5"><i class="fas fa-coins"></i></span>
+          <span class="nav-label">Finance & Billing</span>
+        </div>
+        <i class="fas fa-chevron-down text-xs transition-transform duration-200"></i>
+      </div>
+      <div class="nav-group-items ml-7 space-y-0.5 mt-1 hidden">
+        <a href="/accounts-receivable.html" class="nav-item flex items-center gap-3 px-3 py-2 rounded-lg text-[#111844]/70 hover:bg-[#7288AE]/20 hover:text-[#111844] transition-colors duration-150 text-xs cursor-pointer">
+          <span class="nav-icon text-sm flex-shrink-0 w-4"><i class="fas fa-hand-holding-usd"></i></span>
+          <span class="nav-label">Receivables</span>
+        </a>
+        <a href="/accounts-payable.html" class="nav-item flex items-center gap-3 px-3 py-2 rounded-lg text-[#111844]/70 hover:bg-[#7288AE]/20 hover:text-[#111844] transition-colors duration-150 text-xs cursor-pointer">
+          <span class="nav-icon text-sm flex-shrink-0 w-4"><i class="fas fa-money-bill-wave"></i></span>
+          <span class="nav-label">Payables</span>
+        </a>
+        <a href="/expenses.html" class="nav-item flex items-center gap-3 px-3 py-2 rounded-lg text-[#111844]/70 hover:bg-[#7288AE]/20 hover:text-[#111844] transition-colors duration-150 text-xs cursor-pointer">
+          <span class="nav-icon text-sm flex-shrink-0 w-4"><i class="fas fa-chart-line"></i></span>
+          <span class="nav-label">Expenses</span>
+        </a>
+        <a href="/gst-management.html" class="nav-item flex items-center gap-3 px-3 py-2 rounded-lg text-[#111844]/70 hover:bg-[#7288AE]/20 hover:text-[#111844] transition-colors duration-150 text-xs cursor-pointer">
+          <span class="nav-icon text-sm flex-shrink-0 w-4"><i class="fas fa-percent"></i></span>
+          <span class="nav-label">GST Management</span>
+        </a>
+        <a href="/profitability.html" class="nav-item flex items-center gap-3 px-3 py-2 rounded-lg text-[#111844]/70 hover:bg-[#7288AE]/20 hover:text-[#111844] transition-colors duration-150 text-xs cursor-pointer">
+          <span class="nav-icon text-sm flex-shrink-0 w-4"><i class="fas fa-chart-simple"></i></span>
+          <span class="nav-label">Profitability</span>
+        </a>
+      </div>
+    </div>
+
+    <!-- 📈 REPORTS & ANALYTICS -->
+<a href="/inventory.html" class="nav-item flex items-center gap-3 px-3 py-2.5 rounded-lg text-[#111844]/70 hover:bg-[#7288AE]/20 hover:text-[#111844] transition-colors duration-150 text-sm cursor-pointer border-b border-[#4B5694]/20 shadow-sm">
+          <span class="nav-icon text-base flex-shrink-0 w-5"><i class="fas fa-chart-bar"></i></span>
+  <span class="nav-label">REPORTS & ANALYTICS</span>
+</a>
+
+   
+
+    <!-- 👥 USER MANAGEMENT -->
+    <div class="nav-group">
+      <div class="nav-group-header flex items-center justify-between gap-3 px-3 py-2.5 rounded-lg text-[#111844]/70 hover:bg-[#7288AE]/20 hover:text-[#111844] transition-colors duration-150 text-sm cursor-pointer border-b border-[#4B5694]/20 shadow-sm">
+        <div class="flex items-center gap-3">
+          <span class="nav-icon text-base flex-shrink-0 w-5"><i class="fas fa-users-gear"></i></span>
+          <span class="nav-label">User Management</span>
+        </div>
+        <i class="fas fa-chevron-down text-xs transition-transform duration-200"></i>
+      </div>
+      <div class="nav-group-items ml-7 space-y-0.5 mt-1 hidden">
+        <a href="/users.html" class="nav-item flex items-center gap-3 px-3 py-2 rounded-lg text-[#111844]/70 hover:bg-[#7288AE]/20 hover:text-[#111844] transition-colors duration-150 text-xs cursor-pointer">
+          <span class="nav-icon text-sm flex-shrink-0 w-4"><i class="fas fa-user"></i></span>
+          <span class="nav-label">Users</span>
+        </a>
+        <a href="/roles.html" class="nav-item flex items-center gap-3 px-3 py-2 rounded-lg text-[#111844]/70 hover:bg-[#7288AE]/20 hover:text-[#111844] transition-colors duration-150 text-xs cursor-pointer">
+          <span class="nav-icon text-sm flex-shrink-0 w-4"><i class="fas fa-lock"></i></span>
+          <span class="nav-label">Roles & Permissions</span>
+        </a>
+      </div>
+    </div>
+
+  </nav>
+
+  <!-- User Footer -->
+  <div class="px-4 py-3 border-t border-[#4B5694]/20 bg-[#FAFAFA]/30">
+    <div class="flex items-center gap-3">
+      <div class="w-8 h-8 rounded-full bg-[#111844] flex items-center justify-center text-[#FAFAFA] text-xs font-bold flex-shrink-0">AD</div>
+      <div class="sidebar-brand-text min-w-0">
+        <div class="text-[#111844] text-xs font-medium truncate">Admin</div>
+        <div class="text-[#7288AE] text-xs truncate">admin@supplymanager.com</div>
+      </div>
+    </div>
+  </div>
+</aside>
+    <div id="sidebar-overlay" class="hidden fixed inset-0 bg-[#111844]/50 z-[90] lg:hidden"></div>
+
+    <div id="main-wrapper" class="ml-[260px] flex flex-col min-h-screen transition-all duration-300">
+        <header
+            class="sticky top-0 z-[200] h-16 bg-[#FFFCFC] border-b border-[#4B5694]/20 flex items-center justify-between px-5 shadow-sm">
+            <div class="flex items-center gap-4">
+                <!-- <button id="sidebar-toggle"
+                    class="w-9 h-9 flex items-center justify-center rounded-lg text-[#4B5694] hover:bg-[#4B5694]/10 transition-colors">
+                     <i class="fas fa-bars text-lg"></i> 
+                </button> -->
+                <div>
+                    <h1 class="text-sm font-semibold text-[#111844]">Product Master</h1>
+                    <p class="text-xs text-[#7288AE]">Manage products, SKUs, barcodes & GST configuration</p>
+                </div>
+            </div>
+            <div class="flex items-center gap-2">
+                <div class="relative">
+                    <button id="notif-btn"
+                        class="w-9 h-9 flex items-center justify-center rounded-lg text-[#4B5694] hover:bg-[#4B5694]/10 transition-colors relative">
+                        <i class="fas fa-bell text-base"></i>
+                        <span class="notif-badge"></span>
+                    </button>
+                    <div id="notif-menu"
+                        class="hidden absolute right-0 top-full mt-1 w-80 bg-[#FFFCFC] border border-[#4B5694]/20 rounded-xl shadow-lg z-50 overflow-hidden">
+                        <div class="flex items-center justify-between px-4 py-3 border-b border-[#4B5694]/15">
+                            <span class="text-xs font-semibold text-[#111844]">Notifications</span>
+                            <span class="text-[10px] px-2 py-0.5 rounded-full bg-[#111844]/10 text-[#111844] font-medium">4 new</span>
+                        </div>
+                        <div class="max-h-80 overflow-y-auto divide-y divide-[#4B5694]/10">
+                            <div class="notif-item">
+                                <div class="notif-icon bg-red-100 text-red-600"><i class="fas fa-times-circle"></i></div>
+                                <div>
+                                    <div class="notif-title">Out of stock: Aluminium Sheets (4mm)</div>
+                                    <div class="notif-desc">Restock required immediately</div>
+                                    <div class="notif-time">10 minutes ago</div>
+                                </div>
+                            </div>
+                            <div class="notif-item">
+                                <div class="notif-icon bg-amber-100 text-amber-600"><i class="fas fa-exclamation-triangle"></i></div>
+                                <div>
+                                    <div class="notif-title">Low stock: Steel Pipes (25mm)</div>
+                                    <div class="notif-desc">Only 5 units remaining</div>
+                                    <div class="notif-time">42 minutes ago</div>
+                                </div>
+                            </div>
+                            <div class="notif-item">
+                                <div class="notif-icon bg-emerald-100 text-emerald-700"><i class="fas fa-truck"></i></div>
+                                <div>
+                                    <div class="notif-title">Purchase order #PO-2041 delivered</div>
+                                    <div class="notif-desc">142 units received at Warehouse A</div>
+                                    <div class="notif-time">1 hour ago</div>
+                                </div>
+                            </div>
+                            <div class="notif-item">
+                                <div class="notif-icon bg-indigo-100 text-indigo-700"><i class="fas fa-receipt"></i></div>
+                                <div>
+                                    <div class="notif-title">New sales order #SO-3187</div>
+                                    <div class="notif-desc">Placed by customer Ramesh Traders</div>
+                                    <div class="notif-time">2 hours ago</div>
+                                </div>
+                            </div>
+                            <div class="notif-item">
+                                <div class="notif-icon bg-[#7288AE]/15 text-[#4B5694]"><i class="fas fa-file-invoice"></i></div>
+                                <div>
+                                    <div class="notif-title">Pending purchase order #PO-2045</div>
+                                    <div class="notif-desc">Awaiting supplier confirmation</div>
+                                    <div class="notif-time">5 hours ago</div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="px-4 py-2.5 border-t border-[#4B5694]/15 text-center">
+                            <a href="#" class="text-xs font-medium text-[#111844] hover:underline">View all notifications</a>
+                        </div>
+                    </div>
+                </div>
+                <div class="relative">
+                    <button id="user-menu-btn"
+                        class="flex items-center gap-2 px-3 py-1.5 rounded-lg hover:bg-[#4B5694]/10 transition-colors">
+                        <div
+                            class="w-7 h-7 rounded-full bg-[#111844] flex items-center justify-center text-[#FAFAFA] text-xs font-bold">
+                            AD</div>
+                        <span class="text-xs font-medium text-[#111844] hidden sm:block">Admin</span>
+                        <i class="fas fa-chevron-down text-[10px] text-[#4B5694]"></i>
+                    </button>
+                    <div id="user-menu"
+                        class="hidden absolute right-0 top-full mt-1 w-44 bg-[#FFFCFC] border border-[#4B5694]/20 rounded-xl shadow-lg py-1 z-50">
+                        <a href="/profile.html"
+                            class="flex items-center gap-2 px-4 py-2 text-xs text-[#111844] hover:bg-[#7288AE]/10 transition-colors">
+                            <i class="fas fa-user-circle w-4"></i> My Profile
+                        </a>
+                        <div class="border-t border-[#4B5694]/10 my-1"></div>
+                        <a href="/login.html" id="logout-btn"
+                            class="flex items-center gap-2 px-4 py-2 text-xs text-red-600 hover:bg-red-50 transition-colors">
+                            <i class="fas fa-sign-out-alt w-4"></i> Logout
+                        </a>
+                    </div>
+                </div>
+            </div>
+        </header>
+
+        <main class="flex-1 p-5 space-y-4">
+
+            <!-- Stats -->
+            <div class="grid grid-cols-2 sm:grid-cols-4 gap-3">
+                <div class="widget-card">
+                    <div>
+                        <div class="widget-value">1,248</div>
+                        <div class="widget-label">Total Products</div>
+                    </div>
+                    <div class="widget-icon bg-[#111844]/10 text-[#111844]"><i class="fas fa-box"></i></div>
+                </div>
+                <div class="widget-card">
+                    <div>
+                        <div class="widget-value">36</div>
+                        <div class="widget-label">Categories</div>
+                    </div>
+                    <div class="widget-icon bg-[#4B5694]/10 text-[#4B5694]"><i class="fas fa-tags"></i></div>
+                </div>
+                <div class="widget-card">
+                    <div>
+                        <div class="widget-value">9</div>
+                        <div class="widget-label">Low Stock</div>
+                    </div>
+                    <div class="widget-icon bg-amber-100 text-amber-700"><i class="fas fa-exclamation-triangle"></i></div>
+                </div>
+                <div class="widget-card">
+                    <div>
+                        <div class="widget-value">4</div>
+                        <div class="widget-label">Out of Stock</div>
+                    </div>
+                    <div class="widget-icon bg-red-100 text-red-700"><i class="fas fa-times-circle"></i></div>
+                </div>
+            </div>
+
+            <!-- Top bar: search + add -->
+            <div class="flex flex-wrap items-center justify-between gap-3">
+                <div class="flex flex-wrap gap-3 flex-1 min-w-[260px]">
+                    <input id="product-search" type="text" placeholder="Search by name, SKU or barcode..."
+                        class="flex-1 min-w-[220px] text-xs px-3 py-2 rounded-lg border border-[#4B5694]/30 bg-[#FFFCFC] focus:outline-none focus:border-[#111844] transition-colors" />
+                    <select id="filter-category"
+                        class="text-xs px-3 py-2 rounded-lg border border-[#4B5694]/30 bg-[#FFFCFC] focus:outline-none focus:border-[#111844]">
+                        <option value="">All Categories</option>
+                        <option>Raw Materials</option>
+                        <option>Hardware & Fasteners</option>
+                        <option>Packaging Material</option>
+                        <option>Industrial Tools</option>
+                        <option>Safety Equipment</option>
+                    </select>
+                    <select id="filter-status"
+                        class="text-xs px-3 py-2 rounded-lg border border-[#4B5694]/30 bg-[#FFFCFC] focus:outline-none focus:border-[#111844]">
+                        <option value="">All Status</option>
+                        <option>Active</option>
+                        <option>Inactive</option>
+                        <option>Low Stock</option>
+                        <option>Out of Stock</option>
+                    </select>
+                </div>
+                <button id="btn-add-product"
+                    class="flex items-center gap-2 px-4 py-2 bg-[#111844] text-[#FAFAFA] text-xs font-medium rounded-lg hover:bg-[#1d2a70] transition-colors shadow-sm">
+                    <i class="fas fa-plus text-xs"></i> Add Product
+                </button>
+            </div>
+
+            <!-- Products Table -->
+            <div class="card overflow-hidden">
+                <div class="overflow-x-auto">
+                    <table class="w-full text-xs">
+                        <thead>
+                            <tr class="bg-[#FAFAFA] border-b border-[#4B5694]/15">
+                                <th class="px-4 py-3 text-left font-semibold text-[#4B5694]">#</th>
+                                <th class="px-4 py-3 text-left font-semibold text-[#4B5694]">Image</th>
+                                <th class="px-4 py-3 text-left font-semibold text-[#4B5694]">Product Name</th>
+                                <th class="px-4 py-3 text-left font-semibold text-[#4B5694]">SKU</th>
+                                <th class="px-4 py-3 text-left font-semibold text-[#4B5694]">Barcode</th>
+                                <th class="px-4 py-3 text-left font-semibold text-[#4B5694]">Category</th>
+                                <th class="px-4 py-3 text-left font-semibold text-[#4B5694]">GST</th>
+                                <th class="px-4 py-3 text-left font-semibold text-[#4B5694]">Stock</th>
+                                <th class="px-4 py-3 text-left font-semibold text-[#4B5694]">Status</th>
+                                <th class="px-4 py-3 text-left font-semibold text-[#4B5694]">Actions</th>
+                            </tr>
+                        </thead>
+                        <tbody id="product-tbody" class="divide-y divide-[#4B5694]/10"></tbody>
+                    </table>
+                </div>
+                <div id="product-pagination"
+                    class="flex items-center justify-between px-4 py-3 border-t border-[#4B5694]/15"></div>
+            </div>
+        </main>
+    </div>
+
+    <!-- ============ Add / Edit Drawer ============ -->
+   
+
+    <!-- ============ Delete Confirm Modal ============ -->
+    
+
+    <!-- ============ Product Details Drawer ============ -->
+    
+
+    <!-- Toast Container -->
+    <div id="toast-container" class="fixed bottom-5 right-5 z-[400] space-y-2"></div>
+
+    <script>
+        // ============ Sample Data ============
+        const FALLBACK_IMAGE = 'https://placehold.co/100x100/EAE0CF/4B5694?text=IMG';
+
+        const sampleProducts = [
+            { id: 1, name: 'Steel Pipe 25mm', sku: 'RM-PIPE-25-001', barcode: '8901234567890', barcodeType: 'EAN-13', category: 'Raw Materials', unit: 'Meter (MTR)', purchasePrice: 320, sellingPrice: 410, stock: 5, reorder: 50, hsn: '7306', gstRate: '12%', cgst: '6%', sgst: '6%', status: 'Low Stock', image: 'https://images.unsplash.com/photo-1581094288338-2314dddb7ece?w=200&h=200&fit=crop', desc: 'Cold-rolled steel pipes used for structural and plumbing applications. Sold per meter length.' },
+            { id: 2, name: 'Industrial Bearings 6205', sku: 'HW-BRG-6205-002', barcode: '8901234567891', barcodeType: 'Code-128', category: 'Hardware & Fasteners', unit: 'Piece (PCS)', purchasePrice: 85, sellingPrice: 120, stock: 3, reorder: 25, hsn: '8482', gstRate: '18%', cgst: '9%', sgst: '9%', status: 'Low Stock', image: 'https://images.unsplash.com/photo-1635776062360-af423602aff3?w=200&h=200&fit=crop', desc: 'High-precision deep groove ball bearings suitable for motors, pumps and conveyors.' },
+            { id: 3, name: 'Packaging Carton (Large)', sku: 'PK-CTN-L-003', barcode: '8901234567892', barcodeType: 'EAN-13', category: 'Packaging Material', unit: 'Box (BOX)', purchasePrice: 28, sellingPrice: 40, stock: 8, reorder: 100, hsn: '4819', gstRate: '12%', cgst: '6%', sgst: '6%', status: 'Low Stock', image: 'https://images.unsplash.com/photo-1607166452427-7e4477079cb9?w=200&h=200&fit=crop', desc: 'Heavy-duty corrugated cartons for bulk shipping, size: 24x18x18 inches.' },
+            { id: 4, name: 'Hydraulic Hose 1/2"', sku: 'RM-HOSE-12-004', barcode: '8901234567893', barcodeType: 'EAN-13', category: 'Raw Materials', unit: 'Meter (MTR)', purchasePrice: 145, sellingPrice: 190, stock: 6, reorder: 40, hsn: '4009', gstRate: '18%', cgst: '9%', sgst: '9%', status: 'Low Stock', image: 'https://images.unsplash.com/photo-1581092160607-ee22621dd758?w=200&h=200&fit=crop', desc: 'Reinforced rubber hydraulic hose rated for high pressure industrial applications.' },
+            { id: 5, name: 'Aluminium Sheet 4mm', sku: 'RM-ALU-4MM-005', barcode: '8901234567894', barcodeType: 'Code-128', category: 'Raw Materials', unit: 'Piece (PCS)', purchasePrice: 1450, sellingPrice: 1850, stock: 0, reorder: 15, hsn: '7606', gstRate: '18%', cgst: '9%', sgst: '9%', status: 'Out of Stock', image: 'https://images.unsplash.com/photo-1620503374956-c942862f0372?w=200&h=200&fit=crop', desc: '4mm thick aluminium sheet, ideal for fabrication and panel work.' },
+            { id: 6, name: 'Motor Coupling Set', sku: 'HW-COUP-006', barcode: '8901234567895', barcodeType: 'Code-128', category: 'Hardware & Fasteners', unit: 'Piece (PCS)', purchasePrice: 620, sellingPrice: 780, stock: 0, reorder: 10, hsn: '8483', gstRate: '18%', cgst: '9%', sgst: '9%', status: 'Out of Stock', image: 'https://images.unsplash.com/photo-1518770660439-4636190af475?w=200&h=200&fit=crop', desc: 'Flexible motor shaft coupling set for industrial motor-pump alignment.' },
+            { id: 7, name: 'Safety Gloves (XL)', sku: 'SF-GLV-XL-007', barcode: '8901234567896', barcodeType: 'EAN-13', category: 'Safety Equipment', unit: 'Box (BOX)', purchasePrice: 180, sellingPrice: 250, stock: 0, reorder: 30, hsn: '4015', gstRate: '5%', cgst: '2.5%', sgst: '2.5%', status: 'Out of Stock', image: 'https://images.unsplash.com/photo-1583947581924-860bda6a26df?w=200&h=200&fit=crop', desc: 'Cut-resistant nitrile coated safety gloves, box of 12 pairs, size XL.' },
+            { id: 8, name: 'Conveyor Belt Roll', sku: 'RM-CONV-008', barcode: '8901234567897', barcodeType: 'Code-128', category: 'Raw Materials', unit: 'Piece (PCS)', purchasePrice: 8200, sellingPrice: 9800, stock: 0, reorder: 5, hsn: '4010', gstRate: '18%', cgst: '9%', sgst: '9%', status: 'Out of Stock', image: 'https://images.unsplash.com/photo-1565514020179-026b92b2d70b?w=200&h=200&fit=crop', desc: 'Heavy-duty rubber conveyor belt roll, 15m length, for industrial conveyors.' },
+            { id: 9, name: 'Hex Bolts M10 (Pack of 100)', sku: 'HW-BOLT-M10-009', barcode: '8901234567898', barcodeType: 'EAN-13', category: 'Hardware & Fasteners', unit: 'Box (BOX)', purchasePrice: 240, sellingPrice: 320, stock: 145, reorder: 30, hsn: '7318', gstRate: '18%', cgst: '9%', sgst: '9%', status: 'Active', image: 'https://images.unsplash.com/photo-1530124566582-a618bc2615dc?w=200&h=200&fit=crop', desc: 'Stainless steel hex bolts M10x40mm, pack of 100, includes nuts and washers.' },
+            { id: 10, name: 'Digital Caliper 150mm', sku: 'IT-CAL-150-010', barcode: '8901234567899', barcodeType: 'QR Code', category: 'Industrial Tools', unit: 'Piece (PCS)', purchasePrice: 950, sellingPrice: 1250, stock: 42, reorder: 10, hsn: '9017', gstRate: '18%', cgst: '9%', sgst: '9%', status: 'Active', image: 'https://images.unsplash.com/photo-1581092580497-e0d23cbdf1dc?w=200&h=200&fit=crop', desc: 'Digital vernier caliper, 150mm range, with LCD display and stainless steel jaws.' },
+            { id: 11, name: 'Shrink Wrap Film Roll', sku: 'PK-WRAP-011', barcode: '8901234567800', barcodeType: 'EAN-13', category: 'Packaging Material', unit: 'Box (BOX)', purchasePrice: 410, sellingPrice: 560, stock: 76, reorder: 20, hsn: '3920', gstRate: '18%', cgst: '9%', sgst: '9%', status: 'Active', image: 'https://images.unsplash.com/photo-1620207418302-439b387441b0?w=200&h=200&fit=crop', desc: 'Industrial shrink wrap film for pallet wrapping, 500mm x 1500m roll.' },
+            { id: 12, name: 'Safety Helmet (Yellow)', sku: 'SF-HELM-Y-012', barcode: '8901234567801', barcodeType: 'EAN-13', category: 'Safety Equipment', unit: 'Piece (PCS)', purchasePrice: 95, sellingPrice: 140, stock: 230, reorder: 50, hsn: '6506', gstRate: '5%', cgst: '2.5%', sgst: '2.5%', status: 'Active', image: 'https://images.unsplash.com/photo-1610030469983-98e550d6193c?w=200&h=200&fit=crop', desc: 'ISI marked industrial safety helmet, adjustable strap, yellow colour.' },
+        ];
+
+        let allProducts = [...sampleProducts];
+        let searchQuery = '';
+        let selectedCategory = '';
+        let selectedStatus = '';
+        let currentPage = 1;
+        const PER_PAGE = 8;
+
+        function escapeHtml(str) {
+            if (!str) return '';
+            return String(str).replace(/[&<>]/g, (m) => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;' }[m]));
+        }
+
+        function showToast(message, type = 'success') {
+            const container = document.getElementById('toast-container');
+            const toast = document.createElement('div');
+            const bgColor = type === 'success' ? 'bg-green-600' : type === 'error' ? 'bg-red-600' : 'bg-[#111844]';
+            const icon = type === 'success' ? 'fa-check-circle' : type === 'error' ? 'fa-exclamation-triangle' : 'fa-info-circle';
+            toast.className = `${bgColor} text-white text-xs px-4 py-2 rounded-lg shadow-lg toast-animate flex items-center gap-2`;
+            toast.innerHTML = `<i class="fas ${icon}"></i> ${message}`;
+            container.appendChild(toast);
+            setTimeout(() => toast.remove(), 3000);
+        }
+
+        function getCategoryColor(category) {
+            const colors = {
+                'Raw Materials': 'bg-pink-100 text-pink-700',
+                'Hardware & Fasteners': 'bg-indigo-100 text-indigo-700',
+                'Packaging Material': 'bg-amber-100 text-amber-700',
+                'Industrial Tools': 'bg-purple-100 text-purple-700',
+                'Safety Equipment': 'bg-emerald-100 text-emerald-700'
+            };
+            return colors[category] || 'bg-gray-100 text-gray-700';
+        }
+
+        function getStatusColor(status) {
+            const colors = {
+                'Active': 'bg-emerald-100 text-emerald-700',
+                'Inactive': 'bg-gray-100 text-gray-600',
+                'Low Stock': 'bg-amber-100 text-amber-700',
+                'Out of Stock': 'bg-red-100 text-red-700'
+            };
+            return colors[status] || 'bg-gray-100 text-gray-700';
+        }
+
+        function getFiltered() {
+            let filtered = [...allProducts];
+            if (searchQuery) {
+                const q = searchQuery.toLowerCase();
+                filtered = filtered.filter(p =>
+                    p.name.toLowerCase().includes(q) ||
+                    p.sku.toLowerCase().includes(q) ||
+                    p.barcode.toLowerCase().includes(q)
+                );
+            }
+            if (selectedCategory) filtered = filtered.filter(p => p.category === selectedCategory);
+            if (selectedStatus) filtered = filtered.filter(p => p.status === selectedStatus);
+            return filtered;
+        }
+
+        // ============ Generic Overlay Creator (Center Modal) ============
+        function createOverlay(title, content, onSave, productId = null) {
+            const existingOverlay = document.getElementById('dynamic-overlay-root');
+            if (existingOverlay) existingOverlay.remove();
+            
+            const overlay = document.createElement('div');
+            overlay.id = 'dynamic-overlay-root';
+            overlay.className = 'fixed inset-0 z-[300] flex items-center justify-center bg-[#111844]/50 backdrop-blur-sm';
+            overlay.innerHTML = `
+                <div class="bg-[#FFFCFC] rounded-xl w-full max-w-md mx-4 shadow-2xl transform transition-all duration-300 scale-95 opacity-0">
+                    <div class="flex items-center justify-between px-5 py-3 border-b border-[#4B5694]/15">
+                        <h3 class="text-sm font-semibold text-[#111844]">${title}</h3>
+                        <button class="close-overlay w-8 h-8 flex items-center justify-center rounded-lg hover:bg-[#4B5694]/10 text-[#7288AE]">
+                            <i class="fas fa-times"></i>
+                        </button>
+                    </div>
+                    <div class="p-5 max-h-[70vh] overflow-y-auto">
+                        ${content}
+                    </div>
+                    <div class="flex justify-end gap-2 px-5 py-3 border-t border-[#4B5694]/15 bg-[#FAFAFA] rounded-b-xl">
+                        <button class="cancel-overlay px-4 py-2 text-xs rounded-lg border border-[#4B5694]/30 hover:bg-[#4B5694]/10 transition-colors">Cancel</button>
+                        <button class="save-overlay px-4 py-2 text-xs rounded-lg bg-[#111844] text-[#FAFAFA] hover:bg-[#1d2a70] transition-colors">
+                            <i class="fas fa-save mr-1"></i> Save
+                        </button>
+                    </div>
+                </div>
+            `;
+            
+            document.body.appendChild(overlay);
+            
+            setTimeout(() => {
+                const modal = overlay.querySelector('.bg-\\[\\#FFFCFC\\]');
+                if (modal) {
+                    modal.classList.remove('scale-95', 'opacity-0');
+                    modal.classList.add('scale-100', 'opacity-100');
+                }
+            }, 10);
+            
+            overlay.querySelector('.close-overlay')?.addEventListener('click', () => closeOverlay(overlay));
+            overlay.querySelector('.cancel-overlay')?.addEventListener('click', () => closeOverlay(overlay));
+            overlay.addEventListener('click', (e) => {
+                if (e.target === overlay) closeOverlay(overlay);
+            });
+            overlay.querySelector('.save-overlay')?.addEventListener('click', () => {
+                if (onSave(overlay, productId)) closeOverlay(overlay);
+            });
+            
+            return overlay;
+        }
+
+        function closeOverlay(overlay) {
+            const modal = overlay.querySelector('.bg-\\[\\#FFFCFC\\]');
+            if (modal) {
+                modal.classList.remove('scale-100', 'opacity-100');
+                modal.classList.add('scale-95', 'opacity-0');
+                setTimeout(() => overlay.remove(), 300);
+            } else {
+                overlay.remove();
+            }
+        }
+
+        // ============ Add Product Overlay ============
+        function openAddOverlay() {
+            const content = `
+                <div class="space-y-3">
+                    <div>
+                        <label class="field-label">Product Name *</label>
+                        <input type="text" id="product-name" class="field-input w-full" placeholder="e.g., Steel Pipe 25mm" />
+                    </div>
+                    <div>
+                        <label class="field-label">Category *</label>
+                        <select id="product-category" class="field-input w-full">
+                            <option>Raw Materials</option>
+                            <option>Hardware & Fasteners</option>
+                            <option>Packaging Material</option>
+                            <option>Industrial Tools</option>
+                            <option>Safety Equipment</option>
+                        </select>
+                    </div>
+                    <div>
+                        <label class="field-label">Unit of Measure *</label>
+                        <select id="product-unit" class="field-input w-full">
+                            <option>Piece (PCS)</option>
+                            <option>Kilogram (KG)</option>
+                            <option>Meter (MTR)</option>
+                            <option>Box (BOX)</option>
+                            <option>Liter (LTR)</option>
+                        </select>
+                    </div>
+                    <div class="grid grid-cols-2 gap-3">
+                        <div>
+                            <label class="field-label">Purchase Price (₹)</label>
+                            <input type="number" id="product-purchase-price" class="field-input w-full" placeholder="0.00" />
+                        </div>
+                        <div>
+                            <label class="field-label">Selling Price (₹)</label>
+                            <input type="number" id="product-selling-price" class="field-input w-full" placeholder="0.00" />
+                        </div>
+                    </div>
+                    <div>
+                        <label class="field-label">SKU Code</label>
+                        <input type="text" id="product-sku" class="field-input w-full" placeholder="e.g., RM-PIPE-25-001" />
+                    </div>
+                    <div>
+                        <label class="field-label">Barcode</label>
+                        <input type="text" id="product-barcode" class="field-input w-full" placeholder="e.g., 8901234567890" />
+                    </div>
+                    <div>
+                        <label class="field-label">Product Image URL</label>
+                        <input type="url" id="product-image" class="field-input w-full" placeholder="https://example.com/product.jpg" />
+                    </div>
+                    <div>
+                        <label class="field-label">Description</label>
+                        <textarea id="product-desc" class="field-input w-full" rows="3" placeholder="Short description about the product"></textarea>
+                    </div>
+                </div>
+            `;
+            
+            createOverlay('Add Product', content, (overlay) => {
+                const name = overlay.querySelector('#product-name').value.trim();
+                if (!name) { showToast('Product name is required', 'error'); return false; }
+                
+                const newId = Math.max(...allProducts.map(p => p.id), 0) + 1;
+                const newProduct = {
+                    id: newId,
+                    name: name,
+                    sku: overlay.querySelector('#product-sku').value || `SKU-${newId}`,
+                    barcode: overlay.querySelector('#product-barcode').value || `BAR-${newId}`,
+                    barcodeType: 'EAN-13',
+                    category: overlay.querySelector('#product-category').value,
+                    unit: overlay.querySelector('#product-unit').value,
+                    purchasePrice: parseFloat(overlay.querySelector('#product-purchase-price').value) || 0,
+                    sellingPrice: parseFloat(overlay.querySelector('#product-selling-price').value) || 0,
+                    stock: 0,
+                    reorder: 0,
+                    hsn: '',
+                    gstRate: '12%',
+                    cgst: '6%',
+                    sgst: '6%',
+                    status: 'Active',
+                    image: overlay.querySelector('#product-image').value,
+                    desc: overlay.querySelector('#product-desc').value
+                };
+                
+                allProducts.push(newProduct);
+                renderTable();
+                showToast('Product added successfully');
+                return true;
+            });
+        }
+
+        // ============ Edit Product Overlay ============
+        function openEditOverlay(productId) {
+            const product = allProducts.find(p => p.id === productId);
+            if (!product) return;
+            
+            const content = `
+                <div class="space-y-3">
+                    <div>
+                        <label class="field-label">Product Name *</label>
+                        <input type="text" id="product-name" class="field-input w-full" value="${escapeHtml(product.name)}" />
+                    </div>
+                    <div>
+                        <label class="field-label">Category *</label>
+                        <select id="product-category" class="field-input w-full">
+                            <option ${product.category === 'Raw Materials' ? 'selected' : ''}>Raw Materials</option>
+                            <option ${product.category === 'Hardware & Fasteners' ? 'selected' : ''}>Hardware & Fasteners</option>
+                            <option ${product.category === 'Packaging Material' ? 'selected' : ''}>Packaging Material</option>
+                            <option ${product.category === 'Industrial Tools' ? 'selected' : ''}>Industrial Tools</option>
+                            <option ${product.category === 'Safety Equipment' ? 'selected' : ''}>Safety Equipment</option>
+                        </select>
+                    </div>
+                    <div>
+                        <label class="field-label">Unit of Measure *</label>
+                        <select id="product-unit" class="field-input w-full">
+                            <option ${product.unit === 'Piece (PCS)' ? 'selected' : ''}>Piece (PCS)</option>
+                            <option ${product.unit === 'Kilogram (KG)' ? 'selected' : ''}>Kilogram (KG)</option>
+                            <option ${product.unit === 'Meter (MTR)' ? 'selected' : ''}>Meter (MTR)</option>
+                            <option ${product.unit === 'Box (BOX)' ? 'selected' : ''}>Box (BOX)</option>
+                            <option ${product.unit === 'Liter (LTR)' ? 'selected' : ''}>Liter (LTR)</option>
+                        </select>
+                    </div>
+                    <div class="grid grid-cols-2 gap-3">
+                        <div>
+                            <label class="field-label">Purchase Price (₹)</label>
+                            <input type="number" id="product-purchase-price" class="field-input w-full" value="${product.purchasePrice}" />
+                        </div>
+                        <div>
+                            <label class="field-label">Selling Price (₹)</label>
+                            <input type="number" id="product-selling-price" class="field-input w-full" value="${product.sellingPrice}" />
+                        </div>
+                    </div>
+                    <div>
+                        <label class="field-label">SKU Code</label>
+                        <input type="text" id="product-sku" class="field-input w-full" value="${escapeHtml(product.sku)}" />
+                    </div>
+                    <div>
+                        <label class="field-label">Barcode</label>
+                        <input type="text" id="product-barcode" class="field-input w-full" value="${escapeHtml(product.barcode)}" />
+                    </div>
+                    <div>
+                        <label class="field-label">Product Image URL</label>
+                        <input type="url" id="product-image" class="field-input w-full" value="${product.image || ''}" />
+                    </div>
+                    <div>
+                        <label class="field-label">Description</label>
+                        <textarea id="product-desc" class="field-input w-full" rows="3">${escapeHtml(product.desc || '')}</textarea>
+                    </div>
+                </div>
+            `;
+            
+            createOverlay('Edit Product', content, (overlay, id) => {
+                const name = overlay.querySelector('#product-name').value.trim();
+                if (!name) { showToast('Product name is required', 'error'); return false; }
+                
+                const index = allProducts.findIndex(p => p.id === id);
+                if (index !== -1) {
+                    allProducts[index] = {
+                        ...allProducts[index],
+                        name: name,
+                        sku: overlay.querySelector('#product-sku').value,
+                        barcode: overlay.querySelector('#product-barcode').value,
+                        category: overlay.querySelector('#product-category').value,
+                        unit: overlay.querySelector('#product-unit').value,
+                        purchasePrice: parseFloat(overlay.querySelector('#product-purchase-price').value) || 0,
+                        sellingPrice: parseFloat(overlay.querySelector('#product-selling-price').value) || 0,
+                        image: overlay.querySelector('#product-image').value,
+                        desc: overlay.querySelector('#product-desc').value
+                    };
+                    renderTable();
+                    showToast('Product updated successfully');
+                }
+                return true;
+            }, productId);
+        }
+
+        // ============ View Product Overlay ============
+        function openViewOverlay(productId) {
+            const p = allProducts.find(pr => pr.id === productId);
+            if (!p) return;
+            
+            const content = `
+                <div class="space-y-4">
+                    <div class="flex items-center gap-4">
+                        <img src="${p.image || FALLBACK_IMAGE}" class="w-16 h-16 rounded-lg object-cover" onerror="this.src='${FALLBACK_IMAGE}'" />
+                        <div>
+                            <div class="text-base font-semibold text-[#111844]">${escapeHtml(p.name)}</div>
+                            <div class="flex items-center gap-2 mt-1">
+                                <span class="category-chip ${getCategoryColor(p.category)}">${escapeHtml(p.category)}</span>
+                                <span class="status-chip ${getStatusColor(p.status)}">${escapeHtml(p.status)}</span>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="border-t border-[#4B5694]/15 pt-3">
+                        <div class="grid grid-cols-2 gap-3 text-xs">
+                            <div><span class="text-[#7288AE]">SKU Code</span><div class="font-medium mt-0.5">${escapeHtml(p.sku)}</div></div>
+                            <div><span class="text-[#7288AE]">Barcode</span><div class="font-medium mt-0.5">${escapeHtml(p.barcode)}</div></div>
+                            <div><span class="text-[#7288AE]">Unit</span><div class="font-medium mt-0.5">${escapeHtml(p.unit)}</div></div>
+                            <div><span class="text-[#7288AE]">GST Rate</span><div class="font-medium mt-0.5">${p.gstRate}</div></div>
+                        </div>
+                    </div>
+                    
+                    <div class="border-t border-[#4B5694]/15 pt-3">
+                        <div class="grid grid-cols-2 gap-3 text-xs">
+                            <div><span class="text-[#7288AE]">Purchase Price</span><div class="font-medium mt-0.5">₹${p.purchasePrice.toLocaleString('en-IN')}</div></div>
+                            <div><span class="text-[#7288AE]">Selling Price</span><div class="font-medium mt-0.5">₹${p.sellingPrice.toLocaleString('en-IN')}</div></div>
+                            <div><span class="text-[#7288AE]">Current Stock</span><div class="font-medium mt-0.5">${p.stock} units</div></div>
+                            <div><span class="text-[#7288AE]">Reorder Level</span><div class="font-medium mt-0.5">${p.reorder} units</div></div>
+                        </div>
+                    </div>
+                    
+                    ${p.desc ? `
+                    <div class="border-t border-[#4B5694]/15 pt-3">
+                        <div class="text-xs text-[#7288AE]">Description</div>
+                        <p class="text-xs mt-1">${escapeHtml(p.desc)}</p>
+                    </div>
+                    ` : ''}
+                </div>
+            `;
+            
+            const overlay = createOverlay('Product Details', content, () => { return true; });
+            
+            const saveBtn = overlay.querySelector('.save-overlay');
+            if (saveBtn) {
+                saveBtn.innerHTML = '<i class="fas fa-check mr-1"></i> Close';
+                saveBtn.onclick = () => closeOverlay(overlay);
+            }
+        }
+
+        // ============ Delete Confirmation Overlay ============
+        function openDeleteOverlay(productId) {
+            const product = allProducts.find(p => p.id === productId);
+            if (!product) return;
+            
+            const content = `
+                <div class="text-center py-2">
+                    <i class="fas fa-exclamation-triangle text-4xl text-amber-500 mb-3"></i>
+                    <p class="text-sm text-[#111844] mb-2">Are you sure you want to delete</p>
+                    <p class="text-base font-semibold text-[#111844] mb-3">"${escapeHtml(product.name)}"?</p>
+                    <p class="text-xs text-[#7288AE]">This action cannot be undone.</p>
+                </div>
+            `;
+            
+            const overlay = createOverlay('Confirm Delete', content, (overlay, id) => {
+                allProducts = allProducts.filter(p => p.id !== id);
+                renderTable();
+                showToast('Product deleted successfully');
+                return true;
+            }, productId);
+            
+            const saveBtn = overlay.querySelector('.save-overlay');
+            if (saveBtn) {
+                saveBtn.innerHTML = '<i class="fas fa-trash-alt mr-1"></i> Delete';
+                saveBtn.classList.remove('bg-[#111844]', 'hover:bg-[#1d2a70]');
+                saveBtn.classList.add('bg-red-600', 'hover:bg-red-700');
+            }
+        }
+
+        function renderTable() {
+            const filtered = getFiltered();
+            const total = filtered.length;
+            const totalPages = Math.max(1, Math.ceil(total / PER_PAGE));
+            currentPage = Math.min(currentPage, totalPages);
+            const start = (currentPage - 1) * PER_PAGE;
+            const pageItems = filtered.slice(start, start + PER_PAGE);
+            const tbody = document.getElementById('product-tbody');
+
+            if (pageItems.length === 0) {
+                tbody.innerHTML = `<tr><td colspan="10" class="text-center py-10 text-xs text-[#7288AE]"><i class="fas fa-inbox mr-2"></i>No products found</td></tr>`;
+            } else {
+                tbody.innerHTML = pageItems.map((p, idx) => `
+                    <tr class="hover:bg-[#FAFAFA] transition-colors cursor-pointer" data-row="${p.id}">
+                        <td class="px-4 py-3 text-[#7288AE]">${start + idx + 1}</td>
+                        <td class="px-4 py-3">
+                            <img src="${p.image || FALLBACK_IMAGE}" class="product-image" onerror="this.src='${FALLBACK_IMAGE}'" alt="${escapeHtml(p.name)}">
+                        </td>
+                        <td class="px-4 py-3 font-medium text-[#111844]">${escapeHtml(p.name)}</td>
+                        <td class="px-4 py-3 text-[#4B5694] font-mono">${escapeHtml(p.sku)}</td>
+                        <td class="px-4 py-3 text-[#7288AE] font-mono">${escapeHtml(p.barcode)}</td>
+                        <td class="px-4 py-3"><span class="category-chip ${getCategoryColor(p.category)}"><i class="fas fa-tag mr-1 text-[9px]"></i>${escapeHtml(p.category)}</span></td>
+                        <td class="px-4 py-3"><span class="gst-chip">${escapeHtml(p.gstRate)}</span></td>
+                        <td class="px-4 py-3 font-medium text-[#111844]">${p.stock} <span class="text-[#7288AE] text-[10px]">units</span></td>
+                        <td class="px-4 py-3"><span class="status-chip ${getStatusColor(p.status)}">${escapeHtml(p.status)}</span></td>
+                        <td class="px-4 py-3">
+                            <div class="flex items-center gap-1.5">
+                                <button data-view="${p.id}" class="w-7 h-7 rounded flex items-center justify-center bg-[#111844]/5 text-[#4B5694] hover:bg-[#111844]/10 transition-colors" title="View Details">
+                                    <i class="fas fa-eye text-xs"></i>
+                                </button>
+                                <button data-edit="${p.id}" class="w-7 h-7 rounded flex items-center justify-center bg-amber-50 text-amber-600 hover:bg-amber-100 transition-colors" title="Edit">
+                                    <i class="fas fa-edit text-xs"></i>
+                                </button>
+                                <button data-del="${p.id}" class="w-7 h-7 rounded flex items-center justify-center bg-red-50 text-red-600 hover:bg-red-100 transition-colors" title="Delete">
+                                    <i class="fas fa-trash-alt text-xs"></i>
+                                </button>
+                            </div>
+                        </td>
+                    </tr>
+                `).join('');
+
+                pageItems.forEach(p => {
+                    tbody.querySelector(`[data-view="${p.id}"]`)?.addEventListener('click', (e) => { e.stopPropagation(); openViewOverlay(p.id); });
+                    tbody.querySelector(`[data-edit="${p.id}"]`)?.addEventListener('click', (e) => { e.stopPropagation(); openEditOverlay(p.id); });
+                    tbody.querySelector(`[data-del="${p.id}"]`)?.addEventListener('click', (e) => { e.stopPropagation(); openDeleteOverlay(p.id); });
+                    tbody.querySelector(`[data-row="${p.id}"]`)?.addEventListener('click', () => openViewOverlay(p.id));
+                });
+            }
+
+            renderPagination(totalPages, total);
+        }
+
+        function renderPagination(totalPages, total) {
+            const container = document.getElementById('product-pagination');
+            if (total === 0) { container.innerHTML = ''; return; }
+
+            let html = `<span class="text-xs text-[#7288AE]">Showing ${(currentPage - 1) * PER_PAGE + 1}–${Math.min(currentPage * PER_PAGE, total)} of ${total}</span>
+                <div class="flex gap-1">`;
+            for (let i = 1; i <= totalPages; i++) {
+                const active = i === currentPage ? 'bg-[#111844] text-[#FAFAFA]' : 'bg-[#FAFAFA] text-[#4B5694] hover:bg-[#4B5694]/10';
+                html += `<button data-page="${i}" class="w-7 h-7 rounded text-xs ${active} transition-colors">${i}</button>`;
+            }
+            html += `</div>`;
+            container.innerHTML = html;
+
+            container.querySelectorAll('[data-page]').forEach(btn => {
+                btn.addEventListener('click', (e) => {
+                    currentPage = parseInt(e.target.dataset.page);
+                    renderTable();
+                });
+            });
+        }
+
+        // ============ Filters ============
+        document.getElementById('product-search')?.addEventListener('input', (e) => {
+            searchQuery = e.target.value;
+            currentPage = 1;
+            renderTable();
+        });
+        document.getElementById('filter-category')?.addEventListener('change', (e) => {
+            selectedCategory = e.target.value;
+            currentPage = 1;
+            renderTable();
+        });
+        document.getElementById('filter-status')?.addEventListener('change', (e) => {
+            selectedStatus = e.target.value;
+            currentPage = 1;
+            renderTable();
+        });
+
+        // ============ Add Product Button ============
+        document.getElementById('btn-add-product')?.addEventListener('click', () => openAddOverlay());
+
+        // ============ Sidebar toggle ============
+        let isCollapsed = false;
+        const sidebar = document.getElementById('sidebar');
+        const mainWrapper = document.getElementById('main-wrapper');
+        const sidebarToggle = document.getElementById('sidebar-toggle');
+        const overlay = document.getElementById('sidebar-overlay');
+
+        sidebarToggle?.addEventListener('click', () => {
+            if (window.innerWidth < 1024) {
+                sidebar.classList.toggle('sidebar-open');
+                overlay?.classList.toggle('hidden');
+            } else {
+                isCollapsed = !isCollapsed;
+                if (isCollapsed) {
+                    sidebar.classList.add('sidebar-collapsed');
+                    mainWrapper.classList.add('main-expanded');
+                    mainWrapper.style.marginLeft = '68px';
+                } else {
+                    sidebar.classList.remove('sidebar-collapsed');
+                    mainWrapper.classList.remove('main-expanded');
+                    mainWrapper.style.marginLeft = '';
+                }
+            }
+        });
+
+        overlay?.addEventListener('click', () => {
+            sidebar?.classList.remove('sidebar-open');
+            overlay.classList.add('hidden');
+        });
+
+        // ============ Notif / User menu ============
+        const userBtn = document.getElementById('user-menu-btn');
+        const userMenu = document.getElementById('user-menu');
+        userBtn?.addEventListener('click', (e) => {
+            e.stopPropagation();
+            userMenu.classList.toggle('hidden');
+        });
+
+        const notifBtn = document.getElementById('notif-btn');
+        const notifMenu = document.getElementById('notif-menu');
+        notifBtn?.addEventListener('click', (e) => {
+            e.stopPropagation();
+            notifMenu.classList.toggle('hidden');
+            userMenu?.classList.add('hidden');
+        });
+
+        document.addEventListener('click', (e) => {
+            if (!userBtn?.contains(e.target) && !userMenu?.contains(e.target))
+                userMenu?.classList.add('hidden');
+            if (!notifBtn?.contains(e.target) && !notifMenu?.contains(e.target))
+                notifMenu?.classList.add('hidden');
+        });
+    
+        const logoutBtn = document.getElementById('logout-btn');
+        logoutBtn?.addEventListener('click', (e) => e.preventDefault());
+
+        // Sidebar Dropdown Toggle
+        document.querySelectorAll('.nav-group-header').forEach(header => {
+            header.addEventListener('click', function(e) {
+                e.stopPropagation();
+                const groupItems = this.nextElementSibling;
+                const chevron = this.querySelector('.fa-chevron-down');
+                
+                if (groupItems) {
+                    groupItems.classList.toggle('hidden');
+                    if (chevron) {
+                        chevron.style.transform = groupItems.classList.contains('hidden') ? 'rotate(0deg)' : 'rotate(180deg)';
+                    }
+                }
+            });
+        });
+
+        // Active menu highlighting based on current page
+        const currentPath = window.location.pathname;
+        document.querySelectorAll('.nav-item').forEach(item => {
+            const href = item.getAttribute('href');
+            if (href && currentPath.includes(href.replace('/', ''))) {
+                item.classList.add('nav-active');
+                item.classList.remove('text-[#111844]/70');
+                
+                const parentGroup = item.closest('.nav-group-items');
+                if (parentGroup) {
+                    parentGroup.classList.remove('hidden');
+                    const parentHeader = parentGroup.previousElementSibling;
+                    if (parentHeader) {
+                        parentHeader.classList.add('nav-active');
+                        const chevron = parentHeader.querySelector('.fa-chevron-down');
+                        if (chevron) chevron.style.transform = 'rotate(180deg)';
+                    }
+                }
+            }
+        });
+
+        // ============ Init ============
+        renderTable();
+    </script>
+</body>
+
+</html>
