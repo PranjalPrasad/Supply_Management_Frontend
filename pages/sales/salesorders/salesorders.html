@@ -1,0 +1,1071 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Sales Orders — Supply Management Admin</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script>
+    tailwind.config = {
+      theme: {
+        extend: {
+          colors: {
+            active: '#111844', border2: '#4B5694', bg: '#FAFAFA',
+            hover2: '#7288AE', card: '#FFFCFC', dark: '#1a2155'
+          }
+        }
+      }
+    }
+  </script>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+  <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@300;400;500;700&display=swap" rel="stylesheet" />
+  <style>
+    body { font-family: 'Roboto', sans-serif; }
+
+    /* ── Sidebar collapse ── */
+    .sidebar-collapsed { width: 68px !important; }
+    .sidebar-collapsed .nav-label,
+    .sidebar-collapsed .sidebar-brand-text,
+    .sidebar-collapsed .sidebar-section-label { display: none !important; }
+    .sidebar-collapsed .nav-item { justify-content: center; padding-left: 0; padding-right: 0; }
+    .sidebar-collapsed .nav-icon { margin: 0; }
+    .main-expanded { margin-left: 68px !important; }
+
+    @media(max-width:1023px) {
+      #sidebar { transform: translateX(-100%); }
+      #sidebar.sidebar-open { transform: translateX(0); }
+      #main-wrapper { margin-left: 0 !important; }
+    }
+
+    .nav-active { background: #111844 !important; color: #FAFAFA !important; }
+    .nav-active .nav-icon { color: #FAFAFA !important; }
+
+    /* ── Cards ── */
+    .widget-card {
+      background: #FFFCFC;
+      border: 1px solid rgba(75,86,148,0.18);
+      border-radius: 12px;
+      padding: 13px 14px;
+      display: flex; align-items: flex-start; justify-content: space-between; gap: 8px;
+      transition: transform .25s cubic-bezier(.34,1.56,.64,1), box-shadow .2s ease, border-color .2s ease;
+      box-shadow: 0 1px 2px rgba(17,24,68,0.04);
+    }
+    .widget-card:hover { transform: translateY(-4px) scale(1.02); box-shadow: 0 8px 18px rgba(17,24,68,0.12); border-color: #111844; }
+    .widget-icon { width:36px; height:36px; border-radius:9px; display:flex; align-items:center; justify-content:center; font-size:14px; flex-shrink:0; }
+    .widget-value { font-size:18px; font-weight:700; color:#111844; line-height:1.1; }
+    .widget-label { font-size:10.5px; color:#7288AE; font-weight:500; margin-top:2px; line-height:1.3; }
+
+    .chart-card {
+      background: #FFFCFC;
+      border: 1px solid rgba(75,86,148,0.18);
+      border-radius: 12px;
+      padding: 12px 14px;
+      box-shadow: 0 1px 2px rgba(17,24,68,0.04);
+      transition: transform .25s cubic-bezier(.34,1.56,.64,1), box-shadow .2s ease, border-color .2s ease;
+    }
+    .chart-card:hover { transform: translateY(-2px); box-shadow: 0 8px 18px rgba(17,24,68,0.10); border-color: #4B5694; }
+
+    .section-title { font-size:13px; font-weight:600; color:#111844; }
+    .section-sub { font-size:11px; color:#7288AE; }
+
+    /* ── Status badges ── */
+    .badge { display:inline-flex; align-items:center; gap:4px; padding:3px 8px; border-radius:20px; font-size:10.5px; font-weight:600; white-space:nowrap; }
+    .badge-draft        { background:#f1f5f9; color:#64748b; }
+    .badge-pending      { background:#fef3c7; color:#d97706; }
+    .badge-approved     { background:#dcfce7; color:#16a34a; }
+    .badge-partial      { background:#dbeafe; color:#2563eb; }
+    .badge-allocated    { background:#ede9fe; color:#7c3aed; }
+    .badge-dispatch     { background:#d1fae5; color:#059669; }
+    .badge-cancelled    { background:#fee2e2; color:#dc2626; }
+
+    /* ── Table ── */
+    .data-table { width:100%; border-collapse:collapse; }
+    .data-table th { background:#f8f9fb; color:#7288AE; font-size:10.5px; font-weight:600; text-transform:uppercase; letter-spacing:.04em; padding:9px 12px; text-align:left; border-bottom:1px solid rgba(75,86,148,0.15); white-space:nowrap; }
+    .data-table td { padding:10px 12px; font-size:12px; color:#111844; border-bottom:1px solid rgba(75,86,148,0.08); vertical-align:middle; }
+    .data-table tbody tr:hover { background:rgba(114,136,174,0.06); }
+    .data-table tbody tr:last-child td { border-bottom:none; }
+
+    /* ── Action buttons ── */
+    .btn-icon { width:28px; height:28px; border-radius:7px; display:inline-flex; align-items:center; justify-content:center; font-size:11px; cursor:pointer; border:1px solid; transition:all .15s; }
+    .btn-view   { border-color:rgba(75,86,148,0.3); color:#4B5694; background:rgba(75,86,148,0.06); }
+    .btn-view:hover   { background:#4B5694; color:#fff; border-color:#4B5694; }
+    .btn-edit   { border-color:rgba(245,158,11,0.3); color:#d97706; background:rgba(245,158,11,0.06); }
+    .btn-edit:hover   { background:#d97706; color:#fff; border-color:#d97706; }
+    .btn-approve { border-color:rgba(22,163,74,0.3); color:#16a34a; background:rgba(22,163,74,0.06); }
+    .btn-approve:hover { background:#16a34a; color:#fff; border-color:#16a34a; }
+    .btn-cancel { border-color:rgba(220,38,38,0.3); color:#dc2626; background:rgba(220,38,38,0.06); }
+    .btn-cancel:hover { background:#dc2626; color:#fff; border-color:#dc2626; }
+
+    /* ── Primary/secondary buttons ── */
+    .btn-primary { background:#111844; color:#FAFAFA; border:none; border-radius:8px; padding:7px 14px; font-size:12px; font-weight:500; cursor:pointer; display:inline-flex; align-items:center; gap:6px; transition:background .15s, transform .1s; }
+    .btn-primary:hover { background:#1a2155; transform:translateY(-1px); }
+    .btn-secondary { background:#FFFCFC; color:#111844; border:1px solid rgba(75,86,148,0.3); border-radius:8px; padding:7px 14px; font-size:12px; font-weight:500; cursor:pointer; display:inline-flex; align-items:center; gap:6px; transition:all .15s; }
+    .btn-secondary:hover { border-color:#111844; background:#f8f9fb; }
+
+    /* ── Form controls ── */
+    .form-input, .form-select {
+      border:1px solid rgba(75,86,148,0.25); border-radius:8px; padding:6px 10px; font-size:12px;
+      font-family:'Roboto',sans-serif; color:#111844; background:#FFFCFC; outline:none;
+      transition:border-color .15s, box-shadow .15s;
+    }
+    .form-input:focus, .form-select:focus { border-color:#4B5694; box-shadow:0 0 0 3px rgba(75,86,148,0.12); }
+    .form-input::placeholder { color:#b0bcd4; }
+
+    /* ── Modal overlay ── */
+    .modal-overlay { position:fixed; inset:0; background:rgba(17,24,68,0.45); z-index:500; display:flex; align-items:center; justify-content:center; padding:16px; }
+    .modal-box { background:#FFFCFC; border-radius:14px; width:100%; max-width:700px; max-height:90vh; overflow-y:auto; box-shadow:0 20px 60px rgba(17,24,68,0.25); }
+    .modal-header { padding:16px 20px; border-bottom:1px solid rgba(75,86,148,0.15); display:flex; align-items:center; justify-content:space-between; position:sticky; top:0; background:#FFFCFC; z-index:1; }
+    .modal-body { padding:20px; }
+    .modal-footer { padding:14px 20px; border-top:1px solid rgba(75,86,148,0.15); display:flex; justify-content:flex-end; gap:8px; background:#FFFCFC; position:sticky; bottom:0; }
+
+    /* ── Form sections ── */
+    .form-section { margin-bottom:20px; }
+    .form-section-title { font-size:11.5px; font-weight:700; color:#4B5694; text-transform:uppercase; letter-spacing:.05em; margin-bottom:10px; padding-bottom:6px; border-bottom:1px solid rgba(75,86,148,0.12); }
+    .form-grid { display:grid; gap:10px; }
+    .form-label { font-size:11px; font-weight:500; color:#4B5694; margin-bottom:4px; display:block; }
+    .form-field { display:flex; flex-direction:column; }
+
+    /* ── Product row in create form ── */
+    .product-row { display:grid; grid-template-columns:2fr 1fr 1fr 1fr 1fr 1fr 36px; gap:6px; align-items:center; padding:7px 0; border-bottom:1px solid rgba(75,86,148,0.08); }
+    .product-row:last-child { border-bottom:none; }
+    .product-row-header { display:grid; grid-template-columns:2fr 1fr 1fr 1fr 1fr 1fr 36px; gap:6px; padding:5px 0 8px; }
+    .product-row-header span { font-size:10px; font-weight:600; color:#7288AE; text-transform:uppercase; letter-spacing:.04em; }
+
+    /* ── Tabs ── */
+    .tab-bar { display:flex; gap:2px; border-bottom:1px solid rgba(75,86,148,0.15); margin-bottom:16px; }
+    .tab-btn { padding:7px 14px; font-size:12px; font-weight:500; color:#7288AE; border:none; background:none; cursor:pointer; border-bottom:2px solid transparent; margin-bottom:-1px; transition:all .15s; white-space:nowrap; }
+    .tab-btn.active { color:#111844; border-bottom-color:#111844; font-weight:600; }
+    .tab-btn:hover:not(.active) { color:#4B5694; border-bottom-color:rgba(75,86,148,0.3); }
+    .tab-content { display:none; }
+    .tab-content.active { display:block; }
+
+    /* ── Timeline ── */
+    .timeline { position:relative; padding-left:20px; }
+    .timeline::before { content:''; position:absolute; left:6px; top:6px; bottom:6px; width:2px; background:rgba(75,86,148,0.15); }
+    .timeline-item { position:relative; padding-bottom:14px; }
+    .timeline-item:last-child { padding-bottom:0; }
+    .timeline-dot { position:absolute; left:-17px; top:4px; width:12px; height:12px; border-radius:50%; border:2px solid; background:#FFFCFC; }
+    .timeline-dot.done { border-color:#16a34a; background:#16a34a; }
+    .timeline-dot.pending { border-color:#d97706; }
+    .timeline-dot.future { border-color:rgba(75,86,148,0.3); }
+    .timeline-label { font-size:11.5px; font-weight:600; color:#111844; }
+    .timeline-time { font-size:10.5px; color:#7288AE; margin-top:1px; }
+
+    /* ── Notif ── */
+    .notif-badge { position:absolute; top:4px; right:4px; width:8px; height:8px; border-radius:50%; background:#ef4444; border:1.5px solid #FFFCFC; }
+    .notif-item { display:flex; gap:10px; padding:10px 16px; transition:background-color .15s; cursor:pointer; }
+    .notif-item:hover { background:rgba(114,136,174,0.12); }
+    .notif-icon { width:32px; height:32px; border-radius:8px; display:flex; align-items:center; justify-content:center; font-size:13px; flex-shrink:0; }
+
+    /* ── Detail view card ── */
+    .detail-row { display:flex; justify-content:space-between; padding:6px 0; border-bottom:1px solid rgba(75,86,148,0.07); font-size:12px; }
+    .detail-row:last-child { border-bottom:none; }
+    .detail-key { color:#7288AE; font-weight:500; }
+    .detail-val { color:#111844; font-weight:600; text-align:right; }
+
+    /* ── Allocation bar ── */
+    .alloc-bar { height:6px; border-radius:3px; background:#f1f5f9; overflow:hidden; margin-top:4px; }
+    .alloc-bar-fill { height:100%; border-radius:3px; background:#111844; transition:width .4s; }
+
+    ::-webkit-scrollbar { width:6px; height:6px; }
+    ::-webkit-scrollbar-thumb { background:rgba(75,86,148,0.25); border-radius:10px; }
+
+    /* ── Toast ── */
+    .toast { background:#111844; color:#FAFAFA; border-radius:10px; padding:10px 16px; font-size:12px; display:flex; align-items:center; gap:8px; animation:slideIn .2s ease-out; min-width:220px; box-shadow:0 4px 16px rgba(17,24,68,0.25); }
+    @keyframes slideIn { from { opacity:0; transform:translateY(10px); } to { opacity:1; transform:translateY(0); } }
+
+    /* ── Approval panel ── */
+    .approval-row { display:grid; grid-template-columns:1fr 1fr auto auto auto; gap:10px; align-items:center; padding:10px 0; border-bottom:1px solid rgba(75,86,148,0.08); font-size:12px; }
+    .approval-row:last-child { border-bottom:none; }
+  </style>
+</head>
+<body class="bg-[#ebe6e6] text-[#111844] min-h-screen">
+
+<!-- ════════════════════════════════ SIDEBAR ════════════════════════════════ -->
+<aside id="sidebar" class="fixed top-0 left-0 h-full w-[260px] bg-[#FFFCFC] z-[100] flex flex-col transition-all duration-300 overflow-hidden shadow-lg">
+  <div class="flex items-center justify-between px-5 h-16 border border-[#4B5694]/20 shadow-sm">
+    <div class="flex items-center gap-3">
+      <div class="w-9 h-9 rounded-lg bg-[#111844] flex items-center justify-center text-[#FAFAFA] flex-shrink-0">
+        <i class="fas fa-cubes"></i>
+      </div>
+      <span class="sidebar-brand-text font-bold text-[#111844] text-sm tracking-wide">SupplyManager</span>
+    </div>
+    <button id="sidebar-toggle" class="w-7 h-7 flex items-center justify-center rounded-lg text-[#4B5694] hover:bg-[#4B5694]/10 transition-colors">
+      <i class="fas fa-chevron-left text-sm"></i>
+    </button>
+  </div>
+
+  <nav class="flex-1 overflow-y-auto py-3 px-2 space-y-0.5">
+    <!-- Dashboard -->
+    <a href="/index.html" class="nav-item flex items-center gap-3 px-3 py-2.5 rounded-lg text-[#111844]/70 hover:bg-[#7288AE]/20 hover:text-[#111844] transition-colors text-sm cursor-pointer border-b border-[#4B5694]/20 shadow-sm">
+      <span class="nav-icon text-base flex-shrink-0 w-5"><i class="fas fa-chart-pie"></i></span>
+      <span class="nav-label">Dashboard</span>
+    </a>
+
+    <!-- Master Management -->
+    <div class="nav-group">
+      <div class="nav-group-header flex items-center justify-between gap-3 px-3 py-2.5 rounded-lg text-[#111844]/70 hover:bg-[#7288AE]/20 hover:text-[#111844] transition-colors text-sm cursor-pointer border-b border-[#4B5694]/20 shadow-sm">
+        <div class="flex items-center gap-3">
+          <span class="nav-icon text-base flex-shrink-0 w-5"><i class="fas fa-database"></i></span>
+          <span class="nav-label">Master Management</span>
+        </div>
+        <i class="fas fa-chevron-down text-xs transition-transform duration-200"></i>
+      </div>
+      <div class="nav-group-items ml-7 space-y-0.5 mt-1 hidden">
+        <a href="/pages/Product/product.html" class="nav-item flex items-center gap-3 px-3 py-2 rounded-lg text-[#111844]/70 hover:bg-[#7288AE]/20 hover:text-[#111844] transition-colors text-xs cursor-pointer">
+          <span class="nav-icon text-sm flex-shrink-0 w-4"><i class="fas fa-box"></i></span>
+          <span class="nav-label">Products</span>
+        </a>
+        <a href="/pages/suppliers/suppliers.html" class="nav-item flex items-center gap-3 px-3 py-2 rounded-lg text-[#111844]/70 hover:bg-[#7288AE]/20 hover:text-[#111844] transition-colors text-xs cursor-pointer">
+          <span class="nav-icon text-sm flex-shrink-0 w-4"><i class="fas fa-truck-loading"></i></span>
+          <span class="nav-label">Suppliers</span>
+        </a>
+        <a href="/pages/customers/customers.html" class="nav-item flex items-center gap-3 px-3 py-2 rounded-lg text-[#111844]/70 hover:bg-[#7288AE]/20 hover:text-[#111844] transition-colors text-xs cursor-pointer">
+          <span class="nav-icon text-sm flex-shrink-0 w-4"><i class="fas fa-users"></i></span>
+          <span class="nav-label">Customers</span>
+        </a>
+        <a href="/pages/warehouse/warehouse.html" class="nav-item flex items-center gap-3 px-3 py-2 rounded-lg text-[#111844]/70 hover:bg-[#7288AE]/20 hover:text-[#111844] transition-colors text-xs cursor-pointer">
+          <span class="nav-icon text-sm flex-shrink-0 w-4"><i class="fas fa-warehouse"></i></span>
+          <span class="nav-label">Warehouses</span>
+        </a>
+        <a href="/pages/units/units.html" class="nav-item flex items-center gap-3 px-3 py-2 rounded-lg text-[#111844]/70 hover:bg-[#7288AE]/20 hover:text-[#111844] transition-colors text-xs cursor-pointer">
+          <span class="nav-icon text-sm flex-shrink-0 w-4"><i class="fas fa-balance-scale"></i></span>
+          <span class="nav-label">Units</span>
+        </a>
+      </div>
+    </div>
+
+    <a href="/purchase.html" class="nav-item flex items-center gap-3 px-3 py-2.5 rounded-lg text-[#111844]/70 hover:bg-[#7288AE]/20 hover:text-[#111844] transition-colors text-sm cursor-pointer border-b border-[#4B5694]/20 shadow-sm">
+      <span class="nav-icon text-base flex-shrink-0 w-5"><i class="fas fa-shopping-cart"></i></span>
+      <span class="nav-label">Purchase Management</span>
+    </a>
+    <a href="/inventory.html" class="nav-item flex items-center gap-3 px-3 py-2.5 rounded-lg text-[#111844]/70 hover:bg-[#7288AE]/20 hover:text-[#111844] transition-colors text-sm cursor-pointer border-b border-[#4B5694]/20 shadow-sm">
+      <span class="nav-icon text-base flex-shrink-0 w-5"><i class="fas fa-boxes-stacked"></i></span>
+      <span class="nav-label">Inventory Management</span>
+    </a>
+    <a href="/warehouse.html" class="nav-item flex items-center gap-3 px-3 py-2.5 rounded-lg text-[#111844]/70 hover:bg-[#7288AE]/20 hover:text-[#111844] transition-colors text-sm cursor-pointer border-b border-[#4B5694]/20 shadow-sm">
+      <span class="nav-icon text-base flex-shrink-0 w-5"><i class="fas fa-warehouse"></i></span>
+      <span class="nav-label">Warehouse Management</span>
+    </a>
+
+    <!-- Sales & Dispatch — ACTIVE GROUP -->
+    <div class="nav-group">
+      <div class="nav-group-header flex items-center justify-between gap-3 px-3 py-2.5 rounded-lg text-[#111844]/70 hover:bg-[#7288AE]/20 hover:text-[#111844] transition-colors text-sm cursor-pointer border-b border-[#4B5694]/20 shadow-sm">
+        <div class="flex items-center gap-3">
+          <span class="nav-icon text-base flex-shrink-0 w-5"><i class="fas fa-truck"></i></span>
+          <span class="nav-label">Sales & Dispatch</span>
+        </div>
+        <i class="fas fa-chevron-down text-xs transition-transform duration-200" style="transform:rotate(180deg)"></i>
+      </div>
+      <div class="nav-group-items ml-7 space-y-0.5 mt-1">
+        <a href="/sales-orders.html" class="nav-item nav-active flex items-center gap-3 px-3 py-2 rounded-lg transition-colors text-xs cursor-pointer">
+          <span class="nav-icon text-sm flex-shrink-0 w-4"><i class="fas fa-receipt"></i></span>
+          <span class="nav-label">Sales Orders</span>
+        </a>
+        <a href="/dispatch-planning.html" class="nav-item flex items-center gap-3 px-3 py-2 rounded-lg text-[#111844]/70 hover:bg-[#7288AE]/20 hover:text-[#111844] transition-colors text-xs cursor-pointer">
+          <span class="nav-icon text-sm flex-shrink-0 w-4"><i class="fas fa-calendar-alt"></i></span>
+          <span class="nav-label">Dispatch Planning</span>
+        </a>
+        <a href="/delivery-challan.html" class="nav-item flex items-center gap-3 px-3 py-2 rounded-lg text-[#111844]/70 hover:bg-[#7288AE]/20 hover:text-[#111844] transition-colors text-xs cursor-pointer">
+          <span class="nav-icon text-sm flex-shrink-0 w-4"><i class="fas fa-file-alt"></i></span>
+          <span class="nav-label">Delivery Challan</span>
+        </a>
+        <a href="/invoices.html" class="nav-item flex items-center gap-3 px-3 py-2 rounded-lg text-[#111844]/70 hover:bg-[#7288AE]/20 hover:text-[#111844] transition-colors text-xs cursor-pointer">
+          <span class="nav-icon text-sm flex-shrink-0 w-4"><i class="fas fa-file-invoice-dollar"></i></span>
+          <span class="nav-label">Invoices</span>
+        </a>
+        <a href="/shipment-tracking.html" class="nav-item flex items-center gap-3 px-3 py-2 rounded-lg text-[#111844]/70 hover:bg-[#7288AE]/20 hover:text-[#111844] transition-colors text-xs cursor-pointer">
+          <span class="nav-icon text-sm flex-shrink-0 w-4"><i class="fas fa-location-dot"></i></span>
+          <span class="nav-label">Shipment Tracking</span>
+        </a>
+      </div>
+    </div>
+
+    <a href="/returns.html" class="nav-item flex items-center gap-3 px-3 py-2.5 rounded-lg text-[#111844]/70 hover:bg-[#7288AE]/20 hover:text-[#111844] transition-colors text-sm cursor-pointer border-b border-[#4B5694]/20 shadow-sm">
+      <span class="nav-icon text-base flex-shrink-0 w-5"><i class="fas fa-rotate-left"></i></span>
+      <span class="nav-label">Returns Management</span>
+    </a>
+
+    <!-- Finance & Billing -->
+    <div class="nav-group">
+      <div class="nav-group-header flex items-center justify-between gap-3 px-3 py-2.5 rounded-lg text-[#111844]/70 hover:bg-[#7288AE]/20 hover:text-[#111844] transition-colors text-sm cursor-pointer border-b border-[#4B5694]/20 shadow-sm">
+        <div class="flex items-center gap-3">
+          <span class="nav-icon text-base flex-shrink-0 w-5"><i class="fas fa-coins"></i></span>
+          <span class="nav-label">Finance & Billing</span>
+        </div>
+        <i class="fas fa-chevron-down text-xs transition-transform duration-200"></i>
+      </div>
+      <div class="nav-group-items ml-7 space-y-0.5 mt-1 hidden">
+        <a href="/accounts-receivable.html" class="nav-item flex items-center gap-3 px-3 py-2 rounded-lg text-[#111844]/70 hover:bg-[#7288AE]/20 text-xs cursor-pointer"><span class="nav-icon text-sm flex-shrink-0 w-4"><i class="fas fa-hand-holding-usd"></i></span><span class="nav-label">Receivables</span></a>
+        <a href="/accounts-payable.html" class="nav-item flex items-center gap-3 px-3 py-2 rounded-lg text-[#111844]/70 hover:bg-[#7288AE]/20 text-xs cursor-pointer"><span class="nav-icon text-sm flex-shrink-0 w-4"><i class="fas fa-money-bill-wave"></i></span><span class="nav-label">Payables</span></a>
+        <a href="/gst-management.html" class="nav-item flex items-center gap-3 px-3 py-2 rounded-lg text-[#111844]/70 hover:bg-[#7288AE]/20 text-xs cursor-pointer"><span class="nav-icon text-sm flex-shrink-0 w-4"><i class="fas fa-percent"></i></span><span class="nav-label">GST Management</span></a>
+      </div>
+    </div>
+
+    <a href="/reports.html" class="nav-item flex items-center gap-3 px-3 py-2.5 rounded-lg text-[#111844]/70 hover:bg-[#7288AE]/20 hover:text-[#111844] transition-colors text-sm cursor-pointer border-b border-[#4B5694]/20 shadow-sm">
+      <span class="nav-icon text-base flex-shrink-0 w-5"><i class="fas fa-chart-bar"></i></span>
+      <span class="nav-label">Reports & Analytics</span>
+    </a>
+
+    <!-- User Management -->
+    <div class="nav-group">
+      <div class="nav-group-header flex items-center justify-between gap-3 px-3 py-2.5 rounded-lg text-[#111844]/70 hover:bg-[#7288AE]/20 hover:text-[#111844] transition-colors text-sm cursor-pointer border-b border-[#4B5694]/20 shadow-sm">
+        <div class="flex items-center gap-3">
+          <span class="nav-icon text-base flex-shrink-0 w-5"><i class="fas fa-users-gear"></i></span>
+          <span class="nav-label">User Management</span>
+        </div>
+        <i class="fas fa-chevron-down text-xs transition-transform duration-200"></i>
+      </div>
+      <div class="nav-group-items ml-7 space-y-0.5 mt-1 hidden">
+        <a href="/users.html" class="nav-item flex items-center gap-3 px-3 py-2 rounded-lg text-[#111844]/70 hover:bg-[#7288AE]/20 text-xs cursor-pointer"><span class="nav-icon text-sm flex-shrink-0 w-4"><i class="fas fa-user"></i></span><span class="nav-label">Users</span></a>
+        <a href="/roles.html" class="nav-item flex items-center gap-3 px-3 py-2 rounded-lg text-[#111844]/70 hover:bg-[#7288AE]/20 text-xs cursor-pointer"><span class="nav-icon text-sm flex-shrink-0 w-4"><i class="fas fa-lock"></i></span><span class="nav-label">Roles & Permissions</span></a>
+      </div>
+    </div>
+  </nav>
+
+  <div class="px-4 py-3 border-t border-[#4B5694]/20 bg-[#FAFAFA]/30">
+    <div class="flex items-center gap-3">
+      <div class="w-8 h-8 rounded-full bg-[#111844] flex items-center justify-center text-[#FAFAFA] text-xs font-bold flex-shrink-0">AD</div>
+      <div class="sidebar-brand-text min-w-0">
+        <div class="text-[#111844] text-xs font-medium truncate">Admin</div>
+        <div class="text-[#7288AE] text-xs truncate">admin@supplymanager.com</div>
+      </div>
+    </div>
+  </div>
+</aside>
+
+<div id="sidebar-overlay" class="hidden fixed inset-0 bg-[#111844]/50 z-[90] lg:hidden"></div>
+
+<!-- ════════════════════════════════ MAIN ════════════════════════════════ -->
+<div id="main-wrapper" class="ml-[260px] flex flex-col min-h-screen transition-all duration-300">
+
+  <!-- TOPBAR -->
+  <header class="sticky top-0 z-[200] h-16 bg-[#FFFCFC] border-b border-[#4B5694]/20 flex items-center justify-between px-5 shadow-sm">
+    <div class="flex items-center gap-4">
+      <button id="mobile-menu-btn" class="lg:hidden w-9 h-9 flex items-center justify-center rounded-lg text-[#4B5694] hover:bg-[#4B5694]/10 transition-colors">
+        <i class="fas fa-bars text-base"></i>
+      </button>
+      <div>
+        <h1 class="text-sm font-semibold text-[#111844]">Sales Orders</h1>
+        <p class="text-xs text-[#7288AE]">Sales & Dispatch → Sales Orders</p>
+      </div>
+    </div>
+    <div class="flex items-center gap-2">
+      <!-- Notification Bell -->
+      <div class="relative">
+        <button id="notif-btn" class="w-9 h-9 flex items-center justify-center rounded-lg text-[#4B5694] hover:bg-[#4B5694]/10 transition-colors relative">
+          <i class="fas fa-bell text-base"></i>
+          <span class="notif-badge"></span>
+        </button>
+        <div id="notif-menu" class="hidden absolute right-0 top-full mt-1 w-80 bg-[#FFFCFC] border border-[#4B5694]/20 rounded-xl shadow-lg z-50 overflow-hidden">
+          <div class="flex items-center justify-between px-4 py-3 border-b border-[#4B5694]/15">
+            <span class="text-xs font-semibold text-[#111844]">Notifications</span>
+            <span class="text-[10px] px-2 py-0.5 rounded-full bg-[#111844]/10 text-[#111844] font-medium">3 new</span>
+          </div>
+          <div class="max-h-72 overflow-y-auto divide-y divide-[#4B5694]/10">
+            <div class="notif-item">
+              <div class="notif-icon bg-indigo-100 text-indigo-700"><i class="fas fa-receipt"></i></div>
+              <div>
+                <div class="text-xs font-semibold text-[#111844]">New order #SO-3191 pending approval</div>
+                <div class="text-xs text-[#7288AE]">Ramesh Traders — ₹42,500</div>
+                <div class="text-[10px] text-[#7288AE] mt-1">15 minutes ago</div>
+              </div>
+            </div>
+            <div class="notif-item">
+              <div class="notif-icon bg-amber-100 text-amber-600"><i class="fas fa-layer-group"></i></div>
+              <div>
+                <div class="text-xs font-semibold text-[#111844]">Partial allocation on #SO-3185</div>
+                <div class="text-xs text-[#7288AE]">Only 60% stock available</div>
+                <div class="text-[10px] text-[#7288AE] mt-1">1 hour ago</div>
+              </div>
+            </div>
+            <div class="notif-item">
+              <div class="notif-icon bg-emerald-100 text-emerald-700"><i class="fas fa-check-circle"></i></div>
+              <div>
+                <div class="text-xs font-semibold text-[#111844]">#SO-3180 ready for dispatch</div>
+                <div class="text-xs text-[#7288AE]">Stock fully allocated</div>
+                <div class="text-[10px] text-[#7288AE] mt-1">3 hours ago</div>
+              </div>
+            </div>
+          </div>
+          <div class="px-4 py-2.5 border-t border-[#4B5694]/15 text-center">
+            <a href="#" class="text-xs font-medium text-[#111844] hover:underline">View all notifications</a>
+          </div>
+        </div>
+      </div>
+      <!-- User menu -->
+      <div class="relative">
+        <button id="user-menu-btn" class="flex items-center gap-2 px-3 py-1.5 rounded-lg hover:bg-[#4B5694]/10 transition-colors">
+          <div class="w-7 h-7 rounded-full bg-[#111844] flex items-center justify-center text-[#FAFAFA] text-xs font-bold">AD</div>
+          <span class="text-xs font-medium text-[#111844] hidden sm:block">Admin</span>
+          <i class="fas fa-chevron-down text-[10px] text-[#4B5694]"></i>
+        </button>
+        <div id="user-menu" class="hidden absolute right-0 top-full mt-1 w-44 bg-[#FFFCFC] border border-[#4B5694]/20 rounded-xl shadow-lg py-1 z-50">
+          <a href="/profile.html" class="flex items-center gap-2 px-4 py-2 text-xs text-[#111844] hover:bg-[#7288AE]/10 transition-colors"><i class="fas fa-user-circle w-4"></i> My Profile</a>
+          <div class="border-t border-[#4B5694]/10 my-1"></div>
+          <a href="/login.html" class="flex items-center gap-2 px-4 py-2 text-xs text-red-600 hover:bg-red-50 transition-colors"><i class="fas fa-sign-out-alt w-4"></i> Logout</a>
+        </div>
+      </div>
+    </div>
+  </header>
+
+  <!-- PAGE CONTENT -->
+  <main class="flex-1 p-5 space-y-5">
+
+    <!-- ── KPI Widgets ── -->
+    <div class="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-5 gap-3">
+      <div class="widget-card">
+        <div><div class="widget-value">127</div><div class="widget-label">Total Orders</div></div>
+        <div class="widget-icon bg-[#111844]/10 text-[#111844]"><i class="fas fa-receipt"></i></div>
+      </div>
+      <div class="widget-card">
+        <div><div class="widget-value">27</div><div class="widget-label">Pending Approval</div></div>
+        <div class="widget-icon bg-amber-100 text-amber-700"><i class="fas fa-clock"></i></div>
+      </div>
+      <div class="widget-card">
+        <div><div class="widget-value">18</div><div class="widget-label">Ready for Dispatch</div></div>
+        <div class="widget-icon bg-emerald-100 text-emerald-700"><i class="fas fa-truck"></i></div>
+      </div>
+      <div class="widget-card">
+        <div><div class="widget-value">9</div><div class="widget-label">Partially Allocated</div></div>
+        <div class="widget-icon bg-blue-100 text-blue-700"><i class="fas fa-layer-group"></i></div>
+      </div>
+      <div class="widget-card">
+        <div><div class="widget-value">₹8.4L</div><div class="widget-label">Orders Value (Month)</div></div>
+        <div class="widget-icon bg-indigo-100 text-indigo-700"><i class="fas fa-rupee-sign"></i></div>
+      </div>
+    </div>
+
+    <!-- ── Order List ── -->
+    <div class="chart-card">
+      <!-- Header -->
+      <div class="flex flex-wrap items-center justify-between gap-3 mb-4">
+        <div>
+          <div class="section-title"><i class="fas fa-receipt mr-1.5 text-[#4B5694]"></i>Order List</div>
+          <div class="section-sub">All customer sales orders</div>
+        </div>
+        <div class="flex items-center gap-2 flex-wrap">
+          <input id="search-input" type="text" placeholder="Search order, customer…" class="form-input w-48" />
+          <select id="filter-status" class="form-select">
+            <option value="">All Status</option>
+            <option value="Draft">Draft</option>
+            <option value="Pending Approval">Pending Approval</option>
+            <option value="Approved">Approved</option>
+            <option value="Partially Allocated">Partially Allocated</option>
+            <option value="Allocated">Allocated</option>
+            <option value="Ready For Dispatch">Ready For Dispatch</option>
+            <option value="Cancelled">Cancelled</option>
+          </select>
+          <input id="filter-date" type="date" class="form-input" />
+          <button class="btn-secondary" onclick="exportOrders()"><i class="fas fa-download"></i> Export</button>
+          <button class="btn-primary" onclick="openCreate()"><i class="fas fa-plus"></i> Create Sales Order</button>
+        </div>
+      </div>
+
+      <!-- Table -->
+      <div class="overflow-x-auto rounded-xl border border-[#4B5694]/12">
+        <table class="data-table" id="orders-table">
+          <thead>
+            <tr>
+              <th>Order No</th>
+              <th>Order Date</th>
+              <th>Customer</th>
+              <th>Total Items</th>
+              <th>Order Value</th>
+              <th>Priority</th>
+              <th>Status</th>
+              <th>Actions</th>
+            </tr>
+          </thead>
+          <tbody id="orders-tbody"></tbody>
+        </table>
+      </div>
+
+      <!-- Pagination -->
+      <div class="flex items-center justify-between mt-3 text-xs text-[#7288AE]">
+        <span id="pagination-info">Showing 1–10 of 127</span>
+        <div class="flex gap-1">
+          <button class="btn-secondary px-3 py-1.5 text-xs">Prev</button>
+          <button class="btn-primary px-3 py-1.5 text-xs">Next</button>
+        </div>
+      </div>
+    </div>
+
+  </main>
+</div>
+
+<!-- ════════════════════════════ CREATE ORDER MODAL ════════════════════════════ -->
+<div id="modal-create" class="modal-overlay hidden">
+  <div class="modal-box w-full max-w-3xl">
+    <div class="modal-header">
+      <div>
+        <div class="text-sm font-bold text-[#111844]">Create Sales Order</div>
+        <div class="text-xs text-[#7288AE]">Fill in customer, order info and products</div>
+      </div>
+      <button onclick="closeCreate()" class="w-8 h-8 flex items-center justify-center rounded-lg text-[#7288AE] hover:bg-[#f1f5f9] transition-colors"><i class="fas fa-times"></i></button>
+    </div>
+    <div class="modal-body space-y-5">
+
+      <!-- Section 1: Customer -->
+      <div class="form-section">
+        <div class="form-section-title">Customer Information</div>
+        <div class="form-grid grid-cols-1 sm:grid-cols-2" style="grid-template-columns:repeat(2,1fr)">
+          <div class="form-field">
+            <label class="form-label">Customer *</label>
+            <select class="form-select" id="f-customer" onchange="fillCustomer()">
+              <option value="">Select Customer</option>
+              <option value="Ramesh Traders">Ramesh Traders</option>
+              <option value="Patel Enterprises">Patel Enterprises</option>
+              <option value="Kumar Industries">Kumar Industries</option>
+              <option value="Sharma & Co.">Sharma & Co.</option>
+            </select>
+          </div>
+          <div class="form-field">
+            <label class="form-label">Contact Person</label>
+            <input type="text" class="form-input" id="f-contact" placeholder="Auto-filled" readonly />
+          </div>
+          <div class="form-field">
+            <label class="form-label">Billing Address</label>
+            <input type="text" class="form-input" id="f-billing" placeholder="Auto-filled" readonly />
+          </div>
+          <div class="form-field">
+            <label class="form-label">Shipping Address</label>
+            <input type="text" class="form-input" id="f-shipping" placeholder="Auto-filled" readonly />
+          </div>
+          <div class="form-field">
+            <label class="form-label">Credit Limit</label>
+            <input type="text" class="form-input" id="f-credit" placeholder="—" readonly />
+          </div>
+          <div class="form-field">
+            <label class="form-label">Outstanding Amount</label>
+            <input type="text" class="form-input" id="f-outstanding" placeholder="—" readonly />
+          </div>
+        </div>
+      </div>
+
+      <!-- Section 2: Order Info -->
+      <div class="form-section">
+        <div class="form-section-title">Order Information</div>
+        <div class="form-grid" style="grid-template-columns:repeat(2,1fr)">
+          <div class="form-field">
+            <label class="form-label">Order Number</label>
+            <input type="text" class="form-input" value="SO-3192" readonly />
+          </div>
+          <div class="form-field">
+            <label class="form-label">Order Date *</label>
+            <input type="date" class="form-input" id="f-date" />
+          </div>
+          <div class="form-field">
+            <label class="form-label">Required Delivery Date</label>
+            <input type="date" class="form-input" id="f-delivery" />
+          </div>
+          <div class="form-field">
+            <label class="form-label">Priority</label>
+            <select class="form-select" id="f-priority">
+              <option>Low</option>
+              <option selected>Medium</option>
+              <option>High</option>
+              <option>Urgent</option>
+            </select>
+          </div>
+          <div class="form-field" style="grid-column:1/-1">
+            <label class="form-label">Remarks</label>
+            <input type="text" class="form-input" placeholder="Optional remarks…" />
+          </div>
+        </div>
+      </div>
+
+      <!-- Section 3: Products -->
+      <div class="form-section">
+        <div class="form-section-title">Product Selection</div>
+        <div class="product-row-header">
+          <span>Product</span><span>SKU</span><span>Avail. Stock</span><span>Qty</span><span>Unit Price (₹)</span><span>Amount (₹)</span><span></span>
+        </div>
+        <div id="product-rows">
+          <!-- rows added dynamically -->
+        </div>
+        <button onclick="addProductRow()" class="btn-secondary mt-3 text-xs"><i class="fas fa-plus"></i> Add Product</button>
+      </div>
+
+      <!-- Section 4: Summary -->
+      <div class="form-section">
+        <div class="form-section-title">Order Summary</div>
+        <div class="bg-[#f8f9fb] rounded-xl p-4 space-y-2 text-sm">
+          <div class="flex justify-between"><span class="text-[#7288AE]">Total Quantity</span><span id="s-qty" class="font-semibold">0</span></div>
+          <div class="flex justify-between"><span class="text-[#7288AE]">Sub Total</span><span id="s-sub" class="font-semibold">₹0.00</span></div>
+          <div class="flex justify-between items-center"><span class="text-[#7288AE]">GST (18%)</span><span id="s-gst" class="font-semibold">₹0.00</span></div>
+          <div class="flex justify-between items-center">
+            <span class="text-[#7288AE]">Discount</span>
+            <div class="flex items-center gap-2"><input type="number" id="s-discount-input" placeholder="0" class="form-input w-20 text-right" oninput="calcSummary()" /><span class="text-[#7288AE] text-xs">₹</span></div>
+          </div>
+          <div class="border-t border-[#4B5694]/15 pt-2 flex justify-between font-bold text-base">
+            <span>Grand Total</span><span id="s-total" class="text-[#111844]">₹0.00</span>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="modal-footer">
+      <button onclick="closeCreate()" class="btn-secondary">Cancel</button>
+      <button onclick="saveDraft()" class="btn-secondary"><i class="fas fa-save"></i> Save Draft</button>
+      <button onclick="submitOrder()" class="btn-primary"><i class="fas fa-paper-plane"></i> Submit for Approval</button>
+    </div>
+  </div>
+</div>
+
+<!-- ════════════════════════════ ORDER DETAIL MODAL ════════════════════════════ -->
+<div id="modal-detail" class="modal-overlay hidden">
+  <div class="modal-box">
+    <div class="modal-header">
+      <div>
+        <div class="text-sm font-bold text-[#111844]" id="detail-title">Order #SO-3187</div>
+        <div class="text-xs text-[#7288AE]">Order Details</div>
+      </div>
+      <button onclick="closeDetail()" class="w-8 h-8 flex items-center justify-center rounded-lg text-[#7288AE] hover:bg-[#f1f5f9]"><i class="fas fa-times"></i></button>
+    </div>
+    <div class="modal-body">
+
+      <!-- Summary Card -->
+      <div class="grid grid-cols-2 sm:grid-cols-4 gap-3 mb-4">
+        <div class="bg-[#f8f9fb] rounded-xl p-3 text-center">
+          <div class="text-xs text-[#7288AE]">Order No</div>
+          <div class="font-bold text-sm text-[#111844]" id="dc-orderNo">—</div>
+        </div>
+        <div class="bg-[#f8f9fb] rounded-xl p-3 text-center">
+          <div class="text-xs text-[#7288AE]">Customer</div>
+          <div class="font-bold text-sm text-[#111844]" id="dc-customer">—</div>
+        </div>
+        <div class="bg-[#f8f9fb] rounded-xl p-3 text-center">
+          <div class="text-xs text-[#7288AE]">Order Date</div>
+          <div class="font-bold text-sm text-[#111844]" id="dc-date">—</div>
+        </div>
+        <div class="bg-[#f8f9fb] rounded-xl p-3 text-center">
+          <div class="text-xs text-[#7288AE]">Total Amount</div>
+          <div class="font-bold text-sm text-[#111844]" id="dc-amount">—</div>
+        </div>
+      </div>
+
+      <!-- Tabs -->
+      <div class="tab-bar">
+        <button class="tab-btn active" onclick="switchTab('overview')">Overview</button>
+        <button class="tab-btn" onclick="switchTab('products')">Ordered Items</button>
+        <button class="tab-btn" onclick="switchTab('allocation')">Allocation Status</button>
+        <button class="tab-btn" onclick="switchTab('timeline')">Activity Timeline</button>
+      </div>
+
+      <!-- Overview -->
+      <div class="tab-content active" id="tab-overview">
+        <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+          <div>
+            <div class="text-xs font-semibold text-[#4B5694] uppercase tracking-wider mb-2">Customer Details</div>
+            <div class="detail-row"><span class="detail-key">Billing Address</span><span class="detail-val" id="dov-billing">—</span></div>
+            <div class="detail-row"><span class="detail-key">Shipping Address</span><span class="detail-val" id="dov-shipping">—</span></div>
+            <div class="detail-row"><span class="detail-key">Contact</span><span class="detail-val" id="dov-contact">—</span></div>
+            <div class="detail-row"><span class="detail-key">Credit Limit</span><span class="detail-val" id="dov-credit">—</span></div>
+          </div>
+          <div>
+            <div class="text-xs font-semibold text-[#4B5694] uppercase tracking-wider mb-2">Order Details</div>
+            <div class="detail-row"><span class="detail-key">Priority</span><span class="detail-val" id="dov-priority">—</span></div>
+            <div class="detail-row"><span class="detail-key">Delivery Date</span><span class="detail-val" id="dov-delivery">—</span></div>
+            <div class="detail-row"><span class="detail-key">Status</span><span class="detail-val" id="dov-status">—</span></div>
+            <div class="detail-row"><span class="detail-key">Remarks</span><span class="detail-val" id="dov-remarks">—</span></div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Products -->
+      <div class="tab-content" id="tab-products">
+        <div class="overflow-x-auto rounded-xl border border-[#4B5694]/12">
+          <table class="data-table">
+            <thead><tr><th>Product</th><th>Qty</th><th>Unit Price</th><th>GST</th><th>Amount</th></tr></thead>
+            <tbody id="detail-products-tbody"></tbody>
+          </table>
+        </div>
+      </div>
+
+      <!-- Allocation -->
+      <div class="tab-content" id="tab-allocation">
+        <div class="overflow-x-auto rounded-xl border border-[#4B5694]/12">
+          <table class="data-table">
+            <thead><tr><th>Product</th><th>Ordered Qty</th><th>Allocated Qty</th><th>Allocation</th></tr></thead>
+            <tbody id="detail-alloc-tbody"></tbody>
+          </table>
+        </div>
+        <div class="flex gap-2 mt-4">
+          <button class="btn-primary" onclick="allocateFull()"><i class="fas fa-check-double"></i> Allocate Full</button>
+          <button class="btn-secondary" onclick="toast('Partial allocation saved','amber')"><i class="fas fa-sliders"></i> Partial Allocate</button>
+          <button class="btn-secondary" onclick="toast('Allocation released','red')"><i class="fas fa-undo"></i> Release</button>
+        </div>
+      </div>
+
+      <!-- Timeline -->
+      <div class="tab-content" id="tab-timeline">
+        <div class="timeline" id="detail-timeline"></div>
+      </div>
+
+    </div>
+    <div class="modal-footer">
+      <button onclick="closeDetail()" class="btn-secondary">Close</button>
+      <button class="btn-primary" id="detail-approve-btn" onclick="approveFromDetail()"><i class="fas fa-check"></i> Approve</button>
+    </div>
+  </div>
+</div>
+
+<!-- Toast -->
+<div id="toast-container" class="fixed bottom-5 right-5 z-[400] space-y-2"></div>
+
+<script>
+// ── Data ──
+const customers = {
+  'Ramesh Traders':    { contact:'Ramesh Patel', billing:'12 MG Road, Pune 411001', shipping:'Warehouse 3, MIDC Pune', credit:'₹2,00,000', outstanding:'₹45,000' },
+  'Patel Enterprises': { contact:'Suresh Patel',  billing:'88 Ring Road, Surat 395001', shipping:'Plot 5, Industrial Estate, Surat', credit:'₹1,50,000', outstanding:'₹22,000' },
+  'Kumar Industries':  { contact:'Vijay Kumar',   billing:'45 Nehru St, Nagpur 440001', shipping:'Survey No. 88, Butibori', credit:'₹3,00,000', outstanding:'₹80,000' },
+  'Sharma & Co.':      { contact:'Anil Sharma',   billing:'7 Civil Lines, Jaipur 302001', shipping:'Warehouse B, Sitapura RIICO', credit:'₹1,00,000', outstanding:'₹5,000' },
+};
+
+const products = [
+  { name:'Steel Pipes (25mm)', sku:'SP-025', stock:180, price:320 },
+  { name:'Industrial Bearings', sku:'IB-001', stock:94, price:850 },
+  { name:'Packaging Cartons (L)', sku:'PC-L01', stock:12, price:45 },
+  { name:'Hydraulic Hoses', sku:'HH-002', stock:60, price:1200 },
+  { name:'Motor Coupling Set', sku:'MC-003', stock:0, price:2400 },
+  { name:'Safety Gloves (XL)', sku:'SG-XL1', stock:30, price:180 },
+];
+
+const orders = [
+  { id:'SO-3187', date:'2025-06-10', customer:'Ramesh Traders', items:3, value:'₹42,500', priority:'High', status:'Pending Approval',
+    billing:'12 MG Road, Pune 411001', shipping:'Warehouse 3, MIDC Pune', contact:'Ramesh Patel', credit:'₹2,00,000', delivery:'2025-06-20', remarks:'Urgent delivery',
+    products:[{name:'Steel Pipes (25mm)',qty:50,price:320,gst:18},{name:'Industrial Bearings',qty:10,price:850,gst:18},{name:'Hydraulic Hoses',qty:5,price:1200,gst:18}],
+    alloc:[{name:'Steel Pipes (25mm)',ordered:50,allocated:50},{name:'Industrial Bearings',ordered:10,allocated:10},{name:'Hydraulic Hoses',ordered:5,allocated:3}],
+    timeline:[{label:'Order Created',time:'10 Jun 2025, 10:30 AM',done:true},{label:'Pending Approval',time:'10 Jun 2025, 10:31 AM',done:true},{label:'Approved',time:'—',done:false},{label:'Stock Allocated',time:'—',done:false},{label:'Ready For Dispatch',time:'—',done:false}]
+  },
+  { id:'SO-3185', date:'2025-06-09', customer:'Patel Enterprises', items:2, value:'₹18,200', priority:'Medium', status:'Partially Allocated',
+    billing:'88 Ring Road, Surat 395001', shipping:'Plot 5, Industrial Estate, Surat', contact:'Suresh Patel', credit:'₹1,50,000', delivery:'2025-06-18', remarks:'—',
+    products:[{name:'Safety Gloves (XL)',qty:20,price:180,gst:12},{name:'Packaging Cartons (L)',qty:100,price:45,gst:12}],
+    alloc:[{name:'Safety Gloves (XL)',ordered:20,allocated:20},{name:'Packaging Cartons (L)',ordered:100,allocated:12}],
+    timeline:[{label:'Order Created',time:'9 Jun 2025, 2:10 PM',done:true},{label:'Pending Approval',time:'9 Jun 2025, 2:11 PM',done:true},{label:'Approved',time:'9 Jun 2025, 3:00 PM',done:true},{label:'Stock Allocated (Partial)',time:'9 Jun 2025, 4:00 PM',done:true},{label:'Ready For Dispatch',time:'—',done:false}]
+  },
+  { id:'SO-3180', date:'2025-06-07', customer:'Kumar Industries', items:4, value:'₹96,000', priority:'Urgent', status:'Ready For Dispatch',
+    billing:'45 Nehru St, Nagpur 440001', shipping:'Survey No. 88, Butibori', contact:'Vijay Kumar', credit:'₹3,00,000', delivery:'2025-06-15', remarks:'Priority customer',
+    products:[{name:'Motor Coupling Set',qty:20,price:2400,gst:18},{name:'Hydraulic Hoses',qty:20,price:1200,gst:18}],
+    alloc:[{name:'Motor Coupling Set',ordered:20,allocated:20},{name:'Hydraulic Hoses',ordered:20,allocated:20}],
+    timeline:[{label:'Order Created',time:'7 Jun 2025, 9:00 AM',done:true},{label:'Pending Approval',time:'7 Jun 2025, 9:01 AM',done:true},{label:'Approved',time:'7 Jun 2025, 10:00 AM',done:true},{label:'Stock Allocated',time:'7 Jun 2025, 11:30 AM',done:true},{label:'Ready For Dispatch',time:'7 Jun 2025, 12:00 PM',done:true}]
+  },
+  { id:'SO-3178', date:'2025-06-06', customer:'Sharma & Co.', items:1, value:'₹8,640', priority:'Low', status:'Draft',
+    billing:'7 Civil Lines, Jaipur 302001', shipping:'Warehouse B, Sitapura RIICO', contact:'Anil Sharma', credit:'₹1,00,000', delivery:'2025-06-25', remarks:'Sample order',
+    products:[{name:'Industrial Bearings',qty:8,price:850,gst:18}],
+    alloc:[{name:'Industrial Bearings',ordered:8,allocated:0}],
+    timeline:[{label:'Order Created (Draft)',time:'6 Jun 2025, 11:20 AM',done:true},{label:'Pending Approval',time:'—',done:false},{label:'Approved',time:'—',done:false},{label:'Stock Allocated',time:'—',done:false},{label:'Ready For Dispatch',time:'—',done:false}]
+  },
+  { id:'SO-3172', date:'2025-06-04', customer:'Ramesh Traders', items:2, value:'₹22,000', priority:'Medium', status:'Approved',
+    billing:'12 MG Road, Pune 411001', shipping:'Warehouse 3, MIDC Pune', contact:'Ramesh Patel', credit:'₹2,00,000', delivery:'2025-06-16', remarks:'—',
+    products:[{name:'Steel Pipes (25mm)',qty:40,price:320,gst:18},{name:'Safety Gloves (XL)',qty:15,price:180,gst:18}],
+    alloc:[{name:'Steel Pipes (25mm)',ordered:40,allocated:0},{name:'Safety Gloves (XL)',ordered:15,allocated:0}],
+    timeline:[{label:'Order Created',time:'4 Jun 2025, 10:00 AM',done:true},{label:'Pending Approval',time:'4 Jun 2025, 10:01 AM',done:true},{label:'Approved',time:'4 Jun 2025, 2:00 PM',done:true},{label:'Stock Allocated',time:'—',done:false},{label:'Ready For Dispatch',time:'—',done:false}]
+  },
+  { id:'SO-3168', date:'2025-06-03', customer:'Patel Enterprises', items:1, value:'₹3,600', priority:'Low', status:'Cancelled',
+    billing:'88 Ring Road, Surat 395001', shipping:'Plot 5, Industrial Estate, Surat', contact:'Suresh Patel', credit:'₹1,50,000', delivery:'2025-06-14', remarks:'Customer cancelled',
+    products:[{name:'Packaging Cartons (L)',qty:80,price:45,gst:12}],
+    alloc:[{name:'Packaging Cartons (L)',ordered:80,allocated:0}],
+    timeline:[{label:'Order Created',time:'3 Jun 2025, 9:00 AM',done:true},{label:'Cancelled',time:'3 Jun 2025, 5:00 PM',done:true}]
+  },
+];
+
+// ── Status badge helper ──
+function statusBadge(s) {
+  const map = {
+    'Draft':'badge-draft','Pending Approval':'badge-pending','Approved':'badge-approved',
+    'Partially Allocated':'badge-partial','Allocated':'badge-allocated',
+    'Ready For Dispatch':'badge-dispatch','Cancelled':'badge-cancelled'
+  };
+  return `<span class="badge ${map[s]||'badge-draft'}">${s}</span>`;
+}
+
+function priorityBadge(p) {
+  const map = { Low:'badge-draft', Medium:'badge-pending', High:'badge-partial', Urgent:'badge-cancelled' };
+  return `<span class="badge ${map[p]||'badge-draft'}">${p}</span>`;
+}
+
+// ── Render table ──
+function renderTable(data) {
+  const tbody = document.getElementById('orders-tbody');
+  if (!data.length) { tbody.innerHTML = `<tr><td colspan="8" class="text-center py-8 text-[#7288AE]">No orders found.</td></tr>`; return; }
+  tbody.innerHTML = data.map(o => `
+    <tr>
+      <td class="font-semibold text-[#4B5694]">${o.id}</td>
+      <td>${o.date}</td>
+      <td>${o.customer}</td>
+      <td class="text-center">${o.items}</td>
+      <td class="font-semibold">${o.value}</td>
+      <td>${priorityBadge(o.priority)}</td>
+      <td>${statusBadge(o.status)}</td>
+      <td>
+        <div class="flex gap-1">
+          <button class="btn-icon btn-view" title="View" onclick='openDetail("${o.id}")'><i class="fas fa-eye"></i></button>
+          <button class="btn-icon btn-edit" title="Edit" onclick='toast("Edit coming soon","amber")'><i class="fas fa-pen"></i></button>
+          ${o.status==='Pending Approval'?`<button class="btn-icon btn-approve" title="Approve" onclick='quickApprove("${o.id}")'><i class="fas fa-check"></i></button>`:''}
+          ${!['Cancelled','Ready For Dispatch'].includes(o.status)?`<button class="btn-icon btn-cancel" title="Cancel" onclick='quickCancel("${o.id}")'><i class="fas fa-times"></i></button>`:''}
+        </div>
+      </td>
+    </tr>
+  `).join('');
+}
+
+function filterTable() {
+  const q = document.getElementById('search-input').value.toLowerCase();
+  const s = document.getElementById('filter-status').value;
+  const d = document.getElementById('filter-date').value;
+  const filtered = orders.filter(o =>
+    (!q || o.id.toLowerCase().includes(q) || o.customer.toLowerCase().includes(q)) &&
+    (!s || o.status === s) &&
+    (!d || o.date === d)
+  );
+  renderTable(filtered);
+}
+
+document.getElementById('search-input').addEventListener('input', filterTable);
+document.getElementById('filter-status').addEventListener('change', filterTable);
+document.getElementById('filter-date').addEventListener('change', filterTable);
+
+// ── Quick actions ──
+function quickApprove(id) {
+  const o = orders.find(x => x.id===id);
+  if (o) { o.status = 'Approved'; filterTable(); toast(`${id} approved`,'green'); }
+}
+function quickCancel(id) {
+  const o = orders.find(x => x.id===id);
+  if (o) { o.status = 'Cancelled'; filterTable(); toast(`${id} cancelled`,'red'); }
+}
+
+// ── Create modal ──
+function openCreate() {
+  document.getElementById('f-date').value = new Date().toISOString().split('T')[0];
+  document.getElementById('product-rows').innerHTML = '';
+  addProductRow();
+  calcSummary();
+  document.getElementById('modal-create').classList.remove('hidden');
+}
+function closeCreate() { document.getElementById('modal-create').classList.add('hidden'); }
+
+const customerData = {
+  'Ramesh Traders':    {contact:'Ramesh Patel', billing:'12 MG Road, Pune 411001', shipping:'Warehouse 3, MIDC Pune', credit:'₹2,00,000', outstanding:'₹45,000'},
+  'Patel Enterprises': {contact:'Suresh Patel', billing:'88 Ring Road, Surat 395001', shipping:'Plot 5, Industrial Estate, Surat', credit:'₹1,50,000', outstanding:'₹22,000'},
+  'Kumar Industries':  {contact:'Vijay Kumar',  billing:'45 Nehru St, Nagpur 440001', shipping:'Survey No. 88, Butibori', credit:'₹3,00,000', outstanding:'₹80,000'},
+  'Sharma & Co.':      {contact:'Anil Sharma',  billing:'7 Civil Lines, Jaipur 302001', shipping:'Warehouse B, Sitapura RIICO', credit:'₹1,00,000', outstanding:'₹5,000'},
+};
+
+function fillCustomer() {
+  const v = document.getElementById('f-customer').value;
+  const d = customerData[v] || {};
+  document.getElementById('f-contact').value = d.contact||'';
+  document.getElementById('f-billing').value = d.billing||'';
+  document.getElementById('f-shipping').value = d.shipping||'';
+  document.getElementById('f-credit').value = d.credit||'';
+  document.getElementById('f-outstanding').value = d.outstanding||'';
+}
+
+let rowCount = 0;
+function addProductRow() {
+  const id = rowCount++;
+  const opts = products.map(p => `<option value="${p.name}" data-stock="${p.stock}" data-price="${p.price}">${p.name}</option>`).join('');
+  const row = document.createElement('div');
+  row.className = 'product-row';
+  row.id = `pr-${id}`;
+  row.innerHTML = `
+    <select class="form-select text-xs" onchange="fillProduct(this,${id})" id="pr-sel-${id}">
+      <option value="">Select product</option>${opts}
+    </select>
+    <input class="form-input text-xs" id="pr-sku-${id}" placeholder="SKU" readonly />
+    <input class="form-input text-xs" id="pr-stock-${id}" placeholder="Avail." readonly />
+    <input class="form-input text-xs" id="pr-qty-${id}" type="number" min="1" placeholder="Qty" oninput="calcSummary()" />
+    <input class="form-input text-xs" id="pr-price-${id}" placeholder="Price" readonly />
+    <input class="form-input text-xs font-semibold" id="pr-amt-${id}" placeholder="₹0" readonly />
+    <button class="btn-icon btn-cancel" onclick="removeRow(${id})"><i class="fas fa-trash"></i></button>
+  `;
+  document.getElementById('product-rows').appendChild(row);
+}
+
+function fillProduct(sel, id) {
+  const opt = sel.options[sel.selectedIndex];
+  const p = products.find(x => x.name === sel.value);
+  if (!p) return;
+  document.getElementById(`pr-sku-${id}`).value = p.sku;
+  document.getElementById(`pr-stock-${id}`).value = p.stock;
+  document.getElementById(`pr-price-${id}`).value = `₹${p.price}`;
+  calcSummary();
+}
+
+function removeRow(id) { document.getElementById(`pr-${id}`)?.remove(); calcSummary(); }
+
+function calcSummary() {
+  let totalQty = 0, subTotal = 0;
+  document.querySelectorAll('[id^="pr-qty-"]').forEach(input => {
+    const rowId = input.id.replace('pr-qty-','');
+    const qty = parseFloat(input.value)||0;
+    const priceEl = document.getElementById(`pr-price-${rowId}`);
+    const price = parseFloat((priceEl?.value||'0').replace('₹',''))||0;
+    const amt = qty * price;
+    const amtEl = document.getElementById(`pr-amt-${rowId}`);
+    if (amtEl) amtEl.value = amt ? `₹${amt.toFixed(2)}` : '';
+    totalQty += qty; subTotal += amt;
+  });
+  const gst = subTotal * 0.18;
+  const disc = parseFloat(document.getElementById('s-discount-input')?.value)||0;
+  const total = subTotal + gst - disc;
+  document.getElementById('s-qty').textContent = totalQty;
+  document.getElementById('s-sub').textContent = `₹${subTotal.toFixed(2)}`;
+  document.getElementById('s-gst').textContent = `₹${gst.toFixed(2)}`;
+  document.getElementById('s-total').textContent = `₹${total.toFixed(2)}`;
+}
+
+function saveDraft() { closeCreate(); toast('Order saved as Draft','amber'); }
+function submitOrder() { closeCreate(); toast('Order submitted for approval','green'); }
+function exportOrders() { toast('Exporting orders…','blue'); }
+
+// ── Detail modal ──
+let currentOrder = null;
+function openDetail(id) {
+  const o = orders.find(x => x.id === id);
+  if (!o) return;
+  currentOrder = o;
+  document.getElementById('detail-title').textContent = `Order #${o.id}`;
+  document.getElementById('dc-orderNo').textContent = o.id;
+  document.getElementById('dc-customer').textContent = o.customer;
+  document.getElementById('dc-date').textContent = o.date;
+  document.getElementById('dc-amount').textContent = o.value;
+  document.getElementById('dov-billing').textContent = o.billing;
+  document.getElementById('dov-shipping').textContent = o.shipping;
+  document.getElementById('dov-contact').textContent = o.contact;
+  document.getElementById('dov-credit').textContent = o.credit;
+  document.getElementById('dov-priority').textContent = o.priority;
+  document.getElementById('dov-delivery').textContent = o.delivery;
+  document.getElementById('dov-status').innerHTML = statusBadge(o.status);
+  document.getElementById('dov-remarks').textContent = o.remarks;
+
+  // Products
+  document.getElementById('detail-products-tbody').innerHTML = o.products.map(p => {
+    const amt = p.qty * p.price;
+    return `<tr><td>${p.name}</td><td>${p.qty}</td><td>₹${p.price}</td><td>${p.gst}%</td><td class="font-semibold">₹${amt.toLocaleString()}</td></tr>`;
+  }).join('');
+
+  // Allocation
+  document.getElementById('detail-alloc-tbody').innerHTML = o.alloc.map(a => {
+    const pct = a.ordered ? Math.round(a.allocated/a.ordered*100) : 0;
+    return `<tr>
+      <td>${a.name}</td><td>${a.ordered}</td><td>${a.allocated}</td>
+      <td style="min-width:120px">
+        <div class="flex items-center gap-2">
+          <div class="alloc-bar flex-1"><div class="alloc-bar-fill" style="width:${pct}%"></div></div>
+          <span class="text-xs font-semibold text-[#111844]">${pct}%</span>
+        </div>
+      </td>
+    </tr>`;
+  }).join('');
+
+  // Timeline
+  document.getElementById('detail-timeline').innerHTML = o.timeline.map(t => `
+    <div class="timeline-item">
+      <div class="timeline-dot ${t.done?'done':'future'}"></div>
+      <div class="timeline-label">${t.label}</div>
+      <div class="timeline-time">${t.time}</div>
+    </div>
+  `).join('');
+
+  // Approve button visibility
+  document.getElementById('detail-approve-btn').style.display = o.status==='Pending Approval' ? '' : 'none';
+
+  switchTab('overview');
+  document.getElementById('modal-detail').classList.remove('hidden');
+}
+
+function closeDetail() { document.getElementById('modal-detail').classList.add('hidden'); currentOrder=null; }
+
+function approveFromDetail() {
+  if (!currentOrder) return;
+  currentOrder.status = 'Approved';
+  document.getElementById('dov-status').innerHTML = statusBadge('Approved');
+  document.getElementById('detail-approve-btn').style.display = 'none';
+  filterTable();
+  toast(`${currentOrder.id} approved`,'green');
+}
+
+function allocateFull() {
+  if (!currentOrder) return;
+  currentOrder.alloc = currentOrder.alloc.map(a => ({...a, allocated:a.ordered}));
+  document.getElementById('detail-alloc-tbody').innerHTML = currentOrder.alloc.map(a => `
+    <tr><td>${a.name}</td><td>${a.ordered}</td><td>${a.allocated}</td>
+    <td><div class="flex items-center gap-2"><div class="alloc-bar flex-1"><div class="alloc-bar-fill" style="width:100%"></div></div><span class="text-xs font-semibold">100%</span></div></td></tr>
+  `).join('');
+  currentOrder.status = 'Ready For Dispatch';
+  filterTable();
+  toast('Stock fully allocated — Ready for Dispatch','green');
+}
+
+// ── Tabs ──
+function switchTab(name) {
+  document.querySelectorAll('.tab-btn').forEach(b => b.classList.remove('active'));
+  document.querySelectorAll('.tab-content').forEach(c => c.classList.remove('active'));
+  document.querySelector(`.tab-btn[onclick*="${name}"]`).classList.add('active');
+  document.getElementById(`tab-${name}`).classList.add('active');
+}
+
+// ── Toast ──
+function toast(msg, type='green') {
+  const c = document.getElementById('toast-container');
+  const colors = { green:'bg-emerald-700', amber:'bg-amber-600', red:'bg-red-600', blue:'bg-[#4B5694]' };
+  const t = document.createElement('div');
+  t.className = `toast ${colors[type]||'bg-[#111844]'}`;
+  t.innerHTML = `<i class="fas fa-check-circle"></i><span>${msg}</span>`;
+  c.appendChild(t);
+  setTimeout(() => t.remove(), 3000);
+}
+
+// ── Sidebar ──
+let isCollapsed = false;
+const sidebar = document.getElementById('sidebar');
+const mainWrapper = document.getElementById('main-wrapper');
+const sidebarToggle = document.getElementById('sidebar-toggle');
+const overlay = document.getElementById('sidebar-overlay');
+
+sidebarToggle?.addEventListener('click', () => {
+  if (window.innerWidth < 1024) {
+    sidebar.classList.toggle('sidebar-open');
+    overlay?.classList.toggle('hidden');
+  } else {
+    isCollapsed = !isCollapsed;
+    sidebar.classList.toggle('sidebar-collapsed', isCollapsed);
+    mainWrapper.style.marginLeft = isCollapsed ? '68px' : '';
+    const icon = sidebarToggle.querySelector('i');
+    icon.className = isCollapsed ? 'fas fa-chevron-right text-sm' : 'fas fa-chevron-left text-sm';
+  }
+});
+overlay?.addEventListener('click', () => { sidebar.classList.remove('sidebar-open'); overlay.classList.add('hidden'); });
+document.getElementById('mobile-menu-btn')?.addEventListener('click', () => { sidebar.classList.add('sidebar-open'); overlay?.classList.remove('hidden'); });
+
+// ── Nav dropdowns ──
+document.querySelectorAll('.nav-group-header').forEach(h => {
+  h.addEventListener('click', () => {
+    const items = h.nextElementSibling;
+    const chev = h.querySelector('.fa-chevron-down');
+    items?.classList.toggle('hidden');
+    if (chev) chev.style.transform = items?.classList.contains('hidden') ? 'rotate(0deg)' : 'rotate(180deg)';
+  });
+});
+
+// ── User / notif menus ──
+const userBtn = document.getElementById('user-menu-btn');
+const userMenu = document.getElementById('user-menu');
+const notifBtn = document.getElementById('notif-btn');
+const notifMenu = document.getElementById('notif-menu');
+userBtn?.addEventListener('click', e => { e.stopPropagation(); userMenu.classList.toggle('hidden'); });
+notifBtn?.addEventListener('click', e => { e.stopPropagation(); notifMenu.classList.toggle('hidden'); userMenu.classList.add('hidden'); });
+document.addEventListener('click', () => { userMenu?.classList.add('hidden'); notifMenu?.classList.add('hidden'); });
+
+// ── Close modals on overlay click ──
+document.getElementById('modal-create').addEventListener('click', e => { if(e.target===e.currentTarget) closeCreate(); });
+document.getElementById('modal-detail').addEventListener('click', e => { if(e.target===e.currentTarget) closeDetail(); });
+
+// ── Init ──
+renderTable(orders);
+</script>
+</body>
+</html>

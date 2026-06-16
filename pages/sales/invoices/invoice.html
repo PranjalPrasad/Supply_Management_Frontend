@@ -1,0 +1,689 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Invoices — Supply Management Admin</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script>tailwind.config = { theme: { extend: { colors: { active: '#111844', border2: '#4B5694', bg: '#FAFAFA', hover2: '#7288AE', card: '#FFFCFC', dark: '#1a2155' } } } }</script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@300;400;500;700&display=swap" rel="stylesheet" />
+    <link rel="stylesheet" href="/pages/sales/invoices/invoice.css">
+</head>
+<body class="bg-[#ebe6e6] text-[#111844] min-h-screen">
+
+<!-- ═══════════════════════════ SIDEBAR ═══════════════════════════ -->
+<aside id="sidebar" class="fixed top-0 left-0 h-full w-[260px] bg-[#FFFCFC] z-[100] flex flex-col transition-all duration-300 overflow-hidden shadow-lg">
+  <div class="flex items-center justify-between px-5 h-16 border-b border-[#4B5694]/20 shadow-sm">
+    <div class="flex items-center gap-3">
+      <div class="w-9 h-9 rounded-lg bg-[#111844] flex items-center justify-center text-[#FAFAFA] flex-shrink-0"><i class="fas fa-cubes"></i></div>
+      <span class="sidebar-brand-text font-bold text-[#111844] text-sm tracking-wide">SupplyManager</span>
+    </div>
+    <button id="sidebar-toggle" class="w-7 h-7 flex items-center justify-center rounded-lg text-[#4B5694] hover:bg-[#4B5694]/10 transition-colors">
+      <i class="fas fa-chevron-left text-sm"></i>
+    </button>
+  </div>
+  <nav class="flex-1 overflow-y-auto py-3 px-2 space-y-0.5">
+    <a href="/index.html" class="nav-item flex items-center gap-3 px-3 py-2.5 rounded-lg text-[#111844]/70 hover:bg-[#7288AE]/20 text-sm cursor-pointer border-b border-[#4B5694]/20">
+      <span class="nav-icon w-5"><i class="fas fa-chart-pie"></i></span><span class="nav-label">Dashboard</span>
+    </a>
+    <!-- Master Management -->
+    <div class="nav-group">
+      <div class="nav-group-header flex items-center justify-between gap-3 px-3 py-2.5 rounded-lg text-[#111844]/70 hover:bg-[#7288AE]/20 text-sm cursor-pointer border-b border-[#4B5694]/20">
+        <div class="flex items-center gap-3"><span class="nav-icon w-5"><i class="fas fa-database"></i></span><span class="nav-label">Master Management</span></div>
+        <i class="fas fa-chevron-down text-xs transition-transform duration-200"></i>
+      </div>
+      <div class="nav-group-items ml-7 space-y-0.5 mt-1 hidden">
+        <a href="#" class="nav-item flex items-center gap-3 px-3 py-2 rounded-lg text-[#111844]/70 hover:bg-[#7288AE]/20 text-xs cursor-pointer"><span class="nav-icon w-4"><i class="fas fa-box"></i></span><span class="nav-label">Products</span></a>
+        <a href="#" class="nav-item flex items-center gap-3 px-3 py-2 rounded-lg text-[#111844]/70 hover:bg-[#7288AE]/20 text-xs cursor-pointer"><span class="nav-icon w-4"><i class="fas fa-truck-loading"></i></span><span class="nav-label">Suppliers</span></a>
+        <a href="#" class="nav-item flex items-center gap-3 px-3 py-2 rounded-lg text-[#111844]/70 hover:bg-[#7288AE]/20 text-xs cursor-pointer"><span class="nav-icon w-4"><i class="fas fa-users"></i></span><span class="nav-label">Customers</span></a>
+        <a href="#" class="nav-item flex items-center gap-3 px-3 py-2 rounded-lg text-[#111844]/70 hover:bg-[#7288AE]/20 text-xs cursor-pointer"><span class="nav-icon w-4"><i class="fas fa-warehouse"></i></span><span class="nav-label">Warehouses</span></a>
+      </div>
+    </div>
+    <a href="#" class="nav-item flex items-center gap-3 px-3 py-2.5 rounded-lg text-[#111844]/70 hover:bg-[#7288AE]/20 text-sm cursor-pointer border-b border-[#4B5694]/20"><span class="nav-icon w-5"><i class="fas fa-shopping-cart"></i></span><span class="nav-label">Purchase Management</span></a>
+    <a href="#" class="nav-item flex items-center gap-3 px-3 py-2.5 rounded-lg text-[#111844]/70 hover:bg-[#7288AE]/20 text-sm cursor-pointer border-b border-[#4B5694]/20"><span class="nav-icon w-5"><i class="fas fa-boxes-stacked"></i></span><span class="nav-label">Inventory Management</span></a>
+    <a href="#" class="nav-item flex items-center gap-3 px-3 py-2.5 rounded-lg text-[#111844]/70 hover:bg-[#7288AE]/20 text-sm cursor-pointer border-b border-[#4B5694]/20"><span class="nav-icon w-5"><i class="fas fa-warehouse"></i></span><span class="nav-label">Warehouse Management</span></a>
+    <!-- Sales & Dispatch — ACTIVE -->
+    <div class="nav-group">
+      <div class="nav-group-header nav-active flex items-center justify-between gap-3 px-3 py-2.5 rounded-lg text-sm cursor-pointer border-b border-[#4B5694]/20">
+        <div class="flex items-center gap-3"><span class="nav-icon w-5"><i class="fas fa-truck"></i></span><span class="nav-label">Sales & Dispatch</span></div>
+        <i class="fas fa-chevron-down text-xs" style="transform:rotate(180deg)"></i>
+      </div>
+      <div class="nav-group-items ml-7 space-y-0.5 mt-1">
+        <a href="#" class="nav-item flex items-center gap-3 px-3 py-2 rounded-lg text-[#111844]/70 hover:bg-[#7288AE]/20 text-xs cursor-pointer"><span class="nav-icon w-4"><i class="fas fa-receipt"></i></span><span class="nav-label">Sales Orders</span></a>
+        <a href="#" class="nav-item flex items-center gap-3 px-3 py-2 rounded-lg text-[#111844]/70 hover:bg-[#7288AE]/20 text-xs cursor-pointer"><span class="nav-icon w-4"><i class="fas fa-calendar-alt"></i></span><span class="nav-label">Dispatch Planning</span></a>
+        <a href="#" class="nav-item flex items-center gap-3 px-3 py-2 rounded-lg text-[#111844]/70 hover:bg-[#7288AE]/20 text-xs cursor-pointer"><span class="nav-icon w-4"><i class="fas fa-file-alt"></i></span><span class="nav-label">Delivery Challan</span></a>
+        <a href="invoices.html" class="nav-item nav-active flex items-center gap-3 px-3 py-2 rounded-lg text-xs cursor-pointer"><span class="nav-icon w-4"><i class="fas fa-file-invoice-dollar"></i></span><span class="nav-label">Invoices</span></a>
+        <a href="#" class="nav-item flex items-center gap-3 px-3 py-2 rounded-lg text-[#111844]/70 hover:bg-[#7288AE]/20 text-xs cursor-pointer"><span class="nav-icon w-4"><i class="fas fa-location-dot"></i></span><span class="nav-label">Shipment Tracking</span></a>
+      </div>
+    </div>
+    <a href="#" class="nav-item flex items-center gap-3 px-3 py-2.5 rounded-lg text-[#111844]/70 hover:bg-[#7288AE]/20 text-sm cursor-pointer border-b border-[#4B5694]/20"><span class="nav-icon w-5"><i class="fas fa-rotate-left"></i></span><span class="nav-label">Returns Management</span></a>
+    <!-- Finance -->
+    <div class="nav-group">
+      <div class="nav-group-header flex items-center justify-between gap-3 px-3 py-2.5 rounded-lg text-[#111844]/70 hover:bg-[#7288AE]/20 text-sm cursor-pointer border-b border-[#4B5694]/20">
+        <div class="flex items-center gap-3"><span class="nav-icon w-5"><i class="fas fa-coins"></i></span><span class="nav-label">Finance & Billing</span></div>
+        <i class="fas fa-chevron-down text-xs transition-transform duration-200"></i>
+      </div>
+      <div class="nav-group-items ml-7 space-y-0.5 mt-1 hidden">
+        <a href="#" class="nav-item flex items-center gap-3 px-3 py-2 rounded-lg text-[#111844]/70 hover:bg-[#7288AE]/20 text-xs cursor-pointer"><span class="nav-icon w-4"><i class="fas fa-hand-holding-usd"></i></span><span class="nav-label">Receivables</span></a>
+        <a href="#" class="nav-item flex items-center gap-3 px-3 py-2 rounded-lg text-[#111844]/70 hover:bg-[#7288AE]/20 text-xs cursor-pointer"><span class="nav-icon w-4"><i class="fas fa-money-bill-wave"></i></span><span class="nav-label">Payables</span></a>
+        <a href="#" class="nav-item flex items-center gap-3 px-3 py-2 rounded-lg text-[#111844]/70 hover:bg-[#7288AE]/20 text-xs cursor-pointer"><span class="nav-icon w-4"><i class="fas fa-percent"></i></span><span class="nav-label">GST Management</span></a>
+      </div>
+    </div>
+    <a href="#" class="nav-item flex items-center gap-3 px-3 py-2.5 rounded-lg text-[#111844]/70 hover:bg-[#7288AE]/20 text-sm cursor-pointer border-b border-[#4B5694]/20"><span class="nav-icon w-5"><i class="fas fa-chart-bar"></i></span><span class="nav-label">Reports & Analytics</span></a>
+    <!-- User Management -->
+    <div class="nav-group">
+      <div class="nav-group-header flex items-center justify-between gap-3 px-3 py-2.5 rounded-lg text-[#111844]/70 hover:bg-[#7288AE]/20 text-sm cursor-pointer border-b border-[#4B5694]/20">
+        <div class="flex items-center gap-3"><span class="nav-icon w-5"><i class="fas fa-users-gear"></i></span><span class="nav-label">User Management</span></div>
+        <i class="fas fa-chevron-down text-xs transition-transform duration-200"></i>
+      </div>
+      <div class="nav-group-items ml-7 space-y-0.5 mt-1 hidden">
+        <a href="#" class="nav-item flex items-center gap-3 px-3 py-2 rounded-lg text-[#111844]/70 hover:bg-[#7288AE]/20 text-xs cursor-pointer"><span class="nav-icon w-4"><i class="fas fa-user"></i></span><span class="nav-label">Users</span></a>
+        <a href="#" class="nav-item flex items-center gap-3 px-3 py-2 rounded-lg text-[#111844]/70 hover:bg-[#7288AE]/20 text-xs cursor-pointer"><span class="nav-icon w-4"><i class="fas fa-lock"></i></span><span class="nav-label">Roles & Permissions</span></a>
+      </div>
+    </div>
+  </nav>
+  <div class="px-4 py-3 border-t border-[#4B5694]/20 bg-[#FAFAFA]/30">
+    <div class="flex items-center gap-3">
+      <div class="w-8 h-8 rounded-full bg-[#111844] flex items-center justify-center text-[#FAFAFA] text-xs font-bold flex-shrink-0">AD</div>
+      <div class="sidebar-brand-text min-w-0">
+        <div class="text-[#111844] text-xs font-medium truncate">Admin</div>
+        <div class="text-[#7288AE] text-xs truncate">admin@supplymanager.com</div>
+      </div>
+    </div>
+  </div>
+</aside>
+
+<div id="sidebar-overlay" class="hidden fixed inset-0 bg-[#111844]/50 z-[90] lg:hidden"></div>
+
+<!-- ═══════════════════════════ MAIN WRAPPER ═══════════════════════════ -->
+<div id="main-wrapper" class="ml-[260px] flex flex-col min-h-screen transition-all duration-300">
+
+  <!-- TOPBAR -->
+  <header class="sticky top-0 z-[80] h-16 bg-[#FFFCFC] border-b border-[#4B5694]/20 flex items-center justify-between px-5 shadow-sm">
+    <div>
+      <h1 class="text-sm font-semibold text-[#111844]">Invoice Generation</h1>
+      <p class="text-xs text-[#7288AE]">Sales & Dispatch › Invoices</p>
+    </div>
+    <div class="flex items-center gap-2">
+      <!-- Notifications -->
+      <div class="relative">
+        <button id="notif-btn" class="w-9 h-9 flex items-center justify-center rounded-lg text-[#4B5694] hover:bg-[#4B5694]/10 transition-colors relative">
+          <i class="fas fa-bell text-base"></i><span class="notif-badge"></span>
+        </button>
+        <div id="notif-menu" class="hidden absolute right-0 top-full mt-1 w-80 bg-[#FFFCFC] border border-[#4B5694]/20 rounded-xl shadow-lg z-50 overflow-hidden">
+          <div class="flex items-center justify-between px-4 py-3 border-b border-[#4B5694]/15">
+            <span class="text-xs font-semibold text-[#111844]">Notifications</span>
+            <span class="text-[10px] px-2 py-0.5 rounded-full bg-[#111844]/10 text-[#111844] font-medium">3 new</span>
+          </div>
+          <div class="max-h-72 overflow-y-auto divide-y divide-[#4B5694]/10">
+            <div class="notif-item"><div class="notif-icon bg-indigo-100 text-indigo-700"><i class="fas fa-file-invoice-dollar"></i></div><div><div class="notif-title">Invoice #INV-1042 generated</div><div class="notif-desc">For Ramesh Traders — ₹48,200</div><div class="notif-time">5 min ago</div></div></div>
+            <div class="notif-item"><div class="notif-icon bg-amber-100 text-amber-600"><i class="fas fa-clock"></i></div><div><div class="notif-title">Invoice #INV-1039 overdue</div><div class="notif-desc">Payment pending from Global Supplies</div><div class="notif-time">2 hours ago</div></div></div>
+            <div class="notif-item"><div class="notif-icon bg-emerald-100 text-emerald-700"><i class="fas fa-check-circle"></i></div><div><div class="notif-title">Invoice #INV-1036 paid</div><div class="notif-desc">₹72,500 received from Apex Corp</div><div class="notif-time">Yesterday</div></div></div>
+          </div>
+          <div class="px-4 py-2.5 border-t border-[#4B5694]/15 text-center"><a href="#" class="text-xs font-medium text-[#111844] hover:underline">View all</a></div>
+        </div>
+      </div>
+      <!-- User -->
+      <div class="relative">
+        <button id="user-menu-btn" class="flex items-center gap-2 px-3 py-1.5 rounded-lg hover:bg-[#4B5694]/10 transition-colors">
+          <div class="w-7 h-7 rounded-full bg-[#111844] flex items-center justify-center text-[#FAFAFA] text-xs font-bold">AD</div>
+          <span class="text-xs font-medium text-[#111844] hidden sm:block">Admin</span>
+          <i class="fas fa-chevron-down text-[10px] text-[#4B5694]"></i>
+        </button>
+        <div id="user-menu" class="hidden absolute right-0 top-full mt-1 w-44 bg-[#FFFCFC] border border-[#4B5694]/20 rounded-xl shadow-lg py-1 z-50">
+          <a href="#" class="flex items-center gap-2 px-4 py-2 text-xs text-[#111844] hover:bg-[#7288AE]/10"><i class="fas fa-user-circle w-4"></i> My Profile</a>
+          <div class="border-t border-[#4B5694]/10 my-1"></div>
+          <a href="#" class="flex items-center gap-2 px-4 py-2 text-xs text-red-600 hover:bg-red-50"><i class="fas fa-sign-out-alt w-4"></i> Logout</a>
+        </div>
+      </div>
+    </div>
+  </header>
+
+  <!-- MAIN CONTENT — Invoice List Page only -->
+  <main class="flex-1 p-5 space-y-5">
+
+    <!-- KPI Cards -->
+    <div class="grid grid-cols-2 sm:grid-cols-4 gap-3">
+      <div class="widget-card">
+        <div><div class="widget-value">142</div><div class="widget-label">Total Invoices</div></div>
+        <div class="widget-icon bg-[#111844]/10 text-[#111844]"><i class="fas fa-file-invoice-dollar"></i></div>
+      </div>
+      <div class="widget-card">
+        <div><div class="widget-value">₹24.6L</div><div class="widget-label">Total Invoiced</div><div class="widget-trend bg-emerald-100 text-emerald-700"><i class="fas fa-arrow-up"></i> This Month</div></div>
+        <div class="widget-icon bg-emerald-100 text-emerald-700"><i class="fas fa-rupee-sign"></i></div>
+      </div>
+      <div class="widget-card">
+        <div><div class="widget-value">18</div><div class="widget-label">Pending Payment</div></div>
+        <div class="widget-icon bg-amber-100 text-amber-700"><i class="fas fa-hourglass-half"></i></div>
+      </div>
+      <div class="widget-card">
+        <div><div class="widget-value">₹6.1L</div><div class="widget-label">GST Collected</div></div>
+        <div class="widget-icon bg-purple-100 text-purple-700"><i class="fas fa-percent"></i></div>
+      </div>
+    </div>
+
+    <!-- Invoice List Card -->
+    <div class="chart-card">
+      <!-- Header -->
+      <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-3 mb-4">
+        <div>
+          <div class="section-title"><i class="fas fa-file-invoice-dollar mr-1.5 text-[#4B5694]"></i>Invoice List</div>
+          <div class="section-sub">All customer invoices — generated, pending and paid</div>
+        </div>
+        <div class="flex items-center gap-2 flex-wrap">
+          <button onclick="openOverlay('overlay-create')" class="btn-primary flex items-center gap-2">
+            <i class="fas fa-plus text-xs"></i> Create Invoice
+          </button>
+          <button onclick="openOverlay('overlay-export')" class="btn-secondary flex items-center gap-2">
+            <i class="fas fa-download text-xs"></i> Export
+          </button>
+        </div>
+      </div>
+
+      <!-- Filters -->
+      <div class="flex flex-wrap gap-2 mb-4">
+        <div class="relative">
+          <i class="fas fa-search absolute left-3 top-1/2 -translate-y-1/2 text-[#7288AE] text-xs"></i>
+          <input type="text" id="search-input" placeholder="Search invoice / customer…" class="filter-input pl-8 pr-3">
+        </div>
+        <select id="filter-status" class="filter-input">
+          <option value="">All Status</option>
+          <option>Draft</option><option>Generated</option><option>Sent</option>
+          <option>Partially Paid</option><option>Paid</option><option>Cancelled</option>
+        </select>
+        <input type="date" id="filter-from" class="filter-input">
+        <input type="date" id="filter-to" class="filter-input">
+        <button onclick="clearFilters()" class="btn-secondary text-xs flex items-center gap-1"><i class="fas fa-times"></i> Clear</button>
+      </div>
+
+      <!-- Table -->
+      <div class="overflow-x-auto rounded-lg border border-[#4B5694]/12">
+        <table class="w-full text-xs">
+          <thead>
+            <tr class="bg-[#111844]/5 text-[#4B5694] font-semibold">
+              <th class="px-4 py-3 text-left">Invoice No</th>
+              <th class="px-4 py-3 text-left">Date</th>
+              <th class="px-4 py-3 text-left">Customer</th>
+              <th class="px-4 py-3 text-left">Sales Order</th>
+              <th class="px-4 py-3 text-right">Amount</th>
+              <th class="px-4 py-3 text-right">GST</th>
+              <th class="px-4 py-3 text-center">Status</th>
+              <th class="px-4 py-3 text-center">Actions</th>
+            </tr>
+          </thead>
+          <tbody id="invoice-tbody" class="divide-y divide-[#4B5694]/10"></tbody>
+        </table>
+        <div id="empty-state" class="hidden py-12 text-center">
+          <i class="fas fa-file-invoice text-4xl text-[#4B5694]/25 mb-3 block"></i>
+          <div class="text-sm font-medium text-[#111844]/50">No invoices match your filters</div>
+          <div class="text-xs text-[#7288AE] mt-1">Adjust your search or clear the filters</div>
+        </div>
+      </div>
+
+      <!-- Pagination -->
+      <div class="flex items-center justify-between mt-3 text-xs text-[#7288AE]">
+        <span id="pagination-info"></span>
+        <div class="flex items-center gap-1">
+          <button class="px-3 py-1.5 rounded-lg border border-[#4B5694]/20 hover:bg-[#7288AE]/10 transition-colors">‹ Prev</button>
+          <button class="px-3 py-1.5 rounded-lg bg-[#111844] text-white">1</button>
+          <button class="px-3 py-1.5 rounded-lg border border-[#4B5694]/20 hover:bg-[#7288AE]/10 transition-colors">2</button>
+          <button class="px-3 py-1.5 rounded-lg border border-[#4B5694]/20 hover:bg-[#7288AE]/10 transition-colors">Next ›</button>
+        </div>
+      </div>
+    </div>
+
+  </main>
+</div>
+
+<!-- ═══════════════════════════════════════════════════════════════
+     OVERLAY BACKDROP
+════════════════════════════════════════════════════════════════ -->
+<div id="overlay-backdrop" class="overlay-backdrop hidden" onclick="closeAllOverlays()"></div>
+
+<!-- ═══════════════════════════════════════════════════════════════
+     OVERLAY 1 — CREATE INVOICE  (right drawer, large)
+════════════════════════════════════════════════════════════════ -->
+<div id="overlay-create" class="overlay-modal hidden">
+  <div class="overlay-modal-box">
+    <div class="overlay-header">
+      <div>
+        <div class="overlay-title"><i class="fas fa-file-invoice-dollar mr-2 text-[#4B5694]"></i>Create Invoice</div>
+        <div class="overlay-sub">Generate invoice from Delivery Challan</div>
+      </div>
+      <button onclick="closeAllOverlays()" class="overlay-close"><i class="fas fa-times"></i></button>
+    </div>
+    <div class="overlay-body">
+
+    <!-- Section 1: Reference -->
+    <div class="form-section">
+      <div class="form-section-title"><i class="fas fa-link mr-1.5 text-[#4B5694]"></i>Reference Information</div>
+      <div class="form-grid-2">
+        <div class="form-group">
+          <label class="form-label">Invoice Number</label>
+          <input type="text" class="form-input readonly-input" value="INV-1043" readonly>
+          <span class="form-hint">Auto generated</span>
+        </div>
+        <div class="form-group">
+          <label class="form-label">Invoice Date <span class="text-red-500">*</span></label>
+          <input type="date" class="form-input" id="c-inv-date">
+        </div>
+        <div class="form-group">
+          <label class="form-label">Sales Order Number <span class="text-red-500">*</span></label>
+          <select class="form-input" id="c-so" onchange="autoFill()">
+            <option value="">— Select Sales Order —</option>
+            <option value="SO-3187">SO-3187 — Ramesh Traders</option>
+            <option value="SO-3190">SO-3190 — Apex Corp</option>
+            <option value="SO-3194">SO-3194 — Global Supplies</option>
+          </select>
+        </div>
+        <div class="form-group">
+          <label class="form-label">Delivery Challan Number</label>
+          <select class="form-input" id="c-dc">
+            <option value="">— Select Delivery Challan —</option>
+            <option>DC-0521</option><option>DC-0524</option>
+          </select>
+        </div>
+      </div>
+    </div>
+
+    <!-- Section 2: Customer -->
+    <div class="form-section">
+      <div class="form-section-title"><i class="fas fa-user mr-1.5 text-[#4B5694]"></i>Customer Information <span class="form-hint-inline">Auto-fetched</span></div>
+      <div class="form-grid-2">
+        <div class="form-group">
+          <label class="form-label">Customer Name</label>
+          <input type="text" class="form-input readonly-input" id="c-cust-name" readonly placeholder="Select Sales Order first">
+        </div>
+        <div class="form-group">
+          <label class="form-label">GSTIN</label>
+          <input type="text" class="form-input readonly-input" id="c-cust-gst" readonly placeholder="—">
+        </div>
+        <div class="form-group">
+          <label class="form-label">Billing Address</label>
+          <textarea class="form-input readonly-input resize-none" id="c-billing" rows="2" readonly placeholder="—"></textarea>
+        </div>
+        <div class="form-group">
+          <label class="form-label">Shipping Address</label>
+          <textarea class="form-input readonly-input resize-none" id="c-shipping" rows="2" readonly placeholder="—"></textarea>
+        </div>
+      </div>
+    </div>
+
+    <!-- Section 3: Products -->
+    <div class="form-section">
+      <div class="flex items-center justify-between mb-3">
+        <div class="form-section-title"><i class="fas fa-boxes-stacked mr-1.5 text-[#4B5694]"></i>Product Details</div>
+        <button onclick="addProductRow()" class="btn-secondary text-xs flex items-center gap-1"><i class="fas fa-plus"></i> Add Row</button>
+      </div>
+      <div class="overflow-x-auto rounded-lg border border-[#4B5694]/15">
+        <table class="w-full text-xs">
+          <thead class="bg-[#111844]/5 text-[#4B5694] font-semibold">
+            <tr>
+              <th class="px-3 py-2 text-left">Product</th>
+              <th class="px-3 py-2 text-left">SKU</th>
+              <th class="px-3 py-2 text-right">Qty</th>
+              <th class="px-3 py-2 text-right">Unit Price</th>
+              <th class="px-3 py-2 text-right">GST %</th>
+              <th class="px-3 py-2 text-right">Amount</th>
+              <th class="px-3 py-2"></th>
+            </tr>
+          </thead>
+          <tbody id="product-tbody" class="divide-y divide-[#4B5694]/10">
+            <tr class="product-row">
+              <td class="px-2 py-1.5"><input type="text" class="form-input text-xs py-1" value="Steel Pipes (25mm)"></td>
+              <td class="px-2 py-1.5"><input type="text" class="form-input text-xs py-1" value="SKU-4421"></td>
+              <td class="px-2 py-1.5"><input type="number" class="form-input text-xs py-1 text-right" value="50" oninput="calcRows()"></td>
+              <td class="px-2 py-1.5"><input type="number" class="form-input text-xs py-1 text-right" value="840" oninput="calcRows()"></td>
+              <td class="px-2 py-1.5"><select class="form-input text-xs py-1" onchange="calcRows()"><option>5</option><option selected>12</option><option>18</option><option>28</option></select></td>
+              <td class="px-2 py-1.5 text-right font-semibold row-amount">₹42,000</td>
+              <td class="px-2 py-1.5 text-center"><button onclick="removeRow(this)" class="text-red-400 hover:text-red-600"><i class="fas fa-times"></i></button></td>
+            </tr>
+            <tr class="product-row">
+              <td class="px-2 py-1.5"><input type="text" class="form-input text-xs py-1" value="Industrial Bearings"></td>
+              <td class="px-2 py-1.5"><input type="text" class="form-input text-xs py-1" value="SKU-2207"></td>
+              <td class="px-2 py-1.5"><input type="number" class="form-input text-xs py-1 text-right" value="20" oninput="calcRows()"></td>
+              <td class="px-2 py-1.5"><input type="number" class="form-input text-xs py-1 text-right" value="310" oninput="calcRows()"></td>
+              <td class="px-2 py-1.5"><select class="form-input text-xs py-1" onchange="calcRows()"><option>5</option><option>12</option><option selected>18</option><option>28</option></select></td>
+              <td class="px-2 py-1.5 text-right font-semibold row-amount">₹6,200</td>
+              <td class="px-2 py-1.5 text-center"><button onclick="removeRow(this)" class="text-red-400 hover:text-red-600"><i class="fas fa-times"></i></button></td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+
+    <!-- Section 4: GST -->
+    <div class="form-section">
+      <div class="form-section-title"><i class="fas fa-percent mr-1.5 text-[#4B5694]"></i>GST Breakdown</div>
+      <div class="form-grid-2 mt-3">
+        <div class="space-y-2">
+          <div class="gst-row"><span>CGST (Intra-State)</span><span id="cgst-val">₹2,892</span></div>
+          <div class="gst-row"><span>SGST (Intra-State)</span><span id="sgst-val">₹2,892</span></div>
+          <div class="gst-row"><span>IGST (Inter-State)</span><span class="text-[#7288AE]">—</span></div>
+        </div>
+        <div class="space-y-2">
+          <div class="gst-row border-b border-[#4B5694]/10 pb-1"><span>Sub Total</span><span id="c-subtotal">₹48,200</span></div>
+          <div class="gst-row"><span>GST Total</span><span id="c-gst-total">₹6,156</span></div>
+          <div class="gst-row"><span>Discount (₹)</span><input type="number" class="w-20 text-right border border-[#4B5694]/20 rounded-md px-2 py-0.5 text-xs text-[#111844]" value="0" id="c-discount" oninput="calcRows()"></div>
+          <div class="gst-row bg-[#111844]/5 px-3 rounded-lg font-bold text-sm"><span>Grand Total</span><span id="c-grand">₹54,356</span></div>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div class="overlay-footer">
+    <button onclick="closeAllOverlays()" class="btn-ghost">Cancel</button>
+    <button onclick="saveDraft()" class="btn-secondary flex items-center gap-2"><i class="fas fa-save text-xs"></i> Save Draft</button>
+    <button onclick="generateInvoice()" class="btn-primary flex items-center gap-2"><i class="fas fa-file-invoice-dollar text-xs"></i> Generate Invoice</button>
+  </div>
+  </div> 
+</div>
+
+<!-- ═══════════════════════════════════════════════════════════════
+     OVERLAY 2 — VIEW INVOICE DETAILS  (right drawer, large)
+════════════════════════════════════════════════════════════════ -->
+<div id="overlay-view" class="overlay-modal hidden">
+<div class="overlay-modal-box">
+  <div class="overlay-header">
+    <div>
+      <div class="overlay-title" id="view-inv-title"><i class="fas fa-file-invoice-dollar mr-2 text-[#4B5694]"></i>Invoice Details</div>
+      <div class="overlay-sub" id="view-inv-sub">View complete invoice information</div>
+    </div>
+    <button onclick="closeAllOverlays()" class="overlay-close"><i class="fas fa-times"></i></button>
+  </div>
+  <div class="overlay-body">
+    <!-- Summary Cards -->
+    <div class="grid grid-cols-2 gap-3 mb-4">
+      <div class="mini-card"><div class="mini-card-label">Invoice No</div><div class="mini-card-val" id="vd-invno">—</div></div>
+      <div class="mini-card"><div class="mini-card-label">Status</div><div id="vd-status">—</div></div>
+      <div class="mini-card"><div class="mini-card-label">Customer</div><div class="mini-card-val" id="vd-customer">—</div></div>
+      <div class="mini-card"><div class="mini-card-label">Grand Total</div><div class="mini-card-val text-emerald-700" id="vd-total">—</div></div>
+    </div>
+
+    <!-- Tabs -->
+    <div class="flex gap-0 border-b border-[#4B5694]/15 mb-4">
+      <button class="tab-btn active" onclick="switchTab(this,'vtab-overview')">Overview</button>
+      <button class="tab-btn" onclick="switchTab(this,'vtab-products')">Products</button>
+      <button class="tab-btn" onclick="switchTab(this,'vtab-tax')">Tax</button>
+      <button class="tab-btn" onclick="switchTab(this,'vtab-activity')">Activity</button>
+    </div>
+
+    <!-- Overview -->
+    <div id="vtab-overview" class="tab-content">
+      <div class="form-grid-2">
+        <div>
+          <div class="form-section-title mb-2">Invoice Info</div>
+          <div class="detail-row"><span>Invoice No</span><span id="v-invno">INV-1042</span></div>
+          <div class="detail-row"><span>Date</span><span id="v-date">14 Jun 2025</span></div>
+          <div class="detail-row"><span>Sales Order</span><span id="v-so">SO-3187</span></div>
+          <div class="detail-row"><span>Delivery Challan</span><span id="v-dc">DC-0521</span></div>
+          <div class="detail-row"><span>Status</span><span id="v-status-badge">—</span></div>
+        </div>
+        <div>
+          <div class="form-section-title mb-2">Customer Info</div>
+          <div class="detail-row"><span>Name</span><span id="v-cust">Ramesh Traders</span></div>
+          <div class="detail-row"><span>GSTIN</span><span id="v-gst">27AAACR0012A1Z5</span></div>
+          <div class="detail-row"><span>Billing</span><span id="v-billing" class="text-right">42, MG Road, Pune</span></div>
+        </div>
+      </div>
+    </div>
+    <!-- Products -->
+    <div id="vtab-products" class="tab-content hidden">
+      <table class="w-full text-xs">
+        <thead class="bg-[#111844]/5 text-[#4B5694]">
+          <tr><th class="px-3 py-2 text-left">Product</th><th class="px-3 py-2 text-right">Qty</th><th class="px-3 py-2 text-right">Rate</th><th class="px-3 py-2 text-right">GST</th><th class="px-3 py-2 text-right">Amount</th></tr>
+        </thead>
+        <tbody class="divide-y divide-[#4B5694]/10" id="v-products-tbody">
+          <tr><td class="px-3 py-2">Steel Pipes (25mm)</td><td class="px-3 py-2 text-right">50</td><td class="px-3 py-2 text-right">₹840</td><td class="px-3 py-2 text-right">12%</td><td class="px-3 py-2 text-right font-semibold">₹42,000</td></tr>
+          <tr><td class="px-3 py-2">Industrial Bearings</td><td class="px-3 py-2 text-right">20</td><td class="px-3 py-2 text-right">₹310</td><td class="px-3 py-2 text-right">18%</td><td class="px-3 py-2 text-right font-semibold">₹6,200</td></tr>
+          <tr class="font-bold bg-[#111844]/3"><td class="px-3 py-2" colspan="4">Grand Total</td><td class="px-3 py-2 text-right">₹54,356</td></tr>
+        </tbody>
+      </table>
+    </div>
+    <!-- Tax -->
+    <div id="vtab-tax" class="tab-content hidden">
+      <div class="space-y-2">
+        <div class="detail-row"><span>CGST</span><span>₹2,892</span></div>
+        <div class="detail-row"><span>SGST</span><span>₹2,892</span></div>
+        <div class="detail-row"><span>IGST</span><span>—</span></div>
+        <div class="detail-row font-bold border-t border-[#4B5694]/15 pt-2"><span>Total Tax</span><span>₹6,156</span></div>
+        <div class="detail-row"><span>Sub Total</span><span>₹48,200</span></div>
+        <div class="detail-row text-base font-bold"><span>Grand Total</span><span class="text-emerald-700">₹54,356</span></div>
+      </div>
+    </div>
+    <!-- Activity -->
+    <div id="vtab-activity" class="tab-content hidden">
+      <div class="relative pl-5">
+        <div class="absolute left-2 top-2 bottom-2 w-0.5 bg-[#4B5694]/20"></div>
+        <div class="space-y-4">
+          <div class="activity-item"><div class="activity-dot bg-emerald-500"></div><div class="text-xs font-semibold">Invoice Generated</div><div class="text-[10px] text-[#7288AE]">14 Jun 2025, 10:32 AM — Admin</div></div>
+          <div class="activity-item"><div class="activity-dot bg-indigo-500"></div><div class="text-xs font-semibold">Invoice Created (Draft)</div><div class="text-[10px] text-[#7288AE]">14 Jun 2025, 10:20 AM — Admin</div></div>
+          <div class="activity-item"><div class="activity-dot bg-[#4B5694]"></div><div class="text-xs font-semibold">DC-0521 linked</div><div class="text-[10px] text-[#7288AE]">13 Jun 2025, 04:15 PM</div></div>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div class="overlay-footer">
+    <button onclick="closeAllOverlays()" class="btn-ghost">Close</button>
+    <button onclick="openOverlay('overlay-print')" class="btn-secondary flex items-center gap-2"><i class="fas fa-print text-xs"></i> Print</button>
+    <button onclick="openOverlay('overlay-email')" class="btn-secondary flex items-center gap-2"><i class="fas fa-envelope text-xs"></i> Email</button>
+    <button class="btn-primary flex items-center gap-2"><i class="fas fa-download text-xs"></i> Download PDF</button>
+  </div>
+</div>
+</div>
+
+<!-- ═══════════════════════════════════════════════════════════════
+     OVERLAY 3 — PRINT PREVIEW  (center modal)
+════════════════════════════════════════════════════════════════ -->
+<div id="overlay-print" class="overlay-modal hidden">
+  <div class="overlay-modal-box">
+    <div class="overlay-header">
+      <div><div class="overlay-title"><i class="fas fa-print mr-2 text-[#4B5694]"></i>Print Invoice</div><div class="overlay-sub">Preview before printing</div></div>
+      <button onclick="closeAllOverlays()" class="overlay-close"><i class="fas fa-times"></i></button>
+    </div>
+    <div class="overlay-body">
+      <!-- Print Layout Preview -->
+      <div class="border border-[#4B5694]/20 rounded-xl p-6 bg-white text-[#111844] text-xs print-preview">
+        <!-- Company Header -->
+        <div class="flex items-start justify-between mb-6">
+          <div>
+            <div class="flex items-center gap-2 mb-1">
+              <div class="w-8 h-8 rounded-lg bg-[#111844] flex items-center justify-center text-white text-xs"><i class="fas fa-cubes"></i></div>
+              <span class="font-bold text-base text-[#111844]">SupplyManager Pvt Ltd</span>
+            </div>
+            <div class="text-[#7288AE] text-[10px]">GSTIN: 27AABCS0987D1ZQ</div>
+            <div class="text-[#7288AE] text-[10px]">Plot 12, Industrial Area, Pune — 411019</div>
+          </div>
+          <div class="text-right">
+            <div class="text-lg font-bold text-[#111844]">TAX INVOICE</div>
+            <div class="text-[10px] text-[#7288AE] mt-1">INV-1042</div>
+            <div class="text-[10px] text-[#7288AE]">Date: 14 Jun 2025</div>
+            <div class="text-[10px] text-[#7288AE]">SO: SO-3187</div>
+          </div>
+        </div>
+        <!-- Customer -->
+        <div class="grid grid-cols-2 gap-4 mb-4 p-3 bg-[#FAFAFA] rounded-lg">
+          <div><div class="font-semibold mb-1">Bill To</div><div>Ramesh Traders</div><div class="text-[#7288AE]">GSTIN: 27AAACR0012A1Z5</div><div class="text-[#7288AE]">42, MG Road, Pune — 411001</div></div>
+          <div><div class="font-semibold mb-1">Ship To</div><div>Ramesh Traders</div><div class="text-[#7288AE]">42, MG Road, Pune — 411001</div></div>
+        </div>
+        <!-- Products Table -->
+        <table class="w-full mb-4">
+          <thead class="bg-[#111844] text-white"><tr><th class="px-3 py-2 text-left">Product</th><th class="px-3 py-2 text-right">Qty</th><th class="px-3 py-2 text-right">Rate</th><th class="px-3 py-2 text-right">GST%</th><th class="px-3 py-2 text-right">Amount</th></tr></thead>
+          <tbody class="divide-y divide-[#4B5694]/15"><tr><td class="px-3 py-2">Steel Pipes (25mm)</td><td class="px-3 py-2 text-right">50</td><td class="px-3 py-2 text-right">₹840</td><td class="px-3 py-2 text-right">12%</td><td class="px-3 py-2 text-right">₹42,000</td></tr><tr><td class="px-3 py-2">Industrial Bearings</td><td class="px-3 py-2 text-right">20</td><td class="px-3 py-2 text-right">₹310</td><td class="px-3 py-2 text-right">18%</td><td class="px-3 py-2 text-right">₹6,200</td></tr></tbody>
+        </table>
+        <!-- Tax + Total -->
+        <div class="flex justify-end">
+          <div class="w-64 space-y-1.5">
+            <div class="flex justify-between"><span class="text-[#7288AE]">Sub Total</span><span>₹48,200</span></div>
+            <div class="flex justify-between"><span class="text-[#7288AE]">CGST</span><span>₹2,892</span></div>
+            <div class="flex justify-between"><span class="text-[#7288AE]">SGST</span><span>₹2,892</span></div>
+            <div class="flex justify-between font-bold text-sm border-t border-[#111844]/20 pt-2"><span>Grand Total</span><span>₹54,356</span></div>
+          </div>
+        </div>
+        <!-- Signatures -->
+        <div class="grid grid-cols-2 gap-4 mt-8 pt-4 border-t border-[#4B5694]/15">
+          <div class="text-center"><div class="border-t border-[#111844]/30 pt-2 mt-6 text-[10px] text-[#7288AE]">Authorized Signatory</div></div>
+          <div class="text-center"><div class="border-t border-[#111844]/30 pt-2 mt-6 text-[10px] text-[#7288AE]">Customer Signature</div></div>
+        </div>
+      </div>
+    </div>
+    <div class="overlay-footer">
+      <button onclick="closeAllOverlays()" class="btn-ghost">Cancel</button>
+      <button onclick="window.print()" class="btn-primary flex items-center gap-2"><i class="fas fa-print text-xs"></i> Print Now</button>
+    </div>
+  </div>
+</div>
+
+<!-- ═══════════════════════════════════════════════════════════════
+     OVERLAY 4 — EMAIL INVOICE  (center modal, small)
+════════════════════════════════════════════════════════════════ -->
+<div id="overlay-email" class="overlay-modal hidden">
+  <div class="overlay-modal-box" style="max-width:480px">
+    <div class="overlay-header">
+      <div><div class="overlay-title"><i class="fas fa-envelope mr-2 text-[#4B5694]"></i>Email Invoice</div><div class="overlay-sub">Send invoice to customer</div></div>
+      <button onclick="closeAllOverlays()" class="overlay-close"><i class="fas fa-times"></i></button>
+    </div>
+    <div class="overlay-body">
+      <div class="space-y-3">
+        <div class="form-group">
+          <label class="form-label">To <span class="text-red-500">*</span></label>
+          <input type="email" class="form-input" value="accounts@rameshtraders.com">
+        </div>
+        <div class="form-group">
+          <label class="form-label">CC</label>
+          <input type="email" class="form-input" placeholder="optional">
+        </div>
+        <div class="form-group">
+          <label class="form-label">Subject</label>
+          <input type="text" class="form-input" value="Invoice INV-1042 from SupplyManager Pvt Ltd">
+        </div>
+        <div class="form-group">
+          <label class="form-label">Message</label>
+          <textarea class="form-input resize-none" rows="4">Dear Ramesh Traders,
+
+Please find attached Invoice INV-1042 for ₹54,356 against Sales Order SO-3187.
+
+Regards,
+SupplyManager Pvt Ltd</textarea>
+        </div>
+        <div class="flex items-center gap-2 p-3 bg-[#FAFAFA] rounded-lg border border-[#4B5694]/15 text-xs">
+          <i class="fas fa-paperclip text-[#4B5694]"></i>
+          <span class="text-[#111844]">INV-1042.pdf</span>
+          <span class="text-[#7288AE] ml-1">— 142 KB</span>
+        </div>
+      </div>
+    </div>
+    <div class="overlay-footer">
+      <button onclick="closeAllOverlays()" class="btn-ghost">Cancel</button>
+      <button onclick="sendEmail()" class="btn-primary flex items-center gap-2"><i class="fas fa-paper-plane text-xs"></i> Send Email</button>
+    </div>
+  </div>
+</div>
+
+<!-- ═══════════════════════════════════════════════════════════════
+     OVERLAY 5 — EXPORT  (center modal, small)
+════════════════════════════════════════════════════════════════ -->
+<div id="overlay-export" class="overlay-modal hidden">
+  <div class="overlay-modal-box" style="max-width:420px">
+    <div class="overlay-header">
+      <div><div class="overlay-title"><i class="fas fa-download mr-2 text-[#4B5694]"></i>Export Invoices</div><div class="overlay-sub">Download invoice data</div></div>
+      <button onclick="closeAllOverlays()" class="overlay-close"><i class="fas fa-times"></i></button>
+    </div>
+    <div class="overlay-body">
+      <div class="space-y-3">
+        <div class="form-group">
+          <label class="form-label">Format</label>
+          <div class="grid grid-cols-3 gap-2">
+            <label class="export-opt active-opt"><input type="radio" name="export-fmt" value="csv" checked class="hidden"> <i class="fas fa-file-csv text-emerald-600 text-lg mb-1"></i><span>CSV</span></label>
+            <label class="export-opt"><input type="radio" name="export-fmt" value="xlsx" class="hidden"> <i class="fas fa-file-excel text-emerald-700 text-lg mb-1"></i><span>Excel</span></label>
+            <label class="export-opt"><input type="radio" name="export-fmt" value="pdf" class="hidden"> <i class="fas fa-file-pdf text-red-600 text-lg mb-1"></i><span>PDF</span></label>
+          </div>
+        </div>
+        <div class="form-group">
+          <label class="form-label">Date Range</label>
+          <div class="grid grid-cols-2 gap-2">
+            <input type="date" class="form-input" placeholder="From">
+            <input type="date" class="form-input" placeholder="To">
+          </div>
+        </div>
+        <div class="form-group">
+          <label class="form-label">Status Filter</label>
+          <select class="form-input">
+            <option value="">All Status</option>
+            <option>Draft</option><option>Generated</option><option>Sent</option><option>Paid</option><option>Cancelled</option>
+          </select>
+        </div>
+        <div class="p-3 rounded-lg bg-[#111844]/5 text-xs text-[#7288AE] flex items-center gap-2">
+          <i class="fas fa-info-circle text-[#4B5694]"></i>
+          <span>12 invoices will be exported based on current filters.</span>
+        </div>
+      </div>
+    </div>
+    <div class="overlay-footer">
+      <button onclick="closeAllOverlays()" class="btn-ghost">Cancel</button>
+      <button onclick="doExport()" class="btn-primary flex items-center gap-2"><i class="fas fa-download text-xs"></i> Export Now</button>
+    </div>
+  </div>
+</div>
+
+<!-- ═══════════════════════════════════════════════════════════════
+     OVERLAY 6 — CANCEL CONFIRM  (center modal, small)
+════════════════════════════════════════════════════════════════ -->
+<div id="overlay-cancel" class="overlay-modal hidden">
+  <div class="overlay-modal-box" style="max-width:400px">
+    <div class="overlay-header">
+      <div><div class="overlay-title text-red-600"><i class="fas fa-ban mr-2"></i>Cancel Invoice</div><div class="overlay-sub">This action cannot be undone</div></div>
+      <button onclick="closeAllOverlays()" class="overlay-close"><i class="fas fa-times"></i></button>
+    </div>
+    <div class="overlay-body">
+      <div class="flex items-start gap-3 p-4 bg-red-50 rounded-xl border border-red-200 mb-4">
+        <i class="fas fa-exclamation-triangle text-red-500 mt-0.5"></i>
+        <div class="text-xs text-red-700">You are about to cancel invoice <strong id="cancel-inv-id">INV-1042</strong>. This will mark the invoice as cancelled and notify the customer.</div>
+      </div>
+      <div class="form-group">
+        <label class="form-label">Reason for Cancellation <span class="text-red-500">*</span></label>
+        <textarea class="form-input resize-none" rows="3" placeholder="Enter reason…" id="cancel-reason"></textarea>
+      </div>
+    </div>
+    <div class="overlay-footer">
+      <button onclick="closeAllOverlays()" class="btn-ghost">Keep Invoice</button>
+      <button onclick="confirmCancel()" class="btn-danger flex items-center gap-2"><i class="fas fa-ban text-xs"></i> Cancel Invoice</button>
+    </div>
+  </div>
+</div>
+
+<!-- ═══════════════════════════════════════════════════════════════
+     OVERLAY 7 — DOWNLOAD PDF  (center modal, small)
+════════════════════════════════════════════════════════════════ -->
+<div id="overlay-download" class="overlay-modal hidden">
+  <div class="overlay-modal-box" style="max-width:380px">
+    <div class="overlay-header">
+      <div><div class="overlay-title"><i class="fas fa-file-pdf mr-2 text-red-600"></i>Download Invoice PDF</div><div class="overlay-sub">Choose document to download</div></div>
+      <button onclick="closeAllOverlays()" class="overlay-close"><i class="fas fa-times"></i></button>
+    </div>
+    <div class="overlay-body">
+      <div class="space-y-3">
+        <div class="doc-download-item" onclick="doDownload('invoice')">
+          <div class="w-10 h-10 rounded-lg bg-red-100 text-red-700 flex items-center justify-center flex-shrink-0"><i class="fas fa-file-pdf text-base"></i></div>
+          <div class="flex-1"><div class="text-xs font-semibold text-[#111844]">Invoice PDF</div><div class="text-[10px] text-[#7288AE]">INV-1042.pdf — 142 KB</div></div>
+          <i class="fas fa-download text-[#4B5694] text-sm"></i>
+        </div>
+        <div class="doc-download-item" onclick="doDownload('gst')">
+          <div class="w-10 h-10 rounded-lg bg-indigo-100 text-indigo-700 flex items-center justify-center flex-shrink-0"><i class="fas fa-file-invoice text-base"></i></div>
+          <div class="flex-1"><div class="text-xs font-semibold text-[#111844]">GST Invoice Copy</div><div class="text-[10px] text-[#7288AE]">INV-1042-GST.pdf — 98 KB</div></div>
+          <i class="fas fa-download text-[#4B5694] text-sm"></i>
+        </div>
+      </div>
+    </div>
+    <div class="overlay-footer">
+      <button onclick="closeAllOverlays()" class="btn-ghost">Close</button>
+    </div>
+  </div>
+</div>
+
+<!-- Toast Container -->
+<div id="toast-container" class="fixed bottom-5 right-5 z-[600] space-y-2"></div>
+
+<script src="/pages/sales/invoices/invoice.js"></script>
+</body>
+</html>

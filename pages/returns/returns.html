@@ -1,0 +1,739 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Returns Management — Supply Management Admin</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script>tailwind.config = { theme: { extend: { colors: { active:'#111844', border2:'#4B5694', bg:'#FAFAFA', hover2:'#7288AE', card:'#FFFCFC', dark:'#1a2155' } } } }</script>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+  <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@300;400;500;700&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="/pages/returns/returns.css" />
+</head>
+<body class="bg-[#ebe6e6] text-[#111844] min-h-screen">
+
+<!-- ═══════════════════════════════════════════════
+     SIDEBAR
+═══════════════════════════════════════════════ -->
+<aside id="sidebar" class="fixed top-0 left-0 h-full w-[260px] bg-[#FFFCFC] z-[100] flex flex-col transition-all duration-300 overflow-hidden shadow-lg">
+  <div class="flex items-center justify-between px-5 h-16 border border-[#4B5694]/20 shadow-sm">
+    <div class="flex items-center gap-3">
+      <div class="w-9 h-9 rounded-lg bg-[#111844] flex items-center justify-center text-[#FAFAFA] flex-shrink-0">
+        <i class="fas fa-cubes"></i>
+      </div>
+      <span class="sidebar-brand-text font-bold text-[#111844] text-base tracking-tight">SupplyManager</span>
+    </div>
+    <button id="sidebar-toggle" class="w-7 h-7 flex items-center justify-center rounded-lg text-[#4B5694] hover:bg-[#4B5694]/10 transition-colors">
+      <i class="fas fa-chevron-left text-sm"></i>
+    </button>
+  </div>
+
+  <nav class="flex-1 overflow-y-auto py-3 px-2 space-y-0.5">
+
+    <a href="/index.html" class="nav-item flex items-center gap-3 px-3 py-2.5 rounded-lg text-[#111844]/70 hover:bg-[#7288AE]/20 hover:text-[#111844] transition-colors duration-150 text-sm cursor-pointer border-b border-[#4B5694]/20 shadow-sm">
+      <span class="nav-icon text-base flex-shrink-0 w-5"><i class="fas fa-chart-pie"></i></span>
+      <span class="nav-label">Dashboard</span>
+    </a>
+
+    <!-- Master Management -->
+    <div class="nav-group">
+      <div class="nav-group-header flex items-center justify-between gap-3 px-3 py-2.5 rounded-lg text-[#111844]/70 hover:bg-[#7288AE]/20 hover:text-[#111844] transition-colors duration-150 text-sm cursor-pointer border-b border-[#4B5694]/20 shadow-sm">
+        <div class="flex items-center gap-3">
+          <span class="nav-icon text-base flex-shrink-0 w-5"><i class="fas fa-database"></i></span>
+          <span class="nav-label">Master Management</span>
+        </div>
+        <i class="fas fa-chevron-down text-xs transition-transform duration-200"></i>
+      </div>
+      <div class="nav-group-items ml-7 space-y-0.5 mt-1 hidden">
+        <a href="/pages/Product/product.html" class="nav-item flex items-center gap-3 px-3 py-2 rounded-lg text-[#111844]/70 hover:bg-[#7288AE]/20 hover:text-[#111844] transition-colors duration-150 text-xs cursor-pointer">
+          <span class="nav-icon text-sm flex-shrink-0 w-4"><i class="fas fa-box"></i></span>
+          <span class="nav-label">Products</span>
+        </a>
+        <a href="/pages/suppliers/suppliers.html" class="nav-item flex items-center gap-3 px-3 py-2 rounded-lg text-[#111844]/70 hover:bg-[#7288AE]/20 hover:text-[#111844] transition-colors duration-150 text-xs cursor-pointer">
+          <span class="nav-icon text-sm flex-shrink-0 w-4"><i class="fas fa-truck-loading"></i></span>
+          <span class="nav-label">Suppliers</span>
+        </a>
+        <a href="/pages/customers/customers.html" class="nav-item flex items-center gap-3 px-3 py-2 rounded-lg text-[#111844]/70 hover:bg-[#7288AE]/20 hover:text-[#111844] transition-colors duration-150 text-xs cursor-pointer">
+          <span class="nav-icon text-sm flex-shrink-0 w-4"><i class="fas fa-users"></i></span>
+          <span class="nav-label">Customers</span>
+        </a>
+        <a href="/pages/warehouse/warehouse.html" class="nav-item flex items-center gap-3 px-3 py-2 rounded-lg text-[#111844]/70 hover:bg-[#7288AE]/20 hover:text-[#111844] transition-colors duration-150 text-xs cursor-pointer">
+          <span class="nav-icon text-sm flex-shrink-0 w-4"><i class="fas fa-warehouse"></i></span>
+          <span class="nav-label">Warehouses</span>
+        </a>
+        <a href="/pages/units/units.html" class="nav-item flex items-center gap-3 px-3 py-2 rounded-lg text-[#111844]/70 hover:bg-[#7288AE]/20 hover:text-[#111844] transition-colors duration-150 text-xs cursor-pointer">
+          <span class="nav-icon text-sm flex-shrink-0 w-4"><i class="fas fa-balance-scale"></i></span>
+          <span class="nav-label">Units</span>
+        </a>
+      </div>
+    </div>
+
+    <a href="/purchase.html" class="nav-item flex items-center gap-3 px-3 py-2.5 rounded-lg text-[#111844]/70 hover:bg-[#7288AE]/20 hover:text-[#111844] transition-colors duration-150 text-sm cursor-pointer border-b border-[#4B5694]/20 shadow-sm">
+      <span class="nav-icon text-base flex-shrink-0 w-5"><i class="fas fa-shopping-cart"></i></span>
+      <span class="nav-label">Purchase Management</span>
+    </a>
+    <a href="/inventory.html" class="nav-item flex items-center gap-3 px-3 py-2.5 rounded-lg text-[#111844]/70 hover:bg-[#7288AE]/20 hover:text-[#111844] transition-colors duration-150 text-sm cursor-pointer border-b border-[#4B5694]/20 shadow-sm">
+      <span class="nav-icon text-base flex-shrink-0 w-5"><i class="fas fa-boxes-stacked"></i></span>
+      <span class="nav-label">Inventory Management</span>
+    </a>
+    <a href="/warehouse.html" class="nav-item flex items-center gap-3 px-3 py-2.5 rounded-lg text-[#111844]/70 hover:bg-[#7288AE]/20 hover:text-[#111844] transition-colors duration-150 text-sm cursor-pointer border-b border-[#4B5694]/20 shadow-sm">
+      <span class="nav-icon text-base flex-shrink-0 w-5"><i class="fas fa-warehouse"></i></span>
+      <span class="nav-label">Warehouse Management</span>
+    </a>
+
+    <!-- Sales & Dispatch -->
+    <div class="nav-group">
+      <div class="nav-group-header flex items-center justify-between gap-3 px-3 py-2.5 rounded-lg text-[#111844]/70 hover:bg-[#7288AE]/20 hover:text-[#111844] transition-colors duration-150 text-sm cursor-pointer border-b border-[#4B5694]/20 shadow-sm">
+        <div class="flex items-center gap-3">
+          <span class="nav-icon text-base flex-shrink-0 w-5"><i class="fas fa-truck"></i></span>
+          <span class="nav-label">Sales & Dispatch</span>
+        </div>
+        <i class="fas fa-chevron-down text-xs transition-transform duration-200"></i>
+      </div>
+      <div class="nav-group-items ml-7 space-y-0.5 mt-1 hidden">
+        <a href="/sales-orders.html" class="nav-item flex items-center gap-3 px-3 py-2 rounded-lg text-[#111844]/70 hover:bg-[#7288AE]/20 hover:text-[#111844] transition-colors duration-150 text-xs cursor-pointer">
+          <span class="nav-icon text-sm flex-shrink-0 w-4"><i class="fas fa-receipt"></i></span>
+          <span class="nav-label">Sales Orders</span>
+        </a>
+        <a href="/dispatch-planning.html" class="nav-item flex items-center gap-3 px-3 py-2 rounded-lg text-[#111844]/70 hover:bg-[#7288AE]/20 hover:text-[#111844] transition-colors duration-150 text-xs cursor-pointer">
+          <span class="nav-icon text-sm flex-shrink-0 w-4"><i class="fas fa-calendar-alt"></i></span>
+          <span class="nav-label">Dispatch Planning</span>
+        </a>
+        <a href="/delivery-challan.html" class="nav-item flex items-center gap-3 px-3 py-2 rounded-lg text-[#111844]/70 hover:bg-[#7288AE]/20 hover:text-[#111844] transition-colors duration-150 text-xs cursor-pointer">
+          <span class="nav-icon text-sm flex-shrink-0 w-4"><i class="fas fa-file-alt"></i></span>
+          <span class="nav-label">Delivery Challan</span>
+        </a>
+        <a href="/invoices.html" class="nav-item flex items-center gap-3 px-3 py-2 rounded-lg text-[#111844]/70 hover:bg-[#7288AE]/20 hover:text-[#111844] transition-colors duration-150 text-xs cursor-pointer">
+          <span class="nav-icon text-sm flex-shrink-0 w-4"><i class="fas fa-file-invoice-dollar"></i></span>
+          <span class="nav-label">Invoices</span>
+        </a>
+      </div>
+    </div>
+
+    <!-- Returns Management — ACTIVE -->
+    <a href="/returns.html" class="nav-item nav-active flex items-center gap-3 px-3 py-2.5 rounded-lg text-sm cursor-pointer border-b border-[#4B5694]/20 shadow-sm">
+      <span class="nav-icon text-base flex-shrink-0 w-5"><i class="fas fa-rotate-left"></i></span>
+      <span class="nav-label">Returns Management</span>
+    </a>
+
+    <!-- Finance & Billing -->
+    <div class="nav-group">
+      <div class="nav-group-header flex items-center justify-between gap-3 px-3 py-2.5 rounded-lg text-[#111844]/70 hover:bg-[#7288AE]/20 hover:text-[#111844] transition-colors duration-150 text-sm cursor-pointer border-b border-[#4B5694]/20 shadow-sm">
+        <div class="flex items-center gap-3">
+          <span class="nav-icon text-base flex-shrink-0 w-5"><i class="fas fa-coins"></i></span>
+          <span class="nav-label">Finance & Billing</span>
+        </div>
+        <i class="fas fa-chevron-down text-xs transition-transform duration-200"></i>
+      </div>
+      <div class="nav-group-items ml-7 space-y-0.5 mt-1 hidden">
+        <a href="/accounts-receivable.html" class="nav-item flex items-center gap-3 px-3 py-2 rounded-lg text-[#111844]/70 hover:bg-[#7288AE]/20 hover:text-[#111844] transition-colors duration-150 text-xs cursor-pointer">
+          <span class="nav-icon text-sm flex-shrink-0 w-4"><i class="fas fa-hand-holding-usd"></i></span>
+          <span class="nav-label">Receivables</span>
+        </a>
+        <a href="/accounts-payable.html" class="nav-item flex items-center gap-3 px-3 py-2 rounded-lg text-[#111844]/70 hover:bg-[#7288AE]/20 hover:text-[#111844] transition-colors duration-150 text-xs cursor-pointer">
+          <span class="nav-icon text-sm flex-shrink-0 w-4"><i class="fas fa-money-bill-wave"></i></span>
+          <span class="nav-label">Payables</span>
+        </a>
+        <a href="/gst-management.html" class="nav-item flex items-center gap-3 px-3 py-2 rounded-lg text-[#111844]/70 hover:bg-[#7288AE]/20 hover:text-[#111844] transition-colors duration-150 text-xs cursor-pointer">
+          <span class="nav-icon text-sm flex-shrink-0 w-4"><i class="fas fa-percent"></i></span>
+          <span class="nav-label">GST Management</span>
+        </a>
+      </div>
+    </div>
+
+    <a href="/reports.html" class="nav-item flex items-center gap-3 px-3 py-2.5 rounded-lg text-[#111844]/70 hover:bg-[#7288AE]/20 hover:text-[#111844] transition-colors duration-150 text-sm cursor-pointer border-b border-[#4B5694]/20 shadow-sm">
+      <span class="nav-icon text-base flex-shrink-0 w-5"><i class="fas fa-chart-bar"></i></span>
+      <span class="nav-label">Reports & Analytics</span>
+    </a>
+
+    <!-- User Management -->
+    <div class="nav-group">
+      <div class="nav-group-header flex items-center justify-between gap-3 px-3 py-2.5 rounded-lg text-[#111844]/70 hover:bg-[#7288AE]/20 hover:text-[#111844] transition-colors duration-150 text-sm cursor-pointer border-b border-[#4B5694]/20 shadow-sm">
+        <div class="flex items-center gap-3">
+          <span class="nav-icon text-base flex-shrink-0 w-5"><i class="fas fa-users-gear"></i></span>
+          <span class="nav-label">User Management</span>
+        </div>
+        <i class="fas fa-chevron-down text-xs transition-transform duration-200"></i>
+      </div>
+      <div class="nav-group-items ml-7 space-y-0.5 mt-1 hidden">
+        <a href="/users.html" class="nav-item flex items-center gap-3 px-3 py-2 rounded-lg text-[#111844]/70 hover:bg-[#7288AE]/20 hover:text-[#111844] transition-colors duration-150 text-xs cursor-pointer">
+          <span class="nav-icon text-sm flex-shrink-0 w-4"><i class="fas fa-user"></i></span>
+          <span class="nav-label">Users</span>
+        </a>
+        <a href="/roles.html" class="nav-item flex items-center gap-3 px-3 py-2 rounded-lg text-[#111844]/70 hover:bg-[#7288AE]/20 hover:text-[#111844] transition-colors duration-150 text-xs cursor-pointer">
+          <span class="nav-icon text-sm flex-shrink-0 w-4"><i class="fas fa-lock"></i></span>
+          <span class="nav-label">Roles & Permissions</span>
+        </a>
+      </div>
+    </div>
+
+  </nav>
+
+  <div class="px-4 py-3 border-t border-[#4B5694]/20 bg-[#FAFAFA]/30">
+    <div class="flex items-center gap-3">
+      <div class="w-8 h-8 rounded-full bg-[#111844] flex items-center justify-center text-[#FAFAFA] text-xs font-bold flex-shrink-0">AD</div>
+      <div class="sidebar-brand-text min-w-0">
+        <div class="text-[#111844] text-xs font-medium truncate">Admin</div>
+        <div class="text-[#7288AE] text-xs truncate">admin@supplymanager.com</div>
+      </div>
+    </div>
+  </div>
+</aside>
+
+<div id="sidebar-overlay" class="hidden fixed inset-0 bg-[#111844]/50 z-[90] lg:hidden"></div>
+
+<!-- ═══════════════════════════════════════════════
+     MAIN WRAPPER
+═══════════════════════════════════════════════ -->
+<div id="main-wrapper" class="ml-[260px] flex flex-col min-h-screen transition-all duration-300">
+
+  <!-- ── TOP BAR ── -->
+  <header class="sticky top-0 z-[200] h-16 bg-[#FFFCFC] border-b border-[#4B5694]/20 flex items-center justify-between px-5 shadow-sm">
+    <div>
+      <h1 class="text-sm font-semibold text-[#111844]">Returns Management</h1>
+      <p class="text-xs text-[#7288AE]">Customer returns · Supplier returns · Damage · Credits · Replacements</p>
+    </div>
+    <div class="flex items-center gap-2">
+      <!-- Notifications -->
+      <div class="relative">
+        <button id="notif-btn" class="w-9 h-9 flex items-center justify-center rounded-lg text-[#4B5694] hover:bg-[#4B5694]/10 transition-colors relative">
+          <i class="fas fa-bell text-base"></i>
+          <span class="notif-badge"></span>
+        </button>
+        <div id="notif-menu" class="hidden absolute right-0 top-full mt-1 w-72 bg-[#FFFCFC] border border-[#4B5694]/20 rounded-xl shadow-lg z-50 overflow-hidden">
+          <div class="flex items-center justify-between px-4 py-3 border-b border-[#4B5694]/15">
+            <span class="text-xs font-semibold text-[#111844]">Notifications</span>
+            <span class="text-[10px] px-2 py-0.5 rounded-full bg-[#111844]/10 text-[#111844] font-medium">3 new</span>
+          </div>
+          <div class="max-h-64 overflow-y-auto divide-y divide-[#4B5694]/10">
+            <div class="notif-item">
+              <div class="notif-icon bg-amber-100 text-amber-600"><i class="fas fa-rotate-left"></i></div>
+              <div>
+                <div class="notif-title">Return CRN-1004 awaiting approval</div>
+                <div class="notif-desc">Patel Pvt Ltd — Hydraulic Hoses</div>
+                <div class="notif-time">20 minutes ago</div>
+              </div>
+            </div>
+            <div class="notif-item">
+              <div class="notif-icon bg-red-100 text-red-600"><i class="fas fa-exclamation-triangle"></i></div>
+              <div>
+                <div class="notif-title">Damage recorded: Conveyor Belt Roll</div>
+                <div class="notif-desc">Warehouse A — High severity</div>
+                <div class="notif-time">1 hour ago</div>
+              </div>
+            </div>
+            <div class="notif-item">
+              <div class="notif-icon bg-emerald-100 text-emerald-700"><i class="fas fa-receipt"></i></div>
+              <div>
+                <div class="notif-title">Credit note CN-4003 settled</div>
+                <div class="notif-desc">₹14,500 — Bharat Bearings</div>
+                <div class="notif-time">3 hours ago</div>
+              </div>
+            </div>
+          </div>
+          <div class="px-4 py-2.5 border-t border-[#4B5694]/15 text-center">
+            <a href="#" class="text-xs font-medium text-[#111844] hover:underline">View all notifications</a>
+          </div>
+        </div>
+      </div>
+      <!-- User menu -->
+      <div class="relative">
+        <button id="user-menu-btn" class="flex items-center gap-2 px-3 py-1.5 rounded-lg hover:bg-[#4B5694]/10 transition-colors">
+          <div class="w-7 h-7 rounded-full bg-[#111844] flex items-center justify-center text-[#FAFAFA] text-xs font-bold">AD</div>
+          <span class="text-xs font-medium text-[#111844] hidden sm:block">Admin</span>
+          <i class="fas fa-chevron-down text-[10px] text-[#4B5694]"></i>
+        </button>
+        <div id="user-menu" class="hidden absolute right-0 top-full mt-1 w-44 bg-[#FFFCFC] border border-[#4B5694]/20 rounded-xl shadow-lg py-1 z-50">
+          <a href="/profile.html" class="flex items-center gap-2 px-4 py-2 text-xs text-[#111844] hover:bg-[#7288AE]/10 transition-colors">
+            <i class="fas fa-user-circle w-4"></i> My Profile
+          </a>
+          <div class="border-t border-[#4B5694]/10 my-1"></div>
+          <a href="/login.html" class="flex items-center gap-2 px-4 py-2 text-xs text-red-600 hover:bg-red-50 transition-colors">
+            <i class="fas fa-sign-out-alt w-4"></i> Logout
+          </a>
+        </div>
+      </div>
+    </div>
+  </header>
+
+  <!-- ── MAIN CONTENT ── -->
+  <main class="flex-1 p-5 space-y-5">
+
+    <!-- KPI Row -->
+    <div class="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-4 xl:grid-cols-6 gap-3">
+      <div class="widget-card">
+        <div>
+          <div class="widget-value">47</div>
+          <div class="widget-label">Total Returns (MTD)</div>
+          <div class="widget-trend bg-amber-100 text-amber-700"><i class="fas fa-arrow-up"></i> 6 this week</div>
+        </div>
+        <div class="widget-icon bg-[#111844]/10 text-[#111844]"><i class="fas fa-rotate-left"></i></div>
+      </div>
+      <div class="widget-card">
+        <div>
+          <div class="widget-value">12</div>
+          <div class="widget-label">Pending Approvals</div>
+        </div>
+        <div class="widget-icon bg-amber-100 text-amber-700"><i class="fas fa-clock"></i></div>
+      </div>
+      <div class="widget-card">
+        <div>
+          <div class="widget-value">8</div>
+          <div class="widget-label">Under Inspection</div>
+        </div>
+        <div class="widget-icon bg-indigo-100 text-indigo-700"><i class="fas fa-search"></i></div>
+      </div>
+      <div class="widget-card">
+        <div>
+          <div class="widget-value">19</div>
+          <div class="widget-label">Damage Records</div>
+        </div>
+        <div class="widget-icon bg-red-100 text-red-700"><i class="fas fa-exclamation-triangle"></i></div>
+      </div>
+      <div class="widget-card">
+        <div>
+          <div class="widget-value">₹64.2K</div>
+          <div class="widget-label">Credit Notes Raised</div>
+          <div class="widget-trend bg-emerald-100 text-emerald-700"><i class="fas fa-check"></i> 5 settled</div>
+        </div>
+        <div class="widget-icon bg-emerald-100 text-emerald-700"><i class="fas fa-receipt"></i></div>
+      </div>
+      <div class="widget-card">
+        <div>
+          <div class="widget-value">5</div>
+          <div class="widget-label">Replacements Sent</div>
+        </div>
+        <div class="widget-icon bg-purple-100 text-purple-700"><i class="fas fa-exchange-alt"></i></div>
+      </div>
+    </div>
+
+    <!-- Tab Nav -->
+    <div class="page-card !p-0 overflow-hidden">
+      <div class="flex items-center gap-1 px-4 pt-3 pb-0 border-b border-[#4B5694]/12 overflow-x-auto">
+        <button class="tab-btn tab-active" data-tab="customer-returns">
+          <i class="fas fa-users mr-1.5"></i>Customer Returns
+        </button>
+        <button class="tab-btn" data-tab="supplier-returns">
+          <i class="fas fa-truck-loading mr-1.5"></i>Supplier Returns
+        </button>
+        <button class="tab-btn" data-tab="damage">
+          <i class="fas fa-exclamation-triangle mr-1.5"></i>Damage & Scrap
+        </button>
+        <button class="tab-btn" data-tab="credit-notes">
+          <i class="fas fa-receipt mr-1.5"></i>Credit Notes
+        </button>
+        <button class="tab-btn" data-tab="replacements">
+          <i class="fas fa-exchange-alt mr-1.5"></i>Replacements
+        </button>
+      </div>
+
+      <!-- ──────────────────────────────────
+           PANEL 1 — Customer Returns
+      ────────────────────────────────── -->
+      <div id="panel-customer-returns" class="tab-panel active p-4">
+        <div class="flex flex-wrap items-center justify-between gap-3 mb-4">
+          <div class="flex flex-wrap items-center gap-2">
+            <div class="search-bar">
+              <i class="fas fa-search text-[#7288AE]"></i>
+              <input id="cr-search" type="text" placeholder="Search returns…">
+            </div>
+            <select id="cr-status" class="filter-select">
+              <option value="">All Statuses</option>
+              <option value="pending">Pending</option>
+              <option value="approved">Approved</option>
+              <option value="inspecting">Inspecting</option>
+              <option value="completed">Completed</option>
+              <option value="rejected">Rejected</option>
+            </select>
+          </div>
+          <button class="btn-primary" onclick="openModal('modal-new-return')">
+            <i class="fas fa-plus"></i> New Return Request
+          </button>
+        </div>
+
+        <div class="overflow-x-auto">
+          <table class="returns-table">
+            <thead>
+              <tr>
+                <th>Return ID</th>
+                <th>Date</th>
+                <th>Customer</th>
+                <th>Product</th>
+                <th class="text-center">Qty</th>
+                <th>Reason</th>
+                <th>Status</th>
+                <th>Amount</th>
+                <th>Actions</th>
+              </tr>
+            </thead>
+            <tbody id="cr-tbody"></tbody>
+          </table>
+        </div>
+        <!-- Pagination -->
+        <div class="flex items-center justify-between mt-4">
+          <span class="text-xs text-[#7288AE]">Showing 6 of 6 returns</span>
+          <div class="flex gap-1">
+            <button class="pagination-btn active">1</button>
+            <button class="pagination-btn">2</button>
+            <button class="pagination-btn"><i class="fas fa-chevron-right" style="font-size:9px"></i></button>
+          </div>
+        </div>
+      </div>
+
+      <!-- ──────────────────────────────────
+           PANEL 2 — Supplier Returns
+      ────────────────────────────────── -->
+      <div id="panel-supplier-returns" class="tab-panel p-4">
+        <div class="flex flex-wrap items-center justify-between gap-3 mb-4">
+          <div class="flex flex-wrap items-center gap-2">
+            <div class="search-bar">
+              <i class="fas fa-search text-[#7288AE]"></i>
+              <input id="sr-search" type="text" placeholder="Search vendor returns…">
+            </div>
+            <select id="sr-status" class="filter-select">
+              <option value="">All Statuses</option>
+              <option value="pending">Pending</option>
+              <option value="approved">Approved</option>
+              <option value="inspecting">Inspecting</option>
+              <option value="completed">Completed</option>
+            </select>
+          </div>
+          <button class="btn-primary" onclick="openModal('modal-new-return')">
+            <i class="fas fa-plus"></i> Raise Vendor Return
+          </button>
+        </div>
+
+        <div class="overflow-x-auto">
+          <table class="returns-table">
+            <thead>
+              <tr>
+                <th>Return ID</th>
+                <th>Date</th>
+                <th>Supplier</th>
+                <th>Product</th>
+                <th class="text-center">Qty</th>
+                <th>Reason</th>
+                <th>Status</th>
+                <th>Amount</th>
+                <th>Actions</th>
+              </tr>
+            </thead>
+            <tbody id="sr-tbody"></tbody>
+          </table>
+        </div>
+        <div class="flex items-center justify-between mt-4">
+          <span class="text-xs text-[#7288AE]">Showing 4 of 4 returns</span>
+          <div class="flex gap-1">
+            <button class="pagination-btn active">1</button>
+          </div>
+        </div>
+      </div>
+
+      <!-- ──────────────────────────────────
+           PANEL 3 — Damage & Scrap
+      ────────────────────────────────── -->
+      <div id="panel-damage" class="tab-panel p-4">
+        <div class="flex flex-wrap items-center justify-between gap-3 mb-4">
+          <div class="flex flex-wrap items-center gap-2">
+            <div class="search-bar">
+              <i class="fas fa-search text-[#7288AE]"></i>
+              <input id="dmg-search" type="text" placeholder="Search damage records…">
+            </div>
+            <select id="dmg-status" class="filter-select">
+              <option value="">All Statuses</option>
+              <option value="damaged">Damaged</option>
+              <option value="scrapped">Scrapped</option>
+            </select>
+          </div>
+          <button class="btn-primary" onclick="openModal('modal-new-damage')">
+            <i class="fas fa-plus"></i> Record Damage
+          </button>
+        </div>
+
+        <div class="overflow-x-auto">
+          <table class="returns-table">
+            <thead>
+              <tr>
+                <th>Record ID</th>
+                <th>Date</th>
+                <th>Product</th>
+                <th>Location</th>
+                <th>Cause</th>
+                <th>Severity</th>
+                <th class="text-center">Qty</th>
+                <th>Status</th>
+                <th>Est. Cost</th>
+                <th>Actions</th>
+              </tr>
+            </thead>
+            <tbody id="dmg-tbody"></tbody>
+          </table>
+        </div>
+        <div class="flex items-center justify-between mt-4">
+          <span class="text-xs text-[#7288AE]">Showing 5 of 5 records</span>
+          <div class="flex gap-1">
+            <button class="pagination-btn active">1</button>
+          </div>
+        </div>
+      </div>
+
+      <!-- ──────────────────────────────────
+           PANEL 4 — Credit Notes
+      ────────────────────────────────── -->
+      <div id="panel-credit-notes" class="tab-panel p-4">
+        <div class="flex flex-wrap items-center justify-between gap-3 mb-4">
+          <div>
+            <div class="section-title">Credit Notes & Return Settlement</div>
+            <div class="section-sub">Manage all credit notes raised against customer and supplier returns</div>
+          </div>
+          <button class="btn-primary" onclick="showToast('Credit note form coming soon','info')">
+            <i class="fas fa-plus"></i> Raise Credit Note
+          </button>
+        </div>
+
+        <!-- Summary strip -->
+        <div class="grid grid-cols-3 gap-3 mb-5">
+          <div class="page-card !p-3 text-center">
+            <div class="text-lg font-bold text-[#111844]">₹64,450</div>
+            <div class="text-[10px] text-[#7288AE] mt-0.5">Total Raised (MTD)</div>
+          </div>
+          <div class="page-card !p-3 text-center">
+            <div class="text-lg font-bold text-emerald-600">₹39,700</div>
+            <div class="text-[10px] text-[#7288AE] mt-0.5">Settled</div>
+          </div>
+          <div class="page-card !p-3 text-center">
+            <div class="text-lg font-bold text-amber-600">₹24,750</div>
+            <div class="text-[10px] text-[#7288AE] mt-0.5">Pending</div>
+          </div>
+        </div>
+
+        <div id="cn-list" class="space-y-2"></div>
+      </div>
+
+      <!-- ──────────────────────────────────
+           PANEL 5 — Replacements
+      ────────────────────────────────── -->
+      <div id="panel-replacements" class="tab-panel p-4">
+        <div class="flex flex-wrap items-center justify-between gap-3 mb-4">
+          <div>
+            <div class="section-title">Replacement Tracking</div>
+            <div class="section-sub">Track outbound replacement dispatches for approved return requests</div>
+          </div>
+          <button class="btn-primary" onclick="showToast('Replacement form coming soon','info')">
+            <i class="fas fa-plus"></i> Initiate Replacement
+          </button>
+        </div>
+
+        <div class="overflow-x-auto">
+          <table class="returns-table">
+            <thead>
+              <tr>
+                <th>RPL ID</th>
+                <th>Date</th>
+                <th>Return Ref</th>
+                <th>Customer</th>
+                <th>Product</th>
+                <th class="text-center">Qty</th>
+                <th>Dispatch Date</th>
+                <th>Status</th>
+                <th>Track</th>
+              </tr>
+            </thead>
+            <tbody id="rpl-tbody"></tbody>
+          </table>
+        </div>
+        <div class="flex items-center justify-between mt-4">
+          <span class="text-xs text-[#7288AE]">Showing 3 of 3 replacements</span>
+          <div class="flex gap-1">
+            <button class="pagination-btn active">1</button>
+          </div>
+        </div>
+      </div>
+
+    </div><!-- end tab card -->
+  </main>
+</div>
+
+<!-- ═══════════════════════════════════════════════
+     MODAL — New Return Request
+═══════════════════════════════════════════════ -->
+<div id="modal-new-return" class="modal-overlay">
+  <div class="modal-box">
+    <div class="flex items-center justify-between mb-5">
+      <div>
+        <h2 class="text-sm font-bold text-[#111844]">New Return Request</h2>
+        <p class="text-xs text-[#7288AE] mt-0.5">Fill in return details to initiate the approval process</p>
+      </div>
+      <button onclick="closeModal('modal-new-return')" class="w-7 h-7 rounded-lg hover:bg-[#4B5694]/10 flex items-center justify-center text-[#7288AE]"><i class="fas fa-times text-sm"></i></button>
+    </div>
+    <form id="form-new-return" class="space-y-4">
+      <div class="grid grid-cols-2 gap-3">
+        <div>
+          <label class="form-label">Return Type</label>
+          <select class="form-select">
+            <option>Customer Return</option>
+            <option>Supplier Return</option>
+          </select>
+        </div>
+        <div>
+          <label class="form-label">Date</label>
+          <input type="date" class="form-input" />
+        </div>
+        <div>
+          <label class="form-label">Customer / Supplier</label>
+          <input type="text" class="form-input" placeholder="Select party…" />
+        </div>
+        <div>
+          <label class="form-label">Reference (PO / SO)</label>
+          <input type="text" class="form-input" placeholder="e.g. SO-3187" />
+        </div>
+        <div class="col-span-2">
+          <label class="form-label">Product</label>
+          <input type="text" class="form-input" placeholder="Search product…" />
+        </div>
+        <div>
+          <label class="form-label">Quantity</label>
+          <input type="number" class="form-input" placeholder="0" />
+        </div>
+        <div>
+          <label class="form-label">Unit</label>
+          <select class="form-select">
+            <option>Nos</option><option>Kg</option><option>Mtrs</option><option>Box</option>
+          </select>
+        </div>
+        <div class="col-span-2">
+          <label class="form-label">Return Reason</label>
+          <select class="form-select">
+            <option>Defective product</option>
+            <option>Wrong specification</option>
+            <option>Damaged in transit</option>
+            <option>Quality issue</option>
+            <option>Excess quantity</option>
+            <option>Other</option>
+          </select>
+        </div>
+        <div class="col-span-2">
+          <label class="form-label">Additional Notes</label>
+          <textarea class="form-input" rows="2" placeholder="Describe the issue…"></textarea>
+        </div>
+        <div class="col-span-2">
+          <label class="form-label">Settlement Method</label>
+          <div class="flex gap-3 mt-1">
+            <label class="flex items-center gap-2 text-xs cursor-pointer">
+              <input type="radio" name="settlement" value="credit" checked class="accent-[#111844]"> Credit Note
+            </label>
+            <label class="flex items-center gap-2 text-xs cursor-pointer">
+              <input type="radio" name="settlement" value="replacement" class="accent-[#111844]"> Replacement
+            </label>
+            <label class="flex items-center gap-2 text-xs cursor-pointer">
+              <input type="radio" name="settlement" value="refund" class="accent-[#111844]"> Refund
+            </label>
+          </div>
+        </div>
+      </div>
+      <div class="flex gap-2 justify-end pt-2 border-t border-[#4B5694]/10">
+        <button type="button" class="btn-secondary" onclick="closeModal('modal-new-return')">Cancel</button>
+        <button type="submit" class="btn-primary"><i class="fas fa-paper-plane"></i> Submit Request</button>
+      </div>
+    </form>
+  </div>
+</div>
+
+<!-- ═══════════════════════════════════════════════
+     MODAL — Record Damage
+═══════════════════════════════════════════════ -->
+<div id="modal-new-damage" class="modal-overlay">
+  <div class="modal-box">
+    <div class="flex items-center justify-between mb-5">
+      <div>
+        <h2 class="text-sm font-bold text-[#111844]">Record Damage / Scrap</h2>
+        <p class="text-xs text-[#7288AE] mt-0.5">Document damaged or scrapped goods for audit trail</p>
+      </div>
+      <button onclick="closeModal('modal-new-damage')" class="w-7 h-7 rounded-lg hover:bg-[#4B5694]/10 flex items-center justify-center text-[#7288AE]"><i class="fas fa-times text-sm"></i></button>
+    </div>
+    <form id="form-new-damage" class="space-y-4">
+      <div class="grid grid-cols-2 gap-3">
+        <div>
+          <label class="form-label">Date of Damage</label>
+          <input type="date" class="form-input" />
+        </div>
+        <div>
+          <label class="form-label">Warehouse / Location</label>
+          <select class="form-select">
+            <option>Warehouse A</option>
+            <option>Warehouse B</option>
+            <option>Warehouse C</option>
+            <option>Warehouse D</option>
+          </select>
+        </div>
+        <div class="col-span-2">
+          <label class="form-label">Product</label>
+          <input type="text" class="form-input" placeholder="Search product…" />
+        </div>
+        <div>
+          <label class="form-label">Quantity Damaged</label>
+          <input type="number" class="form-input" placeholder="0" />
+        </div>
+        <div>
+          <label class="form-label">Severity</label>
+          <select class="form-select">
+            <option value="low">Low</option>
+            <option value="medium">Medium</option>
+            <option value="high">High</option>
+          </select>
+        </div>
+        <div class="col-span-2">
+          <label class="form-label">Cause of Damage</label>
+          <select class="form-select">
+            <option>Forklift/equipment collision</option>
+            <option>Water / flood damage</option>
+            <option>Fire damage</option>
+            <option>Improper stacking</option>
+            <option>Corrosion</option>
+            <option>Pest damage</option>
+            <option>Other</option>
+          </select>
+        </div>
+        <div>
+          <label class="form-label">Estimated Cost (₹)</label>
+          <input type="number" class="form-input" placeholder="0.00" />
+        </div>
+        <div>
+          <label class="form-label">Disposition</label>
+          <select class="form-select">
+            <option value="damaged">Keep — Damaged</option>
+            <option value="scrapped">Scrap immediately</option>
+          </select>
+        </div>
+        <div class="col-span-2">
+          <label class="form-label">Notes / Remarks</label>
+          <textarea class="form-input" rows="2" placeholder="Additional details…"></textarea>
+        </div>
+      </div>
+      <div class="flex gap-2 justify-end pt-2 border-t border-[#4B5694]/10">
+        <button type="button" class="btn-secondary" onclick="closeModal('modal-new-damage')">Cancel</button>
+        <button type="submit" class="btn-primary"><i class="fas fa-save"></i> Save Record</button>
+      </div>
+    </form>
+  </div>
+</div>
+
+<!-- ═══════════════════════════════════════════════
+     MODAL — Return Detail View
+═══════════════════════════════════════════════ -->
+<div id="modal-detail" class="modal-overlay">
+  <div class="modal-box">
+    <div class="flex items-center justify-between mb-4">
+      <h2 class="text-sm font-bold text-[#111844]">Return Detail</h2>
+      <button onclick="closeModal('modal-detail')" class="w-7 h-7 rounded-lg hover:bg-[#4B5694]/10 flex items-center justify-center text-[#7288AE]"><i class="fas fa-times text-sm"></i></button>
+    </div>
+    <div id="detail-body"></div>
+  </div>
+</div>
+
+<!-- Toast -->
+<div id="toast-container" class="fixed bottom-5 right-5 z-[400] space-y-2"></div>
+
+<script src="/pages/returns/returns.js"></script>
+</body>
+</html>

@@ -1,0 +1,834 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Customer Master — Supply Management Admin</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script>tailwind.config = { theme: { extend: { colors: { active: '#111844', border2: '#4B5694', bg: '#FAFAFA', hover2: '#7288AE', card: '#FFFCFC', dark: '#1a2155' } } } }</script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@300;400;500;700&display=swap" rel="stylesheet" />
+    <link rel="stylesheet" href="/pages/customers/customer.css">
+</head>
+<body class="bg-[#ebe6e6] text-[#111844] min-h-screen">
+
+<!-- =================== SIDEBAR =================== -->
+<aside id="sidebar" class="fixed top-0 left-0 h-full w-[260px] bg-[#FFFCFC] z-[100] flex flex-col transition-all duration-300 overflow-hidden shadow-lg">
+  <div class="flex items-center justify-between px-5 h-16 border border-[#4B5694]/20 shadow-sm">
+    <div class="flex items-center gap-3">
+      <div class="w-9 h-9 rounded-lg bg-[#111844] flex items-center justify-center text-[#FAFAFA] flex-shrink-0">
+        <i class="fas fa-cubes"></i>
+      </div>
+      <span class="sidebar-brand-text text-[#111844] font-bold text-base tracking-tight">SupplyMgr</span>
+    </div>
+    <button id="sidebar-toggle" class="w-7 h-7 flex items-center justify-center rounded-lg text-[#4B5694] hover:bg-[#4B5694]/10 transition-colors">
+      <i class="fas fa-chevron-left text-sm"></i>
+    </button>
+  </div>
+
+  <nav class="flex-1 overflow-y-auto py-3 px-2 space-y-0.5">
+
+    <!-- Dashboard -->
+    <a href="/index.html" class="nav-item flex items-center gap-3 px-3 py-2.5 rounded-lg text-[#111844]/70 hover:bg-[#7288AE]/20 hover:text-[#111844] transition-colors duration-150 text-sm cursor-pointer border-b border-[#4B5694]/20 shadow-sm">
+      <span class="nav-icon text-base flex-shrink-0 w-5"><i class="fas fa-chart-pie"></i></span>
+      <span class="nav-label">Dashboard</span>
+    </a>
+
+    <!-- Master Management -->
+    <div class="nav-group">
+      <div class="nav-group-header flex items-center justify-between gap-3 px-3 py-2.5 rounded-lg text-[#111844]/70 hover:bg-[#7288AE]/20 hover:text-[#111844] transition-colors duration-150 text-sm cursor-pointer border-b border-[#4B5694]/20 shadow-sm nav-active">
+        <div class="flex items-center gap-3">
+          <span class="nav-icon text-base flex-shrink-0 w-5"><i class="fas fa-database"></i></span>
+          <span class="nav-label">Master Management</span>
+        </div>
+        <i class="fas fa-chevron-down text-xs transition-transform duration-200" style="transform:rotate(180deg)"></i>
+      </div>
+      <div class="nav-group-items ml-7 space-y-0.5 mt-1">
+        <a href="/pages/Product/product.html" class="nav-item flex items-center gap-3 px-3 py-2 rounded-lg text-[#111844]/70 hover:bg-[#7288AE]/20 hover:text-[#111844] transition-colors duration-150 text-xs cursor-pointer">
+          <span class="nav-icon text-sm flex-shrink-0 w-4"><i class="fas fa-box"></i></span>
+          <span class="nav-label">Products</span>
+        </a>
+        <a href="/pages/suppliers/suppliers.html" class="nav-item flex items-center gap-3 px-3 py-2 rounded-lg text-[#111844]/70 hover:bg-[#7288AE]/20 hover:text-[#111844] transition-colors duration-150 text-xs cursor-pointer">
+          <span class="nav-icon text-sm flex-shrink-0 w-4"><i class="fas fa-truck-loading"></i></span>
+          <span class="nav-label">Suppliers</span>
+        </a>
+        <a href="/pages/customers/customers.html" class="nav-item flex items-center gap-3 px-3 py-2 rounded-lg nav-active transition-colors duration-150 text-xs cursor-pointer">
+          <span class="nav-icon text-sm flex-shrink-0 w-4"><i class="fas fa-users"></i></span>
+          <span class="nav-label">Customers</span>
+        </a>
+        <a href="/pages/warehouse/warehouse.html" class="nav-item flex items-center gap-3 px-3 py-2 rounded-lg text-[#111844]/70 hover:bg-[#7288AE]/20 hover:text-[#111844] transition-colors duration-150 text-xs cursor-pointer">
+          <span class="nav-icon text-sm flex-shrink-0 w-4"><i class="fas fa-warehouse"></i></span>
+          <span class="nav-label">Warehouses</span>
+        </a>
+        <a href="/pages/units/units.html" class="nav-item flex items-center gap-3 px-3 py-2 rounded-lg text-[#111844]/70 hover:bg-[#7288AE]/20 hover:text-[#111844] transition-colors duration-150 text-xs cursor-pointer">
+          <span class="nav-icon text-sm flex-shrink-0 w-4"><i class="fas fa-balance-scale"></i></span>
+          <span class="nav-label">Units</span>
+        </a>
+      </div>
+    </div>
+
+    <!-- Purchase Management -->
+    <a href="/purchase.html" class="nav-item flex items-center gap-3 px-3 py-2.5 rounded-lg text-[#111844]/70 hover:bg-[#7288AE]/20 hover:text-[#111844] transition-colors duration-150 text-sm cursor-pointer border-b border-[#4B5694]/20 shadow-sm">
+      <span class="nav-icon text-base flex-shrink-0 w-5"><i class="fas fa-shopping-cart"></i></span>
+      <span class="nav-label">Purchase Management</span>
+    </a>
+
+    <!-- Inventory Management -->
+    <a href="/inventory.html" class="nav-item flex items-center gap-3 px-3 py-2.5 rounded-lg text-[#111844]/70 hover:bg-[#7288AE]/20 hover:text-[#111844] transition-colors duration-150 text-sm cursor-pointer border-b border-[#4B5694]/20 shadow-sm">
+      <span class="nav-icon text-base flex-shrink-0 w-5"><i class="fas fa-boxes-stacked"></i></span>
+      <span class="nav-label">Inventory Management</span>
+    </a>
+
+    <!-- Warehouse Operations -->
+    <a href="/warehouse.html" class="nav-item flex items-center gap-3 px-3 py-2.5 rounded-lg text-[#111844]/70 hover:bg-[#7288AE]/20 hover:text-[#111844] transition-colors duration-150 text-sm cursor-pointer border-b border-[#4B5694]/20 shadow-sm">
+      <span class="nav-icon text-base flex-shrink-0 w-5"><i class="fas fa-warehouse"></i></span>
+      <span class="nav-label">Warehouse Management</span>
+    </a>
+
+    <!-- Sales & Dispatch -->
+    <div class="nav-group">
+      <div class="nav-group-header flex items-center justify-between gap-3 px-3 py-2.5 rounded-lg text-[#111844]/70 hover:bg-[#7288AE]/20 hover:text-[#111844] transition-colors duration-150 text-sm cursor-pointer border-b border-[#4B5694]/20 shadow-sm">
+        <div class="flex items-center gap-3">
+          <span class="nav-icon text-base flex-shrink-0 w-5"><i class="fas fa-truck"></i></span>
+          <span class="nav-label">Sales & Dispatch</span>
+        </div>
+        <i class="fas fa-chevron-down text-xs transition-transform duration-200"></i>
+      </div>
+      <div class="nav-group-items ml-7 space-y-0.5 mt-1 hidden">
+        <a href="/sales-orders.html" class="nav-item flex items-center gap-3 px-3 py-2 rounded-lg text-[#111844]/70 hover:bg-[#7288AE]/20 hover:text-[#111844] transition-colors duration-150 text-xs cursor-pointer">
+          <span class="nav-icon text-sm flex-shrink-0 w-4"><i class="fas fa-receipt"></i></span>
+          <span class="nav-label">Sales Orders</span>
+        </a>
+        <a href="/dispatch-planning.html" class="nav-item flex items-center gap-3 px-3 py-2 rounded-lg text-[#111844]/70 hover:bg-[#7288AE]/20 hover:text-[#111844] transition-colors duration-150 text-xs cursor-pointer">
+          <span class="nav-icon text-sm flex-shrink-0 w-4"><i class="fas fa-calendar-alt"></i></span>
+          <span class="nav-label">Dispatch Planning</span>
+        </a>
+        <a href="/invoices.html" class="nav-item flex items-center gap-3 px-3 py-2 rounded-lg text-[#111844]/70 hover:bg-[#7288AE]/20 hover:text-[#111844] transition-colors duration-150 text-xs cursor-pointer">
+          <span class="nav-icon text-sm flex-shrink-0 w-4"><i class="fas fa-file-invoice-dollar"></i></span>
+          <span class="nav-label">Invoices</span>
+        </a>
+        <a href="/shipment-tracking.html" class="nav-item flex items-center gap-3 px-3 py-2 rounded-lg text-[#111844]/70 hover:bg-[#7288AE]/20 hover:text-[#111844] transition-colors duration-150 text-xs cursor-pointer">
+          <span class="nav-icon text-sm flex-shrink-0 w-4"><i class="fas fa-location-dot"></i></span>
+          <span class="nav-label">Shipment Tracking</span>
+        </a>
+      </div>
+    </div>
+
+    <!-- Returns Management -->
+    <a href="/returns.html" class="nav-item flex items-center gap-3 px-3 py-2.5 rounded-lg text-[#111844]/70 hover:bg-[#7288AE]/20 hover:text-[#111844] transition-colors duration-150 text-sm cursor-pointer border-b border-[#4B5694]/20 shadow-sm">
+      <span class="nav-icon text-base flex-shrink-0 w-5"><i class="fas fa-rotate-left"></i></span>
+      <span class="nav-label">Returns Management</span>
+    </a>
+
+    <!-- Finance & Billing -->
+    <div class="nav-group">
+      <div class="nav-group-header flex items-center justify-between gap-3 px-3 py-2.5 rounded-lg text-[#111844]/70 hover:bg-[#7288AE]/20 hover:text-[#111844] transition-colors duration-150 text-sm cursor-pointer border-b border-[#4B5694]/20 shadow-sm">
+        <div class="flex items-center gap-3">
+          <span class="nav-icon text-base flex-shrink-0 w-5"><i class="fas fa-coins"></i></span>
+          <span class="nav-label">Finance & Billing</span>
+        </div>
+        <i class="fas fa-chevron-down text-xs transition-transform duration-200"></i>
+      </div>
+      <div class="nav-group-items ml-7 space-y-0.5 mt-1 hidden">
+        <a href="/accounts-receivable.html" class="nav-item flex items-center gap-3 px-3 py-2 rounded-lg text-[#111844]/70 hover:bg-[#7288AE]/20 hover:text-[#111844] transition-colors duration-150 text-xs cursor-pointer">
+          <span class="nav-icon text-sm flex-shrink-0 w-4"><i class="fas fa-hand-holding-usd"></i></span>
+          <span class="nav-label">Receivables</span>
+        </a>
+        <a href="/accounts-payable.html" class="nav-item flex items-center gap-3 px-3 py-2 rounded-lg text-[#111844]/70 hover:bg-[#7288AE]/20 hover:text-[#111844] transition-colors duration-150 text-xs cursor-pointer">
+          <span class="nav-icon text-sm flex-shrink-0 w-4"><i class="fas fa-money-bill-wave"></i></span>
+          <span class="nav-label">Payables</span>
+        </a>
+        <a href="/gst-management.html" class="nav-item flex items-center gap-3 px-3 py-2 rounded-lg text-[#111844]/70 hover:bg-[#7288AE]/20 hover:text-[#111844] transition-colors duration-150 text-xs cursor-pointer">
+          <span class="nav-icon text-sm flex-shrink-0 w-4"><i class="fas fa-percent"></i></span>
+          <span class="nav-label">GST Management</span>
+        </a>
+      </div>
+    </div>
+
+    <!-- Reports & Analytics -->
+    <a href="/reports.html" class="nav-item flex items-center gap-3 px-3 py-2.5 rounded-lg text-[#111844]/70 hover:bg-[#7288AE]/20 hover:text-[#111844] transition-colors duration-150 text-sm cursor-pointer border-b border-[#4B5694]/20 shadow-sm">
+      <span class="nav-icon text-base flex-shrink-0 w-5"><i class="fas fa-chart-bar"></i></span>
+      <span class="nav-label">Reports & Analytics</span>
+    </a>
+
+    <!-- User Management -->
+    <div class="nav-group">
+      <div class="nav-group-header flex items-center justify-between gap-3 px-3 py-2.5 rounded-lg text-[#111844]/70 hover:bg-[#7288AE]/20 hover:text-[#111844] transition-colors duration-150 text-sm cursor-pointer border-b border-[#4B5694]/20 shadow-sm">
+        <div class="flex items-center gap-3">
+          <span class="nav-icon text-base flex-shrink-0 w-5"><i class="fas fa-users-gear"></i></span>
+          <span class="nav-label">User Management</span>
+        </div>
+        <i class="fas fa-chevron-down text-xs transition-transform duration-200"></i>
+      </div>
+      <div class="nav-group-items ml-7 space-y-0.5 mt-1 hidden">
+        <a href="/users.html" class="nav-item flex items-center gap-3 px-3 py-2 rounded-lg text-[#111844]/70 hover:bg-[#7288AE]/20 hover:text-[#111844] transition-colors duration-150 text-xs cursor-pointer">
+          <span class="nav-icon text-sm flex-shrink-0 w-4"><i class="fas fa-user"></i></span>
+          <span class="nav-label">Users</span>
+        </a>
+        <a href="/roles.html" class="nav-item flex items-center gap-3 px-3 py-2 rounded-lg text-[#111844]/70 hover:bg-[#7288AE]/20 hover:text-[#111844] transition-colors duration-150 text-xs cursor-pointer">
+          <span class="nav-icon text-sm flex-shrink-0 w-4"><i class="fas fa-lock"></i></span>
+          <span class="nav-label">Roles & Permissions</span>
+        </a>
+      </div>
+    </div>
+
+  </nav>
+
+  <!-- User Footer -->
+  <div class="px-4 py-3 border-t border-[#4B5694]/20 bg-[#FAFAFA]/30">
+    <div class="flex items-center gap-3">
+      <div class="w-8 h-8 rounded-full bg-[#111844] flex items-center justify-center text-[#FAFAFA] text-xs font-bold flex-shrink-0">AD</div>
+      <div class="sidebar-brand-text min-w-0">
+        <div class="text-[#111844] text-xs font-medium truncate">Admin</div>
+        <div class="text-[#7288AE] text-xs truncate">admin@supplymanager.com</div>
+      </div>
+    </div>
+  </div>
+</aside>
+
+<div id="sidebar-overlay" class="hidden fixed inset-0 bg-[#111844]/50 z-[90] lg:hidden"></div>
+
+<!-- =================== MAIN WRAPPER =================== -->
+<div id="main-wrapper" class="ml-[260px] flex flex-col min-h-screen transition-all duration-300">
+
+  <!-- TOPBAR -->
+  <header class="sticky top-0 z-[200] h-16 bg-[#FFFCFC] border-b border-[#4B5694]/20 flex items-center justify-between px-5 shadow-sm">
+    <div class="flex items-center gap-3">
+      <button id="mobile-toggle" class="lg:hidden w-8 h-8 flex items-center justify-center rounded-lg text-[#4B5694] hover:bg-[#4B5694]/10">
+        <i class="fas fa-bars text-sm"></i>
+      </button>
+      <div>
+        <div class="flex items-center gap-2 text-xs text-[#7288AE]">
+          <span>Masters</span>
+          <i class="fas fa-chevron-right text-[10px]"></i>
+          <span class="text-[#111844] font-medium">Customer Master</span>
+        </div>
+        <h1 class="text-sm font-semibold text-[#111844]">Customer Master</h1>
+      </div>
+    </div>
+    <div class="flex items-center gap-2">
+      <!-- Notification -->
+      <div class="relative">
+        <button id="notif-btn" class="w-9 h-9 flex items-center justify-center rounded-lg text-[#4B5694] hover:bg-[#4B5694]/10 transition-colors relative">
+          <i class="fas fa-bell text-base"></i>
+          <span class="notif-badge"></span>
+        </button>
+        <div id="notif-menu" class="hidden absolute right-0 top-full mt-1 w-80 bg-[#FFFCFC] border border-[#4B5694]/20 rounded-xl shadow-lg z-50 overflow-hidden">
+          <div class="flex items-center justify-between px-4 py-3 border-b border-[#4B5694]/15">
+            <span class="text-xs font-semibold text-[#111844]">Notifications</span>
+            <span class="text-[10px] px-2 py-0.5 rounded-full bg-[#111844]/10 text-[#111844] font-medium">4 new</span>
+          </div>
+          <div class="max-h-72 overflow-y-auto divide-y divide-[#4B5694]/10">
+            <div class="notif-item">
+              <div class="notif-icon bg-indigo-100 text-indigo-700"><i class="fas fa-users"></i></div>
+              <div>
+                <div class="notif-title">New customer registered</div>
+                <div class="notif-desc">Ramesh Traders — Wholesale Customer</div>
+                <div class="notif-time">15 minutes ago</div>
+              </div>
+            </div>
+            <div class="notif-item">
+              <div class="notif-icon bg-amber-100 text-amber-600"><i class="fas fa-exclamation-triangle"></i></div>
+              <div>
+                <div class="notif-title">Credit limit exceeded</div>
+                <div class="notif-desc">Metro Distributors — ₹5L limit</div>
+                <div class="notif-time">1 hour ago</div>
+              </div>
+            </div>
+            <div class="notif-item">
+              <div class="notif-icon bg-red-100 text-red-600"><i class="fas fa-ban"></i></div>
+              <div>
+                <div class="notif-title">Customer blocked</div>
+                <div class="notif-desc">Suresh Agencies — Outstanding overdue</div>
+                <div class="notif-time">3 hours ago</div>
+              </div>
+            </div>
+            <div class="notif-item">
+              <div class="notif-icon bg-emerald-100 text-emerald-700"><i class="fas fa-receipt"></i></div>
+              <div>
+                <div class="notif-title">New sales order #SO-3188</div>
+                <div class="notif-desc">Placed by Bharat Enterprises</div>
+                <div class="notif-time">5 hours ago</div>
+              </div>
+            </div>
+          </div>
+          <div class="px-4 py-2.5 border-t border-[#4B5694]/15 text-center">
+            <a href="#" class="text-xs font-medium text-[#111844] hover:underline">View all notifications</a>
+          </div>
+        </div>
+      </div>
+      <!-- User -->
+      <div class="relative">
+        <button id="user-menu-btn" class="flex items-center gap-2 px-3 py-1.5 rounded-lg hover:bg-[#4B5694]/10 transition-colors">
+          <div class="w-7 h-7 rounded-full bg-[#111844] flex items-center justify-center text-[#FAFAFA] text-xs font-bold">AD</div>
+          <span class="text-xs font-medium text-[#111844] hidden sm:block">Admin</span>
+          <i class="fas fa-chevron-down text-[10px] text-[#4B5694]"></i>
+        </button>
+        <div id="user-menu" class="hidden absolute right-0 top-full mt-1 w-44 bg-[#FFFCFC] border border-[#4B5694]/20 rounded-xl shadow-lg py-1 z-50">
+          <a href="/profile.html" class="flex items-center gap-2 px-4 py-2 text-xs text-[#111844] hover:bg-[#7288AE]/10 transition-colors">
+            <i class="fas fa-user-circle w-4"></i> My Profile
+          </a>
+          <div class="border-t border-[#4B5694]/10 my-1"></div>
+          <a href="/login.html" class="flex items-center gap-2 px-4 py-2 text-xs text-red-600 hover:bg-red-50 transition-colors">
+            <i class="fas fa-sign-out-alt w-4"></i> Logout
+          </a>
+        </div>
+      </div>
+    </div>
+  </header>
+
+  <!-- =================== MAIN CONTENT =================== -->
+  <main class="flex-1 p-5 space-y-5">
+
+    <!-- Summary KPI Cards -->
+    <div class="grid grid-cols-2 sm:grid-cols-4 gap-3">
+      <div class="widget-card">
+        <div>
+          <div class="widget-value">3,512</div>
+          <div class="widget-label">Total Customers</div>
+          <div class="widget-trend bg-emerald-100 text-emerald-700"><i class="fas fa-arrow-up"></i> +48 this month</div>
+        </div>
+        <div class="widget-icon bg-[#111844]/10 text-[#111844]"><i class="fas fa-users"></i></div>
+      </div>
+      <div class="widget-card">
+        <div>
+          <div class="widget-value">3,204</div>
+          <div class="widget-label">Active Customers</div>
+        </div>
+        <div class="widget-icon bg-emerald-100 text-emerald-700"><i class="fas fa-user-check"></i></div>
+      </div>
+      <div class="widget-card">
+        <div>
+          <div class="widget-value">18</div>
+          <div class="widget-label">Blocked Customers</div>
+        </div>
+        <div class="widget-icon bg-red-100 text-red-700"><i class="fas fa-user-slash"></i></div>
+      </div>
+      <div class="widget-card">
+        <div>
+          <div class="widget-value">₹12.4L</div>
+          <div class="widget-label">Total Outstanding</div>
+          <div class="widget-trend bg-amber-100 text-amber-700"><i class="fas fa-clock"></i> 23 overdue</div>
+        </div>
+        <div class="widget-icon bg-amber-100 text-amber-700"><i class="fas fa-rupee-sign"></i></div>
+      </div>
+    </div>
+
+    <!-- Filter + Search Bar -->
+    <div class="bg-[#FFFCFC] border border-[#4B5694]/18 rounded-xl p-4 shadow-sm">
+      <div class="flex flex-wrap gap-3 items-end">
+        <div class="flex-1 min-w-[180px]">
+          <label class="filter-label">Search</label>
+          <div class="relative">
+            <i class="fas fa-search absolute left-3 top-1/2 -translate-y-1/2 text-[#7288AE] text-xs"></i>
+            <input type="text" id="search-input" placeholder="Name, Code, Mobile, GST…" class="filter-input pl-8">
+          </div>
+        </div>
+        <div class="min-w-[140px]">
+          <label class="filter-label">Customer Type</label>
+          <select id="filter-type" class="filter-input">
+            <option value="">All Types</option>
+            <option>Retail Customer</option>
+            <option>Wholesale Customer</option>
+            <option>Distributor</option>
+            <option>Dealer</option>
+            <option>Corporate Customer</option>
+          </select>
+        </div>
+        <div class="min-w-[120px]">
+          <label class="filter-label">City</label>
+          <select id="filter-city" class="filter-input">
+            <option value="">All Cities</option>
+            <option>Mumbai</option>
+            <option>Pune</option>
+            <option>Delhi</option>
+            <option>Bangalore</option>
+            <option>Hyderabad</option>
+          </select>
+        </div>
+        <div class="min-w-[120px]">
+          <label class="filter-label">Status</label>
+          <select id="filter-status" class="filter-input">
+            <option value="">All Status</option>
+            <option>Active</option>
+            <option>Inactive</option>
+            <option>Blocked</option>
+          </select>
+        </div>
+        <div class="flex gap-2 ml-auto">
+          <button id="btn-clear-filter" class="btn-secondary"><i class="fas fa-times mr-1.5"></i>Clear</button>
+          <button id="btn-export" class="btn-secondary"><i class="fas fa-download mr-1.5"></i>Export</button>
+          <button id="btn-add-customer" class="btn-primary"><i class="fas fa-plus mr-1.5"></i>Add Customer</button>
+        </div>
+      </div>
+    </div>
+
+    <!-- Customer Table -->
+    <div class="bg-[#FFFCFC] border border-[#4B5694]/18 rounded-xl shadow-sm overflow-hidden">
+      <div class="flex items-center justify-between px-4 py-3 border-b border-[#4B5694]/15">
+        <div>
+          <span class="text-sm font-semibold text-[#111844]">Customer List</span>
+          <span class="ml-2 text-xs text-[#7288AE]" id="record-count">Showing 10 of 3,512</span>
+        </div>
+        <div class="flex items-center gap-2">
+          <span class="text-xs text-[#7288AE]">Rows:</span>
+          <select id="rows-per-page" class="text-xs border border-[#4B5694]/20 rounded-lg px-2 py-1 text-[#111844] bg-[#FAFAFA] focus:outline-none">
+            <option>10</option>
+            <option>25</option>
+            <option>50</option>
+          </select>
+        </div>
+      </div>
+      <div class="overflow-x-auto">
+        <table class="w-full text-xs">
+          <thead>
+            <tr class="bg-[#111844]/5 text-[#4B5694] uppercase tracking-wide text-[10px]">
+              <th class="th-cell">Customer Code</th>
+              <th class="th-cell">Customer Name</th>
+              <th class="th-cell">Type</th>
+              <th class="th-cell">Contact Person</th>
+              <th class="th-cell">Mobile</th>
+              <th class="th-cell">GST Number</th>
+              <th class="th-cell">City</th>
+              <th class="th-cell">Credit Limit</th>
+              <th class="th-cell">Status</th>
+              <th class="th-cell text-center">Actions</th>
+            </tr>
+          </thead>
+          <tbody id="customer-table-body">
+            <!-- Populated by JS -->
+          </tbody>
+        </table>
+      </div>
+      <!-- Pagination -->
+      <div class="flex items-center justify-between px-4 py-3 border-t border-[#4B5694]/10">
+        <span class="text-xs text-[#7288AE]" id="page-info">Page 1 of 352</span>
+        <div class="flex gap-1">
+          <button class="pagination-btn" id="btn-prev"><i class="fas fa-chevron-left"></i></button>
+          <button class="pagination-btn active-page">1</button>
+          <button class="pagination-btn">2</button>
+          <button class="pagination-btn">3</button>
+          <span class="pagination-btn cursor-default text-[#7288AE]">…</span>
+          <button class="pagination-btn">352</button>
+          <button class="pagination-btn" id="btn-next"><i class="fas fa-chevron-right"></i></button>
+        </div>
+      </div>
+    </div>
+
+  </main>
+</div>
+
+<!-- =================== ADD / EDIT CUSTOMER MODAL =================== -->
+<div id="customer-modal" class="modal-overlay hidden">
+  <div class="modal-box">
+    <!-- Modal Header -->
+    <div class="flex items-center justify-between px-6 py-4 border-b border-[#4B5694]/15">
+      <div>
+        <h2 class="text-sm font-semibold text-[#111844]" id="modal-title">Add New Customer</h2>
+        <p class="text-xs text-[#7288AE]">Fill in the details below to register a customer</p>
+      </div>
+      <button id="modal-close" class="w-7 h-7 flex items-center justify-center rounded-lg text-[#7288AE] hover:bg-[#4B5694]/10 transition-colors">
+        <i class="fas fa-times"></i>
+      </button>
+    </div>
+
+    <!-- Progress Steps -->
+    <div class="flex items-center gap-0 px-6 py-3 bg-[#FAFAFA] border-b border-[#4B5694]/10 overflow-x-auto">
+      <div class="step-pill active" data-step="1"><span class="step-num">1</span><span class="step-name">Basic Info</span></div>
+      <div class="step-line"></div>
+      <div class="step-pill" data-step="2"><span class="step-num">2</span><span class="step-name">Address</span></div>
+      <div class="step-line"></div>
+      <div class="step-pill" data-step="3"><span class="step-num">3</span><span class="step-name">Tax</span></div>
+      <div class="step-line"></div>
+      <div class="step-pill" data-step="4"><span class="step-num">4</span><span class="step-name">Credit</span></div>
+      <div class="step-line"></div>
+      <div class="step-pill" data-step="5"><span class="step-num">5</span><span class="step-name">Preferences</span></div>
+    </div>
+
+    <!-- Modal Body -->
+    <div class="overflow-y-auto modal-body-scroll px-6 py-5">
+
+      <!-- Step 1: Basic Info -->
+      <div class="step-content" id="step-1">
+        <div class="form-section-title"><i class="fas fa-user mr-2 text-[#4B5694]"></i>Basic Information</div>
+        <div class="form-grid">
+          <div class="form-group">
+            <label class="form-label">Customer Code <span class="text-[#7288AE] text-[10px]">(Auto)</span></label>
+            <input type="text" value="CUST-0513" disabled class="form-input bg-[#FAFAFA] text-[#7288AE] cursor-not-allowed">
+          </div>
+          <div class="form-group">
+            <label class="form-label">Customer Name <span class="req">*</span></label>
+            <input type="text" placeholder="e.g. Ramesh Traders" class="form-input" id="f-name">
+          </div>
+          <div class="form-group">
+            <label class="form-label">Customer Type <span class="req">*</span></label>
+            <select class="form-input" id="f-type">
+              <option value="">Select type</option>
+              <option>Retail Customer</option>
+              <option>Wholesale Customer</option>
+              <option>Distributor</option>
+              <option>Dealer</option>
+              <option>Corporate Customer</option>
+            </select>
+          </div>
+          <div class="form-group">
+            <label class="form-label">Contact Person <span class="req">*</span></label>
+            <input type="text" placeholder="e.g. Ramesh Kumar" class="form-input" id="f-contact">
+          </div>
+          <div class="form-group">
+            <label class="form-label">Mobile Number <span class="req">*</span></label>
+            <input type="tel" placeholder="10-digit mobile" class="form-input" id="f-mobile">
+          </div>
+          <div class="form-group">
+            <label class="form-label">Alternate Number</label>
+            <input type="tel" placeholder="Optional" class="form-input">
+          </div>
+          <div class="form-group col-span-2">
+            <label class="form-label">Email Address</label>
+            <input type="email" placeholder="customer@example.com" class="form-input" id="f-email">
+          </div>
+        </div>
+      </div>
+
+      <!-- Step 2: Address -->
+      <div class="step-content hidden" id="step-2">
+        <div class="form-section-title"><i class="fas fa-map-marker-alt mr-2 text-[#4B5694]"></i>Billing Address</div>
+        <div class="form-grid">
+          <div class="form-group col-span-2">
+            <label class="form-label">Address Line 1 <span class="req">*</span></label>
+            <input type="text" placeholder="Building, Street" class="form-input">
+          </div>
+          <div class="form-group col-span-2">
+            <label class="form-label">Address Line 2</label>
+            <input type="text" placeholder="Area, Landmark" class="form-input">
+          </div>
+          <div class="form-group">
+            <label class="form-label">City <span class="req">*</span></label>
+            <input type="text" placeholder="City" class="form-input">
+          </div>
+          <div class="form-group">
+            <label class="form-label">State <span class="req">*</span></label>
+            <input type="text" placeholder="State" class="form-input">
+          </div>
+          <div class="form-group">
+            <label class="form-label">Pincode <span class="req">*</span></label>
+            <input type="text" placeholder="6-digit PIN" class="form-input">
+          </div>
+          <div class="form-group">
+            <label class="form-label">Country</label>
+            <input type="text" value="India" class="form-input">
+          </div>
+        </div>
+
+        <div class="mt-5">
+          <div class="flex items-center gap-2 mb-3">
+            <div class="form-section-title mb-0"><i class="fas fa-shipping-fast mr-2 text-[#4B5694]"></i>Shipping Address</div>
+          </div>
+          <label class="flex items-center gap-2 text-xs text-[#111844] cursor-pointer mb-3">
+            <input type="checkbox" id="same-as-billing" class="rounded border-[#4B5694]/30 text-[#111844] focus:ring-[#111844]">
+            <span>Same as billing address</span>
+          </label>
+          <div id="shipping-fields" class="form-grid">
+            <div class="form-group col-span-2">
+              <label class="form-label">Address Line 1</label>
+              <input type="text" placeholder="Building, Street" class="form-input">
+            </div>
+            <div class="form-group col-span-2">
+              <label class="form-label">Address Line 2</label>
+              <input type="text" placeholder="Area, Landmark" class="form-input">
+            </div>
+            <div class="form-group">
+              <label class="form-label">City</label>
+              <input type="text" class="form-input">
+            </div>
+            <div class="form-group">
+              <label class="form-label">State</label>
+              <input type="text" class="form-input">
+            </div>
+            <div class="form-group">
+              <label class="form-label">Pincode</label>
+              <input type="text" class="form-input">
+            </div>
+            <div class="form-group">
+              <label class="form-label">Country</label>
+              <input type="text" value="India" class="form-input">
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Step 3: Tax -->
+      <div class="step-content hidden" id="step-3">
+        <div class="form-section-title"><i class="fas fa-file-invoice mr-2 text-[#4B5694]"></i>Tax Information</div>
+        <div class="form-grid">
+          <div class="form-group">
+            <label class="form-label">GST Number</label>
+            <input type="text" placeholder="22AAAAA0000A1Z5" class="form-input" style="text-transform:uppercase">
+          </div>
+          <div class="form-group">
+            <label class="form-label">PAN Number</label>
+            <input type="text" placeholder="AAAAA0000A" class="form-input" style="text-transform:uppercase">
+          </div>
+        </div>
+        <div class="mt-4 p-3 bg-[#4B5694]/8 rounded-lg border border-[#4B5694]/15">
+          <div class="text-xs font-medium text-[#111844] mb-1"><i class="fas fa-info-circle mr-1.5 text-[#4B5694]"></i>GST Format</div>
+          <div class="text-[11px] text-[#7288AE]">Format: 2-digit state code + 10-digit PAN + 1Z + 1 check digit (e.g. 27AABCU9603R1ZX)</div>
+        </div>
+      </div>
+
+      <!-- Step 4: Credit -->
+      <div class="step-content hidden" id="step-4">
+        <div class="form-section-title"><i class="fas fa-credit-card mr-2 text-[#4B5694]"></i>Credit Information</div>
+        <div class="form-grid">
+          <div class="form-group">
+            <label class="form-label">Credit Limit (₹)</label>
+            <input type="number" placeholder="e.g. 100000" class="form-input">
+          </div>
+          <div class="form-group">
+            <label class="form-label">Credit Days</label>
+            <input type="number" placeholder="e.g. 30" class="form-input">
+          </div>
+          <div class="form-group col-span-2">
+            <label class="form-label">Payment Terms</label>
+            <select class="form-input">
+              <option value="">Select payment terms</option>
+              <option>Immediate Payment</option>
+              <option>Net 15 Days</option>
+              <option>Net 30 Days</option>
+              <option>Net 45 Days</option>
+              <option>Net 60 Days</option>
+              <option>End of Month</option>
+            </select>
+          </div>
+        </div>
+        <div class="mt-4 p-3 bg-amber-50 rounded-lg border border-amber-200">
+          <div class="text-xs font-medium text-amber-800 mb-1"><i class="fas fa-exclamation-triangle mr-1.5"></i>Credit Policy</div>
+          <div class="text-[11px] text-amber-700">Orders will be blocked automatically when outstanding exceeds the credit limit.</div>
+        </div>
+      </div>
+
+      <!-- Step 5: Communication Preferences -->
+      <div class="step-content hidden" id="step-5">
+        <div class="form-section-title"><i class="fas fa-bell mr-2 text-[#4B5694]"></i>Communication Preferences</div>
+        <div class="space-y-3 mt-2">
+          <label class="pref-toggle">
+            <div>
+              <div class="text-xs font-medium text-[#111844]">Email Notifications</div>
+              <div class="text-[11px] text-[#7288AE]">Order updates, invoices, and alerts via email</div>
+            </div>
+            <div class="toggle-switch">
+              <input type="checkbox" checked>
+              <span class="toggle-slider"></span>
+            </div>
+          </label>
+          <label class="pref-toggle">
+            <div>
+              <div class="text-xs font-medium text-[#111844]">SMS Notifications</div>
+              <div class="text-[11px] text-[#7288AE]">Delivery updates and payment reminders via SMS</div>
+            </div>
+            <div class="toggle-switch">
+              <input type="checkbox" checked>
+              <span class="toggle-slider"></span>
+            </div>
+          </label>
+          <label class="pref-toggle">
+            <div>
+              <div class="text-xs font-medium text-[#111844]">WhatsApp Notifications</div>
+              <div class="text-[11px] text-[#7288AE]">Rich updates and documents via WhatsApp</div>
+            </div>
+            <div class="toggle-switch">
+              <input type="checkbox">
+              <span class="toggle-slider"></span>
+            </div>
+          </label>
+        </div>
+      </div>
+
+    </div>
+
+    <!-- Modal Footer -->
+    <div class="flex items-center justify-between px-6 py-4 border-t border-[#4B5694]/15 bg-[#FAFAFA]/50">
+      <button id="btn-step-back" class="btn-secondary hidden"><i class="fas fa-arrow-left mr-1.5"></i>Back</button>
+      <div class="flex gap-2 ml-auto">
+        <button id="btn-modal-cancel" class="btn-secondary">Cancel</button>
+        <button id="btn-step-next" class="btn-primary">Next <i class="fas fa-arrow-right ml-1.5"></i></button>
+        <button id="btn-save" class="btn-primary hidden"><i class="fas fa-check mr-1.5"></i>Save Customer</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- =================== VIEW CUSTOMER OVERLAY MODAL =================== -->
+<div id="view-modal" class="modal-overlay hidden">
+  <div class="modal-box max-w-2xl">
+    <!-- Modal Header -->
+    <div class="flex items-center justify-between px-6 py-4 border-b border-[#4B5694]/15">
+      <div class="flex items-center gap-3">
+        <div class="w-10 h-10 rounded-xl bg-[#111844] flex items-center justify-center text-white text-sm font-bold" id="view-avatar">RT</div>
+        <div>
+          <div class="text-sm font-semibold text-[#111844]" id="view-name">Ramesh Traders</div>
+          <div class="text-xs text-[#7288AE]" id="view-code">CUST-0001</div>
+        </div>
+      </div>
+      <button id="view-modal-close" class="w-7 h-7 flex items-center justify-center rounded-lg text-[#7288AE] hover:bg-[#4B5694]/10">
+        <i class="fas fa-times"></i>
+      </button>
+    </div>
+
+    <!-- Status badge + Quick actions -->
+    <div class="flex items-center gap-2 px-6 py-3 border-b border-[#4B5694]/10 bg-[#FAFAFA]/40">
+      <span class="status-badge status-active" id="view-status">Active</span>
+      <div class="flex gap-2 ml-auto">
+        <button class="btn-secondary text-[11px] py-1 px-3" id="view-edit-btn"><i class="fas fa-pen mr-1"></i>Edit</button>
+        <button class="btn-secondary text-[11px] py-1 px-3 text-red-600 border-red-200 hover:bg-red-50" id="view-block-btn"><i class="fas fa-ban mr-1"></i>Block</button>
+      </div>
+    </div>
+
+    <!-- Tabs -->
+    <div class="flex border-b border-[#4B5694]/15 overflow-x-auto px-6">
+      <button class="view-tab active-tab" data-view-tab="overview">Overview</button>
+      <button class="view-tab" data-view-tab="addresses">Addresses</button>
+      <button class="view-tab" data-view-tab="sales">Sales</button>
+      <button class="view-tab" data-view-tab="payments">Payments</button>
+      <button class="view-tab" data-view-tab="returns">Returns</button>
+      <button class="view-tab" data-view-tab="activity">Activity</button>
+    </div>
+
+    <!-- Tab Content -->
+    <div class="overflow-y-auto modal-body-scroll px-6 py-5 max-h-[500px]">
+
+      <!-- Overview Tab -->
+      <div class="view-tab-content" id="view-tab-overview">
+        <div class="grid grid-cols-2 gap-3 mb-4">
+          <div class="info-card"><div class="info-label">Customer Type</div><div class="info-value" id="view-type">Wholesale Customer</div></div>
+          <div class="info-card"><div class="info-label">Contact Person</div><div class="info-value" id="view-contact">Ramesh Kumar</div></div>
+          <div class="info-card"><div class="info-label">Mobile</div><div class="info-value" id="view-mobile">9876543210</div></div>
+          <div class="info-card"><div class="info-label">Email</div><div class="info-value text-[11px]" id="view-email">ramesh@traders.com</div></div>
+          <div class="info-card"><div class="info-label">GST Number</div><div class="info-value text-[11px]" id="view-gst">27AABRT0001R1ZX</div></div>
+          <div class="info-card"><div class="info-label">PAN Number</div><div class="info-value" id="view-pan">AABRT0001R</div></div>
+          <div class="info-card"><div class="info-label">Credit Limit</div><div class="info-value text-emerald-700" id="view-credit">₹5,00,000</div></div>
+          <div class="info-card"><div class="info-label">Credit Days</div><div class="info-value" id="view-days">30 Days</div></div>
+        </div>
+      </div>
+
+      <!-- Addresses Tab -->
+      <div class="view-tab-content hidden" id="view-tab-addresses">
+        <div class="space-y-3">
+          <div class="info-card">
+            <div class="info-label mb-2"><i class="fas fa-file-invoice mr-1"></i>Billing Address</div>
+            <div class="text-xs text-[#111844]">123, Industrial Estate, MIDC Area<br>Pune, Maharashtra - 411018<br>India</div>
+          </div>
+          <div class="info-card">
+            <div class="info-label mb-2"><i class="fas fa-shipping-fast mr-1"></i>Default Shipping Address</div>
+            <div class="text-xs text-[#111844]">123, Industrial Estate, MIDC Area<br>Pune, Maharashtra - 411018<br>India</div>
+          </div>
+          <button class="w-full text-xs text-[#4B5694] border border-[#4B5694]/30 rounded-lg py-2 hover:bg-[#4B5694]/5 transition-colors">
+            <i class="fas fa-plus mr-1.5"></i>Add Another Address
+          </button>
+        </div>
+      </div>
+
+      <!-- Sales Tab -->
+      <div class="view-tab-content hidden" id="view-tab-sales">
+        <div class="grid grid-cols-2 gap-3 mb-4">
+          <div class="info-card text-center">
+            <div class="text-lg font-bold text-[#111844]">142</div>
+            <div class="info-label">Total Orders</div>
+          </div>
+          <div class="info-card text-center">
+            <div class="text-lg font-bold text-emerald-700">₹18.4L</div>
+            <div class="info-label">Total Sales Value</div>
+          </div>
+          <div class="info-card text-center">
+            <div class="text-lg font-bold text-amber-600">7</div>
+            <div class="info-label">Pending Orders</div>
+          </div>
+          <div class="info-card text-center">
+            <div class="text-base font-semibold text-[#111844]">12 Jun 2026</div>
+            <div class="info-label">Last Order Date</div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Payments Tab -->
+      <div class="view-tab-content hidden" id="view-tab-payments">
+        <div class="grid grid-cols-2 gap-3">
+          <div class="info-card text-center">
+            <div class="text-lg font-bold text-red-600">₹2.1L</div>
+            <div class="info-label">Outstanding</div>
+          </div>
+          <div class="info-card text-center">
+            <div class="text-lg font-bold text-emerald-700">₹16.3L</div>
+            <div class="info-label">Total Paid</div>
+          </div>
+          <div class="info-card text-center">
+            <div class="text-lg font-bold text-[#4B5694]">₹2.9L</div>
+            <div class="info-label">Available Credit</div>
+          </div>
+          <div class="info-card text-center">
+            <div class="text-lg font-bold text-amber-600">₹45K</div>
+            <div class="info-label">Overdue Amount</div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Returns Tab -->
+      <div class="view-tab-content hidden" id="view-tab-returns">
+        <div class="grid grid-cols-3 gap-3">
+          <div class="info-card text-center">
+            <div class="text-lg font-bold text-[#111844]">8</div>
+            <div class="info-label">Total Returns</div>
+          </div>
+          <div class="info-card text-center">
+            <div class="text-lg font-bold text-[#4B5694]">3</div>
+            <div class="info-label">Replacements</div>
+          </div>
+          <div class="info-card text-center">
+            <div class="text-lg font-bold text-emerald-700">5</div>
+            <div class="info-label">Credit Notes</div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Activity Tab -->
+      <div class="view-tab-content hidden" id="view-tab-activity">
+        <div class="space-y-2">
+          <div class="activity-row">
+            <div class="activity-dot bg-emerald-500"></div>
+            <div>
+              <div class="text-xs font-medium text-[#111844]">Customer created</div>
+              <div class="text-[11px] text-[#7288AE]">By Admin — 15 Jan 2025, 10:32 AM</div>
+            </div>
+          </div>
+          <div class="activity-row">
+            <div class="activity-dot bg-[#4B5694]"></div>
+            <div>
+              <div class="text-xs font-medium text-[#111844]">Credit limit updated</div>
+              <div class="text-[11px] text-[#7288AE]">By Admin — 10 Mar 2025, 2:14 PM</div>
+            </div>
+          </div>
+          <div class="activity-row">
+            <div class="activity-dot bg-amber-500"></div>
+            <div>
+              <div class="text-xs font-medium text-[#111844]">Status changed to Active</div>
+              <div class="text-[11px] text-[#7288AE]">By Admin — 12 Jun 2026, 9:00 AM</div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+    </div>
+
+    <!-- Modal Footer -->
+    <div class="flex justify-end px-6 py-4 border-t border-[#4B5694]/15 bg-[#FAFAFA]/50">
+      <button id="view-modal-close-btn" class="btn-secondary">Close</button>
+    </div>
+  </div>
+</div>
+
+<!-- Toast -->
+<div id="toast-container" class="fixed bottom-5 right-5 z-[400] space-y-2"></div>
+
+<script src="/pages/customers/customer.js"></script>
+</body>
+</html>
