@@ -67,7 +67,7 @@ body {
   font-size: 14px;
   flex-shrink: 0;
 }
-.sidebar-brand-text { font-size: 13px; font-weight: 600; color: #111844; }
+.sidebar-brand-text { font-size: 13px; font-weight: 600; color: #111844; max-height: 28px; }
 
 #sidebar-toggle {
   width: 28px; height: 28px;
@@ -133,13 +133,8 @@ body {
   display: flex;
   flex-direction: column;
   gap: 2px;
-  overflow: hidden;
-  max-height: 0;
-  transition: max-height 0.3s ease, opacity 0.2s ease;
-  opacity: 0;
 }
-.nav-group-items.open { max-height: 400px; opacity: 1; }
-
+.nav-group-items.hidden { display: none; }
 .nav-sub-item {
   display: flex;
   align-items: center;

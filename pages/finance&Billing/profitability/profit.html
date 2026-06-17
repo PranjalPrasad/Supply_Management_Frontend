@@ -1,0 +1,323 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Profitability Analysis — Supply Manager</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script>tailwind.config={theme:{extend:{colors:{active:'#111844',border2:'#4B5694',bg:'#FAFAFA',hover2:'#7288AE',card:'#FFFCFC',dark:'#1a2155'}}}}</script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@300;400;500;700&display=swap" rel="stylesheet" />
+    <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.1/dist/chart.umd.min.js"></script>
+    <link rel="stylesheet" href="/pages/finance&Billing/profitability/profit.css" />
+</head>
+<body class="bg-[#ebe6e6] text-[#111844] min-h-screen">
+
+<!-- ========== SIDEBAR ========== -->
+<aside id="sidebar" class="fixed top-0 left-0 h-full w-[260px] bg-[#FFFCFC] z-[100] flex flex-col transition-all duration-300 overflow-hidden shadow-lg">
+    <div class="flex items-center justify-between px-5 h-16 border border-[#4B5694]/20 shadow-sm">
+    <div class="flex items-center gap-3">
+        <div class="w-9 h-9 rounded-lg bg-[#111844] flex items-center justify-center text-[#FAFAFA] flex-shrink-0">
+            <i class="fas fa-cubes"></i>
+        </div>
+        <img src="/assets/logo.png" alt="Logo" class="h-8 w-auto object-contain">
+    </div>
+    <button id="sidebar-toggle" class="w-7 h-7 flex items-center justify-center rounded-lg text-[#4B5694] hover:bg-[#4B5694]/10 transition-colors">
+        <i class="fas fa-chevron-left text-sm"></i>
+    </button>
+</div>
+    <nav class="flex-1 overflow-y-auto py-3 px-2 space-y-0.5">
+        <a href="/index.html" class="nav-item flex items-center gap-3 px-3 py-2.5 rounded-lg text-[#111844]/70 hover:bg-[#7288AE]/20 hover:text-[#111844] transition-colors duration-150 text-sm cursor-pointer border-b border-[#4B5694]/20 shadow-sm">
+            <span class="nav-icon text-base flex-shrink-0 w-5"><i class="fas fa-chart-pie"></i></span>
+            <span class="nav-label">Dashboard</span>
+        </a>
+        <div class="nav-group">
+            <div class="nav-group-header flex items-center justify-between gap-3 px-3 py-2.5 rounded-lg text-[#111844]/70 hover:bg-[#7288AE]/20 hover:text-[#111844] transition-colors duration-150 text-sm cursor-pointer border-b border-[#4B5694]/20 shadow-sm">
+                <div class="flex items-center gap-3"><span class="nav-icon text-base flex-shrink-0 w-5"><i class="fas fa-database"></i></span><span class="nav-label">Master Management</span></div>
+                <i class="fas fa-chevron-down text-xs transition-transform duration-200"></i>
+            </div>
+            <div class="nav-group-items ml-7 space-y-0.5 mt-1 hidden">
+                <a href="/pages/Product/product.html" class="nav-item flex items-center gap-3 px-3 py-2 rounded-lg text-[#111844]/70 hover:bg-[#7288AE]/20 hover:text-[#111844] transition-colors duration-150 text-xs cursor-pointer"><span class="nav-icon text-sm flex-shrink-0 w-4"><i class="fas fa-box"></i></span><span class="nav-label">Products</span></a>
+                <a href="/pages/suppliers/supplier.html" class="nav-item flex items-center gap-3 px-3 py-2 rounded-lg text-[#111844]/70 hover:bg-[#7288AE]/20 hover:text-[#111844] transition-colors duration-150 text-xs cursor-pointer"><span class="nav-icon text-sm flex-shrink-0 w-4"><i class="fas fa-truck-loading"></i></span><span class="nav-label">Suppliers</span></a>
+                <a href="/pages/customers/customer.html" class="nav-item flex items-center gap-3 px-3 py-2 rounded-lg text-[#111844]/70 hover:bg-[#7288AE]/20 hover:text-[#111844] transition-colors duration-150 text-xs cursor-pointer"><span class="nav-icon text-sm flex-shrink-0 w-4"><i class="fas fa-users"></i></span><span class="nav-label">Customers</span></a>
+                <a href="/pages/warehousemaster/warehousem.html" class="nav-item flex items-center gap-3 px-3 py-2 rounded-lg text-[#111844]/70 hover:bg-[#7288AE]/20 hover:text-[#111844] transition-colors duration-150 text-xs cursor-pointer"><span class="nav-icon text-sm flex-shrink-0 w-4"><i class="fas fa-warehouse"></i></span><span class="nav-label">Warehouses</span></a>
+                <a href="/pages/units/units.html" class="nav-item flex items-center gap-3 px-3 py-2 rounded-lg text-[#111844]/70 hover:bg-[#7288AE]/20 hover:text-[#111844] transition-colors duration-150 text-xs cursor-pointer"><span class="nav-icon text-sm flex-shrink-0 w-4"><i class="fas fa-balance-scale"></i></span><span class="nav-label">Units</span></a>
+            </div>
+        </div>
+        <a href="/pages/purchase/purchase.html" class="nav-item flex items-center gap-3 px-3 py-2.5 rounded-lg text-[#111844]/70 hover:bg-[#7288AE]/20 hover:text-[#111844] transition-colors duration-150 text-sm cursor-pointer border-b border-[#4B5694]/20 shadow-sm">
+            <span class="nav-icon text-base flex-shrink-0 w-5"><i class="fas fa-shopping-cart"></i></span><span class="nav-label">Purchase Management</span>
+        </a>
+        <a href="/pages/inventory/inventory.html" class="nav-item flex items-center gap-3 px-3 py-2.5 rounded-lg text-[#111844]/70 hover:bg-[#7288AE]/20 hover:text-[#111844] transition-colors duration-150 text-sm cursor-pointer border-b border-[#4B5694]/20 shadow-sm">
+            <span class="nav-icon text-base flex-shrink-0 w-5"><i class="fas fa-boxes-stacked"></i></span><span class="nav-label">Inventory Management</span>
+        </a>
+        <a href="/pages/warehouse/warehouse.html" class="nav-item flex items-center gap-3 px-3 py-2.5 rounded-lg text-[#111844]/70 hover:bg-[#7288AE]/20 hover:text-[#111844] transition-colors duration-150 text-sm cursor-pointer border-b border-[#4B5694]/20 shadow-sm">
+            <span class="nav-icon text-base flex-shrink-0 w-5"><i class="fas fa-warehouse"></i></span><span class="nav-label">Warehouse Management</span>
+        </a>
+        <div class="nav-group">
+            <div class="nav-group-header flex items-center justify-between gap-3 px-3 py-2.5 rounded-lg text-[#111844]/70 hover:bg-[#7288AE]/20 hover:text-[#111844] transition-colors duration-150 text-sm cursor-pointer border-b border-[#4B5694]/20 shadow-sm">
+                <div class="flex items-center gap-3"><span class="nav-icon text-base flex-shrink-0 w-5"><i class="fas fa-truck"></i></span><span class="nav-label">Sales & Dispatch</span></div>
+                <i class="fas fa-chevron-down text-xs transition-transform duration-200"></i>
+            </div>
+            <div class="nav-group-items ml-7 space-y-0.5 mt-1 hidden">
+                <a href="/pages/sales/salesorders/salesorders.html" class="nav-item flex items-center gap-3 px-3 py-2 rounded-lg text-[#111844]/70 hover:bg-[#7288AE]/20 hover:text-[#111844] transition-colors duration-150 text-xs cursor-pointer"><span class="nav-icon text-sm flex-shrink-0 w-4"><i class="fas fa-receipt"></i></span><span class="nav-label">Sales Orders</span></a>
+                <a href="/pages/sales/dispatchplanning/dispatch.html" class="nav-item flex items-center gap-3 px-3 py-2 rounded-lg text-[#111844]/70 hover:bg-[#7288AE]/20 hover:text-[#111844] transition-colors duration-150 text-xs cursor-pointer"><span class="nav-icon text-sm flex-shrink-0 w-4"><i class="fas fa-calendar-alt"></i></span><span class="nav-label">Dispatch Planning</span></a>
+                <a href="/pages/sales/delivery/deliveryc.html" class="nav-item flex items-center gap-3 px-3 py-2 rounded-lg text-[#111844]/70 hover:bg-[#7288AE]/20 hover:text-[#111844] transition-colors duration-150 text-xs cursor-pointer"><span class="nav-icon text-sm flex-shrink-0 w-4"><i class="fas fa-file-alt"></i></span><span class="nav-label">Delivery Challan</span></a>
+                <a href="/pages/sales/invoices/invoice.html" class="nav-item flex items-center gap-3 px-3 py-2 rounded-lg text-[#111844]/70 hover:bg-[#7288AE]/20 hover:text-[#111844] transition-colors duration-150 text-xs cursor-pointer"><span class="nav-icon text-sm flex-shrink-0 w-4"><i class="fas fa-file-invoice-dollar"></i></span><span class="nav-label">Invoices</span></a>
+                <a href="/pages/sales/shipment/Shipmenttracking.html" class="nav-item flex items-center gap-3 px-3 py-2 rounded-lg text-[#111844]/70 hover:bg-[#7288AE]/20 hover:text-[#111844] transition-colors duration-150 text-xs cursor-pointer"><span class="nav-icon text-sm flex-shrink-0 w-4"><i class="fas fa-location-dot"></i></span><span class="nav-label">Shipment Tracking</span></a>
+            </div>
+        </div>
+        <a href="/pages/returns/returns.html" class="nav-item flex items-center gap-3 px-3 py-2.5 rounded-lg text-[#111844]/70 hover:bg-[#7288AE]/20 hover:text-[#111844] transition-colors duration-150 text-sm cursor-pointer border-b border-[#4B5694]/20 shadow-sm">
+            <span class="nav-icon text-base flex-shrink-0 w-5"><i class="fas fa-rotate-left"></i></span><span class="nav-label">Returns Management</span>
+        </a>
+        <div class="nav-group">
+            <div class="nav-group-header flex items-center justify-between gap-3 px-3 py-2.5 rounded-lg text-[#111844]/70 hover:bg-[#7288AE]/20 hover:text-[#111844] transition-colors duration-150 text-sm cursor-pointer border-b border-[#4B5694]/20 shadow-sm">
+                <div class="flex items-center gap-3"><span class="nav-icon text-base flex-shrink-0 w-5"><i class="fas fa-coins"></i></span><span class="nav-label">Finance & Billing</span></div>
+                <i class="fas fa-chevron-down text-xs transition-transform duration-200"></i>
+            </div>
+            <div class="nav-group-items ml-7 space-y-0.5 mt-1">
+                <a href="/pages/finance&Billing/receivables/receive.html" class="nav-item flex items-center gap-3 px-3 py-2 rounded-lg text-[#111844]/70 hover:bg-[#7288AE]/20 hover:text-[#111844] transition-colors duration-150 text-xs cursor-pointer"><span class="nav-icon text-sm flex-shrink-0 w-4"><i class="fas fa-hand-holding-usd"></i></span><span class="nav-label">Receivables</span></a>
+                <a href="/pages/finance&Billing/payables/pay.html" class="nav-item flex items-center gap-3 px-3 py-2 rounded-lg text-[#111844]/70 hover:bg-[#7288AE]/20 hover:text-[#111844] transition-colors duration-150 text-xs cursor-pointer"><span class="nav-icon text-sm flex-shrink-0 w-4"><i class="fas fa-money-bill-wave"></i></span><span class="nav-label">Payables</span></a>
+                <a href="/pages/finance&Billing/expenses/expense.html" class="nav-item flex items-center gap-3 px-3 py-2 rounded-lg text-[#111844]/70 hover:bg-[#7288AE]/20 hover:text-[#111844] transition-colors duration-150 text-xs cursor-pointer"><span class="nav-icon text-sm flex-shrink-0 w-4"><i class="fas fa-chart-line"></i></span><span class="nav-label">Expenses</span></a>
+                <a href="/pages/finance&Billing/GSTM/gst.html" class="nav-item flex items-center gap-3 px-3 py-2 rounded-lg text-[#111844]/70 hover:bg-[#7288AE]/20 hover:text-[#111844] transition-colors duration-150 text-xs cursor-pointer"><span class="nav-icon text-sm flex-shrink-0 w-4"><i class="fas fa-percent"></i></span><span class="nav-label">GST Management</span></a>
+                <a href="/pages/finance&Billing/profitability/profit.html" class="nav-item nav-active flex items-center gap-3 px-3 py-2 rounded-lg transition-colors duration-150 text-xs cursor-pointer"><span class="nav-icon text-sm flex-shrink-0 w-4"><i class="fas fa-chart-simple"></i></span><span class="nav-label">Profitability</span></a>
+            </div>
+        </div>
+        <a href="/pages/reports&analytics/reports.html" class="nav-item flex items-center gap-3 px-3 py-2.5 rounded-lg text-[#111844]/70 hover:bg-[#7288AE]/20 hover:text-[#111844] transition-colors duration-150 text-sm cursor-pointer border-b border-[#4B5694]/20 shadow-sm">
+            <span class="nav-icon text-base flex-shrink-0 w-5"><i class="fas fa-chart-bar"></i></span><span class="nav-label">Reports & Analytics</span>
+        </a>
+        <div class="nav-group">
+            <div class="nav-group-header flex items-center justify-between gap-3 px-3 py-2.5 rounded-lg text-[#111844]/70 hover:bg-[#7288AE]/20 hover:text-[#111844] transition-colors duration-150 text-sm cursor-pointer border-b border-[#4B5694]/20 shadow-sm">
+                <div class="flex items-center gap-3"><span class="nav-icon text-base flex-shrink-0 w-5"><i class="fas fa-users-gear"></i></span><span class="nav-label">User Management</span></div>
+                <i class="fas fa-chevron-down text-xs transition-transform duration-200"></i>
+            </div>
+            <div class="nav-group-items ml-7 space-y-0.5 mt-1 hidden">
+                <a href="/pages/userM/user/User.html" class="nav-item flex items-center gap-3 px-3 py-2 rounded-lg text-[#111844]/70 hover:bg-[#7288AE]/20 hover:text-[#111844] transition-colors duration-150 text-xs cursor-pointer"><span class="nav-icon text-sm flex-shrink-0 w-4"><i class="fas fa-user"></i></span><span class="nav-label">Users</span></a>
+                <a href="/pages/userM/roles&permission/role.html" class="nav-item flex items-center gap-3 px-3 py-2 rounded-lg text-[#111844]/70 hover:bg-[#7288AE]/20 hover:text-[#111844] transition-colors duration-150 text-xs cursor-pointer"><span class="nav-icon text-sm flex-shrink-0 w-4"><i class="fas fa-lock"></i></span><span class="nav-label">Roles & Permissions</span></a>
+            </div>
+        </div>
+    </nav>
+    <div class="px-4 py-3 border-t border-[#4B5694]/20 bg-[#FAFAFA]/30">
+        <div class="flex items-center gap-3">
+            <div class="w-8 h-8 rounded-full bg-[#111844] flex items-center justify-center text-[#FAFAFA] text-xs font-bold flex-shrink-0">AD</div>
+            <div class="sidebar-brand-text min-w-0">
+                <div class="text-[#111844] text-xs font-medium truncate">Admin</div>
+                <div class="text-[#7288AE] text-xs truncate">admin@supplymanager.com</div>
+            </div>
+        </div>
+    </div>
+</aside>
+
+<div id="sidebar-overlay" class="hidden fixed inset-0 bg-[#111844]/50 z-[90] lg:hidden"></div>
+
+<!-- ========== MAIN ========== -->
+<div id="main-wrapper" class="ml-[260px] flex flex-col min-h-screen transition-all duration-300">
+
+    <!-- Topbar -->
+    <header class="sticky top-0 z-[200] h-16 bg-[#FFFCFC] border-b border-[#4B5694]/20 flex items-center justify-between px-5 shadow-sm">
+        <div class="flex items-center gap-4">
+            <button id="sidebar-toggle-mobile" class="lg:hidden w-9 h-9 flex items-center justify-center rounded-lg text-[#4B5694] hover:bg-[#4B5694]/10"><i class="fas fa-bars"></i></button>
+            <div>
+                <h1 class="text-sm font-semibold text-[#111844]">Profitability Analysis</h1>
+                <p class="text-xs text-[#7288AE]">Finance → Profitability Analysis</p>
+            </div>
+        </div>
+        <div class="flex items-center gap-2">
+            <div class="relative">
+                <button id="notif-btn" class="w-9 h-9 flex items-center justify-center rounded-lg text-[#4B5694] hover:bg-[#4B5694]/10 transition-colors relative"><i class="fas fa-bell text-base"></i><span class="notif-badge"></span></button>
+                <div id="notif-menu" class="hidden absolute right-0 top-full mt-1 w-80 bg-[#FFFCFC] border border-[#4B5694]/20 rounded-xl shadow-lg z-50 overflow-hidden">
+                    <div class="flex items-center justify-between px-4 py-3 border-b border-[#4B5694]/15"><span class="text-xs font-semibold text-[#111844]">Notifications</span><span class="text-[10px] px-2 py-0.5 rounded-full bg-[#111844]/10 text-[#111844] font-medium">2 new</span></div>
+                    <div class="max-h-80 overflow-y-auto divide-y divide-[#4B5694]/10">
+                        <div class="notif-item"><div class="notif-icon bg-emerald-100 text-emerald-700"><i class="fas fa-arrow-up"></i></div><div><div class="notif-title">Profit margin increased to 28%</div><div class="notif-desc">Last month: 24%</div><div class="notif-time">1 hour ago</div></div></div>
+                        <div class="notif-item"><div class="notif-icon bg-amber-100 text-amber-600"><i class="fas fa-exclamation-triangle"></i></div><div><div class="notif-title">Warehouse C margin dropped to 12%</div><div class="notif-desc">Investigate cost increases</div><div class="notif-time">3 hours ago</div></div></div>
+                    </div>
+                    <div class="px-4 py-2.5 border-t border-[#4B5694]/15 text-center"><a href="#" class="text-xs font-medium text-[#111844] hover:underline">View all</a></div>
+                </div>
+            </div>
+            <div class="relative">
+                <button id="user-menu-btn" class="flex items-center gap-2 px-3 py-1.5 rounded-lg hover:bg-[#4B5694]/10 transition-colors">
+                    <div class="w-7 h-7 rounded-full bg-[#111844] flex items-center justify-center text-[#FAFAFA] text-xs font-bold">AD</div>
+                    <span class="text-xs font-medium text-[#111844] hidden sm:block">Admin</span>
+                    <i class="fas fa-chevron-down text-[10px] text-[#4B5694]"></i>
+                </button>
+                <div id="user-menu" class="hidden absolute right-0 top-full mt-1 w-44 bg-[#FFFCFC] border border-[#4B5694]/20 rounded-xl shadow-lg py-1 z-50">
+                    <a href="/profile.html" class="flex items-center gap-2 px-4 py-2 text-xs text-[#111844] hover:bg-[#7288AE]/10 transition-colors"><i class="fas fa-user-circle w-4"></i> My Profile</a>
+                    <div class="border-t border-[#4B5694]/10 my-1"></div>
+                    <a href="/login.html" id="logout-btn" class="flex items-center gap-2 px-4 py-2 text-xs text-red-600 hover:bg-red-50 transition-colors"><i class="fas fa-sign-out-alt w-4"></i> Logout</a>
+                </div>
+            </div>
+        </div>
+    </header>
+
+    <main class="flex-1 p-5 space-y-5">
+
+        <!-- ========== TABS ========== -->
+        <div class="ap-tabs" id="profitTabs">
+            <div class="ap-tab active" data-tab="dashboard">Profitability Dashboard</div>
+            <div class="ap-tab" data-tab="product">Product Profitability</div>
+            <div class="ap-tab" data-tab="customer">Customer Profitability</div>
+            <div class="ap-tab" data-tab="warehouse">Warehouse Profitability</div>
+            <div class="ap-tab" data-tab="cost">Cost Analysis</div>
+            <div class="ap-tab" data-tab="margin">Margin Analysis</div>
+            <div class="ap-tab" data-tab="revenue">Revenue Analysis</div>
+            <div class="ap-tab" data-tab="reports">Profitability Reports</div>
+        </div>
+
+        <!-- ========== PANEL: DASHBOARD ========== -->
+        <section class="ap-panel active" id="panel-dashboard">
+            <div class="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-5 gap-3 mb-5">
+                <div class="widget-card"><div><div class="widget-value">₹28.4L</div><div class="widget-label">Total Revenue</div></div><div class="widget-icon bg-emerald-100 text-emerald-700"><i class="fas fa-arrow-up"></i></div></div>
+                <div class="widget-card"><div><div class="widget-value">₹18.6L</div><div class="widget-label">Total Cost</div></div><div class="widget-icon bg-red-100 text-red-700"><i class="fas fa-arrow-down"></i></div></div>
+                <div class="widget-card"><div><div class="widget-value">₹9.8L</div><div class="widget-label">Gross Profit</div></div><div class="widget-icon bg-[#111844]/10 text-[#111844]"><i class="fas fa-coins"></i></div></div>
+                <div class="widget-card"><div><div class="widget-value">₹7.2L</div><div class="widget-label">Net Profit</div></div><div class="widget-icon bg-[#4B5694]/10 text-[#4B5694]"><i class="fas fa-wallet"></i></div></div>
+                <div class="widget-card"><div><div class="widget-value">25.4%</div><div class="widget-label">Profit Margin</div></div><div class="widget-icon bg-amber-100 text-amber-700"><i class="fas fa-percent"></i></div></div>
+            </div>
+            <div class="grid grid-cols-1 lg:grid-cols-2 gap-4">
+                <div class="chart-card"><div class="section-title mb-3"><i class="fas fa-chart-line mr-1.5 text-[#4B5694]"></i>Revenue vs Cost Trend</div><canvas id="chartRevenueCost" height="180"></canvas></div>
+                <div class="chart-card"><div class="section-title mb-3"><i class="fas fa-chart-bar mr-1.5 text-[#4B5694]"></i>Monthly Profit Trend</div><canvas id="chartProfitTrend" height="180"></canvas></div>
+            </div>
+        </section>
+
+        <!-- ========== PANEL: PRODUCT PROFITABILITY ========== -->
+        <section class="ap-panel" id="panel-product">
+            <div class="chart-card">
+                <div class="filter-bar mb-4">
+                    <input type="text" class="filter-input" placeholder="Search product...">
+                    <select class="filter-input"><option>All Categories</option><option>Steel</option><option>Aluminium</option><option>Plastic</option></select>
+                    <input type="date" class="filter-input">
+                    <button class="btn-secondary ml-auto"><i class="fas fa-download"></i> Export</button>
+                </div>
+                <div class="ap-table-wrap">
+                    <table class="ap-table"><thead><tr><th>Product Code</th><th>Product Name</th><th>Revenue</th><th>Cost</th><th>Profit</th><th>Margin %</th><th>Qty Sold</th></tr></thead>
+                        <tbody id="productTbody"></tbody>
+                    </table>
+                </div>
+            </div>
+        </section>
+
+        <!-- ========== PANEL: CUSTOMER PROFITABILITY ========== -->
+        <section class="ap-panel" id="panel-customer">
+            <div class="chart-card">
+                <div class="filter-bar mb-4">
+                    <input type="text" class="filter-input" placeholder="Search customer...">
+                    <select class="filter-input"><option>All Groups</option><option>Wholesale</option><option>Retail</option></select>
+                    <input type="date" class="filter-input">
+                    <button class="btn-secondary ml-auto"><i class="fas fa-download"></i> Export</button>
+                </div>
+                <div class="ap-table-wrap">
+                    <table class="ap-table"><thead><tr><th>Customer</th><th>Revenue</th><th>Cost</th><th>Profit</th><th>Margin %</th><th>Orders</th></tr></thead>
+                        <tbody id="customerTbody"></tbody>
+                    </table>
+                </div>
+            </div>
+        </section>
+
+        <!-- ========== PANEL: WAREHOUSE PROFITABILITY ========== -->
+        <section class="ap-panel" id="panel-warehouse">
+            <div class="grid grid-cols-2 sm:grid-cols-4 gap-3 mb-4">
+                <div class="widget-card"><div><div class="widget-value">Warehouse A</div><div class="widget-label">Margin: 32%</div></div><div class="widget-icon bg-emerald-100 text-emerald-700"><i class="fas fa-warehouse"></i></div></div>
+                <div class="widget-card"><div><div class="widget-value">Warehouse B</div><div class="widget-label">Margin: 28%</div></div><div class="widget-icon bg-[#4B5694]/10 text-[#4B5694]"><i class="fas fa-warehouse"></i></div></div>
+                <div class="widget-card"><div><div class="widget-value">Warehouse C</div><div class="widget-label">Margin: 12%</div></div><div class="widget-icon bg-amber-100 text-amber-700"><i class="fas fa-warehouse"></i></div></div>
+                <div class="widget-card"><div><div class="widget-value">Warehouse D</div><div class="widget-label">Margin: 22%</div></div><div class="widget-icon bg-purple-100 text-purple-700"><i class="fas fa-warehouse"></i></div></div>
+            </div>
+            <div class="chart-card">
+                <div class="section-title mb-3">Warehouse Performance</div>
+                <div class="ap-table-wrap">
+                    <table class="ap-table"><thead><tr><th>Warehouse</th><th>Revenue</th><th>Expenses</th><th>Profit</th><th>Margin %</th></tr></thead>
+                        <tbody id="warehouseTbody"></tbody>
+                    </table>
+                </div>
+            </div>
+        </section>
+
+        <!-- ========== PANEL: COST ANALYSIS ========== -->
+        <section class="ap-panel" id="panel-cost">
+            <div class="grid grid-cols-1 lg:grid-cols-2 gap-4">
+                <div class="chart-card"><div class="section-title mb-3"><i class="fas fa-pie-chart mr-1.5 text-[#4B5694]"></i>Cost Breakdown</div><canvas id="chartCostBreakdown" height="200"></canvas></div>
+                <div class="chart-card">
+                    <div class="section-title mb-3">Cost Categories</div>
+                    <div class="ap-table-wrap">
+                        <table class="ap-table"><thead><tr><th>Category</th><th>Amount</th><th>% of Total</th></tr></thead>
+                            <tbody id="costTbody"></tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- ========== PANEL: MARGIN ANALYSIS ========== -->
+        <section class="ap-panel" id="panel-margin">
+            <div class="grid grid-cols-2 sm:grid-cols-4 gap-3 mb-4">
+                <div class="widget-card"><div><div class="widget-value">32%</div><div class="widget-label">Product A</div></div><div class="widget-icon bg-emerald-100 text-emerald-700"><i class="fas fa-crown"></i></div></div>
+                <div class="widget-card"><div><div class="widget-value">8%</div><div class="widget-label">Product C</div></div><div class="widget-icon bg-red-100 text-red-700"><i class="fas fa-exclamation-triangle"></i></div></div>
+                <div class="widget-card"><div><div class="widget-value">28%</div><div class="widget-label">Avg Margin</div></div><div class="widget-icon bg-[#4B5694]/10 text-[#4B5694]"><i class="fas fa-chart-line"></i></div></div>
+                <div class="widget-card"><div><div class="widget-value">+4%</div><div class="widget-label">Growth (MoM)</div></div><div class="widget-icon bg-emerald-100 text-emerald-700"><i class="fas fa-arrow-up"></i></div></div>
+            </div>
+            <div class="chart-card">
+                <div class="section-title mb-3">Product Margin Analysis</div>
+                <div class="ap-table-wrap">
+                    <table class="ap-table"><thead><tr><th>Product</th><th>Revenue</th><th>Profit</th><th>Margin %</th><th>Level</th></tr></thead>
+                        <tbody id="marginTbody"></tbody>
+                    </table>
+                </div>
+            </div>
+        </section>
+
+        <!-- ========== PANEL: REVENUE ANALYSIS ========== -->
+        <section class="ap-panel" id="panel-revenue">
+            <div class="grid grid-cols-2 sm:grid-cols-4 gap-3 mb-4">
+                <div class="widget-card"><div><div class="widget-value">₹28.4L</div><div class="widget-label">Total Revenue</div></div><div class="widget-icon bg-emerald-100 text-emerald-700"><i class="fas fa-rupee-sign"></i></div></div>
+                <div class="widget-card"><div><div class="widget-value">₹4.2L</div><div class="widget-label">Avg Monthly Revenue</div></div><div class="widget-icon bg-[#4B5694]/10 text-[#4B5694]"><i class="fas fa-calendar"></i></div></div>
+                <div class="widget-card"><div><div class="widget-value">+12%</div><div class="widget-label">Revenue Growth</div></div><div class="widget-icon bg-emerald-100 text-emerald-700"><i class="fas fa-arrow-up"></i></div></div>
+                <div class="widget-card"><div><div class="widget-value">Product A</div><div class="widget-label">Top Revenue Product</div></div><div class="widget-icon bg-amber-100 text-amber-700"><i class="fas fa-crown"></i></div></div>
+            </div>
+            <div class="chart-card">
+                <div class="section-title mb-3">Revenue by Product</div>
+                <canvas id="chartRevenueProduct" height="180"></canvas>
+            </div>
+        </section>
+
+        <!-- ========== PANEL: PROFITABILITY REPORTS ========== -->
+        <section class="ap-panel" id="panel-reports">
+            <div class="chart-card">
+                <div class="flex items-center justify-between mb-4">
+                    <div><div class="section-title">Profitability Reports</div><div class="section-sub">Generate and download reports</div></div>
+                    <button class="btn-primary" id="btnGenerateReport"><i class="fas fa-file-pdf"></i> Generate Report</button>
+                </div>
+                <div class="grid grid-cols-1 md:grid-cols-3 gap-4 mb-4">
+                    <div class="bg-[#FAFAFA] rounded-xl p-4 border border-[#4B5694]/15"><div class="text-xs font-semibold text-[#4B5694] uppercase">Product Profit</div><div class="text-sm mt-1">Detailed product profitability</div><button class="btn-secondary w-full mt-2 text-xs"><i class="fas fa-download"></i> Download</button></div>
+                    <div class="bg-[#FAFAFA] rounded-xl p-4 border border-[#4B5694]/15"><div class="text-xs font-semibold text-[#4B5694] uppercase">Customer Profit</div><div class="text-sm mt-1">Customer-wise profit analysis</div><button class="btn-secondary w-full mt-2 text-xs"><i class="fas fa-download"></i> Download</button></div>
+                    <div class="bg-[#FAFAFA] rounded-xl p-4 border border-[#4B5694]/15"><div class="text-xs font-semibold text-[#4B5694] uppercase">Executive Summary</div><div class="text-sm mt-1">Overall business performance</div><button class="btn-secondary w-full mt-2 text-xs"><i class="fas fa-download"></i> Download</button></div>
+                </div>
+                <div class="ap-table-wrap">
+                    <table class="ap-table"><thead><tr><th>Report Name</th><th>Generated On</th><th>Actions</th></tr></thead>
+                        <tbody id="reportTbody"></tbody>
+                    </table>
+                </div>
+            </div>
+        </section>
+
+    </main>
+</div>
+
+<!-- ========== TOAST ========== -->
+<div id="toast-container" class="fixed bottom-5 right-5 z-[400] space-y-2"></div>
+
+<!-- ========== MODALS ========== -->
+
+<!-- Generate Report Modal -->
+<div class="modal-overlay" id="modalReport">
+    <div class="modal-box">
+        <div class="modal-header"><div><div class="modal-title">Generate Profitability Report</div><div class="modal-sub">Select report parameters</div></div><button class="modal-close" data-close="modalReport"><i class="fas fa-times"></i></button></div>
+        <div class="modal-body">
+            <div class="form-group"><label class="form-label">Report Type</label><select class="form-control" id="reportType"><option>Product Profitability</option><option>Customer Profitability</option><option>Warehouse Profitability</option><option>Executive Summary</option></select></div>
+            <div class="form-row"><div class="form-group"><label class="form-label">From Date</label><input type="date" class="form-control" id="reportFrom"></div><div class="form-group"><label class="form-label">To Date</label><input type="date" class="form-control" id="reportTo"></div></div>
+            <div class="form-group"><label class="form-label">Format</label><select class="form-control" id="reportFormat"><option>PDF</option><option>Excel</option></select></div>
+        </div>
+        <div class="modal-footer"><button class="btn-secondary" data-close="modalReport">Cancel</button><button class="btn-primary" id="btnGenerate"><i class="fas fa-download"></i> Generate & Download</button></div>
+    </div>
+</div>
+
+<!-- ========== SCRIPTS ========== -->
+<script src="/pages/finance&Billing/profitability/profit.js"></script>
+</body>
+</html>

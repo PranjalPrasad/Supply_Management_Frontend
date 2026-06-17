@@ -675,3 +675,15 @@ textarea.form-control { resize: vertical; min-height: 68px; }
 .tab-pane {
   display: block;
 }
+
+
+.nav-group-items {
+  display: none;
+  flex-direction: column;
+  margin-left: 28px;
+  margin-top: 4px;
+  gap: 2px;
+}
+.nav-group-items.show {
+  display: flex !important;
+}

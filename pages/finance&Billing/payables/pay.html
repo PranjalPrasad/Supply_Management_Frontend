@@ -1,0 +1,860 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Accounts Payable — Supply Management Admin</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script>tailwind.config = { theme: { extend: { colors: { active: '#111844', border2: '#4B5694', bg: '#FAFAFA', hover2: '#7288AE', card: '#FFFCFC', dark: '#1a2155' } } } }</script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@300;400;500;700&display=swap" rel="stylesheet" />
+    <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.1/dist/chart.umd.min.js"></script>
+    <link rel="stylesheet" href="/pages/finance&Billing/payables/pay.css" />
+</head>
+
+<body class="bg-[#ebe6e6] text-[#111844] min-h-screen">
+
+<!-- ============ SIDEBAR ============ -->
+<aside id="sidebar" class="fixed top-0 left-0 h-full w-[260px] bg-[#FFFCFC] z-[100] flex flex-col transition-all duration-300 overflow-hidden shadow-lg">
+  <div class="flex items-center justify-between px-5 h-16 border border-[#4B5694]/20 shadow-sm">
+    <div class="flex items-center gap-3">
+        <div class="w-9 h-9 rounded-lg bg-[#111844] flex items-center justify-center text-[#FAFAFA] flex-shrink-0">
+            <i class="fas fa-cubes"></i>
+        </div>
+        <img src="/assets/logo.png" alt="Logo" class="h-8 w-auto object-contain">
+    </div>
+    <button id="sidebar-toggle" class="w-7 h-7 flex items-center justify-center rounded-lg text-[#4B5694] hover:bg-[#4B5694]/10 transition-colors">
+        <i class="fas fa-chevron-left text-sm"></i>
+    </button>
+</div>
+
+  <nav class="flex-1 overflow-y-auto py-3 px-2 space-y-0.5">
+
+    <!-- DASHBOARD -->
+    <a href="/index.html" class="nav-item flex items-center gap-3 px-3 py-2.5 rounded-lg text-[#111844]/70 hover:bg-[#7288AE]/20 hover:text-[#111844] transition-colors duration-150 text-sm cursor-pointer border-b border-[#4B5694]/20 shadow-sm">
+      <span class="nav-icon text-base flex-shrink-0 w-5"><i class="fas fa-chart-pie"></i></span>
+      <span class="nav-label">Dashboard</span>
+    </a>
+
+    <!-- MASTER MANAGEMENT -->
+    <div class="nav-group">
+      <div class="nav-group-header flex items-center justify-between gap-3 px-3 py-2.5 rounded-lg text-[#111844]/70 hover:bg-[#7288AE]/20 hover:text-[#111844] transition-colors duration-150 text-sm cursor-pointer border-b border-[#4B5694]/20 shadow-sm">
+        <div class="flex items-center gap-3">
+          <span class="nav-icon text-base flex-shrink-0 w-5"><i class="fas fa-database"></i></span>
+          <span class="nav-label">Master Management</span>
+        </div>
+        <i class="fas fa-chevron-down text-xs transition-transform duration-200"></i>
+      </div>
+      <div class="nav-group-items ml-7 space-y-0.5 mt-1 hidden">
+        <a href="/pages/Product/product.html" class="nav-item flex items-center gap-3 px-3 py-2 rounded-lg text-[#111844]/70 hover:bg-[#7288AE]/20 hover:text-[#111844] transition-colors duration-150 text-xs cursor-pointer">
+          <span class="nav-icon text-sm flex-shrink-0 w-4"><i class="fas fa-box"></i></span>
+          <span class="nav-label">Products</span>
+        </a>
+        <a href="/pages/suppliers/supplier.html" class="nav-item flex items-center gap-3 px-3 py-2 rounded-lg text-[#111844]/70 hover:bg-[#7288AE]/20 hover:text-[#111844] transition-colors duration-150 text-xs cursor-pointer">
+          <span class="nav-icon text-sm flex-shrink-0 w-4"><i class="fas fa-truck-loading"></i></span>
+          <span class="nav-label">Suppliers</span>
+        </a>
+        <a href="/pages/customers/customer.html" class="nav-item flex items-center gap-3 px-3 py-2 rounded-lg text-[#111844]/70 hover:bg-[#7288AE]/20 hover:text-[#111844] transition-colors duration-150 text-xs cursor-pointer">
+          <span class="nav-icon text-sm flex-shrink-0 w-4"><i class="fas fa-users"></i></span>
+          <span class="nav-label">Customers</span>
+        </a>
+        <a href="/pages/warehousemaster/warehousem.html" class="nav-item flex items-center gap-3 px-3 py-2 rounded-lg text-[#111844]/70 hover:bg-[#7288AE]/20 hover:text-[#111844] transition-colors duration-150 text-xs cursor-pointer">
+          <span class="nav-icon text-sm flex-shrink-0 w-4"><i class="fas fa-warehouse"></i></span>
+          <span class="nav-label">Warehouses</span>
+        </a>
+        <a href="/pages/units/units.html" class="nav-item flex items-center gap-3 px-3 py-2 rounded-lg text-[#111844]/70 hover:bg-[#7288AE]/20 hover:text-[#111844] transition-colors duration-150 text-xs cursor-pointer">
+          <span class="nav-icon text-sm flex-shrink-0 w-4"><i class="fas fa-balance-scale"></i></span>
+          <span class="nav-label">Units</span>
+        </a>
+      </div>
+    </div>
+
+    <!-- PURCHASE MANAGEMENT -->
+    <a href="/pages/purchase/purchase.html" class="nav-item flex items-center gap-3 px-3 py-2.5 rounded-lg text-[#111844]/70 hover:bg-[#7288AE]/20 hover:text-[#111844] transition-colors duration-150 text-sm cursor-pointer border-b border-[#4B5694]/20 shadow-sm">
+        <span class="nav-icon text-base flex-shrink-0 w-5"><i class="fas fa-shopping-cart"></i></span>
+        <span class="nav-label">Purchase Management</span>
+    </a>
+
+    <!-- INVENTORY MANAGEMENT -->
+    <a href="/pages/inventory/inventory.html" class="nav-item flex items-center gap-3 px-3 py-2.5 rounded-lg text-[#111844]/70 hover:bg-[#7288AE]/20 hover:text-[#111844] transition-colors duration-150 text-sm cursor-pointer border-b border-[#4B5694]/20 shadow-sm">
+        <span class="nav-icon text-base flex-shrink-0 w-5"><i class="fas fa-boxes-stacked"></i></span>
+        <span class="nav-label">Inventory Management</span>
+    </a>
+
+    <!-- WAREHOUSE OPERATIONS -->
+    <a href="/pages/warehouse/warehouse.html" class="nav-item flex items-center gap-3 px-3 py-2.5 rounded-lg text-[#111844]/70 hover:bg-[#7288AE]/20 hover:text-[#111844] transition-colors duration-150 text-sm cursor-pointer border-b border-[#4B5694]/20 shadow-sm">
+        <span class="nav-icon text-base flex-shrink-0 w-5"><i class="fas fa-warehouse"></i></span>
+        <span class="nav-label">Warehouse Management</span>
+    </a>
+
+    <!-- SALES & DISPATCH -->
+    <div class="nav-group">
+      <div class="nav-group-header flex items-center justify-between gap-3 px-3 py-2.5 rounded-lg text-[#111844]/70 hover:bg-[#7288AE]/20 hover:text-[#111844] transition-colors duration-150 text-sm cursor-pointer border-b border-[#4B5694]/20 shadow-sm">
+        <div class="flex items-center gap-3">
+          <span class="nav-icon text-base flex-shrink-0 w-5"><i class="fas fa-truck"></i></span>
+          <span class="nav-label">Sales & Dispatch</span>
+        </div>
+        <i class="fas fa-chevron-down text-xs transition-transform duration-200"></i>
+      </div>
+      <div class="nav-group-items ml-7 space-y-0.5 mt-1 hidden">
+        <a href="/pages/sales/salesorders/salesorders.html" class="nav-item flex items-center gap-3 px-3 py-2 rounded-lg text-[#111844]/70 hover:bg-[#7288AE]/20 hover:text-[#111844] transition-colors duration-150 text-xs cursor-pointer">
+          <span class="nav-icon text-sm flex-shrink-0 w-4"><i class="fas fa-receipt"></i></span>
+          <span class="nav-label">Sales Orders</span>
+        </a>
+        <a href="/pages/sales/dispatchplanning/dispatch.html" class="nav-item flex items-center gap-3 px-3 py-2 rounded-lg text-[#111844]/70 hover:bg-[#7288AE]/20 hover:text-[#111844] transition-colors duration-150 text-xs cursor-pointer">
+          <span class="nav-icon text-sm flex-shrink-0 w-4"><i class="fas fa-calendar-alt"></i></span>
+          <span class="nav-label">Dispatch Planning</span>
+        </a>
+        <a href="/pages/sales/delivery/deliveryc.html" class="nav-item flex items-center gap-3 px-3 py-2 rounded-lg text-[#111844]/70 hover:bg-[#7288AE]/20 hover:text-[#111844] transition-colors duration-150 text-xs cursor-pointer">
+          <span class="nav-icon text-sm flex-shrink-0 w-4"><i class="fas fa-file-alt"></i></span>
+          <span class="nav-label">Delivery Challan</span>
+        </a>
+        <a href="/pages/sales/invoices/invoice.html" class="nav-item flex items-center gap-3 px-3 py-2 rounded-lg text-[#111844]/70 hover:bg-[#7288AE]/20 hover:text-[#111844] transition-colors duration-150 text-xs cursor-pointer">
+          <span class="nav-icon text-sm flex-shrink-0 w-4"><i class="fas fa-file-invoice-dollar"></i></span>
+          <span class="nav-label">Invoices</span>
+        </a>
+        <a href="/pages/sales/shipment/Shipmenttracking.html" class="nav-item flex items-center gap-3 px-3 py-2 rounded-lg text-[#111844]/70 hover:bg-[#7288AE]/20 hover:text-[#111844] transition-colors duration-150 text-xs cursor-pointer">
+          <span class="nav-icon text-sm flex-shrink-0 w-4"><i class="fas fa-location-dot"></i></span>
+          <span class="nav-label">Shipment Tracking</span>
+        </a>
+      </div>
+    </div>
+
+    <!-- RETURNS MANAGEMENT -->
+    <a href="/pages/inventory/inventory.html" class="nav-item flex items-center gap-3 px-3 py-2.5 rounded-lg text-[#111844]/70 hover:bg-[#7288AE]/20 hover:text-[#111844] transition-colors duration-150 text-sm cursor-pointer border-b border-[#4B5694]/20 shadow-sm">
+          <span class="nav-icon text-base flex-shrink-0 w-5"><i class="fas fa-rotate-left"></i></span>
+          <span class="nav-label">Returns Management</span>
+    </a>
+
+    <!-- FINANCE & BILLING (Payables active) -->
+    <div class="nav-group">
+      <div class="nav-group-header nav-active flex items-center justify-between gap-3 px-3 py-2.5 rounded-lg transition-colors duration-150 text-sm cursor-pointer border-b border-[#4B5694]/20 shadow-sm">
+        <div class="flex items-center gap-3">
+          <span class="nav-icon text-base flex-shrink-0 w-5"><i class="fas fa-coins"></i></span>
+          <span class="nav-label">Finance & Billing</span>
+        </div>
+        <i class="fas fa-chevron-down text-xs transition-transform duration-200" style="transform: rotate(180deg);"></i>
+      </div>
+      <div class="nav-group-items ml-7 space-y-0.5 mt-1">
+        <a href="/pages/finance&Billing/receivables/receive.html" class="nav-item flex items-center gap-3 px-3 py-2 rounded-lg text-[#111844]/70 hover:bg-[#7288AE]/20 hover:text-[#111844] transition-colors duration-150 text-xs cursor-pointer">
+          <span class="nav-icon text-sm flex-shrink-0 w-4"><i class="fas fa-hand-holding-usd"></i></span>
+          <span class="nav-label">Receivables</span>
+        </a>
+        <a href="/pages/finance&Billing/payables/pay.html" class="nav-item nav-active flex items-center gap-3 px-3 py-2 rounded-lg transition-colors duration-150 text-xs cursor-pointer">
+          <span class="nav-icon text-sm flex-shrink-0 w-4"><i class="fas fa-money-bill-wave"></i></span>
+          <span class="nav-label">Payables</span>
+        </a>
+        <a href="/pages/finance&Billing/expenses/expense.html" class="nav-item flex items-center gap-3 px-3 py-2 rounded-lg text-[#111844]/70 hover:bg-[#7288AE]/20 hover:text-[#111844] transition-colors duration-150 text-xs cursor-pointer">
+          <span class="nav-icon text-sm flex-shrink-0 w-4"><i class="fas fa-chart-line"></i></span>
+          <span class="nav-label">Expenses</span>
+        </a>
+        <a href="/pages/finance&Billing/GSTM/gst.html" class="nav-item flex items-center gap-3 px-3 py-2 rounded-lg text-[#111844]/70 hover:bg-[#7288AE]/20 hover:text-[#111844] transition-colors duration-150 text-xs cursor-pointer">
+          <span class="nav-icon text-sm flex-shrink-0 w-4"><i class="fas fa-percent"></i></span>
+          <span class="nav-label">GST Management</span>
+        </a>
+        <a href="/pages/finance&Billing/profitability/profit.html" class="nav-item flex items-center gap-3 px-3 py-2 rounded-lg text-[#111844]/70 hover:bg-[#7288AE]/20 hover:text-[#111844] transition-colors duration-150 text-xs cursor-pointer">
+          <span class="nav-icon text-sm flex-shrink-0 w-4"><i class="fas fa-chart-simple"></i></span>
+          <span class="nav-label">Profitability</span>
+        </a>
+      </div>
+    </div>
+
+    <!-- REPORTS & ANALYTICS -->
+    <a href="/pages/reports&analytics/reports.html" class="nav-item flex items-center gap-3 px-3 py-2.5 rounded-lg text-[#111844]/70 hover:bg-[#7288AE]/20 hover:text-[#111844] transition-colors duration-150 text-sm cursor-pointer border-b border-[#4B5694]/20 shadow-sm">
+          <span class="nav-icon text-base flex-shrink-0 w-5"><i class="fas fa-chart-bar"></i></span>
+          <span class="nav-label">Reports & Analytics</span>
+    </a>
+
+    <!-- USER MANAGEMENT -->
+    <div class="nav-group">
+      <div class="nav-group-header flex items-center justify-between gap-3 px-3 py-2.5 rounded-lg text-[#111844]/70 hover:bg-[#7288AE]/20 hover:text-[#111844] transition-colors duration-150 text-sm cursor-pointer border-b border-[#4B5694]/20 shadow-sm">
+        <div class="flex items-center gap-3">
+          <span class="nav-icon text-base flex-shrink-0 w-5"><i class="fas fa-users-gear"></i></span>
+          <span class="nav-label">User Management</span>
+        </div>
+        <i class="fas fa-chevron-down text-xs transition-transform duration-200"></i>
+      </div>
+      <div class="nav-group-items ml-7 space-y-0.5 mt-1 hidden">
+        <a href="/pages/userM/user/User.html" class="nav-item flex items-center gap-3 px-3 py-2 rounded-lg text-[#111844]/70 hover:bg-[#7288AE]/20 hover:text-[#111844] transition-colors duration-150 text-xs cursor-pointer">
+          <span class="nav-icon text-sm flex-shrink-0 w-4"><i class="fas fa-user"></i></span>
+          <span class="nav-label">Users</span>
+        </a>
+        <a href="/pages/userM/roles&permission/role.html" class="nav-item flex items-center gap-3 px-3 py-2 rounded-lg text-[#111844]/70 hover:bg-[#7288AE]/20 hover:text-[#111844] transition-colors duration-150 text-xs cursor-pointer">
+          <span class="nav-icon text-sm flex-shrink-0 w-4"><i class="fas fa-lock"></i></span>
+          <span class="nav-label">Roles & Permissions</span>
+        </a>
+      </div>
+    </div>
+
+  </nav>
+
+  <div class="px-4 py-3 border-t border-[#4B5694]/20 bg-[#FAFAFA]/30">
+    <div class="flex items-center gap-3">
+      <div class="w-8 h-8 rounded-full bg-[#111844] flex items-center justify-center text-[#FAFAFA] text-xs font-bold flex-shrink-0">AD</div>
+      <div class="sidebar-brand-text min-w-0">
+        <div class="text-[#111844] text-xs font-medium truncate" id="adminName">Admin</div>
+        <div class="text-[#7288AE] text-xs truncate" id="adminEmail">admin@supplymanager.com</div>
+      </div>
+    </div>
+  </div>
+</aside>
+
+<div id="sidebar-overlay" class="hidden fixed inset-0 bg-[#111844]/50 z-[90] lg:hidden"></div>
+
+<!-- ============ MAIN ============ -->
+<div id="main-wrapper" class="ml-[260px] flex flex-col min-h-screen transition-all duration-300">
+
+    <!-- TOPBAR -->
+    <header class="sticky top-0 z-[200] h-16 bg-[#FFFCFC] border-b border-[#4B5694]/20 flex items-center justify-between px-5 shadow-sm">
+        <div class="flex items-center gap-4">
+            <button id="sidebar-toggle-mobile" class="lg:hidden w-9 h-9 flex items-center justify-center rounded-lg text-[#4B5694] hover:bg-[#4B5694]/10">
+                <i class="fas fa-bars"></i>
+            </button>
+            <div>
+                <h1 class="text-sm font-semibold text-[#111844]">Accounts Payable</h1>
+                <p class="text-xs text-[#7288AE]">Finance → Accounts Payable</p>
+            </div>
+        </div>
+        <div class="flex items-center gap-2">
+            <div class="relative">
+                <button id="notif-btn" class="w-9 h-9 flex items-center justify-center rounded-lg text-[#4B5694] hover:bg-[#4B5694]/10 transition-colors relative">
+                    <i class="fas fa-bell text-base"></i>
+                    <span class="notif-badge"></span>
+                </button>
+                <div id="notif-menu" class="hidden absolute right-0 top-full mt-1 w-80 bg-[#FFFCFC] border border-[#4B5694]/20 rounded-xl shadow-lg z-50 overflow-hidden">
+                    <div class="flex items-center justify-between px-4 py-3 border-b border-[#4B5694]/15">
+                        <span class="text-xs font-semibold text-[#111844]">Notifications</span>
+                        <span class="text-[10px] px-2 py-0.5 rounded-full bg-[#111844]/10 text-[#111844] font-medium">3 new</span>
+                    </div>
+                    <div class="max-h-80 overflow-y-auto divide-y divide-[#4B5694]/10">
+                        <div class="notif-item">
+                            <div class="notif-icon bg-red-100 text-red-600"><i class="fas fa-exclamation-circle"></i></div>
+                            <div>
+                                <div class="notif-title">Vendor Sundaram Castings put on hold</div>
+                                <div class="notif-desc">Overdue payables exceed ₹3.0L</div>
+                                <div class="notif-time">18 minutes ago</div>
+                            </div>
+                        </div>
+                        <div class="notif-item">
+                            <div class="notif-icon bg-amber-100 text-amber-600"><i class="fas fa-clock"></i></div>
+                            <div>
+                                <div class="notif-title">Invoice VINV-2231 due in 2 days</div>
+                                <div class="notif-desc">Balance ₹64,000 payable to Hindal Metals</div>
+                                <div class="notif-time">1 hour ago</div>
+                            </div>
+                        </div>
+                        <div class="notif-item">
+                            <div class="notif-icon bg-emerald-100 text-emerald-700"><i class="fas fa-check-circle"></i></div>
+                            <div>
+                                <div class="notif-title">Payment processed to Bansal Traders</div>
+                                <div class="notif-desc">₹1,40,000 paid via NEFT</div>
+                                <div class="notif-time">4 hours ago</div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="px-4 py-2.5 border-t border-[#4B5694]/15 text-center">
+                        <a href="#" class="text-xs font-medium text-[#111844] hover:underline">View all notifications</a>
+                    </div>
+                </div>
+            </div>
+            <div class="relative">
+                <button id="user-menu-btn" class="flex items-center gap-2 px-3 py-1.5 rounded-lg hover:bg-[#4B5694]/10 transition-colors">
+                    <div class="w-7 h-7 rounded-full bg-[#111844] flex items-center justify-center text-[#FAFAFA] text-xs font-bold">AD</div>
+                    <span class="text-xs font-medium text-[#111844] hidden sm:block">Admin</span>
+                    <i class="fas fa-chevron-down text-[10px] text-[#4B5694]"></i>
+                </button>
+                <div id="user-menu" class="hidden absolute right-0 top-full mt-1 w-44 bg-[#FFFCFC] border border-[#4B5694]/20 rounded-xl shadow-lg py-1 z-50">
+                    <a href="/profile.html" class="flex items-center gap-2 px-4 py-2 text-xs text-[#111844] hover:bg-[#7288AE]/10 transition-colors">
+                        <i class="fas fa-user-circle w-4"></i> My Profile
+                    </a>
+                    <div class="border-t border-[#4B5694]/10 my-1"></div>
+                    <a href="/login.html" id="logout-btn" class="flex items-center gap-2 px-4 py-2 text-xs text-red-600 hover:bg-red-50 transition-colors">
+                        <i class="fas fa-sign-out-alt w-4"></i> Logout
+                    </a>
+                </div>
+            </div>
+        </div>
+    </header>
+
+    <main class="flex-1 p-5 space-y-5">
+
+        <!-- ============ TABS ============ -->
+        <div class="ap-tabs" id="apTabs">
+            <div class="ap-tab active" data-tab="dashboard">Payables Dashboard</div>
+            <div class="ap-tab" data-tab="outstanding">Vendor Outstanding</div>
+            <div class="ap-tab" data-tab="invoices">Vendor Invoices</div>
+            <div class="ap-tab" data-tab="processing">Payment Processing</div>
+            <div class="ap-tab" data-tab="vouchers">Payment Vouchers</div>
+            <div class="ap-tab" data-tab="debitnotes">Debit Notes</div>
+            <div class="ap-tab" data-tab="aging">Aging Analysis</div>
+            <div class="ap-tab" data-tab="ledger">Vendor Ledger</div>
+        </div>
+
+        <!-- ============ PANEL: PAYABLES DASHBOARD ============ -->
+        <section class="ap-panel active" id="panel-dashboard">
+
+            <div class="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-6 gap-3 mb-5">
+                <div class="widget-card">
+                    <div>
+                        <div class="widget-value">₹27.8L</div>
+                        <div class="widget-label">Total Payables</div>
+                    </div>
+                    <div class="widget-icon bg-[#111844]/10 text-[#111844]"><i class="fas fa-money-bill-wave"></i></div>
+                </div>
+                <div class="widget-card">
+                    <div>
+                        <div class="widget-value">₹3.4L</div>
+                        <div class="widget-label">Due This Week</div>
+                        <div class="widget-trend bg-amber-100 text-amber-700"><i class="fas fa-clock"></i> 7 invoices</div>
+                    </div>
+                    <div class="widget-icon bg-amber-100 text-amber-700"><i class="fas fa-calendar-week"></i></div>
+                </div>
+                <div class="widget-card">
+                    <div>
+                        <div class="widget-value">₹6.7L</div>
+                        <div class="widget-label">Overdue Payments</div>
+                        <div class="widget-trend bg-red-100 text-red-700"><i class="fas fa-arrow-up"></i> 2.8%</div>
+                    </div>
+                    <div class="widget-icon bg-red-100 text-red-700"><i class="fas fa-exclamation-triangle"></i></div>
+                </div>
+                <div class="widget-card">
+                    <div>
+                        <div class="widget-value">48</div>
+                        <div class="widget-label">Pending Vendor Invoices</div>
+                    </div>
+                    <div class="widget-icon bg-indigo-100 text-indigo-700"><i class="fas fa-file-invoice"></i></div>
+                </div>
+                <div class="widget-card">
+                    <div>
+                        <div class="widget-value">7</div>
+                        <div class="widget-label">Debit Notes</div>
+                    </div>
+                    <div class="widget-icon bg-purple-100 text-purple-700"><i class="fas fa-file-invoice-dollar"></i></div>
+                </div>
+                <div class="widget-card">
+                    <div>
+                        <div class="widget-value">3</div>
+                        <div class="widget-label">Vendors On Hold</div>
+                    </div>
+                    <div class="widget-icon bg-red-100 text-red-700"><i class="fas fa-user-lock"></i></div>
+                </div>
+            </div>
+
+            <div class="grid grid-cols-1 lg:grid-cols-2 gap-4 mb-4">
+                <div class="chart-card">
+                    <div class="section-title mb-3"><i class="fas fa-chart-bar mr-1.5 text-[#4B5694]"></i>Monthly Vendor Payments</div>
+                    <canvas id="chartPayments" height="180"></canvas>
+                </div>
+                <div class="chart-card">
+                    <div class="section-title mb-3"><i class="fas fa-chart-line mr-1.5 text-[#4B5694]"></i>Outstanding Trend</div>
+                    <canvas id="chartOutstandingTrend" height="180"></canvas>
+                </div>
+            </div>
+
+            <div class="grid grid-cols-1 lg:grid-cols-2 gap-4">
+                <div class="chart-card">
+                    <div class="section-title mb-3"><i class="fas fa-truck-loading mr-1.5 text-[#4B5694]"></i>Top Vendors by Purchase Value</div>
+                    <canvas id="chartTopVendors" height="180"></canvas>
+                </div>
+                <div class="chart-card">
+                    <div class="section-title mb-3"><i class="fas fa-layer-group mr-1.5 text-[#4B5694]"></i>Payable Aging Distribution</div>
+                    <canvas id="chartAgingDist" height="180"></canvas>
+                </div>
+            </div>
+        </section>
+
+        <!-- ============ PANEL: VENDOR OUTSTANDING ============ -->
+        <section class="ap-panel" id="panel-outstanding">
+            <div class="chart-card">
+                <div class="filter-bar mb-4">
+                    <input type="text" class="filter-input" placeholder="Search supplier...">
+                    <select class="filter-input"><option>All Suppliers</option></select>
+                    <input type="date" class="filter-input">
+                    <select class="filter-input">
+                        <option>Outstanding Status: All</option>
+                        <option>Current</option>
+                        <option>Due Soon</option>
+                        <option>Overdue</option>
+                        <option>On Hold</option>
+                    </select>
+                    <select class="filter-input">
+                        <option>Payment Status: All</option>
+                        <option>Pending</option>
+                        <option>Paid</option>
+                    </select>
+                    <button class="btn-secondary ml-auto"><i class="fas fa-download"></i> Export</button>
+                </div>
+                <div class="ap-table-wrap">
+                    <table class="ap-table">
+                        <thead>
+                            <tr>
+                                <th>Supplier Code</th><th>Supplier Name</th><th>Total Outstanding</th>
+                                <th>Overdue Amount</th><th>Last Invoice Date</th><th>Last Payment Date</th>
+                                <th>Status</th><th>Actions</th>
+                            </tr>
+                        </thead>
+                        <tbody id="outstandingTbody"></tbody>
+                    </table>
+                </div>
+            </div>
+        </section>
+
+        <!-- ============ PANEL: VENDOR INVOICES ============ -->
+        <section class="ap-panel" id="panel-invoices">
+            <div class="chart-card">
+                <div class="filter-bar mb-4">
+                    <input type="text" class="filter-input" placeholder="Invoice number...">
+                    <select class="filter-input"><option>All Suppliers</option></select>
+                    <input type="text" class="filter-input" placeholder="PO Number...">
+                    <input type="date" class="filter-input" title="Invoice Date">
+                    <input type="date" class="filter-input" title="Due Date">
+                    <select class="filter-input">
+                        <option>Status: All</option>
+                        <option>Pending</option>
+                        <option>Partially Paid</option>
+                        <option>Paid</option>
+                        <option>Overdue</option>
+                    </select>
+                    <button class="btn-secondary ml-auto"><i class="fas fa-download"></i> Export</button>
+                </div>
+                <div class="ap-table-wrap">
+                    <table class="ap-table">
+                        <thead>
+                            <tr>
+                                <th>Invoice Number</th><th>Supplier</th><th>PO Number</th><th>Invoice Amount</th>
+                                <th>Paid Amount</th><th>Balance Amount</th><th>Due Date</th>
+                                <th>Status</th><th>Actions</th>
+                            </tr>
+                        </thead>
+                        <tbody id="invoicesTbody"></tbody>
+                    </table>
+                </div>
+            </div>
+        </section>
+
+        <!-- ============ PANEL: PAYMENT PROCESSING ============ -->
+        <section class="ap-panel" id="panel-processing">
+            <div class="chart-card">
+                <div class="flex items-center justify-between mb-4">
+                    <div>
+                        <div class="section-title">Payment Entries</div>
+                        <div class="section-sub">Process and track payments to suppliers</div>
+                    </div>
+                    <button class="btn-primary" id="btnNewPayment"><i class="fas fa-plus"></i> New Payment</button>
+                </div>
+                <div class="ap-table-wrap">
+                    <table class="ap-table">
+                        <thead>
+                            <tr><th>Payment Date</th><th>Supplier</th><th>Payment Mode</th><th>Reference No.</th><th>Amount</th><th>Actions</th></tr>
+                        </thead>
+                        <tbody id="processingTbody"></tbody>
+                    </table>
+                </div>
+            </div>
+        </section>
+
+        <!-- ============ PANEL: PAYMENT VOUCHERS ============ -->
+        <section class="ap-panel" id="panel-vouchers">
+            <div class="chart-card">
+                <div class="filter-bar mb-4">
+                    <input type="text" class="filter-input" placeholder="Search voucher no...">
+                    <select class="filter-input"><option>All Suppliers</option></select>
+                    <input type="date" class="filter-input">
+                </div>
+                <div class="ap-table-wrap">
+                    <table class="ap-table">
+                        <thead>
+                            <tr><th>Voucher No.</th><th>Supplier</th><th>Date</th><th>Amount</th><th>Actions</th></tr>
+                        </thead>
+                        <tbody id="vouchersTbody"></tbody>
+                    </table>
+                </div>
+            </div>
+        </section>
+
+        <!-- ============ PANEL: DEBIT NOTES ============ -->
+        <section class="ap-panel" id="panel-debitnotes">
+            <div class="chart-card">
+                <div class="flex items-center justify-between mb-4">
+                    <div>
+                        <div class="section-title">Debit Notes</div>
+                        <div class="section-sub">Purchase returns, damaged goods, excess billing and shortage adjustments</div>
+                    </div>
+                    <button class="btn-primary" id="btnNewDebitNote"><i class="fas fa-plus"></i> New Debit Note</button>
+                </div>
+                <div class="ap-table-wrap">
+                    <table class="ap-table">
+                        <thead>
+                            <tr><th>Debit Note No.</th><th>Supplier</th><th>Amount</th><th>Date</th><th>Actions</th></tr>
+                        </thead>
+                        <tbody id="debitNotesTbody"></tbody>
+                    </table>
+                </div>
+            </div>
+        </section>
+
+        <!-- ============ PANEL: AGING ANALYSIS ============ -->
+        <section class="ap-panel" id="panel-aging">
+            <div class="grid grid-cols-2 sm:grid-cols-3 gap-3 mb-4">
+                <div class="widget-card">
+                    <div>
+                        <div class="widget-value">₹21.1L</div>
+                        <div class="widget-label">Current Payables</div>
+                    </div>
+                    <div class="widget-icon bg-emerald-100 text-emerald-700"><i class="fas fa-check-circle"></i></div>
+                </div>
+                <div class="widget-card">
+                    <div>
+                        <div class="widget-value">₹6.7L</div>
+                        <div class="widget-label">Overdue Payables</div>
+                    </div>
+                    <div class="widget-icon bg-red-100 text-red-700"><i class="fas fa-exclamation-triangle"></i></div>
+                </div>
+                <div class="widget-card">
+                    <div>
+                        <div class="widget-value">Sundaram Castings</div>
+                        <div class="widget-label">High-Risk Vendor</div>
+                    </div>
+                    <div class="widget-icon bg-purple-100 text-purple-700"><i class="fas fa-triangle-exclamation"></i></div>
+                </div>
+            </div>
+            <div class="chart-card">
+                <div class="section-title mb-3">Aging Buckets — Supplier Wise</div>
+                <div class="ap-table-wrap">
+                    <table class="ap-table">
+                        <thead>
+                            <tr><th>Supplier</th><th>Current</th><th>1–30 Days</th><th>31–60 Days</th><th>61–90 Days</th><th>90+ Days</th><th>Total</th></tr>
+                        </thead>
+                        <tbody id="agingTbody"></tbody>
+                    </table>
+                </div>
+            </div>
+        </section>
+
+        <!-- ============ PANEL: VENDOR LEDGER ============ -->
+        <section class="ap-panel" id="panel-ledger">
+            <div class="chart-card">
+                <div class="filter-bar mb-4">
+                    <select class="filter-input" id="ledgerSupplierSelect">
+                        <option>Bansal Traders</option>
+                        <option>Hindal Metals</option>
+                        <option>Sundaram Castings</option>
+                    </select>
+                    <input type="date" class="filter-input">
+                    <input type="date" class="filter-input">
+                    <button class="btn-secondary ml-auto"><i class="fas fa-download"></i> Export Ledger</button>
+                </div>
+
+                <div class="summary-strip">
+                    <div class="summary-item">Opening Balance<b>₹95,000</b></div>
+                    <div class="summary-item">Total Debit<b>₹3,10,000</b></div>
+                    <div class="summary-item">Total Credit<b>₹1,40,000</b></div>
+                    <div class="summary-item">Closing Balance<b>₹2,65,000</b></div>
+                    <div class="summary-item">Payment Terms<b>Net 30</b></div>
+                </div>
+
+                <div class="ap-table-wrap">
+                    <table class="ap-table">
+                        <thead>
+                            <tr><th>Date</th><th>Transaction</th><th>Debit</th><th>Credit</th><th>Balance</th></tr>
+                        </thead>
+                        <tbody id="ledgerTbody"></tbody>
+                    </table>
+                </div>
+            </div>
+        </section>
+
+    </main>
+</div>
+
+<!-- Toast Container -->
+<div id="toast-container" class="fixed bottom-5 right-5 z-[400] space-y-2"></div>
+
+<!-- =====================================================
+     MODAL OVERLAYS — every form is centered on screen
+     ===================================================== -->
+
+<!-- New Payment / Payment Processing Modal -->
+<div class="modal-overlay" id="modalPayment">
+  <div class="modal-box modal-wide">
+    <div class="modal-header">
+      <div>
+        <div class="modal-title">New Payment</div>
+        <div class="modal-sub">Process a payment to a supplier</div>
+      </div>
+      <button class="modal-close" data-close="modalPayment"><i class="fas fa-times"></i></button>
+    </div>
+    <div class="modal-body">
+
+      <div class="form-group">
+        <label class="form-label">Supplier</label>
+        <select class="form-control" id="paySupplier">
+          <option value="">Select supplier...</option>
+          <option>Bansal Traders</option>
+          <option>Hindal Metals</option>
+          <option>Sundaram Castings</option>
+        </select>
+      </div>
+
+      <div class="summary-strip">
+        <div class="summary-item">Outstanding Amount<b id="payOutstandingAmt">₹2,65,000</b></div>
+        <div class="summary-item">Available Invoices<b id="payAvailInvoices">3</b></div>
+      </div>
+
+      <div class="form-row">
+        <div class="form-group">
+          <label class="form-label">Payment Date</label>
+          <input type="date" class="form-control" id="payDate">
+        </div>
+        <div class="form-group">
+          <label class="form-label">Payment Amount</label>
+          <input type="number" class="form-control" id="payAmount" placeholder="0.00">
+        </div>
+      </div>
+
+      <div class="form-group">
+        <label class="form-label">Payment Mode</label>
+        <div class="mode-grid">
+          <div class="mode-chip" data-mode="Cash"><i class="fas fa-money-bill"></i>Cash</div>
+          <div class="mode-chip" data-mode="Bank Transfer"><i class="fas fa-university"></i>Bank Transfer</div>
+          <div class="mode-chip" data-mode="Cheque"><i class="fas fa-money-check"></i>Cheque</div>
+          <div class="mode-chip" data-mode="UPI"><i class="fas fa-mobile-alt"></i>UPI</div>
+          <div class="mode-chip" data-mode="NEFT"><i class="fas fa-exchange-alt"></i>NEFT</div>
+          <div class="mode-chip" data-mode="RTGS"><i class="fas fa-building-columns"></i>RTGS</div>
+        </div>
+      </div>
+
+      <div class="form-group">
+        <label class="form-label">Reference Number</label>
+        <input type="text" class="form-control" id="payRef" placeholder="Transaction / cheque reference">
+      </div>
+
+      <div class="form-group">
+        <label class="form-label">Invoice Allocation</label>
+        <table class="alloc-table">
+          <thead><tr><th>Invoice No.</th><th>Invoice Amount</th><th>Balance</th><th>Paid Amount</th></tr></thead>
+          <tbody id="allocTbody">
+            <tr>
+              <td>VINV-2231</td><td>₹98,000</td><td>₹64,000</td>
+              <td><input type="number" class="alloc-input" placeholder="0.00"></td>
+            </tr>
+            <tr>
+              <td>VINV-2244</td><td>₹1,55,000</td><td>₹1,55,000</td>
+              <td><input type="number" class="alloc-input" placeholder="0.00"></td>
+            </tr>
+            <tr>
+              <td>VINV-2260</td><td>₹46,000</td><td>₹46,000</td>
+              <td><input type="number" class="alloc-input" placeholder="0.00"></td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+
+    </div>
+    <div class="modal-footer">
+      <button class="btn-secondary" data-close="modalPayment">Cancel</button>
+      <button class="btn-secondary" id="btnSavePayment"><i class="fas fa-save"></i> Save Payment</button>
+      <button class="btn-primary" id="btnGenerateVoucher"><i class="fas fa-file-invoice"></i> Generate Voucher</button>
+    </div>
+  </div>
+</div>
+
+<!-- Record Payment (from Outstanding / Invoice rows) Modal -->
+<div class="modal-overlay" id="modalRecordPayment">
+  <div class="modal-box">
+    <div class="modal-header">
+      <div>
+        <div class="modal-title">Make Payment</div>
+        <div class="modal-sub" id="rpSub">Against selected invoice</div>
+      </div>
+      <button class="modal-close" data-close="modalRecordPayment"><i class="fas fa-times"></i></button>
+    </div>
+    <div class="modal-body">
+      <div class="form-row">
+        <div class="form-group">
+          <label class="form-label">Supplier</label>
+          <input type="text" class="form-control" id="rpSupplier" readonly>
+        </div>
+        <div class="form-group">
+          <label class="form-label">Balance Amount</label>
+          <input type="text" class="form-control" id="rpBalance" readonly>
+        </div>
+      </div>
+      <div class="form-row">
+        <div class="form-group">
+          <label class="form-label">Payment Date</label>
+          <input type="date" class="form-control" id="rpDate">
+        </div>
+        <div class="form-group">
+          <label class="form-label">Amount Paid</label>
+          <input type="number" class="form-control" id="rpAmount" placeholder="0.00">
+        </div>
+      </div>
+      <div class="form-group">
+        <label class="form-label">Payment Mode</label>
+        <select class="form-control" id="rpMode">
+          <option>Cash</option><option>Bank Transfer</option><option>Cheque</option>
+          <option>UPI</option><option>NEFT</option><option>RTGS</option>
+        </select>
+      </div>
+      <div class="form-group">
+        <label class="form-label">Reference Number</label>
+        <input type="text" class="form-control" id="rpRef" placeholder="Transaction / cheque reference">
+      </div>
+    </div>
+    <div class="modal-footer">
+      <button class="btn-secondary" data-close="modalRecordPayment">Cancel</button>
+      <button class="btn-primary" id="btnSaveRecordPayment"><i class="fas fa-save"></i> Save Payment</button>
+    </div>
+  </div>
+</div>
+
+<!-- Voucher Details Modal -->
+<div class="modal-overlay" id="modalVoucherDetails">
+  <div class="modal-box">
+    <div class="modal-header">
+      <div>
+        <div class="modal-title" id="voucherDetailTitle">Voucher PV-1042</div>
+        <div class="modal-sub">Payment voucher details</div>
+      </div>
+      <button class="modal-close" data-close="modalVoucherDetails"><i class="fas fa-times"></i></button>
+    </div>
+    <div class="modal-body">
+      <div class="summary-strip">
+        <div class="summary-item">Voucher Number<b id="vdNumber">PV-1042</b></div>
+        <div class="summary-item">Supplier<b id="vdSupplier">Bansal Traders</b></div>
+        <div class="summary-item">Payment Mode<b id="vdMode">NEFT</b></div>
+        <div class="summary-item">Payment Amount<b id="vdAmount">₹1,40,000</b></div>
+      </div>
+      <div class="form-group">
+        <label class="form-label">Invoice References</label>
+        <table class="alloc-table">
+          <thead><tr><th>Invoice No.</th><th>Paid Amount</th></tr></thead>
+          <tbody id="vdAllocTbody">
+            <tr><td>VINV-2231</td><td>₹64,000</td></tr>
+            <tr><td>VINV-2244</td><td>₹76,000</td></tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+    <div class="modal-footer">
+      <button class="btn-secondary" data-close="modalVoucherDetails">Close</button>
+      <button class="btn-secondary"><i class="fas fa-print"></i> Print</button>
+      <button class="btn-secondary"><i class="fas fa-file-pdf"></i> Download PDF</button>
+      <button class="btn-primary"><i class="fas fa-envelope"></i> Email Voucher</button>
+    </div>
+  </div>
+</div>
+
+<!-- Debit Note Modal (create / view) -->
+<div class="modal-overlay" id="modalDebitNote">
+  <div class="modal-box">
+    <div class="modal-header">
+      <div>
+        <div class="modal-title" id="dnTitle">New Debit Note</div>
+        <div class="modal-sub">Purchase return, damage, excess billing or shortage adjustment</div>
+      </div>
+      <button class="modal-close" data-close="modalDebitNote"><i class="fas fa-times"></i></button>
+    </div>
+    <div class="modal-body">
+      <div class="form-row">
+        <div class="form-group">
+          <label class="form-label">Debit Note Number</label>
+          <input type="text" class="form-control" id="dnNumber" placeholder="Auto-generated" readonly>
+        </div>
+        <div class="form-group">
+          <label class="form-label">Supplier</label>
+          <select class="form-control" id="dnSupplier">
+            <option>Bansal Traders</option>
+            <option>Hindal Metals</option>
+            <option>Sundaram Castings</option>
+          </select>
+        </div>
+      </div>
+      <div class="form-row">
+        <div class="form-group">
+          <label class="form-label">Reference Invoice</label>
+          <select class="form-control" id="dnRefInvoice">
+            <option>VINV-2231</option><option>VINV-2244</option><option>VINV-2260</option>
+          </select>
+        </div>
+        <div class="form-group">
+          <label class="form-label">Debit Amount</label>
+          <input type="number" class="form-control" id="dnAmount" placeholder="0.00">
+        </div>
+      </div>
+      <div class="form-group">
+        <label class="form-label">Reason</label>
+        <select class="form-control" id="dnReason">
+          <option>Purchase Return</option>
+          <option>Damaged Goods Return</option>
+          <option>Excess Billing Correction</option>
+          <option>Quantity Shortage Adjustment</option>
+        </select>
+      </div>
+    </div>
+    <div class="modal-footer">
+      <button class="btn-secondary" data-close="modalDebitNote">Cancel</button>
+      <button class="btn-secondary" id="btnApplyAgainstInvoice"><i class="fas fa-link"></i> Apply Against Invoice</button>
+      <button class="btn-primary" id="btnSaveDebitNote"><i class="fas fa-save"></i> Save Debit Note</button>
+    </div>
+  </div>
+</div>
+
+<!-- View Ledger Quick Modal (from Outstanding actions) -->
+<div class="modal-overlay" id="modalViewLedger">
+  <div class="modal-box modal-wide">
+    <div class="modal-header">
+      <div>
+        <div class="modal-title" id="vlTitle">Vendor Ledger — Bansal Traders</div>
+        <div class="modal-sub">Complete transaction history</div>
+      </div>
+      <button class="modal-close" data-close="modalViewLedger"><i class="fas fa-times"></i></button>
+    </div>
+    <div class="modal-body">
+      <div class="ap-table-wrap">
+        <table class="ap-table">
+          <thead><tr><th>Date</th><th>Transaction</th><th>Debit</th><th>Credit</th><th>Balance</th></tr></thead>
+          <tbody id="vlTbody"></tbody>
+        </table>
+      </div>
+    </div>
+    <div class="modal-footer">
+      <button class="btn-secondary" data-close="modalViewLedger">Close</button>
+    </div>
+  </div>
+</div>
+
+<!-- View Invoice Modal -->
+<div class="modal-overlay" id="modalViewInvoice">
+  <div class="modal-box">
+    <div class="modal-header">
+      <div>
+        <div class="modal-title" id="viTitle">Invoice VINV-2231</div>
+        <div class="modal-sub">Vendor invoice details</div>
+      </div>
+      <button class="modal-close" data-close="modalViewInvoice"><i class="fas fa-times"></i></button>
+    </div>
+    <div class="modal-body">
+      <div class="summary-strip">
+        <div class="summary-item">Supplier<b id="viSupplier">Bansal Traders</b></div>
+        <div class="summary-item">PO Number<b id="viPo">PO-2041</b></div>
+        <div class="summary-item">Invoice Amount<b id="viAmount">₹98,000</b></div>
+        <div class="summary-item">Paid Amount<b id="viPaid">₹34,000</b></div>
+        <div class="summary-item">Balance<b id="viBalance">₹64,000</b></div>
+        <div class="summary-item">Due Date<b id="viDue">19 Jun 2026</b></div>
+        <div class="summary-item">Status<b id="viStatus">Overdue</b></div>
+      </div>
+    </div>
+    <div class="modal-footer">
+      <button class="btn-secondary" data-close="modalViewInvoice">Close</button>
+      <button class="btn-secondary"><i class="fas fa-download"></i> Download Copy</button>
+      <button class="btn-primary" id="btnViFromRecordPayment"><i class="fas fa-money-bill-wave"></i> Record Payment</button>
+    </div>
+  </div>
+</div>
+
+<script src="/pages/finance&Billing/payables/pay.js"></script>
+</body>
+</html>

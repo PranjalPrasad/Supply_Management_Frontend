@@ -129,13 +129,15 @@ window.addEventListener('resize', () => {
 
 // Nav group dropdowns
 document.querySelectorAll('.nav-group-header').forEach(header => {
-  header.addEventListener('click', function () {
-    const group = this.dataset.group;
-    const items = document.getElementById('group-' + group);
+  header.addEventListener('click', function (e) {
+    e.stopPropagation();
+    const groupItems = this.nextElementSibling;
     const chevron = this.querySelector('.fa-chevron-down');
-    if (!items) return;
-    items.classList.toggle('open');
-    if (chevron) chevron.style.transform = items.classList.contains('open') ? 'rotate(180deg)' : 'rotate(0deg)';
+    if (!groupItems) return;
+    groupItems.classList.toggle('hidden');
+    if (chevron) {
+      chevron.style.transform = groupItems.classList.contains('hidden') ? 'rotate(0deg)' : 'rotate(180deg)';
+    }
   });
 });
 

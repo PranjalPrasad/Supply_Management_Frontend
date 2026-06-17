@@ -6,122 +6,192 @@
   <title>Purchase Management — Supply Management Admin</title>
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css"/>
   <link rel="stylesheet" href="/pages/purchase/purchase.css"/>
+  <script src="https://cdn.tailwindcss.com"></script>
+<script>tailwind.config = { theme: { extend: { colors: { active: '#111844', border2: '#4B5694', bg: '#FAFAFA', hover2: '#7288AE', card: '#FFFCFC', dark: '#1a2155' } } } }
+
+</script>
 </head>
 <body>
 
 <!-- ════════════════════════════════════════════════════════
      SIDEBAR
 ════════════════════════════════════════════════════════ -->
-<aside id="sidebar">
-  <div class="sidebar-header">
-    <div class="sidebar-logo">
-      <div class="sidebar-icon"><i class="fas fa-cubes"></i></div>
-      <span class="sidebar-brand-text">SupplyManager</span>
+<aside id="sidebar" class="fixed top-0 left-0 h-full w-[260px] bg-[#FFFCFC] z-[100] flex flex-col transition-all duration-300 overflow-hidden shadow-lg">
+  <div class="flex items-center justify-between px-5 h-16 border border-[#4B5694]/20 shadow-sm">
+    <div class="flex items-center gap-3">
+      <div class="w-9 h-9 rounded-lg bg-[#111844] flex items-center justify-center text-[#FAFAFA] flex-shrink-0">
+        <i class="fas fa-cubes"></i>
+      </div>
+      <img src="/assets/logo.png" alt="Logo" class="sidebar-brand-text h-8 w-auto object-contain">
     </div>
-    <button id="sidebar-toggle" title="Toggle sidebar"><i class="fas fa-chevron-left"></i></button>
+    <button id="sidebar-toggle" class="w-7 h-7 flex items-center justify-center rounded-lg text-[#4B5694] hover:bg-[#4B5694]/10 transition-colors">
+      <i class="fas fa-chevron-left text-sm"></i>
+    </button>
   </div>
 
-  <nav class="sidebar-nav">
+  <nav class="flex-1 overflow-y-auto py-3 px-2 space-y-0.5">
 
-    <a href="index.html" class="nav-item">
-      <span class="nav-icon"><i class="fas fa-chart-pie"></i></span>
+    <a href="/index.html" class="nav-item flex items-center gap-3 px-3 py-2.5 rounded-lg text-[#111844]/70 hover:bg-[#7288AE]/20 hover:text-[#111844] transition-colors duration-150 text-sm cursor-pointer border-b border-[#4B5694]/20 shadow-sm">
+      <span class="nav-icon text-base flex-shrink-0 w-5"><i class="fas fa-chart-pie"></i></span>
       <span class="nav-label">Dashboard</span>
     </a>
 
     <!-- Master Management -->
-    <div>
-      <div class="nav-group-header">
-        <span class="nav-icon"><i class="fas fa-database"></i></span>
-        <span class="nav-label">Master Management</span>
-        <i class="fas fa-chevron-down nav-chevron"></i>
+    <div class="nav-group">
+      <div class="nav-group-header flex items-center justify-between gap-3 px-3 py-2.5 rounded-lg text-[#111844]/70 hover:bg-[#7288AE]/20 hover:text-[#111844] transition-colors duration-150 text-sm cursor-pointer border-b border-[#4B5694]/20 shadow-sm">
+        <div class="flex items-center gap-3">
+          <span class="nav-icon text-base flex-shrink-0 w-5"><i class="fas fa-database"></i></span>
+          <span class="nav-label">Master Management</span>
+        </div>
+        <i class="fas fa-chevron-down text-xs transition-transform duration-200"></i>
       </div>
-      <div class="group-items">
-        <a href="#" class="nav-item"><span class="nav-icon"><i class="fas fa-box"></i></span><span class="nav-label">Products</span></a>
-        <a href="#" class="nav-item"><span class="nav-icon"><i class="fas fa-sitemap"></i></span><span class="nav-label">Categories</span></a>
-        <a href="#" class="nav-item"><span class="nav-icon"><i class="fas fa-truck-loading"></i></span><span class="nav-label">Suppliers</span></a>
-        <a href="#" class="nav-item"><span class="nav-icon"><i class="fas fa-users"></i></span><span class="nav-label">Customers</span></a>
-        <a href="#" class="nav-item"><span class="nav-icon"><i class="fas fa-warehouse"></i></span><span class="nav-label">Warehouses</span></a>
-        <a href="#" class="nav-item"><span class="nav-icon"><i class="fas fa-balance-scale"></i></span><span class="nav-label">Units</span></a>
+      <div class="nav-group-items ml-7 space-y-0.5 mt-1">
+        <a href="/pages/Product/product.html" class="nav-item flex items-center gap-3 px-3 py-2 rounded-lg text-[#111844]/70 hover:bg-[#7288AE]/20 hover:text-[#111844] transition-colors duration-150 text-xs cursor-pointer">
+          <span class="nav-icon text-sm flex-shrink-0 w-4"><i class="fas fa-box"></i></span>
+          <span class="nav-label">Products</span>
+        </a>
+        <a href="/pages/suppliers/supplier.html" class="nav-item flex items-center gap-3 px-3 py-2 rounded-lg text-[#111844]/70 hover:bg-[#7288AE]/20 hover:text-[#111844] transition-colors duration-150 text-xs cursor-pointer">
+          <span class="nav-icon text-sm flex-shrink-0 w-4"><i class="fas fa-truck-loading"></i></span>
+          <span class="nav-label">Suppliers</span>
+        </a>
+        <a href="/pages/customers/customer.html" class="nav-item flex items-center gap-3 px-3 py-2 rounded-lg text-[#111844]/70 hover:bg-[#7288AE]/20 hover:text-[#111844] transition-colors duration-150 text-xs cursor-pointer">
+          <span class="nav-icon text-sm flex-shrink-0 w-4"><i class="fas fa-users"></i></span>
+          <span class="nav-label">Customers</span>
+        </a>
+        <a href="/pages/warehousemaster/warehousem.html" class="nav-item flex items-center gap-3 px-3 py-2 rounded-lg text-[#111844]/70 hover:bg-[#7288AE]/20 hover:text-[#111844] transition-colors duration-150 text-xs cursor-pointer">
+          <span class="nav-icon text-sm flex-shrink-0 w-4"><i class="fas fa-warehouse"></i></span>
+          <span class="nav-label">Warehouses</span>
+        </a>
+        <a href="/pages/units/units.html" class="nav-item flex items-center gap-3 px-3 py-2 rounded-lg text-[#111844]/70 hover:bg-[#7288AE]/20 hover:text-[#111844] transition-colors duration-150 text-xs cursor-pointer">
+          <span class="nav-icon text-sm flex-shrink-0 w-4"><i class="fas fa-balance-scale"></i></span>
+          <span class="nav-label">Units</span>
+        </a>
       </div>
     </div>
 
-    <a href="purchase.html" class="nav-item active">
-      <span class="nav-icon"><i class="fas fa-shopping-cart"></i></span>
+    <!-- Purchase — ACTIVE -->
+    <a href="/pages/purchase/purchase.html" class="nav-item flex items-center gap-3 px-3 py-2.5 rounded-lg text-sm cursor-pointer border-b border-[#4B5694]/20 shadow-sm nav-active">
+      <span class="nav-icon text-base flex-shrink-0 w-5"><i class="fas fa-shopping-cart"></i></span>
       <span class="nav-label">Purchase Management</span>
     </a>
 
-    <a href="#" class="nav-item">
-      <span class="nav-icon"><i class="fas fa-boxes-stacked"></i></span>
+    <a href="/pages/inventory/inventory.html" class="nav-item flex items-center gap-3 px-3 py-2.5 rounded-lg text-[#111844]/70 hover:bg-[#7288AE]/20 hover:text-[#111844] transition-colors duration-150 text-sm cursor-pointer border-b border-[#4B5694]/20 shadow-sm">
+      <span class="nav-icon text-base flex-shrink-0 w-5"><i class="fas fa-boxes-stacked"></i></span>
       <span class="nav-label">Inventory Management</span>
     </a>
 
-    <a href="#" class="nav-item">
-      <span class="nav-icon"><i class="fas fa-warehouse"></i></span>
+    <a href="/pages/warehouse/warehouse.html" class="nav-item flex items-center gap-3 px-3 py-2.5 rounded-lg text-[#111844]/70 hover:bg-[#7288AE]/20 hover:text-[#111844] transition-colors duration-150 text-sm cursor-pointer border-b border-[#4B5694]/20 shadow-sm">
+      <span class="nav-icon text-base flex-shrink-0 w-5"><i class="fas fa-warehouse"></i></span>
       <span class="nav-label">Warehouse Management</span>
     </a>
 
     <!-- Sales & Dispatch -->
-    <div>
-      <div class="nav-group-header">
-        <span class="nav-icon"><i class="fas fa-truck"></i></span>
-        <span class="nav-label">Sales &amp; Dispatch</span>
-        <i class="fas fa-chevron-down nav-chevron"></i>
+    <div class="nav-group">
+      <div class="nav-group-header flex items-center justify-between gap-3 px-3 py-2.5 rounded-lg text-[#111844]/70 hover:bg-[#7288AE]/20 hover:text-[#111844] transition-colors duration-150 text-sm cursor-pointer border-b border-[#4B5694]/20 shadow-sm">
+        <div class="flex items-center gap-3">
+          <span class="nav-icon text-base flex-shrink-0 w-5"><i class="fas fa-truck"></i></span>
+          <span class="nav-label">Sales & Dispatch</span>
+        </div>
+        <i class="fas fa-chevron-down text-xs transition-transform duration-200"></i>
       </div>
-      <div class="group-items">
-        <a href="#" class="nav-item"><span class="nav-icon"><i class="fas fa-receipt"></i></span><span class="nav-label">Sales Orders</span></a>
-        <a href="#" class="nav-item"><span class="nav-icon"><i class="fas fa-calendar-alt"></i></span><span class="nav-label">Dispatch Planning</span></a>
-        <a href="#" class="nav-item"><span class="nav-icon"><i class="fas fa-file-alt"></i></span><span class="nav-label">Delivery Challan</span></a>
-        <a href="#" class="nav-item"><span class="nav-icon"><i class="fas fa-file-invoice-dollar"></i></span><span class="nav-label">Invoices</span></a>
-        <a href="#" class="nav-item"><span class="nav-icon"><i class="fas fa-location-dot"></i></span><span class="nav-label">Shipment Tracking</span></a>
+      <div class="nav-group-items ml-7 space-y-0.5 mt-1 hidden">
+        <a href="/pages/sales/salesorders/salesorders.html" class="nav-item flex items-center gap-3 px-3 py-2 rounded-lg text-[#111844]/70 hover:bg-[#7288AE]/20 hover:text-[#111844] transition-colors duration-150 text-xs cursor-pointer">
+          <span class="nav-icon text-sm flex-shrink-0 w-4"><i class="fas fa-receipt"></i></span>
+          <span class="nav-label">Sales Orders</span>
+        </a>
+        <a href="/pages/sales/dispatchplanning/dispatch.html" class="nav-item flex items-center gap-3 px-3 py-2 rounded-lg text-[#111844]/70 hover:bg-[#7288AE]/20 hover:text-[#111844] transition-colors duration-150 text-xs cursor-pointer">
+          <span class="nav-icon text-sm flex-shrink-0 w-4"><i class="fas fa-calendar-alt"></i></span>
+          <span class="nav-label">Dispatch Planning</span>
+        </a>
+        <a href="/pages/sales/delivery/deliveryc.html" class="nav-item flex items-center gap-3 px-3 py-2 rounded-lg text-[#111844]/70 hover:bg-[#7288AE]/20 hover:text-[#111844] transition-colors duration-150 text-xs cursor-pointer">
+          <span class="nav-icon text-sm flex-shrink-0 w-4"><i class="fas fa-file-alt"></i></span>
+          <span class="nav-label">Delivery Challan</span>
+        </a>
+        <a href="/pages/sales/invoices/invoice.html" class="nav-item flex items-center gap-3 px-3 py-2 rounded-lg text-[#111844]/70 hover:bg-[#7288AE]/20 hover:text-[#111844] transition-colors duration-150 text-xs cursor-pointer">
+          <span class="nav-icon text-sm flex-shrink-0 w-4"><i class="fas fa-file-invoice-dollar"></i></span>
+          <span class="nav-label">Invoices</span>
+        </a>
+        <a href="/pages/sales/shipment/Shipmenttracking.html" class="nav-item flex items-center gap-3 px-3 py-2 rounded-lg text-[#111844]/70 hover:bg-[#7288AE]/20 hover:text-[#111844] transition-colors duration-150 text-xs cursor-pointer">
+          <span class="nav-icon text-sm flex-shrink-0 w-4"><i class="fas fa-location-dot"></i></span>
+          <span class="nav-label">Shipment Tracking</span>
+        </a>
       </div>
     </div>
 
-    <a href="#" class="nav-item">
-      <span class="nav-icon"><i class="fas fa-rotate-left"></i></span>
+    <a href="/pages/returns/returns.html" class="nav-item flex items-center gap-3 px-3 py-2.5 rounded-lg text-[#111844]/70 hover:bg-[#7288AE]/20 hover:text-[#111844] transition-colors duration-150 text-sm cursor-pointer border-b border-[#4B5694]/20 shadow-sm">
+      <span class="nav-icon text-base flex-shrink-0 w-5"><i class="fas fa-rotate-left"></i></span>
       <span class="nav-label">Returns Management</span>
     </a>
 
-    <!-- Finance -->
-    <div>
-      <div class="nav-group-header">
-        <span class="nav-icon"><i class="fas fa-coins"></i></span>
-        <span class="nav-label">Finance &amp; Billing</span>
-        <i class="fas fa-chevron-down nav-chevron"></i>
+    <!-- Finance & Billing -->
+    <div class="nav-group">
+      <div class="nav-group-header flex items-center justify-between gap-3 px-3 py-2.5 rounded-lg text-[#111844]/70 hover:bg-[#7288AE]/20 hover:text-[#111844] transition-colors duration-150 text-sm cursor-pointer border-b border-[#4B5694]/20 shadow-sm">
+        <div class="flex items-center gap-3">
+          <span class="nav-icon text-base flex-shrink-0 w-5"><i class="fas fa-coins"></i></span>
+          <span class="nav-label">Finance & Billing</span>
+        </div>
+        <i class="fas fa-chevron-down text-xs transition-transform duration-200"></i>
       </div>
-      <div class="group-items">
-        <a href="#" class="nav-item"><span class="nav-icon"><i class="fas fa-hand-holding-usd"></i></span><span class="nav-label">Receivables</span></a>
-        <a href="#" class="nav-item"><span class="nav-icon"><i class="fas fa-money-bill-wave"></i></span><span class="nav-label">Payables</span></a>
-        <a href="#" class="nav-item"><span class="nav-icon"><i class="fas fa-chart-line"></i></span><span class="nav-label">Expenses</span></a>
-        <a href="#" class="nav-item"><span class="nav-icon"><i class="fas fa-percent"></i></span><span class="nav-label">GST Management</span></a>
-        <a href="#" class="nav-item"><span class="nav-icon"><i class="fas fa-chart-simple"></i></span><span class="nav-label">Profitability</span></a>
+      <div class="nav-group-items ml-7 space-y-0.5 mt-1 hidden">
+        <a href="/pages/finance&Billing/receivables/receive.html" class="nav-item flex items-center gap-3 px-3 py-2 rounded-lg text-[#111844]/70 hover:bg-[#7288AE]/20 hover:text-[#111844] transition-colors duration-150 text-xs cursor-pointer">
+          <span class="nav-icon text-sm flex-shrink-0 w-4"><i class="fas fa-hand-holding-usd"></i></span>
+          <span class="nav-label">Receivables</span>
+        </a>
+        <a href="/pages/finance&Billing/payables/pay.html" class="nav-item flex items-center gap-3 px-3 py-2 rounded-lg text-[#111844]/70 hover:bg-[#7288AE]/20 hover:text-[#111844] transition-colors duration-150 text-xs cursor-pointer">
+          <span class="nav-icon text-sm flex-shrink-0 w-4"><i class="fas fa-money-bill-wave"></i></span>
+          <span class="nav-label">Payables</span>
+        </a>
+        <a href="/pages/finance&Billing/expenses/expense.html" class="nav-item flex items-center gap-3 px-3 py-2 rounded-lg text-[#111844]/70 hover:bg-[#7288AE]/20 hover:text-[#111844] transition-colors duration-150 text-xs cursor-pointer">
+          <span class="nav-icon text-sm flex-shrink-0 w-4"><i class="fas fa-chart-line"></i></span>
+          <span class="nav-label">Expenses</span>
+        </a>
+        <a href="/pages/finance&Billing/GSTM/gst.html" class="nav-item flex items-center gap-3 px-3 py-2 rounded-lg text-[#111844]/70 hover:bg-[#7288AE]/20 hover:text-[#111844] transition-colors duration-150 text-xs cursor-pointer">
+          <span class="nav-icon text-sm flex-shrink-0 w-4"><i class="fas fa-percent"></i></span>
+          <span class="nav-label">GST Management</span>
+        </a>
+        <a href="/pages/finance&Billing/profitability/profit.html" class="nav-item flex items-center gap-3 px-3 py-2 rounded-lg text-[#111844]/70 hover:bg-[#7288AE]/20 hover:text-[#111844] transition-colors duration-150 text-xs cursor-pointer">
+          <span class="nav-icon text-sm flex-shrink-0 w-4"><i class="fas fa-chart-simple"></i></span>
+          <span class="nav-label">Profitability</span>
+        </a>
       </div>
     </div>
 
-    <a href="#" class="nav-item">
-      <span class="nav-icon"><i class="fas fa-chart-bar"></i></span>
-      <span class="nav-label">Reports &amp; Analytics</span>
+    <a href="/pages/reports&analytics/reports.html" class="nav-item flex items-center gap-3 px-3 py-2.5 rounded-lg text-[#111844]/70 hover:bg-[#7288AE]/20 hover:text-[#111844] transition-colors duration-150 text-sm cursor-pointer border-b border-[#4B5694]/20 shadow-sm">
+      <span class="nav-icon text-base flex-shrink-0 w-5"><i class="fas fa-chart-bar"></i></span>
+      <span class="nav-label">Reports & Analytics</span>
     </a>
 
     <!-- User Management -->
-    <div>
-      <div class="nav-group-header">
-        <span class="nav-icon"><i class="fas fa-users-gear"></i></span>
-        <span class="nav-label">User Management</span>
-        <i class="fas fa-chevron-down nav-chevron"></i>
+    <div class="nav-group">
+      <div class="nav-group-header flex items-center justify-between gap-3 px-3 py-2.5 rounded-lg text-[#111844]/70 hover:bg-[#7288AE]/20 hover:text-[#111844] transition-colors duration-150 text-sm cursor-pointer border-b border-[#4B5694]/20 shadow-sm">
+        <div class="flex items-center gap-3">
+          <span class="nav-icon text-base flex-shrink-0 w-5"><i class="fas fa-users-gear"></i></span>
+          <span class="nav-label">User Management</span>
+        </div>
+        <i class="fas fa-chevron-down text-xs transition-transform duration-200"></i>
       </div>
-      <div class="group-items">
-        <a href="#" class="nav-item"><span class="nav-icon"><i class="fas fa-user"></i></span><span class="nav-label">Users</span></a>
-        <a href="#" class="nav-item"><span class="nav-icon"><i class="fas fa-lock"></i></span><span class="nav-label">Roles &amp; Permissions</span></a>
+      <div class="nav-group-items ml-7 space-y-0.5 mt-1 hidden">
+        <a href="/pages/userM/user/User.html" class="nav-item flex items-center gap-3 px-3 py-2 rounded-lg text-[#111844]/70 hover:bg-[#7288AE]/20 hover:text-[#111844] transition-colors duration-150 text-xs cursor-pointer">
+          <span class="nav-icon text-sm flex-shrink-0 w-4"><i class="fas fa-user"></i></span>
+          <span class="nav-label">Users</span>
+        </a>
+        <a href="/pages/userM/roles&permission/role.html" class="nav-item flex items-center gap-3 px-3 py-2 rounded-lg text-[#111844]/70 hover:bg-[#7288AE]/20 hover:text-[#111844] transition-colors duration-150 text-xs cursor-pointer">
+          <span class="nav-icon text-sm flex-shrink-0 w-4"><i class="fas fa-lock"></i></span>
+          <span class="nav-label">Roles & Permissions</span>
+        </a>
       </div>
     </div>
 
   </nav>
 
-  <div class="sidebar-footer">
-    <div class="avatar">AD</div>
-    <div class="sidebar-brand-text sidebar-user-info">
-      <div class="name">Admin</div>
-      <div class="email">admin@supplymanager.com</div>
+  <!-- User Footer -->
+  <div class="px-4 py-3 border-t border-[#4B5694]/20 bg-[#FAFAFA]/30">
+    <div class="flex items-center gap-3">
+      <div class="w-8 h-8 rounded-full bg-[#111844] flex items-center justify-center text-[#FAFAFA] text-xs font-bold flex-shrink-0">AD</div>
+      <div class="sidebar-brand-text min-w-0">
+        <div class="text-[#111844] text-xs font-medium truncate">Admin</div>
+        <div class="text-[#7288AE] text-xs truncate">admin@supplymanager.com</div>
+      </div>
     </div>
   </div>
 </aside>

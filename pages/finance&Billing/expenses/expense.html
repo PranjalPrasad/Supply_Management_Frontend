@@ -1,0 +1,365 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Expense Management — Supply Manager</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script>tailwind.config={theme:{extend:{colors:{active:'#111844',border2:'#4B5694',bg:'#FAFAFA',hover2:'#7288AE',card:'#FFFCFC',dark:'#1a2155'}}}}</script>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+  <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@300;400;500;700&display=swap" rel="stylesheet" />
+  <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.1/dist/chart.umd.min.js"></script>
+  <link rel="stylesheet" href="/pages/finance&Billing/expenses/expense.css" />
+</head>
+<body class="bg-[#ebe6e6] text-[#111844] min-h-screen">
+
+<!-- ========== SIDEBAR ========== -->
+<aside id="sidebar" class="fixed top-0 left-0 h-full w-[260px] bg-[#FFFCFC] z-[100] flex flex-col transition-all duration-300 overflow-hidden shadow-lg">
+  <div class="flex items-center justify-between px-5 h-16 border border-[#4B5694]/20 shadow-sm">
+    <div class="flex items-center gap-3">
+        <div class="w-9 h-9 rounded-lg bg-[#111844] flex items-center justify-center text-[#FAFAFA] flex-shrink-0">
+            <i class="fas fa-cubes"></i>
+        </div>
+        <img src="/assets/logo.png" alt="Logo" class="h-8 w-auto object-contain">
+    </div>
+    <button id="sidebar-toggle" class="w-7 h-7 flex items-center justify-center rounded-lg text-[#4B5694] hover:bg-[#4B5694]/10 transition-colors">
+        <i class="fas fa-chevron-left text-sm"></i>
+    </button>
+</div>
+  <nav class="flex-1 overflow-y-auto py-3 px-2 space-y-0.5">
+    <!-- Dashboard -->
+    <a href="/index.html" class="nav-item flex items-center gap-3 px-3 py-2.5 rounded-lg text-[#111844]/70 hover:bg-[#7288AE]/20 hover:text-[#111844] transition-colors duration-150 text-sm cursor-pointer border-b border-[#4B5694]/20 shadow-sm">
+      <span class="nav-icon text-base flex-shrink-0 w-5"><i class="fas fa-chart-pie"></i></span>
+      <span class="nav-label">Dashboard</span>
+    </a>
+    <!-- Master Management -->
+    <div class="nav-group">
+      <div class="nav-group-header flex items-center justify-between gap-3 px-3 py-2.5 rounded-lg text-[#111844]/70 hover:bg-[#7288AE]/20 hover:text-[#111844] transition-colors duration-150 text-sm cursor-pointer border-b border-[#4B5694]/20 shadow-sm">
+        <div class="flex items-center gap-3"><span class="nav-icon text-base flex-shrink-0 w-5"><i class="fas fa-database"></i></span><span class="nav-label">Master Management</span></div>
+        <i class="fas fa-chevron-down text-xs transition-transform duration-200"></i>
+      </div>
+      <div class="nav-group-items ml-7 space-y-0.5 mt-1 hidden">
+        <a href="/pages/Product/product.html" class="nav-item flex items-center gap-3 px-3 py-2 rounded-lg text-[#111844]/70 hover:bg-[#7288AE]/20 hover:text-[#111844] transition-colors duration-150 text-xs cursor-pointer"><span class="nav-icon text-sm flex-shrink-0 w-4"><i class="fas fa-box"></i></span><span class="nav-label">Products</span></a>
+        <a href="/pages/suppliers/supplier.html" class="nav-item flex items-center gap-3 px-3 py-2 rounded-lg text-[#111844]/70 hover:bg-[#7288AE]/20 hover:text-[#111844] transition-colors duration-150 text-xs cursor-pointer"><span class="nav-icon text-sm flex-shrink-0 w-4"><i class="fas fa-truck-loading"></i></span><span class="nav-label">Suppliers</span></a>
+        <a href="/pages/customers/customer.html" class="nav-item flex items-center gap-3 px-3 py-2 rounded-lg text-[#111844]/70 hover:bg-[#7288AE]/20 hover:text-[#111844] transition-colors duration-150 text-xs cursor-pointer"><span class="nav-icon text-sm flex-shrink-0 w-4"><i class="fas fa-users"></i></span><span class="nav-label">Customers</span></a>
+        <a href="/pages/warehousemaster/warehousem.html" class="nav-item flex items-center gap-3 px-3 py-2 rounded-lg text-[#111844]/70 hover:bg-[#7288AE]/20 hover:text-[#111844] transition-colors duration-150 text-xs cursor-pointer"><span class="nav-icon text-sm flex-shrink-0 w-4"><i class="fas fa-warehouse"></i></span><span class="nav-label">Warehouses</span></a>
+        <a href="/pages/units/units.html" class="nav-item flex items-center gap-3 px-3 py-2 rounded-lg text-[#111844]/70 hover:bg-[#7288AE]/20 hover:text-[#111844] transition-colors duration-150 text-xs cursor-pointer"><span class="nav-icon text-sm flex-shrink-0 w-4"><i class="fas fa-balance-scale"></i></span><span class="nav-label">Units</span></a>
+      </div>
+    </div>
+    <!-- Purchase Management -->
+    <a href="/pages/purchase/purchase.html" class="nav-item flex items-center gap-3 px-3 py-2.5 rounded-lg text-[#111844]/70 hover:bg-[#7288AE]/20 hover:text-[#111844] transition-colors duration-150 text-sm cursor-pointer border-b border-[#4B5694]/20 shadow-sm">
+      <span class="nav-icon text-base flex-shrink-0 w-5"><i class="fas fa-shopping-cart"></i></span><span class="nav-label">Purchase Management</span>
+    </a>
+    <!-- Inventory Management -->
+    <a href="/pages/inventory/inventory.html" class="nav-item flex items-center gap-3 px-3 py-2.5 rounded-lg text-[#111844]/70 hover:bg-[#7288AE]/20 hover:text-[#111844] transition-colors duration-150 text-sm cursor-pointer border-b border-[#4B5694]/20 shadow-sm">
+      <span class="nav-icon text-base flex-shrink-0 w-5"><i class="fas fa-boxes-stacked"></i></span><span class="nav-label">Inventory Management</span>
+    </a>
+    <!-- Warehouse Operations -->
+    <a href="/pages/warehouse/warehouse.html" class="nav-item flex items-center gap-3 px-3 py-2.5 rounded-lg text-[#111844]/70 hover:bg-[#7288AE]/20 hover:text-[#111844] transition-colors duration-150 text-sm cursor-pointer border-b border-[#4B5694]/20 shadow-sm">
+      <span class="nav-icon text-base flex-shrink-0 w-5"><i class="fas fa-warehouse"></i></span><span class="nav-label">Warehouse Management</span>
+    </a>
+    <!-- Sales & Dispatch -->
+    <div class="nav-group">
+      <div class="nav-group-header flex items-center justify-between gap-3 px-3 py-2.5 rounded-lg text-[#111844]/70 hover:bg-[#7288AE]/20 hover:text-[#111844] transition-colors duration-150 text-sm cursor-pointer border-b border-[#4B5694]/20 shadow-sm">
+        <div class="flex items-center gap-3"><span class="nav-icon text-base flex-shrink-0 w-5"><i class="fas fa-truck"></i></span><span class="nav-label">Sales & Dispatch</span></div>
+        <i class="fas fa-chevron-down text-xs transition-transform duration-200"></i>
+      </div>
+      <div class="nav-group-items ml-7 space-y-0.5 mt-1 hidden">
+        <a href="/pages/sales/salesorders/salesorders.html" class="nav-item flex items-center gap-3 px-3 py-2 rounded-lg text-[#111844]/70 hover:bg-[#7288AE]/20 hover:text-[#111844] transition-colors duration-150 text-xs cursor-pointer"><span class="nav-icon text-sm flex-shrink-0 w-4"><i class="fas fa-receipt"></i></span><span class="nav-label">Sales Orders</span></a>
+        <a href="/pages/sales/dispatchplanning/dispatch.html" class="nav-item flex items-center gap-3 px-3 py-2 rounded-lg text-[#111844]/70 hover:bg-[#7288AE]/20 hover:text-[#111844] transition-colors duration-150 text-xs cursor-pointer"><span class="nav-icon text-sm flex-shrink-0 w-4"><i class="fas fa-calendar-alt"></i></span><span class="nav-label">Dispatch Planning</span></a>
+        <a href="/pages/sales/delivery/deliveryc.html" class="nav-item flex items-center gap-3 px-3 py-2 rounded-lg text-[#111844]/70 hover:bg-[#7288AE]/20 hover:text-[#111844] transition-colors duration-150 text-xs cursor-pointer"><span class="nav-icon text-sm flex-shrink-0 w-4"><i class="fas fa-file-alt"></i></span><span class="nav-label">Delivery Challan</span></a>
+        <a href="/pages/sales/invoices/invoice.html" class="nav-item flex items-center gap-3 px-3 py-2 rounded-lg text-[#111844]/70 hover:bg-[#7288AE]/20 hover:text-[#111844] transition-colors duration-150 text-xs cursor-pointer"><span class="nav-icon text-sm flex-shrink-0 w-4"><i class="fas fa-file-invoice-dollar"></i></span><span class="nav-label">Invoices</span></a>
+        <a href="/pages/sales/shipment/Shipmenttracking.html" class="nav-item flex items-center gap-3 px-3 py-2 rounded-lg text-[#111844]/70 hover:bg-[#7288AE]/20 hover:text-[#111844] transition-colors duration-150 text-xs cursor-pointer"><span class="nav-icon text-sm flex-shrink-0 w-4"><i class="fas fa-location-dot"></i></span><span class="nav-label">Shipment Tracking</span></a>
+      </div>
+    </div>
+    <!-- Returns Management -->
+    <a href="/pages/returns/returns.html" class="nav-item flex items-center gap-3 px-3 py-2.5 rounded-lg text-[#111844]/70 hover:bg-[#7288AE]/20 hover:text-[#111844] transition-colors duration-150 text-sm cursor-pointer border-b border-[#4B5694]/20 shadow-sm">
+      <span class="nav-icon text-base flex-shrink-0 w-5"><i class="fas fa-rotate-left"></i></span><span class="nav-label">Returns Management</span>
+    </a>
+    <!-- Finance & Billing -->
+    <div class="nav-group">
+      <div class="nav-group-header flex items-center justify-between gap-3 px-3 py-2.5 rounded-lg text-[#111844]/70 hover:bg-[#7288AE]/20 hover:text-[#111844] transition-colors duration-150 text-sm cursor-pointer border-b border-[#4B5694]/20 shadow-sm">
+        <div class="flex items-center gap-3"><span class="nav-icon text-base flex-shrink-0 w-5"><i class="fas fa-coins"></i></span><span class="nav-label">Finance & Billing</span></div>
+        <i class="fas fa-chevron-down text-xs transition-transform duration-200"></i>
+      </div>
+      <div class="nav-group-items ml-7 space-y-0.5 mt-1">
+        <a href="/pages/finance&Billing/receivables/receive.html" class="nav-item flex items-center gap-3 px-3 py-2 rounded-lg text-[#111844]/70 hover:bg-[#7288AE]/20 hover:text-[#111844] transition-colors duration-150 text-xs cursor-pointer"><span class="nav-icon text-sm flex-shrink-0 w-4"><i class="fas fa-hand-holding-usd"></i></span><span class="nav-label">Receivables</span></a>
+        <a href="/pages/finance&Billing/payables/pay.html" class="nav-item flex items-center gap-3 px-3 py-2 rounded-lg text-[#111844]/70 hover:bg-[#7288AE]/20 hover:text-[#111844] transition-colors duration-150 text-xs cursor-pointer"><span class="nav-icon text-sm flex-shrink-0 w-4"><i class="fas fa-money-bill-wave"></i></span><span class="nav-label">Payables</span></a>
+        <a href="/pages/finance&Billing/expenses/expense.html" class="nav-item nav-active flex items-center gap-3 px-3 py-2 rounded-lg transition-colors duration-150 text-xs cursor-pointer"><span class="nav-icon text-sm flex-shrink-0 w-4"><i class="fas fa-chart-line"></i></span><span class="nav-label">Expenses</span></a>
+        <a href="/pages/finance&Billing/GSTM/gst.html" class="nav-item flex items-center gap-3 px-3 py-2 rounded-lg text-[#111844]/70 hover:bg-[#7288AE]/20 hover:text-[#111844] transition-colors duration-150 text-xs cursor-pointer"><span class="nav-icon text-sm flex-shrink-0 w-4"><i class="fas fa-percent"></i></span><span class="nav-label">GST Management</span></a>
+        <a href="/pages/finance&Billing/profitability/profit.html" class="nav-item flex items-center gap-3 px-3 py-2 rounded-lg text-[#111844]/70 hover:bg-[#7288AE]/20 hover:text-[#111844] transition-colors duration-150 text-xs cursor-pointer"><span class="nav-icon text-sm flex-shrink-0 w-4"><i class="fas fa-chart-simple"></i></span><span class="nav-label">Profitability</span></a>
+      </div>
+    </div>
+    <!-- Reports -->
+    <a href="/pages/reports&analytics/reports.html" class="nav-item flex items-center gap-3 px-3 py-2.5 rounded-lg text-[#111844]/70 hover:bg-[#7288AE]/20 hover:text-[#111844] transition-colors duration-150 text-sm cursor-pointer border-b border-[#4B5694]/20 shadow-sm">
+      <span class="nav-icon text-base flex-shrink-0 w-5"><i class="fas fa-chart-bar"></i></span><span class="nav-label">Reports & Analytics</span>
+    </a>
+    <!-- User Management -->
+    <div class="nav-group">
+      <div class="nav-group-header flex items-center justify-between gap-3 px-3 py-2.5 rounded-lg text-[#111844]/70 hover:bg-[#7288AE]/20 hover:text-[#111844] transition-colors duration-150 text-sm cursor-pointer border-b border-[#4B5694]/20 shadow-sm">
+        <div class="flex items-center gap-3"><span class="nav-icon text-base flex-shrink-0 w-5"><i class="fas fa-users-gear"></i></span><span class="nav-label">User Management</span></div>
+        <i class="fas fa-chevron-down text-xs transition-transform duration-200"></i>
+      </div>
+      <div class="nav-group-items ml-7 space-y-0.5 mt-1 hidden">
+        <a href="/pages/userM/user/User.html" class="nav-item flex items-center gap-3 px-3 py-2 rounded-lg text-[#111844]/70 hover:bg-[#7288AE]/20 hover:text-[#111844] transition-colors duration-150 text-xs cursor-pointer"><span class="nav-icon text-sm flex-shrink-0 w-4"><i class="fas fa-user"></i></span><span class="nav-label">Users</span></a>
+        <a href="/pages/userM/roles&permission/role.html" class="nav-item flex items-center gap-3 px-3 py-2 rounded-lg text-[#111844]/70 hover:bg-[#7288AE]/20 hover:text-[#111844] transition-colors duration-150 text-xs cursor-pointer"><span class="nav-icon text-sm flex-shrink-0 w-4"><i class="fas fa-lock"></i></span><span class="nav-label">Roles & Permissions</span></a>
+      </div>
+    </div>
+  </nav>
+  <div class="px-4 py-3 border-t border-[#4B5694]/20 bg-[#FAFAFA]/30">
+    <div class="flex items-center gap-3">
+      <div class="w-8 h-8 rounded-full bg-[#111844] flex items-center justify-center text-[#FAFAFA] text-xs font-bold flex-shrink-0">AD</div>
+      <div class="sidebar-brand-text min-w-0">
+        <div class="text-[#111844] text-xs font-medium truncate">Admin</div>
+        <div class="text-[#7288AE] text-xs truncate">admin@supplymanager.com</div>
+      </div>
+    </div>
+  </div>
+</aside>
+
+<div id="sidebar-overlay" class="hidden fixed inset-0 bg-[#111844]/50 z-[90] lg:hidden"></div>
+
+<!-- ========== MAIN ========== -->
+<div id="main-wrapper" class="ml-[260px] flex flex-col min-h-screen transition-all duration-300">
+
+  <!-- Topbar -->
+  <header class="sticky top-0 z-[200] h-16 bg-[#FFFCFC] border-b border-[#4B5694]/20 flex items-center justify-between px-5 shadow-sm">
+    <div class="flex items-center gap-4">
+      <button id="sidebar-toggle-mobile" class="lg:hidden w-9 h-9 flex items-center justify-center rounded-lg text-[#4B5694] hover:bg-[#4B5694]/10"><i class="fas fa-bars"></i></button>
+      <div>
+        <h1 class="text-sm font-semibold text-[#111844]">Expense Management</h1>
+        <p class="text-xs text-[#7288AE]">Finance → Expenses</p>
+      </div>
+    </div>
+    <div class="flex items-center gap-2">
+      <div class="relative">
+        <button id="notif-btn" class="w-9 h-9 flex items-center justify-center rounded-lg text-[#4B5694] hover:bg-[#4B5694]/10 transition-colors relative"><i class="fas fa-bell text-base"></i><span class="notif-badge"></span></button>
+        <div id="notif-menu" class="hidden absolute right-0 top-full mt-1 w-80 bg-[#FFFCFC] border border-[#4B5694]/20 rounded-xl shadow-lg z-50 overflow-hidden">
+          <div class="flex items-center justify-between px-4 py-3 border-b border-[#4B5694]/15"><span class="text-xs font-semibold text-[#111844]">Notifications</span><span class="text-[10px] px-2 py-0.5 rounded-full bg-[#111844]/10 text-[#111844] font-medium">3 new</span></div>
+          <div class="max-h-80 overflow-y-auto divide-y divide-[#4B5694]/10">
+            <div class="notif-item"><div class="notif-icon bg-amber-100 text-amber-600"><i class="fas fa-exclamation-triangle"></i></div><div><div class="notif-title">Budget exceeded: Transportation</div><div class="notif-desc">₹12,000 over budget</div><div class="notif-time">1 hour ago</div></div></div>
+            <div class="notif-item"><div class="notif-icon bg-emerald-100 text-emerald-700"><i class="fas fa-check-circle"></i></div><div><div class="notif-title">Expense #EXP-1042 approved</div><div class="notif-desc">₹5,600 approved for internet</div><div class="notif-time">3 hours ago</div></div></div>
+            <div class="notif-item"><div class="notif-icon bg-red-100 text-red-600"><i class="fas fa-clock"></i></div><div><div class="notif-title">Expense #EXP-1038 pending approval</div><div class="notif-desc">₹8,200 - Warehouse rent</div><div class="notif-time">5 hours ago</div></div></div>
+          </div>
+          <div class="px-4 py-2.5 border-t border-[#4B5694]/15 text-center"><a href="#" class="text-xs font-medium text-[#111844] hover:underline">View all</a></div>
+        </div>
+      </div>
+      <div class="relative">
+        <button id="user-menu-btn" class="flex items-center gap-2 px-3 py-1.5 rounded-lg hover:bg-[#4B5694]/10 transition-colors">
+          <div class="w-7 h-7 rounded-full bg-[#111844] flex items-center justify-center text-[#FAFAFA] text-xs font-bold">AD</div>
+          <span class="text-xs font-medium text-[#111844] hidden sm:block">Admin</span>
+          <i class="fas fa-chevron-down text-[10px] text-[#4B5694]"></i>
+        </button>
+        <div id="user-menu" class="hidden absolute right-0 top-full mt-1 w-44 bg-[#FFFCFC] border border-[#4B5694]/20 rounded-xl shadow-lg py-1 z-50">
+          <a href="/profile.html" class="flex items-center gap-2 px-4 py-2 text-xs text-[#111844] hover:bg-[#7288AE]/10 transition-colors"><i class="fas fa-user-circle w-4"></i> My Profile</a>
+          <div class="border-t border-[#4B5694]/10 my-1"></div>
+          <a href="/login.html" id="logout-btn" class="flex items-center gap-2 px-4 py-2 text-xs text-red-600 hover:bg-red-50 transition-colors"><i class="fas fa-sign-out-alt w-4"></i> Logout</a>
+        </div>
+      </div>
+    </div>
+  </header>
+
+  <main class="flex-1 p-5 space-y-5">
+
+    <!-- ========== TABS ========== -->
+    <div class="ap-tabs" id="expenseTabs">
+      <div class="ap-tab active" data-tab="dashboard">Expense Dashboard</div>
+      <div class="ap-tab" data-tab="categories">Expense Categories</div>
+      <div class="ap-tab" data-tab="entry">Expense Entry</div>
+      <div class="ap-tab" data-tab="approval">Expense Approval</div>
+      <div class="ap-tab" data-tab="payments">Expense Payments</div>
+      <div class="ap-tab" data-tab="ledger">Expense Ledger</div>
+      <div class="ap-tab" data-tab="budget">Budget Tracking</div>
+      <div class="ap-tab" data-tab="reports">Expense Reports</div>
+    </div>
+
+    <!-- ========== PANEL: DASHBOARD ========== -->
+    <section class="ap-panel active" id="panel-dashboard">
+      <div class="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-5 gap-3 mb-5">
+        <div class="widget-card"><div><div class="widget-value">₹4.8L</div><div class="widget-label">Total Expenses (MTD)</div></div><div class="widget-icon bg-[#111844]/10 text-[#111844]"><i class="fas fa-wallet"></i></div></div>
+        <div class="widget-card"><div><div class="widget-value">₹18.5K</div><div class="widget-label">Today's Expenses</div></div><div class="widget-icon bg-amber-100 text-amber-700"><i class="fas fa-calendar-day"></i></div></div>
+        <div class="widget-card"><div><div class="widget-value">7</div><div class="widget-label">Pending Approvals</div></div><div class="widget-icon bg-purple-100 text-purple-700"><i class="fas fa-clock"></i></div></div>
+        <div class="widget-card"><div><div class="widget-value">₹3.2L</div><div class="widget-label">Approved Expenses</div></div><div class="widget-icon bg-emerald-100 text-emerald-700"><i class="fas fa-check-circle"></i></div></div>
+        <div class="widget-card"><div><div class="widget-value">68%</div><div class="widget-label">Budget Utilization</div></div><div class="widget-icon bg-[#4B5694]/10 text-[#4B5694]"><i class="fas fa-chart-simple"></i></div></div>
+      </div>
+      <div class="grid grid-cols-1 lg:grid-cols-2 gap-4">
+        <div class="chart-card"><div class="section-title mb-3"><i class="fas fa-chart-bar mr-1.5 text-[#4B5694]"></i>Monthly Expense Trend</div><canvas id="chartExpenseTrend" height="180"></canvas></div>
+        <div class="chart-card"><div class="section-title mb-3"><i class="fas fa-pie-chart mr-1.5 text-[#4B5694]"></i>Category-wise Expenses</div><canvas id="chartCategoryExpense" height="180"></canvas></div>
+      </div>
+    </section>
+
+    <!-- ========== PANEL: CATEGORIES ========== -->
+    <section class="ap-panel" id="panel-categories">
+      <div class="chart-card">
+        <div class="flex items-center justify-between mb-4">
+          <div><div class="section-title">Expense Categories</div><div class="section-sub">Manage expense classifications</div></div>
+          <button class="btn-primary" id="btnNewCategory"><i class="fas fa-plus"></i> Add Category</button>
+        </div>
+        <div class="ap-table-wrap">
+          <table class="ap-table"><thead><tr><th>Category Code</th><th>Category Name</th><th>Status</th><th>Actions</th></tr></thead>
+            <tbody id="categoryTbody"></tbody>
+          </table>
+        </div>
+      </div>
+    </section>
+
+    <!-- ========== PANEL: ENTRY ========== -->
+    <section class="ap-panel" id="panel-entry">
+      <div class="chart-card">
+        <div class="flex items-center justify-between mb-4">
+          <div><div class="section-title">Expense Entry</div><div class="section-sub">Record a new operational expense</div></div>
+          <button class="btn-primary" id="btnNewExpense"><i class="fas fa-plus"></i> New Expense</button>
+        </div>
+        <div class="ap-table-wrap">
+          <table class="ap-table"><thead><tr><th>Expense No.</th><th>Date</th><th>Category</th><th>Description</th><th>Amount</th><th>Status</th><th>Actions</th></tr></thead>
+            <tbody id="entryTbody"></tbody>
+          </table>
+        </div>
+      </div>
+    </section>
+
+    <!-- ========== PANEL: APPROVAL ========== -->
+    <section class="ap-panel" id="panel-approval">
+      <div class="chart-card">
+        <div class="section-title mb-3">Approval Queue</div>
+        <div class="ap-table-wrap">
+          <table class="ap-table"><thead><tr><th>Expense No.</th><th>Category</th><th>Amount</th><th>Requested By</th><th>Status</th><th>Actions</th></tr></thead>
+            <tbody id="approvalTbody"></tbody>
+          </table>
+        </div>
+      </div>
+    </section>
+
+    <!-- ========== PANEL: PAYMENTS ========== -->
+    <section class="ap-panel" id="panel-payments">
+      <div class="chart-card">
+        <div class="flex items-center justify-between mb-4">
+          <div><div class="section-title">Expense Payments</div><div class="section-sub">Record payments against approved expenses</div></div>
+          <button class="btn-primary" id="btnNewPayment"><i class="fas fa-plus"></i> New Payment</button>
+        </div>
+        <div class="ap-table-wrap">
+          <table class="ap-table"><thead><tr><th>Expense No.</th><th>Payment Date</th><th>Amount</th><th>Mode</th><th>Reference</th><th>Status</th></tr></thead>
+            <tbody id="paymentTbody"></tbody>
+          </table>
+        </div>
+      </div>
+    </section>
+
+    <!-- ========== PANEL: LEDGER ========== -->
+    <section class="ap-panel" id="panel-ledger">
+      <div class="chart-card">
+        <div class="filter-bar mb-4">
+          <select class="filter-input" id="ledgerCategoryFilter"><option>All Categories</option><option>Warehouse Rent</option><option>Electricity</option><option>Internet</option><option>Transportation</option><option>Fuel</option><option>Office Supplies</option></select>
+          <input type="date" class="filter-input" id="ledgerDateFrom">
+          <input type="date" class="filter-input" id="ledgerDateTo">
+          <button class="btn-secondary ml-auto"><i class="fas fa-download"></i> Export</button>
+        </div>
+        <div class="ap-table-wrap">
+          <table class="ap-table"><thead><tr><th>Date</th><th>Expense No.</th><th>Category</th><th>Amount</th><th>Status</th></tr></thead>
+            <tbody id="ledgerTbody"></tbody>
+          </table>
+        </div>
+      </div>
+    </section>
+
+    <!-- ========== PANEL: BUDGET ========== -->
+    <section class="ap-panel" id="panel-budget">
+      <div class="chart-card">
+        <div class="section-title mb-3">Budget Tracking</div>
+        <div class="grid grid-cols-1 md:grid-cols-3 gap-3 mb-4">
+          <div class="widget-card"><div><div class="widget-value">₹6.0L</div><div class="widget-label">Total Budget</div></div><div class="widget-icon bg-[#111844]/10 text-[#111844]"><i class="fas fa-coins"></i></div></div>
+          <div class="widget-card"><div><div class="widget-value">₹4.8L</div><div class="widget-label">Actual Spend</div></div><div class="widget-icon bg-[#4B5694]/10 text-[#4B5694]"><i class="fas fa-arrow-up"></i></div></div>
+          <div class="widget-card"><div><div class="widget-value">₹1.2L</div><div class="widget-label">Remaining</div></div><div class="widget-icon bg-emerald-100 text-emerald-700"><i class="fas fa-arrow-down"></i></div></div>
+        </div>
+        <div class="ap-table-wrap">
+          <table class="ap-table"><thead><tr><th>Category</th><th>Budget</th><th>Actual</th><th>Remaining</th><th>Utilization</th></tr></thead>
+            <tbody id="budgetTbody"></tbody>
+          </table>
+        </div>
+      </div>
+    </section>
+
+    <!-- ========== PANEL: REPORTS ========== -->
+    <section class="ap-panel" id="panel-reports">
+      <div class="chart-card">
+        <div class="section-title mb-3">Expense Reports</div>
+        <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+          <div class="bg-[#FAFAFA] rounded-xl p-4 border border-[#4B5694]/15">
+            <div class="text-xs font-semibold text-[#4B5694] uppercase">Summary</div>
+            <div class="mt-2 space-y-1 text-sm"><div class="flex justify-between"><span>Total Expenses</span><span class="font-bold">₹4.8L</span></div><div class="flex justify-between"><span>Approved</span><span class="font-bold">₹3.2L</span></div><div class="flex justify-between"><span>Pending</span><span class="font-bold">₹1.1L</span></div><div class="flex justify-between"><span>Paid</span><span class="font-bold">₹2.7L</span></div></div>
+            <button class="btn-primary w-full mt-3 text-xs"><i class="fas fa-file-pdf"></i> Generate Report</button>
+          </div>
+          <div class="bg-[#FAFAFA] rounded-xl p-4 border border-[#4B5694]/15">
+            <div class="text-xs font-semibold text-[#4B5694] uppercase">Warehouse-wise</div>
+            <div class="mt-2 space-y-1 text-sm"><div class="flex justify-between"><span>Warehouse A</span><span class="font-bold">₹1.8L</span></div><div class="flex justify-between"><span>Warehouse B</span><span class="font-bold">₹1.4L</span></div><div class="flex justify-between"><span>Warehouse C</span><span class="font-bold">₹0.9L</span></div><div class="flex justify-between"><span>Warehouse D</span><span class="font-bold">₹0.7L</span></div></div>
+            <button class="btn-primary w-full mt-3 text-xs"><i class="fas fa-download"></i> Export Report</button>
+          </div>
+        </div>
+      </div>
+    </section>
+
+  </main>
+</div>
+
+<!-- ========== TOAST ========== -->
+<div id="toast-container" class="fixed bottom-5 right-5 z-[400] space-y-2"></div>
+
+<!-- ========== MODALS (centered overlays) ========== -->
+
+<!-- New Category Modal -->
+<div class="modal-overlay" id="modalCategory">
+  <div class="modal-box">
+    <div class="modal-header"><div><div class="modal-title">Add Expense Category</div><div class="modal-sub">Create a new expense category</div></div><button class="modal-close" data-close="modalCategory"><i class="fas fa-times"></i></button></div>
+    <div class="modal-body">
+      <div class="form-group"><label class="form-label">Category Name</label><input type="text" class="form-control" id="catName" placeholder="e.g. Warehouse Rent"></div>
+      <div class="form-group"><label class="form-label">Category Code</label><input type="text" class="form-control" id="catCode" placeholder="e.g. WR-001"></div>
+      <div class="form-group"><label class="form-label">Status</label><select class="form-control" id="catStatus"><option>Active</option><option>Inactive</option></select></div>
+    </div>
+    <div class="modal-footer"><button class="btn-secondary" data-close="modalCategory">Cancel</button><button class="btn-primary" id="btnSaveCategory"><i class="fas fa-save"></i> Save Category</button></div>
+  </div>
+</div>
+
+<!-- New Expense Modal -->
+<div class="modal-overlay" id="modalExpense">
+  <div class="modal-box modal-wide">
+    <div class="modal-header"><div><div class="modal-title">New Expense</div><div class="modal-sub">Record an operational expense</div></div><button class="modal-close" data-close="modalExpense"><i class="fas fa-times"></i></button></div>
+    <div class="modal-body">
+      <div class="form-row"><div class="form-group"><label class="form-label">Expense Number</label><input type="text" class="form-control" id="expNumber" readonly value="EXP-2026-1045"></div><div class="form-group"><label class="form-label">Expense Date</label><input type="date" class="form-control" id="expDate"></div></div>
+      <div class="form-row"><div class="form-group"><label class="form-label">Category</label><select class="form-control" id="expCategory"><option>Warehouse Rent</option><option>Electricity</option><option>Internet</option><option>Transportation</option><option>Fuel</option><option>Office Supplies</option></select></div><div class="form-group"><label class="form-label">Amount (₹)</label><input type="number" class="form-control" id="expAmount" placeholder="0.00"></div></div>
+      <div class="form-group"><label class="form-label">Description</label><input type="text" class="form-control" id="expDesc" placeholder="Brief description of expense"></div>
+      <div class="form-row"><div class="form-group"><label class="form-label">Warehouse</label><select class="form-control" id="expWarehouse"><option>Warehouse A</option><option>Warehouse B</option><option>Warehouse C</option><option>Warehouse D</option></select></div><div class="form-group"><label class="form-label">Department</label><select class="form-control" id="expDept"><option>Operations</option><option>Logistics</option><option>Admin</option><option>Warehouse</option></select></div></div>
+      <div class="form-group"><label class="form-label">Vendor (Optional)</label><input type="text" class="form-control" id="expVendor" placeholder="Vendor name"></div>
+    </div>
+    <div class="modal-footer"><button class="btn-secondary" data-close="modalExpense">Cancel</button><button class="btn-secondary" id="btnDraftExpense"><i class="fas fa-save"></i> Save Draft</button><button class="btn-primary" id="btnSubmitExpense"><i class="fas fa-paper-plane"></i> Submit for Approval</button></div>
+  </div>
+</div>
+
+<!-- Approve/Reject Modal -->
+<div class="modal-overlay" id="modalApprove">
+  <div class="modal-box">
+    <div class="modal-header"><div><div class="modal-title">Approve Expense</div><div class="modal-sub" id="approveSub">EXP-2026-1038</div></div><button class="modal-close" data-close="modalApprove"><i class="fas fa-times"></i></button></div>
+    <div class="modal-body">
+      <div class="form-group"><label class="form-label">Remarks</label><textarea class="form-control" id="approveRemarks" rows="2" placeholder="Approval remarks..."></textarea></div>
+      <div class="flex gap-2"><button class="btn-primary flex-1" id="btnApproveYes"><i class="fas fa-check"></i> Approve</button><button class="btn-secondary flex-1" id="btnApproveReject"><i class="fas fa-times"></i> Reject</button></div>
+    </div>
+    <div class="modal-footer"><button class="btn-secondary" data-close="modalApprove">Close</button></div>
+  </div>
+</div>
+
+<!-- Payment Modal -->
+<div class="modal-overlay" id="modalPayment">
+  <div class="modal-box">
+    <div class="modal-header"><div><div class="modal-title">Record Payment</div><div class="modal-sub">Pay approved expense</div></div><button class="modal-close" data-close="modalPayment"><i class="fas fa-times"></i></button></div>
+    <div class="modal-body">
+      <div class="form-group"><label class="form-label">Expense Number</label><select class="form-control" id="payExpenseSelect"><option>EXP-2026-1042</option><option>EXP-2026-1040</option><option>EXP-2026-1035</option></select></div>
+      <div class="form-row"><div class="form-group"><label class="form-label">Payment Date</label><input type="date" class="form-control" id="payDate"></div><div class="form-group"><label class="form-label">Amount</label><input type="number" class="form-control" id="payAmount" placeholder="0.00"></div></div>
+      <div class="form-row"><div class="form-group"><label class="form-label">Payment Mode</label><select class="form-control" id="payMode"><option>Cash</option><option>Bank Transfer</option><option>UPI</option><option>Cheque</option><option>NEFT</option><option>RTGS</option></select></div><div class="form-group"><label class="form-label">Reference</label><input type="text" class="form-control" id="payRef" placeholder="Transaction ref"></div></div>
+    </div>
+    <div class="modal-footer"><button class="btn-secondary" data-close="modalPayment">Cancel</button><button class="btn-primary" id="btnSavePayment"><i class="fas fa-save"></i> Save Payment</button></div>
+  </div>
+</div>
+
+<!-- ========== SCRIPTS ========== -->
+<script src="/pages/finance&Billing/expenses/expense.js"></script>
+</body>
+</html>

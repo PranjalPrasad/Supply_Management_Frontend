@@ -3,7 +3,7 @@
    ============================================================ */
 
 /* ── Sidebar ──────────────────────────────────────────────── */
-(function initSidebar() {
+function initSidebar(){
   const sidebar     = document.getElementById('sidebar');
   const mainWrapper = document.getElementById('main-wrapper');
   const toggle      = document.getElementById('sidebar-toggle');
@@ -27,16 +27,20 @@
   });
 
   // Group dropdowns
-  document.querySelectorAll('.nav-group-header').forEach(header => {
-    header.addEventListener('click', e => {
-      e.stopPropagation();
-      const items = header.nextElementSibling;
-      const open  = items?.classList.toggle('open');
-      header.classList.toggle('open', open);
-    });
+ document.querySelectorAll('.nav-group-header').forEach(header => {
+  header.addEventListener('click', e => {
+    e.stopPropagation();
+    const items = header.nextElementSibling;
+    if (!items) return;
+    items.classList.toggle('show');
+    const chevron = header.querySelector('.fa-chevron-down');
+    if (chevron) {
+      chevron.style.transform = items.classList.contains('show') ? 'rotate(180deg)' : 'rotate(0deg)';
+    }
   });
-})();
+});}
 
+initSidebar();
 /* ── Topbar Dropdowns ─────────────────────────────────────── */
 (function initTopbar() {
   const notifBtn  = document.getElementById('notif-btn');
