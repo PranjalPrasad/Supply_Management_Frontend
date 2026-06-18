@@ -1,7 +1,5 @@
 /* ============================================================
    warehouse.js — Warehouse Master Logic
-   Handles: data, list render, filters, add/edit modal (multi-step),
-            view modal, status toggle, toast, sidebar
 ============================================================ */
 
 'use strict';
@@ -76,6 +74,11 @@ let viewingId = null;
 let currentStep = 1;
 const TOTAL_STEPS = 5;
 
+/* ─── Pagination Variables ─────────────────────────────── */
+let currentPage = 1;
+const ROWS_PER_PAGE = 10;
+let totalPages = 1;
+
 /* ─── Utilities ─────────────────────────────────────────── */
 function genCode() {
     return 'WH-' + String(nextId).padStart(3, '0');
@@ -137,12 +140,19 @@ function getFiltered() {
     });
 }
 
+function getPaginatedData(data) {
+    const start = (currentPage - 1) * ROWS_PER_PAGE;
+    const end = start + ROWS_PER_PAGE;
+    return data.slice(start, end);
+}
+
 function renderTable() {
-    const data = getFiltered();
+    const fullData = getFiltered();
+    const displayData = getPaginatedData(fullData);
     const tbody = document.getElementById('warehouse-tbody');
     const empty = document.getElementById('empty-state');
 
-    if (!data.length) {
+    if (!displayData.length) {
         tbody.innerHTML = '';
         empty.classList.add('show');
         document.getElementById('pagination-info').textContent = 'No results';
@@ -150,10 +160,12 @@ function renderTable() {
     }
 
     empty.classList.remove('show');
-    document.getElementById('pagination-info').textContent =
-        `Showing 1–${data.length} of ${data.length} warehouse${data.length !== 1 ? 's' : ''}`;
+    const start = (currentPage - 1) * ROWS_PER_PAGE + 1;
+    const end = Math.min(currentPage * ROWS_PER_PAGE, fullData.length);
+    document.getElementById('pagination-info').textContent = 
+        `Showing ${start}–${end} of ${fullData.length} warehouse${fullData.length !== 1 ? 's' : ''}`;
 
-    tbody.innerHTML = data.map(w => {
+    tbody.innerHTML = displayData.map(w => {
         const toggleBtn = w.status === 'Active'
             ? `<button class="action-btn action-btn-deact" title="Deactivate" onclick="toggleStatus(${w.id})"><i class="fas fa-toggle-on"></i></button>`
             : w.status === 'Inactive'
@@ -185,6 +197,91 @@ function renderTable() {
             </td>
         </tr>`;
     }).join('');
+
+    renderPagination(fullData);
+}
+
+function renderPagination(data) {
+    const total = data.length;
+    totalPages = Math.ceil(total / ROWS_PER_PAGE);
+    if (totalPages === 0) totalPages = 1;
+    
+    const container = document.getElementById('pagination-container');
+    if (!container) return;
+    
+    // Remove all except prev/next
+    const children = container.children;
+    const toRemove = [];
+    for (let child of children) {
+        if (child.id !== 'btn-prev' && child.id !== 'btn-next') {
+            toRemove.push(child);
+        }
+    }
+    toRemove.forEach(child => child.remove());
+    
+    const prevBtn = document.getElementById('btn-prev');
+    const nextBtn = document.getElementById('btn-next');
+    
+    if (total === 0 || totalPages <= 1) {
+        if (prevBtn) prevBtn.disabled = true;
+        if (nextBtn) nextBtn.disabled = true;
+        return;
+    }
+    
+    if (prevBtn) prevBtn.disabled = false;
+    if (nextBtn) nextBtn.disabled = false;
+    
+    function insertBeforeNext(el) {
+        if (nextBtn) {
+            container.insertBefore(el, nextBtn);
+        } else {
+            container.appendChild(el);
+        }
+    }
+    
+    let pages = [];
+    if (totalPages <= 5) {
+        for (let i = 1; i <= totalPages; i++) pages.push(i);
+    } else {
+        if (currentPage <= 3) {
+            pages = [1, 2, 3, 4, 5, '...', totalPages];
+        } else if (currentPage >= totalPages - 2) {
+            pages = [1, '...', totalPages - 4, totalPages - 3, totalPages - 2, totalPages - 1, totalPages];
+        } else {
+            pages = [1, '...', currentPage - 1, currentPage, currentPage + 1, '...', totalPages];
+        }
+    }
+    
+    pages.forEach(page => {
+        if (page === '...') {
+            const span = document.createElement('span');
+            span.className = 'w-7 h-7 flex items-center justify-center rounded-lg text-[#7288AE] text-xs';
+            span.textContent = '…';
+            span.style.pointerEvents = 'none';
+            insertBeforeNext(span);
+        } else {
+            const btn = document.createElement('button');
+            btn.className = `w-7 h-7 flex items-center justify-center rounded-lg text-xs transition-colors ${page === currentPage ? 'bg-[#111844] text-[#FAFAFA]' : 'text-[#7288AE] hover:bg-[#4B5694]/10'}`;
+            btn.textContent = page;
+            btn.addEventListener('click', function() {
+                goToPage(page);
+            });
+            insertBeforeNext(btn);
+        }
+    });
+    
+    if (prevBtn) prevBtn.disabled = currentPage === 1;
+    if (nextBtn) nextBtn.disabled = currentPage === totalPages;
+}
+
+function goToPage(page) {
+    if (page < 1 || page > totalPages) return;
+    currentPage = page;
+    renderTable();
+}
+
+function changePage(delta) {
+    goToPage(currentPage + delta);
 }
 
 /* ─── Toggle Status ──────────────────────────────────────── */
@@ -335,7 +432,6 @@ function showStep(n) {
         document.getElementById(`step-${i}`).classList.toggle('hidden', i !== n);
     }
     renderStepPills(n);
-    // Buttons
     const prevBtn = document.getElementById('btn-prev-step');
     const nextBtn = document.getElementById('btn-next-step');
     const saveBtn = document.getElementById('btn-save');
@@ -433,7 +529,6 @@ function openViewModal(id) {
     document.getElementById('vd-util-pct').textContent = w.utilization + '%';
     document.getElementById('vd-util-bar').style.width = w.utilization + '%';
 
-    // Reset to first tab
     switchViewTab('info');
     document.getElementById('view-modal-overlay').classList.remove('hidden');
 }
@@ -449,14 +544,6 @@ document.getElementById('view-modal-overlay').addEventListener('click', e => {
     if (e.target === document.getElementById('view-modal-overlay')) closeViewModal();
 });
 
-document.getElementById('view-edit-btn').addEventListener('click', () => {
-    if (viewingId !== null) {
-        closeViewModal();
-        openEditModal(viewingId);
-    }
-});
-
-// View tab switching
 function switchViewTab(tab) {
     document.querySelectorAll('.view-tab').forEach(btn => {
         btn.classList.toggle('active', btn.dataset.vtab === tab);
@@ -470,34 +557,79 @@ document.querySelectorAll('.view-tab').forEach(btn => {
 });
 
 /* ─── Filters ─────────────────────────────────────────── */
-document.getElementById('search-input').addEventListener('input', renderTable);
-document.getElementById('filter-status').addEventListener('change', renderTable);
-document.getElementById('filter-type').addEventListener('change', renderTable);
+document.getElementById('search-input').addEventListener('input', function() {
+    currentPage = 1;
+    renderTable();
+});
 
-/* ─── Export (CSV stub) ───────────────────────────────── */
-document.getElementById('btn-export').addEventListener('click', () => {
-    const data = getFiltered();
-    const headers = ['Code','Name','Type','City','State','Contact','Mobile','Capacity','Utilization%','Status'];
-    const rows = data.map(w =>
-        [w.code, w.name, w.type, w.city, w.state, w.contact, w.mobile, `${w.capacity} ${w.capunit}`, w.utilization, w.status]
-        .map(v => `"${String(v).replace(/"/g, '""')}"`)
-        .join(',')
-    );
-    const csv = [headers.join(','), ...rows].join('\n');
-    const blob = new Blob([csv], { type: 'text/csv' });
-    const url  = URL.createObjectURL(blob);
-    const a    = document.createElement('a');
-    a.href = url; a.download = 'warehouses.csv'; a.click();
-    URL.revokeObjectURL(url);
-    showToast('Exported as warehouses.csv', 'info');
+document.getElementById('filter-status').addEventListener('change', function() {
+    currentPage = 1;
+    renderTable();
+});
+
+document.getElementById('filter-type').addEventListener('change', function() {
+    currentPage = 1;
+    renderTable();
+});
+
+/* ─── Export ──────────────────────────────────────────── */
+document.getElementById('btn-export').addEventListener('click', function() {
+    try {
+        const data = getFiltered();
+        if (!data.length) {
+            showToast('No data to export', 'error');
+            return;
+        }
+        const headers = ['Code', 'Name', 'Type', 'City', 'State', 'Contact', 'Mobile', 'Email', 'Capacity', 'Unit', 'Utilization %', 'Status', 'Manager'];
+        const rows = data.map(w => [
+            w.code,
+            `"${w.name}"`,
+            `"${w.type}"`,
+            `"${w.city}"`,
+            `"${w.state}"`,
+            `"${w.contact}"`,
+            w.mobile,
+            `"${w.email || ''}"`,
+            w.capacity,
+            w.capunit,
+            w.utilization,
+            `"${w.status}"`,
+            `"${w.manager || ''}"`
+        ]);
+        const csvContent = [headers.join(','), ...rows.map(row => row.join(','))].join('\n');
+        const blob = new Blob([csvContent], { type: 'text/csv;charset=utf-8;' });
+        const url = URL.createObjectURL(blob);
+        const link = document.createElement('a');
+        link.href = url;
+        link.download = `warehouses_${new Date().toISOString().slice(0,10)}.csv`;
+        document.body.appendChild(link);
+        link.click();
+        document.body.removeChild(link);
+        URL.revokeObjectURL(url);
+        showToast(`Exported ${data.length} warehouse${data.length !== 1 ? 's' : ''} successfully`, 'success');
+    } catch (error) {
+        console.error('Export failed:', error);
+        showToast('Failed to export data', 'error');
+    }
+});
+
+/* ─── Pagination Event Listeners ─────────────────────────── */
+document.getElementById('btn-prev')?.addEventListener('click', function(e) {
+    e.stopPropagation();
+    changePage(-1);
+});
+
+document.getElementById('btn-next')?.addEventListener('click', function(e) {
+    e.stopPropagation();
+    changePage(1);
 });
 
 /* ─── Sidebar ─────────────────────────────────────────── */
 let isCollapsed = false;
-const sidebar     = document.getElementById('sidebar');
+const sidebar = document.getElementById('sidebar');
 const mainWrapper = document.getElementById('main-wrapper');
 const sidebarToggle = document.getElementById('sidebar-toggle');
-const overlay     = document.getElementById('sidebar-overlay');
+const overlay = document.getElementById('sidebar-overlay');
 
 sidebarToggle?.addEventListener('click', () => {
     if (window.innerWidth < 1024) {
@@ -520,7 +652,6 @@ overlay?.addEventListener('click', () => {
     overlay.classList.add('hidden');
 });
 
-// Nav group dropdowns
 document.querySelectorAll('.nav-group-header').forEach(header => {
     header.addEventListener('click', function () {
         const items = this.nextElementSibling;
@@ -532,21 +663,19 @@ document.querySelectorAll('.nav-group-header').forEach(header => {
     });
 });
 
-// Header dropdowns
-const userBtn   = document.getElementById('user-menu-btn');
-const userMenu  = document.getElementById('user-menu');
-const notifBtn  = document.getElementById('notif-btn');
+const userBtn = document.getElementById('user-menu-btn');
+const userMenu = document.getElementById('user-menu');
+const notifBtn = document.getElementById('notif-btn');
 const notifMenu = document.getElementById('notif-menu');
 
 userBtn?.addEventListener('click', e => { e.stopPropagation(); userMenu?.classList.toggle('hidden'); notifMenu?.classList.add('hidden'); });
 notifBtn?.addEventListener('click', e => { e.stopPropagation(); notifMenu?.classList.toggle('hidden'); userMenu?.classList.add('hidden'); });
 document.addEventListener('click', () => { userMenu?.classList.add('hidden'); notifMenu?.classList.add('hidden'); });
 
-/* ─── Step pill click navigation ────────────────────────── */
 document.querySelectorAll('.step-pill').forEach(pill => {
     pill.addEventListener('click', () => {
         const n = parseInt(pill.dataset.step);
-        if (n < currentStep) showStep(n); // allow going back freely
+        if (n < currentStep) showStep(n); 
     });
 });
 

@@ -136,8 +136,10 @@ function renderTable(data) {
           <button class="action-icon-btn text-[#4B5694] hover:text-[#111844]" title="Edit" onclick="openEditModal(${c.id}); event.stopPropagation();">
             <i class="fas fa-pen"></i>
           </button>
-          <button class="action-icon-btn text-red-400 hover:text-red-600" title="Block / Deactivate" onclick="toggleStatus(${c.id}); event.stopPropagation();">
-            <i class="fas fa-ban"></i>
+          <button class="action-icon-btn ${c.status === 'Active' ? 'text-red-400 hover:text-red-600' : 'text-emerald-400 hover:text-emerald-600'}" 
+                  title="${c.status === 'Active' ? 'Block' : 'Activate'}" 
+                  onclick="toggleStatus(${c.id}); event.stopPropagation();">
+            <i class="fas fa-${c.status === 'Active' ? 'ban' : 'check-circle'}"></i>
           </button>
         </div>
       </td>
@@ -150,16 +152,148 @@ function renderTable(data) {
   });
 }
 
-// Inline icon button style (not in CSS file to keep it scoped)
+// Inline icon button style
 const styleTag = document.createElement('style');
 styleTag.textContent = `.action-icon-btn { width:26px;height:26px;display:inline-flex;align-items:center;justify-content:center;border-radius:6px;font-size:11px;transition:background .12s,color .12s;border:none;background:none;cursor:pointer; } .action-icon-btn:hover{background:rgba(75,86,148,0.1);}`;
 document.head.appendChild(styleTag);
 
 /* =====================================================
-   FILTER + SEARCH
+   PAGINATION - FINAL WORKING
 ===================================================== */
+let currentPage = 1;
+const ROWS_PER_PAGE = 10;
+let totalPages = 1;
 let filteredData = [...CUSTOMERS];
 
+function getPaginatedData(data) {
+  const start = (currentPage - 1) * ROWS_PER_PAGE;
+  const end = start + ROWS_PER_PAGE;
+  return data.slice(start, end);
+}
+
+function renderPagination(data) {
+  const total = data.length;
+  totalPages = Math.ceil(total / ROWS_PER_PAGE);
+  if (totalPages === 0) totalPages = 1;
+  
+  // Update page info
+  const start = (currentPage - 1) * ROWS_PER_PAGE + 1;
+  const end = Math.min(currentPage * ROWS_PER_PAGE, total);
+  document.getElementById('page-info').textContent = total > 0 
+    ? `Page ${currentPage} of ${totalPages} (${start}-${end} of ${total})`
+    : 'No records found';
+  
+  const container = document.getElementById('pagination-container');
+  if (!container) return;
+  
+  // Remove ALL children EXCEPT prev and next
+  const children = container.children;
+  const toRemove = [];
+  for (let child of children) {
+    if (child.id !== 'btn-prev' && child.id !== 'btn-next') {
+      toRemove.push(child);
+    }
+  }
+  toRemove.forEach(child => child.remove());
+  
+  const prevBtn = document.getElementById('btn-prev');
+  const nextBtn = document.getElementById('btn-next');
+  
+  if (total === 0 || totalPages === 1) {
+    if (prevBtn) prevBtn.disabled = true;
+    if (nextBtn) nextBtn.disabled = true;
+    return;
+  }
+  
+  if (prevBtn) prevBtn.disabled = false;
+  if (nextBtn) nextBtn.disabled = false;
+  
+  // Helper to insert before next button
+  function insertBeforeNext(element) {
+    if (nextBtn) {
+      container.insertBefore(element, nextBtn);
+    } else {
+      container.appendChild(element);
+    }
+  }
+  
+  // Show pages with ellipsis
+  const maxVisible = 5;
+  let pages = [];
+  
+  if (totalPages <= maxVisible) {
+    for (let i = 1; i <= totalPages; i++) pages.push(i);
+  } else {
+    if (currentPage <= 3) {
+      pages = [1, 2, 3, 4, 5, '...', totalPages];
+    } else if (currentPage >= totalPages - 2) {
+      pages = [1, '...', totalPages - 4, totalPages - 3, totalPages - 2, totalPages - 1, totalPages];
+    } else {
+      pages = [1, '...', currentPage - 1, currentPage, currentPage + 1, '...', totalPages];
+    }
+  }
+  
+  pages.forEach(page => {
+    if (page === '...') {
+      const span = document.createElement('span');
+      span.className = 'pagination-btn cursor-default text-[#7288AE]';
+      span.textContent = '…';
+      span.style.pointerEvents = 'none';
+      insertBeforeNext(span);
+    } else {
+      const btn = document.createElement('button');
+      btn.className = 'pagination-btn';
+      btn.textContent = page;
+      if (page === currentPage) btn.classList.add('active-page');
+      btn.addEventListener('click', function() {
+        goToPage(page);
+      });
+      insertBeforeNext(btn);
+    }
+  });
+  
+  if (prevBtn) prevBtn.disabled = currentPage === 1;
+  if (nextBtn) nextBtn.disabled = currentPage === totalPages;
+}
+
+function goToPage(page) {
+  if (page < 1 || page > totalPages) return;
+  currentPage = page;
+  const paginatedData = getPaginatedData(filteredData);
+  renderTable(paginatedData);
+  renderPagination(filteredData);
+}
+
+function changePage(delta) {
+  goToPage(currentPage + delta);
+}
+
+// Event listeners
+document.getElementById('btn-prev')?.addEventListener('click', function(e) {
+  e.stopPropagation();
+  changePage(-1);
+});
+
+document.getElementById('btn-next')?.addEventListener('click', function(e) {
+  e.stopPropagation();
+  changePage(1);
+});
+
+// Rows per page
+document.getElementById('rows-per-page')?.addEventListener('change', function() {
+  const newRows = parseInt(this.value);
+  window.ROWS_PER_PAGE = newRows;
+  currentPage = 1;
+  const paginatedData = getPaginatedData(filteredData);
+  renderTable(paginatedData);
+  renderPagination(filteredData);
+});
+
+window.ROWS_PER_PAGE = 10;
+
+/* =====================================================
+   FILTER + SEARCH
+===================================================== */
 function applyFilters() {
   const search = document.getElementById('search-input').value.toLowerCase();
   const type = document.getElementById('filter-type').value;
@@ -174,7 +308,10 @@ function applyFilters() {
     return matchSearch && matchType && matchCity && matchStatus;
   });
 
-  renderTable(filteredData);
+  currentPage = 1;
+  const paginatedData = getPaginatedData(filteredData);
+  renderTable(paginatedData);
+  renderPagination(filteredData);
   document.getElementById('record-count').textContent = `Showing ${filteredData.length} of ${CUSTOMERS.length}`;
 }
 
@@ -190,9 +327,36 @@ document.getElementById('btn-clear-filter').addEventListener('click', () => {
   applyFilters();
 });
 
-document.getElementById('btn-export').addEventListener('click', () => {
-  showToast('Customer list exported successfully', 'success');
+/* =====================================================
+   EXPORT
+===================================================== */
+document.getElementById('btn-export').addEventListener('click', function() {
+  exportCustomerData();
 });
+
+function exportCustomerData() {
+  try {
+    const data = filteredData.length > 0 ? filteredData : CUSTOMERS;
+    const headers = ['Customer Code', 'Customer Name', 'Type', 'Contact Person', 'Mobile', 'Email', 'GST Number', 'City', 'Credit Limit', 'Status'];
+    const rows = data.map(c => [
+      c.code, `"${c.name}"`, `"${c.type}"`, `"${c.contact}"`, c.mobile, `"${c.email}"`, c.gst, `"${c.city}"`, c.creditLimit, c.status
+    ]);
+    const csvContent = [headers.join(','), ...rows.map(row => row.join(','))].join('\n');
+    const blob = new Blob([csvContent], { type: 'text/csv;charset=utf-8;' });
+    const link = document.createElement('a');
+    const url = URL.createObjectURL(blob);
+    link.setAttribute('href', url);
+    link.setAttribute('download', `customers_${new Date().toISOString().slice(0,10)}.csv`);
+    document.body.appendChild(link);
+    link.click();
+    document.body.removeChild(link);
+    URL.revokeObjectURL(url);
+    showToast(`Exported ${data.length} customers successfully`, 'success');
+  } catch (error) {
+    console.error('Export failed:', error);
+    showToast('Failed to export data', 'error');
+  }
+}
 
 /* =====================================================
    STATUS TOGGLE
@@ -203,7 +367,7 @@ function toggleStatus(id) {
   if (customer.status === 'Active') {
     customer.status = 'Blocked';
     showToast(`${customer.name} has been blocked`, 'error');
-  } else if (customer.status === 'Blocked') {
+  } else if (customer.status === 'Blocked' || customer.status === 'Inactive') {
     customer.status = 'Active';
     showToast(`${customer.name} is now active`, 'success');
   }
@@ -215,6 +379,7 @@ function toggleStatus(id) {
 ===================================================== */
 let currentStep = 1;
 const TOTAL_STEPS = 5;
+let editingCustomerId = null;
 
 const modal = document.getElementById('customer-modal');
 const btnNext = document.getElementById('btn-step-next');
@@ -224,30 +389,56 @@ const btnCancel = document.getElementById('btn-modal-cancel');
 const modalClose = document.getElementById('modal-close');
 
 function openAddModal() {
+  editingCustomerId = null;
   document.getElementById('modal-title').textContent = 'Add New Customer';
+  resetFormFields();
   modal.classList.remove('hidden');
   goToStep(1);
 }
 
 function openEditModal(id) {
+  editingCustomerId = id;
+  const c = CUSTOMERS.find(cu => cu.id === id);
+  if (!c) return;
+  
   document.getElementById('modal-title').textContent = 'Edit Customer';
-  if (id) {
-    const c = CUSTOMERS.find(cu => cu.id === id);
-    if (c) {
-      document.getElementById('f-name').value = c.name;
-      document.getElementById('f-type').value = c.type;
-      document.getElementById('f-contact').value = c.contact;
-      document.getElementById('f-mobile').value = c.mobile;
-      document.getElementById('f-email').value = c.email;
-    }
+  
+  // Fill form fields with customer data
+  document.getElementById('f-name').value = c.name || '';
+  document.getElementById('f-type').value = c.type || '';
+  document.getElementById('f-contact').value = c.contact || '';
+  document.getElementById('f-mobile').value = c.mobile || '';
+  document.getElementById('f-email').value = c.email || '';
+  
+  // Address fields (step 2)
+  const addrInputs = document.querySelectorAll('#step-2 .form-input');
+  if (addrInputs.length >= 3) {
+    // You can store address in customer data if needed
   }
+  
+  // GST fields (step 3)
+  document.getElementById('f-gst') ? document.getElementById('f-gst').value = c.gst || '' : null;
+  
   modal.classList.remove('hidden');
   goToStep(1);
+}
+
+function resetFormFields() {
+  document.querySelectorAll('#customer-modal .form-input').forEach(input => {
+    if (!input.hasAttribute('disabled') && !input.hasAttribute('readonly')) {
+      input.value = '';
+    }
+  });
+  // Set default country
+  document.querySelectorAll('#step-2 .form-input[value="India"]').forEach(el => {
+    el.value = 'India';
+  });
 }
 
 function closeModal() {
   modal.classList.add('hidden');
   currentStep = 1;
+  editingCustomerId = null;
 }
 
 document.getElementById('btn-add-customer').addEventListener('click', openAddModal);
@@ -257,46 +448,156 @@ modal?.addEventListener('click', e => { if (e.target === modal) closeModal(); })
 
 function goToStep(step) {
   currentStep = step;
-
-  // Hide/show content
+  
   for (let i = 1; i <= TOTAL_STEPS; i++) {
     const el = document.getElementById('step-' + i);
     if (el) el.classList.toggle('hidden', i !== step);
   }
-
-  // Update pills
+  
   document.querySelectorAll('.step-pill').forEach(pill => {
     const s = parseInt(pill.dataset.step);
     pill.classList.remove('active', 'done');
     if (s === step) pill.classList.add('active');
     if (s < step) pill.classList.add('done');
   });
-
-  // Button visibility
+  
   btnBack.classList.toggle('hidden', step === 1);
   btnNext.classList.toggle('hidden', step === TOTAL_STEPS);
   btnSave.classList.toggle('hidden', step !== TOTAL_STEPS);
 }
 
-btnNext?.addEventListener('click', () => {
+/* =====================================================
+   FORM VALIDATION
+===================================================== */
+function validateStep(step) {
+  if (step === 1) {
+    const required = ['f-name', 'f-type', 'f-contact', 'f-mobile'];
+    let valid = true;
+    required.forEach(id => {
+      const el = document.getElementById(id);
+      if (!el || !el.value.trim()) {
+        valid = false;
+        if (el) {
+          el.style.borderColor = '#ef4444';
+          el.style.boxShadow = '0 0 0 2px rgba(239,68,68,0.2)';
+          el.addEventListener('input', function handler() {
+            this.style.borderColor = '';
+            this.style.boxShadow = '';
+            this.removeEventListener('input', handler);
+          }, { once: true });
+        }
+      }
+    });
+    if (!valid) {
+      showToast('Please fill in all required fields', 'error');
+      return false;
+    }
+    return true;
+  }
+  
+  if (step === 2) {
+    const addressInputs = document.querySelectorAll('#step-2 .form-input:not([readonly])');
+    let allFilled = true;
+    addressInputs.forEach(input => {
+      if (input.value === 'India') return;
+      if (!input.value.trim()) {
+        allFilled = false;
+        input.style.borderColor = '#ef4444';
+        input.style.boxShadow = '0 0 0 2px rgba(239,68,68,0.2)';
+      } else {
+        input.style.borderColor = '';
+        input.style.boxShadow = '';
+      }
+    });
+    if (!allFilled) {
+      showToast('Please fill in all address fields', 'error');
+      return false;
+    }
+    return true;
+  }
+  
+  return true;
+}
+
+// Next button handler with validation
+btnNext?.addEventListener('click', function(e) {
+  if (!validateStep(currentStep)) return;
   if (currentStep < TOTAL_STEPS) goToStep(currentStep + 1);
 });
-btnBack?.addEventListener('click', () => {
+
+btnBack?.addEventListener('click', function() {
   if (currentStep > 1) goToStep(currentStep - 1);
 });
-btnSave?.addEventListener('click', () => {
+
+// Save button handler
+btnSave?.addEventListener('click', function() {
+  // Validate all required fields before saving
+  if (!validateStep(1)) return;
+  if (!validateStep(2)) return;
+  
   const name = document.getElementById('f-name').value.trim();
-  if (!name) { showToast('Customer name is required', 'error'); return; }
+  const type = document.getElementById('f-type').value;
+  const contact = document.getElementById('f-contact').value.trim();
+  const mobile = document.getElementById('f-mobile').value.trim();
+  const email = document.getElementById('f-email').value.trim();
+  
+  if (!name || !type || !contact || !mobile) {
+    showToast('Please fill in all required fields', 'error');
+    return;
+  }
+  
+  // Check if editing or creating
+  if (editingCustomerId) {
+    // Edit existing customer
+    const existing = CUSTOMERS.find(c => c.id === editingCustomerId);
+    if (existing) {
+      existing.name = name;
+      existing.type = type;
+      existing.contact = contact;
+      existing.mobile = mobile;
+      existing.email = email || existing.email;
+      existing.gst = document.getElementById('f-gst')?.value || existing.gst;
+      // Update other fields if needed
+      showToast(`${name} updated successfully`, 'success');
+    }
+  } else {
+    // Create new customer
+    const newCustomer = {
+      id: CUSTOMERS.length + 1,
+      code: `CUST-${String(CUSTOMERS.length + 1).padStart(4, '0')}`,
+      name: name,
+      type: type,
+      contact: contact,
+      mobile: mobile,
+      email: email || '—',
+      gst: document.getElementById('f-gst')?.value || '—',
+      city: '—',
+      creditLimit: 0,
+      status: 'Active'
+    };
+    CUSTOMERS.push(newCustomer);
+    showToast(`${name} created successfully`, 'success');
+  }
+  
   closeModal();
-  showToast('Customer saved successfully', 'success');
-  // In a real app, POST to API here
+  applyFilters();
+});
+
+// Real-time validation clearing
+document.querySelectorAll('#customer-modal .form-input').forEach(input => {
+  input.addEventListener('focus', function() {
+    this.style.borderColor = '';
+    this.style.boxShadow = '';
+  });
 });
 
 // Same as billing checkbox
 document.getElementById('same-as-billing')?.addEventListener('change', function () {
   const fields = document.getElementById('shipping-fields');
-  fields.style.opacity = this.checked ? '0.4' : '1';
-  fields.style.pointerEvents = this.checked ? 'none' : '';
+  if (fields) {
+    fields.style.opacity = this.checked ? '0.4' : '1';
+    fields.style.pointerEvents = this.checked ? 'none' : '';
+  }
 });
 
 /* =====================================================
@@ -323,10 +624,7 @@ function openViewDrawer(id) {
   document.getElementById('view-gst').textContent = c.gst;
   document.getElementById('view-credit').textContent = formatCurrency(c.creditLimit);
 
-  // Store current customer ID for edit/block actions
   viewModal.dataset.currentCustomerId = id;
-
-  // Reset tabs
   switchViewTab('overview');
   viewModal.classList.remove('hidden');
 }
@@ -339,7 +637,6 @@ viewModalClose?.addEventListener('click', closeViewModal);
 viewModalCloseBtn?.addEventListener('click', closeViewModal);
 viewModal?.addEventListener('click', e => { if (e.target === viewModal) closeViewModal(); });
 
-// View modal edit button
 document.getElementById('view-edit-btn')?.addEventListener('click', () => {
   const id = parseInt(viewModal.dataset.currentCustomerId);
   if (id) {
@@ -348,7 +645,6 @@ document.getElementById('view-edit-btn')?.addEventListener('click', () => {
   }
 });
 
-// View modal block button
 document.getElementById('view-block-btn')?.addEventListener('click', () => {
   const id = parseInt(viewModal.dataset.currentCustomerId);
   if (id) {
@@ -357,7 +653,6 @@ document.getElementById('view-block-btn')?.addEventListener('click', () => {
   }
 });
 
-// View modal tabs
 function switchViewTab(tabName) {
   document.querySelectorAll('.view-tab').forEach(btn => {
     btn.classList.toggle('active-tab', btn.dataset.viewTab === tabName);
@@ -376,16 +671,23 @@ document.querySelectorAll('.view-tab').forEach(btn => {
 ===================================================== */
 function showToast(message, type = 'default') {
   const container = document.getElementById('toast-container');
+  if (!container) return;
   const toast = document.createElement('div');
   toast.className = `toast toast-${type}`;
   const iconMap = { success: 'fa-check-circle', error: 'fa-times-circle', default: 'fa-info-circle' };
   toast.innerHTML = `<i class="fas ${iconMap[type] || 'fa-info-circle'}"></i><span>${message}</span>`;
   container.appendChild(toast);
-  setTimeout(() => { toast.style.opacity = '0'; toast.style.transform = 'translateY(6px)'; toast.style.transition = 'all .2s ease'; setTimeout(() => toast.remove(), 200); }, 3000);
+  setTimeout(() => { 
+    toast.style.opacity = '0'; 
+    toast.style.transform = 'translateY(6px)'; 
+    toast.style.transition = 'all .2s ease'; 
+    setTimeout(() => toast.remove(), 200); 
+  }, 3000);
 }
-
 /* =====================================================
    INIT
 ===================================================== */
-renderTable(CUSTOMERS);
+const initialData = getPaginatedData(CUSTOMERS);
+renderTable(initialData);
+renderPagination(CUSTOMERS);
 document.getElementById('record-count').textContent = `Showing ${CUSTOMERS.length} of ${CUSTOMERS.length}`;

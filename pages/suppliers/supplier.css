@@ -442,3 +442,18 @@ body { font-family: 'Roboto', sans-serif; }
     .form-group-full { grid-column: 1; }
     .modal-box { border-radius: 12px; }
 }
+
+/* RESPONSIVENESS PATCH */
+@media (max-width: 1024px) {
+    .modal-xl { max-width: 95vw !important; }
+    .form-grid { grid-template-columns: 1fr; }
+    .detail-tabs { flex-wrap: wrap; gap: 4px; padding: 8px; }
+    .widget-card { min-height: 88px; }
+}
+
+@media (max-width: 640px) {
+    .supplier-table th, .supplier-table td { padding: 8px 6px; font-size: 11px; }
+    .filter-bar { flex-direction: column; align-items: stretch; }
+    .modal-header { flex-direction: column; align-items: flex-start; gap: 8px; }
+    .detail-meta { font-size: 11px; }
+}

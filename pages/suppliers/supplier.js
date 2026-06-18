@@ -272,6 +272,7 @@ function confirmDelete() {
         showToast(`${name} deleted`, 'error');
         updateStatCards();
         filterTable();
+        renderTable();  
     }
     closeModal('delete');
 }
@@ -298,44 +299,60 @@ function editSupplier(id) {
     if (!s) return;
     currentSupplierId = id;
     resetForm();
-
     document.getElementById('create-modal-title').textContent = `Edit Supplier — ${s.name}`;
-    document.getElementById('f-code').value    = s.code;
-    document.getElementById('f-name').value    = s.name;
-    document.getElementById('f-type').value    = s.type;
-    document.getElementById('f-contact').value = s.contact;
-    document.getElementById('f-mobile').value  = s.mobile;
-    document.getElementById('f-email').value   = s.email;
-
+    
+    // Basic Info
+    document.getElementById('f-code').value = s.code;
+    document.getElementById('f-name').value = s.name || '';
+    document.getElementById('f-type').value = s.type || '';
+    document.getElementById('f-contact').value = s.contact || '';
+    document.getElementById('f-mobile').value = s.mobile || '';
+    document.getElementById('f-email').value = s.email || '';
+    
+    // Address (add these lines)
+    document.getElementById('f-city').value = s.city || '';
+    document.getElementById('f-state').value = s.state || '';
+    
+    // GST
+    document.getElementById('f-gst').value = s.gst || '';
+    
     openModal('create');
 }
 
 function resetForm() {
     currentStep = 1;
-
-    // Reset all step sections
+    currentSupplierId = null;
+    
+    // Hide all steps
     for (let i = 1; i <= TOTAL_STEPS; i++) {
-        document.getElementById('form-step-' + i).classList.add('hidden');
+        const stepEl = document.getElementById('form-step-' + i);
+        if (stepEl) stepEl.classList.add('hidden');
+        
         const dot = document.getElementById('step-dot-' + i);
-        dot.classList.remove('active', 'done');
-        dot.querySelector('span').textContent = i;
+        if (dot) {
+            dot.classList.remove('active', 'done');
+            dot.querySelector('span').textContent = i;
+        }
     }
-
+    
     // Show step 1
     document.getElementById('form-step-1').classList.remove('hidden');
     document.getElementById('step-dot-1').classList.add('active');
-
-    // Reset form fields
-    ['f-name','f-type','f-contact','f-mobile','f-alt','f-email',
-     'f-addr1','f-addr2','f-city','f-state','f-pin',
-     'f-gst','f-pan','f-cin',
-     'f-credit-days','f-credit-limit','f-bank','f-account','f-ifsc'].forEach(id => {
+    
+    // Clear fields
+    const fields = ['f-name','f-type','f-contact','f-mobile','f-alt','f-email',
+                   'f-addr1','f-addr2','f-city','f-state','f-pin',
+                   'f-gst','f-pan','f-cin',
+                   'f-credit-days','f-credit-limit','f-bank','f-account','f-ifsc'];
+    
+    fields.forEach(id => {
         const el = document.getElementById(id);
-        if (el) { el.value = ''; el.style.borderColor = ''; }
+        if (el) el.value = '';
     });
+    
     document.getElementById('f-country').value = 'India';
     document.getElementById('f-code').value = `SUP-${String(SUPPLIERS.length + 1).padStart(4, '0')}`;
-
+    
     updateStepFooter();
 }
 
@@ -402,42 +419,54 @@ function validateStep(step) {
 }
 
 function saveSupplier() {
-    const isEdit = currentSupplierId && document.getElementById('create-modal-title').textContent.startsWith('Edit');
+    if (!validateStep(5)) return;  // Final validation before save
 
+    const isEdit = currentSupplierId && document.getElementById('create-modal-title').textContent.includes('Edit');
+    
     if (isEdit) {
         const s = SUPPLIERS.find(x => x.id === currentSupplierId);
         if (s) {
-            s.name    = document.getElementById('f-name').value    || s.name;
-            s.type    = document.getElementById('f-type').value    || s.type;
-            s.contact = document.getElementById('f-contact').value || s.contact;
-            s.mobile  = document.getElementById('f-mobile').value  || s.mobile;
-            s.email   = document.getElementById('f-email').value   || s.email;
-            s.city    = document.getElementById('f-city').value    || s.city;
-            s.state   = document.getElementById('f-state').value   || s.state;
-            s.gst     = document.getElementById('f-gst').value     || s.gst;
+            s.name = document.getElementById('f-name').value.trim() || s.name;
+            s.type = document.getElementById('f-type').value || s.type;
+            s.contact = document.getElementById('f-contact').value.trim() || s.contact;
+            s.mobile = document.getElementById('f-mobile').value.trim() || s.mobile;
+            s.email = document.getElementById('f-email').value.trim() || s.email;
+            s.city = document.getElementById('f-city').value.trim() || s.city;
+            s.state = document.getElementById('f-state').value.trim() || s.state;
+            s.gst = document.getElementById('f-gst').value.trim() || s.gst;
             showToast(`${s.name} updated successfully!`, 'success');
         }
     } else {
+        // CREATE NEW
         const newSupplier = {
-            id:      SUPPLIERS.length + 1,
-            code:    `SUP-${String(SUPPLIERS.length + 1).padStart(4, '0')}`,
-            name:    document.getElementById('f-name').value    || 'New Supplier',
-            type:    document.getElementById('f-type').value    || 'Manufacturer',
-            contact: document.getElementById('f-contact').value || '—',
-            mobile:  document.getElementById('f-mobile').value  || '—',
-            email:   document.getElementById('f-email').value   || '—',
-            gst:     document.getElementById('f-gst').value     || '—',
-            city:    document.getElementById('f-city').value    || '—',
-            state:   document.getElementById('f-state').value   || '—',
+            id: SUPPLIERS.length + 1,
+            code: document.getElementById('f-code').value || `SUP-${String(SUPPLIERS.length + 1).padStart(4, '0')}`,
+            name: document.getElementById('f-name').value.trim() || 'New Supplier',
+            type: document.getElementById('f-type').value || 'Manufacturer',
+            contact: document.getElementById('f-contact').value.trim() || '—',
+            mobile: document.getElementById('f-mobile').value.trim() || '—',
+            email: document.getElementById('f-email').value.trim() || '—',
+            gst: document.getElementById('f-gst').value.trim() || '—',
+            city: document.getElementById('f-city').value.trim() || '—',
+            state: document.getElementById('f-state').value.trim() || '—',
             status: 'Active'
         };
+        
+        if (!newSupplier.name || !newSupplier.type) {
+            showToast('Name and Type are required', 'error');
+            return;
+        }
+        
         SUPPLIERS.push(newSupplier);
         showToast(`${newSupplier.name} created successfully!`, 'success');
     }
-
+    
+    // Refresh everything
     filteredSuppliers = [...SUPPLIERS];
     updateStatCards();
     filterTable();
+    renderTable();
+    
     closeModal('create');
     currentSupplierId = null;
 }
@@ -473,6 +502,22 @@ function showToast(msg, type = 'info') {
 
 function showExportToast() {
     showToast('Exporting supplier list…', 'info');
+    
+    // Create CSV
+    setTimeout(() => {
+        let csv = "Supplier Code,Name,Type,Contact,Mobile,GST,City,Status\n";
+        SUPPLIERS.forEach(s => {
+            csv += `${s.code},${s.name},${s.type},${s.contact},${s.mobile},${s.gst},${s.city},${s.status}\n`;
+        });
+        
+        const blob = new Blob([csv], { type: 'text/csv' });
+        const url = URL.createObjectURL(blob);
+        const a = document.createElement('a');
+        a.href = url;
+        a.download = `suppliers_${new Date().toISOString().slice(0,10)}.csv`;
+        a.click();
+        URL.revokeObjectURL(url);
+    }, 800);
 }
 
 // ============================================================
@@ -554,20 +599,171 @@ document.querySelectorAll('.nav-group-header').forEach(header => {
 });
 
 // ---- Wire up "Add Supplier" button in HTML ----
-// HTML calls openModal('create') directly, which needs resetForm first
-// Override so the button resets form properly
+
 document.addEventListener('DOMContentLoaded', () => {
-    // Patch: any call to openModal('create') from scratch should reset
 });
 
-// Patch openModal for create to always reset
-const _origOpenModal = openModal;
+// Improved openModal patch
+const originalOpenModal = openModal;
 window.openModal = function(name) {
     if (name === 'create') {
         resetForm();
+        document.getElementById('create-modal-title').textContent = 'Create New Supplier';
     }
-    _origOpenModal(name);
+    originalOpenModal(name);
 };
+// ====================== DOCUMENT ACTIONS ======================
+function handleDocumentAction(action, docName = '') {
+    console.log('✅ Document action triggered:', action, docName);
+    
+    try {
+        if (action === 'upload') {
+            // Create a hidden file input for real upload
+            const fileInput = document.createElement('input');
+            fileInput.type = 'file';
+            fileInput.accept = '.pdf,.doc,.docx,.jpg,.png';
+            fileInput.onchange = function(e) {
+                if (this.files && this.files[0]) {
+                    showToast(`📎 Uploading "${this.files[0].name}"...`, 'info');
+                    // Simulate upload
+                    setTimeout(() => {
+                        showToast(`✅ "${this.files[0].name}" uploaded successfully!`, 'success');
+                        // Here you would actually upload the file to your server
+                        // You can add real upload logic here
+                    }, 1500);
+                }
+            };
+            fileInput.click();
+        } 
+        else if (action === 'view') {
+            if (!docName) {
+                showToast('Please select a document to view', 'warning');
+                return;
+            }
+            showToast(`👁️ Opening "${docName}"...`, 'info');
+            // Simulate opening document
+            setTimeout(() => {
+                // In real app, open the document in a new tab or modal
+                // For demo: Create a fake viewer
+                const viewer = document.createElement('div');
+                viewer.style.cssText = `
+                    position: fixed; top: 50%; left: 50%; transform: translate(-50%, -50%);
+                    background: white; padding: 20px; border-radius: 8px; 
+                    box-shadow: 0 4px 20px rgba(0,0,0,0.3); z-index: 9999;
+                    max-width: 500px; text-align: center;
+                `;
+                viewer.innerHTML = `
+                    <h3 style="margin:0 0 10px 0;">📄 ${docName}</h3>
+                    <p style="color:#666;font-size:14px;">This is a preview of "${docName}"</p>
+                    <p style="color:#999;font-size:12px;">Document would open here in the actual application</p>
+                    <button onclick="this.parentElement.remove()" 
+                            style="margin-top:15px;padding:8px 20px;background:#111844;color:white;border:none;border-radius:6px;cursor:pointer;">
+                        Close
+                    </button>
+                `;
+                document.body.appendChild(viewer);
+                
+                // Auto-close after 5 seconds
+                setTimeout(() => {
+                    if (viewer.parentElement) viewer.remove();
+                }, 5000);
+            }, 500);
+        } 
+        else if (action === 'download') {
+            if (!docName) {
+                showToast('Please select a document to download', 'warning');
+                return;
+            }
+            showToast(`⬇️ Downloading "${docName}"...`, 'info');
+            
+            // Simulate download
+            setTimeout(() => {
+                // Create a fake download
+                const link = document.createElement('a');
+                link.href = '#';
+                link.download = docName.replace(/\s+/g, '_') + '.pdf';
+                document.body.appendChild(link);
+                link.click();
+                document.body.removeChild(link);
+                
+                showToast(`✅ "${docName}" downloaded successfully!`, 'success');
+            }, 1000);
+        } 
+        else if (action === 'delete') {
+            if (!docName) {
+                showToast('Please select a document to delete', 'warning');
+                return;
+            }
+            
+            // Show confirmation dialog
+            if (confirm(`⚠️ Are you sure you want to delete "${docName}"? This action cannot be undone.`)) {
+                showToast(`🗑️ "${docName}" has been deleted`, 'error');
+                
+                // Find and remove the row
+                const rows = document.querySelectorAll('#tab-documents tbody tr');
+                for (let row of rows) {
+                    if (row.textContent.includes(docName)) {
+                        row.style.transition = 'all 0.3s ease';
+                        row.style.opacity = '0';
+                        row.style.transform = 'translateX(-20px)';
+                        setTimeout(() => {
+                            row.remove();
+                            // Check if table is empty
+                            const tbody = document.querySelector('#tab-documents tbody');
+                            if (tbody && tbody.children.length === 0) {
+                                tbody.innerHTML = `
+                                    <tr>
+                                        <td colspan="4" style="text-align:center;color:#7288AE;padding:30px;">
+                                            <i class="fas fa-file-alt" style="font-size:24px;display:block;margin-bottom:10px;"></i>
+                                            No documents uploaded yet
+                                        </td>
+                                    </tr>
+                                `;
+                            }
+                            showToast(`✅ "${docName}" removed from list`, 'info');
+                        }, 300);
+                        break;
+                    }
+                }
+            }
+        } else {
+            showToast(`Unknown action: ${action}`, 'warning');
+        }
+    } catch (error) {
+        console.error('Document action error:', error);
+        showToast('An error occurred while processing the document action', 'error');
+    }
+}
+
+// Make sure it's globally accessible
+window.handleDocumentAction = handleDocumentAction;
+
+// Helper function to add document action buttons dynamically
+function setupDocumentButtons() {
+    // Find all document action buttons and ensure they're properly wired
+    document.querySelectorAll('#tab-documents .action-btn').forEach(btn => {
+        const onclickAttr = btn.getAttribute('onclick');
+        if (onclickAttr && onclickAttr.includes('handleDocumentAction')) {
+            // Already wired, but we can also add click listener for safety
+            btn.addEventListener('click', function(e) {
+                // Don't interfere with inline onclick
+            });
+        }
+    });
+}
+
+// Call this when document tab is shown
+document.addEventListener('DOMContentLoaded', function() {
+    // Setup document buttons when document tab becomes visible
+    const docTab = document.querySelector('.detail-tab[onclick*="documents"]');
+    if (docTab) {
+        const originalSwitch = docTab.onclick;
+        docTab.onclick = function(e) {
+            if (originalSwitch) originalSwitch.call(this, e);
+            setTimeout(setupDocumentButtons, 100);
+        };
+    }
+});
 
 // ============================================================
 // INIT

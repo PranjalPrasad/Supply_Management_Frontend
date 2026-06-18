@@ -189,6 +189,7 @@
         <i class="fas fa-bars text-sm"></i>
       </button>
       <div>
+        
         <div class="flex items-center gap-2 text-xs text-[#7288AE]">
           <span>Masters</span>
           <i class="fas fa-chevron-right text-[10px]"></i>
@@ -392,18 +393,13 @@
         </table>
       </div>
       <!-- Pagination -->
-      <div class="flex items-center justify-between px-4 py-3 border-t border-[#4B5694]/10">
-        <span class="text-xs text-[#7288AE]" id="page-info">Page 1 of 352</span>
-        <div class="flex gap-1">
-          <button class="pagination-btn" id="btn-prev"><i class="fas fa-chevron-left"></i></button>
-          <button class="pagination-btn active-page">1</button>
-          <button class="pagination-btn">2</button>
-          <button class="pagination-btn">3</button>
-          <span class="pagination-btn cursor-default text-[#7288AE]">…</span>
-          <button class="pagination-btn">352</button>
-          <button class="pagination-btn" id="btn-next"><i class="fas fa-chevron-right"></i></button>
-        </div>
-      </div>
+<div class="flex items-center justify-between px-4 py-3 border-t border-[#4B5694]/10">
+  <span class="text-xs text-[#7288AE]" id="page-info">Page 1 of 1</span>
+  <div class="flex gap-1" id="pagination-container">
+    <button class="pagination-btn" id="btn-prev"><i class="fas fa-chevron-left"></i></button>
+    <button class="pagination-btn" id="btn-next"><i class="fas fa-chevron-right"></i></button>
+  </div>
+</div>
     </div>
 
   </main>

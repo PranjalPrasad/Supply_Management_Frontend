@@ -285,6 +285,79 @@
         #drawer-root.open #drawer-panel {
             transform: translateX(0);
         }
+
+        /* ===== Pagination Styles ===== */
+        .pagination-wrapper {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 10px 16px;
+            border-top: 1px solid rgba(75, 86, 148, 0.12);
+            flex-wrap: wrap;
+            gap: 8px;
+        }
+
+        .pagination-info {
+            font-size: 11px;
+            color: #7288AE;
+        }
+
+        .pagination-controls {
+            display: flex;
+            align-items: center;
+            gap: 4px;
+        }
+
+        .pg-btn {
+            min-width: 30px;
+            height: 30px;
+            padding: 0 6px;
+            border-radius: 7px;
+            font-size: 11px;
+            font-weight: 500;
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            border: 1px solid rgba(75, 86, 148, 0.2);
+            background: #FFFCFC;
+            color: #4B5694;
+            cursor: pointer;
+            transition: all .15s ease;
+            user-select: none;
+        }
+
+        .pg-btn:hover:not(:disabled) {
+            background: rgba(75, 86, 148, 0.1);
+            border-color: #4B5694;
+        }
+
+        .pg-btn.active {
+            background: #111844;
+            color: #FAFAFA;
+            border-color: #111844;
+            font-weight: 600;
+        }
+
+        .pg-btn:disabled {
+            opacity: 0.35;
+            cursor: not-allowed;
+        }
+
+        .pg-btn.pg-arrow {
+            color: #7288AE;
+            font-size: 10px;
+        }
+
+        .pg-ellipsis {
+            min-width: 30px;
+            height: 30px;
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 11px;
+            color: #7288AE;
+            user-select: none;
+        }
     </style>
 </head>
 
@@ -403,8 +476,6 @@
   <span class="nav-label">RETURNS MANAGEMENT</span>
 </a>
 
-   
-
     <!-- 💰 FINANCE & BILLING -->
     <div class="nav-group">
       <div class="nav-group-header flex items-center justify-between gap-3 px-3 py-2.5 rounded-lg text-[#111844]/70 hover:bg-[#7288AE]/20 hover:text-[#111844] transition-colors duration-150 text-sm cursor-pointer border-b border-[#4B5694]/20 shadow-sm">
@@ -444,8 +515,6 @@
   <span class="nav-label">REPORTS & ANALYTICS</span>
 </a>
 
-   
-
     <!-- 👥 USER MANAGEMENT -->
     <div class="nav-group">
       <div class="nav-group-header flex items-center justify-between gap-3 px-3 py-2.5 rounded-lg text-[#111844]/70 hover:bg-[#7288AE]/20 hover:text-[#111844] transition-colors duration-150 text-sm cursor-pointer border-b border-[#4B5694]/20 shadow-sm">
@@ -477,10 +546,6 @@
         <header
             class="sticky top-0 z-[200] h-16 bg-[#FFFCFC] border-b border-[#4B5694]/20 flex items-center justify-between px-5 shadow-sm">
             <div class="flex items-center gap-4">
-                <!-- <button id="sidebar-toggle"
-                    class="w-9 h-9 flex items-center justify-center rounded-lg text-[#4B5694] hover:bg-[#4B5694]/10 transition-colors">
-                     <i class="fas fa-bars text-lg"></i> 
-                </button> -->
                 <div>
                     <h1 class="text-sm font-semibold text-[#111844]">Product Master</h1>
                     <p class="text-xs text-[#7288AE]">Manage products, SKUs, barcodes & GST configuration</p>
@@ -640,7 +705,7 @@
                     <table class="w-full text-xs">
                         <thead>
                             <tr class="bg-[#FAFAFA] border-b border-[#4B5694]/15">
-                                <th class="px-4 py-3 text-left font-semibold text-[#4B5694]">#</th>
+                                <th class="px-4 py-3 text-left font-semibold text-[#4B5694]">SR.No</th>
                                 <th class="px-4 py-3 text-left font-semibold text-[#4B5694]">Image</th>
                                 <th class="px-4 py-3 text-left font-semibold text-[#4B5694]">Product Name</th>
                                 <th class="px-4 py-3 text-left font-semibold text-[#4B5694]">SKU</th>
@@ -655,20 +720,11 @@
                         <tbody id="product-tbody" class="divide-y divide-[#4B5694]/10"></tbody>
                     </table>
                 </div>
-                <div id="product-pagination"
-                    class="flex items-center justify-between px-4 py-3 border-t border-[#4B5694]/15"></div>
+                <!-- Pagination lives here -->
+                <div id="product-pagination"></div>
             </div>
         </main>
     </div>
-
-    <!-- ============ Add / Edit Drawer ============ -->
-   
-
-    <!-- ============ Delete Confirm Modal ============ -->
-    
-
-    <!-- ============ Product Details Drawer ============ -->
-    
 
     <!-- Toast Container -->
     <div id="toast-container" class="fixed bottom-5 right-5 z-[400] space-y-2"></div>
@@ -1122,23 +1178,70 @@
             renderPagination(totalPages, total);
         }
 
+        // ============ Pagination ============
+        function getPageNumbers(currentPage, totalPages) {
+            // Always show: first, last, current, and 1 on each side of current
+            // Fill in with ellipsis where there are gaps > 1
+            const pages = new Set();
+            pages.add(1);
+            pages.add(totalPages);
+            pages.add(currentPage);
+            if (currentPage - 1 >= 1) pages.add(currentPage - 1);
+            if (currentPage + 1 <= totalPages) pages.add(currentPage + 1);
+
+            const sorted = Array.from(pages).sort((a, b) => a - b);
+            const result = [];
+            for (let i = 0; i < sorted.length; i++) {
+                if (i > 0 && sorted[i] - sorted[i - 1] > 1) result.push('...');
+                result.push(sorted[i]);
+            }
+            return result;
+        }
+
         function renderPagination(totalPages, total) {
             const container = document.getElementById('product-pagination');
             if (total === 0) { container.innerHTML = ''; return; }
 
-            let html = `<span class="text-xs text-[#7288AE]">Showing ${(currentPage - 1) * PER_PAGE + 1}–${Math.min(currentPage * PER_PAGE, total)} of ${total}</span>
-                <div class="flex gap-1">`;
-            for (let i = 1; i <= totalPages; i++) {
-                const active = i === currentPage ? 'bg-[#111844] text-[#FAFAFA]' : 'bg-[#FAFAFA] text-[#4B5694] hover:bg-[#4B5694]/10';
-                html += `<button data-page="${i}" class="w-7 h-7 rounded text-xs ${active} transition-colors">${i}</button>`;
-            }
-            html += `</div>`;
-            container.innerHTML = html;
+            const fromItem = (currentPage - 1) * PER_PAGE + 1;
+            const toItem = Math.min(currentPage * PER_PAGE, total);
+            const pageNums = getPageNumbers(currentPage, totalPages);
+
+            // Build page number buttons with ellipsis
+            let pageButtons = '';
+            pageNums.forEach(p => {
+                if (p === '...') {
+                    pageButtons += `<span class="pg-ellipsis">…</span>`;
+                } else {
+                    const isActive = p === currentPage;
+                    pageButtons += `<button data-page="${p}" class="pg-btn${isActive ? ' active' : ''}">${p}</button>`;
+                }
+            });
+
+            container.innerHTML = `
+                <div class="pagination-wrapper">
+                    <div class="pagination-info">
+                        Showing <span class="font-semibold text-[#111844]">${fromItem}–${toItem}</span>
+                        of <span class="font-semibold text-[#111844]">${total}</span> products
+                    </div>
+                    <div class="pagination-controls">
+                        <button class="pg-btn pg-arrow" data-page="${currentPage - 1}" ${currentPage === 1 ? 'disabled' : ''} title="Previous page">
+                            <i class="fas fa-chevron-left"></i>
+                        </button>
+                        ${pageButtons}
+                        <button class="pg-btn pg-arrow" data-page="${currentPage + 1}" ${currentPage === totalPages ? 'disabled' : ''} title="Next page">
+                            <i class="fas fa-chevron-right"></i>
+                        </button>
+                    </div>
+                </div>
+            `;
 
             container.querySelectorAll('[data-page]').forEach(btn => {
                 btn.addEventListener('click', (e) => {
-                    currentPage = parseInt(e.target.dataset.page);
-                    renderTable();
+                    const page = parseInt(e.currentTarget.dataset.page);
+                    if (!isNaN(page) && page >= 1 && page <= totalPages) {
+                        currentPage = page;
+                        renderTable();
+                    }
                 });
             });
         }
