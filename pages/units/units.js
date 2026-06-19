@@ -3,8 +3,8 @@
    All interactivity for units.html
    ============================================= */
 
-// -------- DATA STORE --------
-const unitsData = [
+// ─── DATA ───────────────────────────────────────────────
+let unitsData = [
     { id: 1,  code: 'PCS', name: 'Piece',       short: 'pcs', type: 'Quantity', status: 'Active',   desc: 'Single countable item',     products: 142, purchases: 389, sales: 504, createdBy: 'Admin', createdDate: '12 Jan 2024', modifiedBy: 'Admin', modifiedDate: '03 Mar 2024' },
     { id: 2,  code: 'BOX', name: 'Box',          short: 'box', type: 'Quantity', status: 'Active',   desc: 'Packaged box unit',         products: 78,  purchases: 210, sales: 190, createdBy: 'Admin', createdDate: '12 Jan 2024', modifiedBy: 'Admin', modifiedDate: '12 Jan 2024' },
     { id: 3,  code: 'CTN', name: 'Carton',       short: 'ctn', type: 'Quantity', status: 'Active',   desc: 'Master carton packaging',   products: 55,  purchases: 130, sales: 122, createdBy: 'Admin', createdDate: '12 Jan 2024', modifiedBy: 'Admin', modifiedDate: '14 Feb 2024' },
@@ -25,7 +25,7 @@ const unitsData = [
     { id: 18, code: 'PRS', name: 'Pair',         short: 'pr',  type: 'Quantity', status: 'Active',   desc: 'Pair of matching items',    products: 6,   purchases: 18,  sales: 20,  createdBy: 'Admin', createdDate: '10 Feb 2024', modifiedBy: 'Admin', modifiedDate: '10 Feb 2024' },
 ];
 
-const conversionsData = [
+let conversionsData = [
     { id: 1, base: 'CTN', target: 'BOX', factor: 10 },
     { id: 2, base: 'BOX', target: 'PCS', factor: 20 },
     { id: 3, base: 'KG',  target: 'GM',  factor: 1000 },
@@ -38,7 +38,34 @@ let nextId = 19;
 let nextConvId = 7;
 let editingUnitId = null;
 
-// -------- TAB SWITCHING --------
+// Pagination state
+const PAGE_SIZE = 8;
+let currentPage = 1;
+
+// ─── HELPERS ────────────────────────────────────────────
+function today() {
+    return new Date().toLocaleDateString('en-GB', { day: '2-digit', month: 'short', year: 'numeric' });
+}
+
+function typeBadge(type) {
+    const map = { Quantity: 'type-qty', Weight: 'type-wt', Length: 'type-len', Volume: 'type-vol' };
+    return `<span class="type-badge ${map[type] || 'type-qty'}">${type}</span>`;
+}
+
+function statusBadge(status) {
+    const cls = status === 'Active' ? 'badge-active' : 'badge-inactive';
+    const icon = status === 'Active' ? 'fa-circle-check' : 'fa-pause-circle';
+    return `<span class="badge ${cls}"><i class="fas ${icon} text-[9px]"></i>${status}</span>`;
+}
+
+function updateKPIs() {
+    document.getElementById('kpi-total').textContent = unitsData.length;
+    document.getElementById('kpi-active').textContent = unitsData.filter(u => u.status === 'Active').length;
+    document.getElementById('kpi-inactive').textContent = unitsData.filter(u => u.status === 'Inactive').length;
+    document.getElementById('kpi-conv').textContent = conversionsData.length;
+}
+
+// ─── TABS ────────────────────────────────────────────────
 function switchTab(tab) {
     document.querySelectorAll('.tab-content').forEach(el => el.classList.add('hidden'));
     document.querySelectorAll('.tab-btn').forEach(btn => {
@@ -51,83 +78,120 @@ function switchTab(tab) {
         activeBtn.classList.add('active-tab');
         activeBtn.classList.remove('text-[#111844]/60', 'hover:text-[#111844]', 'hover:bg-[#7288AE]/10');
     }
-    if (tab === 'list') renderTable();
+    if (tab === 'list') { renderTable(); updateKPIs(); }
     if (tab === 'conversion') renderConversions();
-    if (tab === 'create') {
-        // reset form if not editing
-        if (!editingUnitId) resetForm();
-        populateConversionSelects();
-    }
+    if (tab === 'create' && !editingUnitId) resetForm();
 }
 
-// -------- TABLE RENDERING --------
-function typeBadge(type) {
-    const map = { Quantity: 'type-qty', Weight: 'type-wt', Length: 'type-len', Volume: 'type-vol' };
-    return `<span class="type-badge ${map[type] || 'type-qty'}">${type}</span>`;
-}
-
-function statusBadge(status) {
-    const cls = status === 'Active' ? 'badge-active' : 'badge-inactive';
-    const icon = status === 'Active' ? 'fa-circle-check' : 'fa-pause-circle';
-    return `<span class="badge ${cls}"><i class="fas ${icon} text-[9px]"></i>${status}</span>`;
-}
-
-function renderTable() {
+// ─── TABLE ───────────────────────────────────────────────
+function getFilteredData() {
     const search = document.getElementById('search-input')?.value.toLowerCase() || '';
     const filterType = document.getElementById('filter-type')?.value || '';
     const filterStatus = document.getElementById('filter-status')?.value || '';
-
-    let data = unitsData.filter(u => {
-        const matchSearch = !search || u.name.toLowerCase().includes(search) || u.code.toLowerCase().includes(search);
-        const matchType = !filterType || u.type === filterType;
-        const matchStatus = !filterStatus || u.status === filterStatus;
-        return matchSearch && matchType && matchStatus;
+    return unitsData.filter(u => {
+        const ms = !search || u.name.toLowerCase().includes(search) || u.code.toLowerCase().includes(search);
+        const mt = !filterType || u.type === filterType;
+        const mst = !filterStatus || u.status === filterStatus;
+        return ms && mt && mst;
     });
+}
 
+function renderTable() {
+    const data = getFilteredData();
+    const totalPages = Math.ceil(data.length / PAGE_SIZE) || 1;
+    if (currentPage > totalPages) currentPage = 1;
+
+    const pageData = data.slice((currentPage - 1) * PAGE_SIZE, currentPage * PAGE_SIZE);
     const tbody = document.getElementById('units-tbody');
     if (!tbody) return;
 
-    if (!data.length) {
+    if (!pageData.length) {
         tbody.innerHTML = `<tr><td colspan="6" class="px-4 py-8 text-center text-xs text-[#7288AE]">No units found matching your filters.</td></tr>`;
-        document.getElementById('table-info').textContent = 'Showing 0 results';
-        return;
+    } else {
+        tbody.innerHTML = pageData.map(u => `
+            <tr class="tbl-row">
+                <td class="px-4 py-3">
+                    <span class="font-mono font-bold text-[#111844] text-xs bg-[#111844]/8 px-2 py-0.5 rounded-md">${u.code}</span>
+                </td>
+                <td class="px-4 py-3 text-xs font-medium text-[#111844]">${u.name}</td>
+                <td class="px-4 py-3 text-xs text-[#7288AE] hide-sm">${u.short}</td>
+                <td class="px-4 py-3">${typeBadge(u.type)}</td>
+                <td class="px-4 py-3">${statusBadge(u.status)}</td>
+                <td class="px-4 py-3">
+                    <div class="flex items-center gap-1">
+                        <button onclick="viewUnit(${u.id})" class="w-7 h-7 flex items-center justify-center rounded-lg text-[#4B5694] hover:bg-[#4B5694]/10 transition-colors" title="View">
+                            <i class="fas fa-eye text-xs"></i>
+                        </button>
+                        <button onclick="openEditUnitOverlay(${u.id})" class="w-7 h-7 flex items-center justify-center rounded-lg text-[#111844] hover:bg-[#111844]/10 transition-colors" title="Edit">
+                            <i class="fas fa-pen text-xs"></i>
+                        </button>
+                        <button onclick="toggleStatus(${u.id})" class="w-7 h-7 flex items-center justify-center rounded-lg ${u.status === 'Active' ? 'text-amber-600 hover:bg-amber-50' : 'text-emerald-600 hover:bg-emerald-50'} transition-colors" title="${u.status === 'Active' ? 'Deactivate' : 'Activate'}">
+                            <i class="fas ${u.status === 'Active' ? 'fa-ban' : 'fa-check'} text-xs"></i>
+                        </button>
+                    </div>
+                </td>
+            </tr>
+        `).join('');
     }
 
-    tbody.innerHTML = data.map(u => `
-        <tr class="tbl-row">
-            <td class="px-4 py-3">
-                <span class="font-mono font-bold text-[#111844] text-xs bg-[#111844]/8 px-2 py-0.5 rounded-md">${u.code}</span>
-            </td>
-            <td class="px-4 py-3 text-xs font-medium text-[#111844]">${u.name}</td>
-            <td class="px-4 py-3 text-xs text-[#7288AE]">${u.short}</td>
-            <td class="px-4 py-3">${typeBadge(u.type)}</td>
-            <td class="px-4 py-3">${statusBadge(u.status)}</td>
-            <td class="px-4 py-3">
-                <div class="flex items-center gap-1">
-                    <button onclick="viewUnit(${u.id})" class="w-7 h-7 flex items-center justify-center rounded-lg text-[#4B5694] hover:bg-[#4B5694]/10 transition-colors" title="View">
-                        <i class="fas fa-eye text-xs"></i>
-                    </button>
-                    <button onclick="editUnit(${u.id})" class="w-7 h-7 flex items-center justify-center rounded-lg text-[#111844] hover:bg-[#111844]/10 transition-colors" title="Edit">
-                        <i class="fas fa-pen text-xs"></i>
-                    </button>
-                    <button onclick="toggleStatus(${u.id})" class="w-7 h-7 flex items-center justify-center rounded-lg ${u.status === 'Active' ? 'text-amber-600 hover:bg-amber-50' : 'text-emerald-600 hover:bg-emerald-50'} transition-colors" title="${u.status === 'Active' ? 'Deactivate' : 'Activate'}">
-                        <i class="fas ${u.status === 'Active' ? 'fa-ban' : 'fa-check'} text-xs"></i>
-                    </button>
-                </div>
-            </td>
-        </tr>
-    `).join('');
+    const start = data.length ? (currentPage - 1) * PAGE_SIZE + 1 : 0;
+    const end = Math.min(currentPage * PAGE_SIZE, data.length);
+    document.getElementById('table-info').textContent = data.length
+        ? `Showing ${start}–${end} of ${data.length} units`
+        : 'No units found';
 
-    document.getElementById('table-info').textContent = `Showing ${data.length} of ${unitsData.length} units`;
+    renderPagination(totalPages, data.length);
 }
 
-// -------- VIEW / EDIT --------
+function renderPagination(totalPages, total) {
+    const container = document.getElementById('pagination-container');
+    if (!container) return;
+    if (total === 0) { container.innerHTML = ''; return; }
+
+    let html = '';
+    const prevDisabled = currentPage === 1 ? 'page-btn-disabled' : '';
+    const nextDisabled = currentPage === totalPages ? 'page-btn-disabled' : '';
+
+    html += `<button class="page-btn ${prevDisabled}" onclick="goToPage(${currentPage - 1})" ${currentPage === 1 ? 'disabled' : ''}><i class="fas fa-chevron-left text-[10px]"></i></button>`;
+
+    // Smart page number logic
+    const pages = [];
+    if (totalPages <= 5) {
+        for (let i = 1; i <= totalPages; i++) pages.push(i);
+    } else {
+        pages.push(1);
+        if (currentPage > 3) pages.push('...');
+        for (let i = Math.max(2, currentPage - 1); i <= Math.min(totalPages - 1, currentPage + 1); i++) pages.push(i);
+        if (currentPage < totalPages - 2) pages.push('...');
+        pages.push(totalPages);
+    }
+
+    pages.forEach(p => {
+        if (p === '...') {
+            html += `<span class="page-btn page-btn-disabled border-0">…</span>`;
+        } else {
+            const active = p === currentPage ? 'page-btn-active' : '';
+            html += `<button class="page-btn ${active}" onclick="goToPage(${p})">${p}</button>`;
+        }
+    });
+
+    html += `<button class="page-btn ${nextDisabled}" onclick="goToPage(${currentPage + 1})" ${currentPage === totalPages ? 'disabled' : ''}><i class="fas fa-chevron-right text-[10px]"></i></button>`;
+    container.innerHTML = html;
+}
+
+function goToPage(page) {
+    const data = getFilteredData();
+    const totalPages = Math.ceil(data.length / PAGE_SIZE) || 1;
+    if (page < 1 || page > totalPages) return;
+    currentPage = page;
+    renderTable();
+}
+
+// ─── VIEW ────────────────────────────────────────────────
 function viewUnit(id) {
     const u = unitsData.find(x => x.id === id);
     if (!u) return;
-
     document.getElementById('modal-title').textContent = `${u.name} (${u.code})`;
-
     document.getElementById('modal-fields').innerHTML = `
         <div class="detail-row"><div class="detail-row-label">Unit Code</div><div class="detail-row-value font-mono">${u.code}</div></div>
         <div class="detail-row"><div class="detail-row-label">Unit Name</div><div class="detail-row-value">${u.name}</div></div>
@@ -136,143 +200,170 @@ function viewUnit(id) {
         <div class="detail-row col-span-2"><div class="detail-row-label">Status</div><div class="detail-row-value mt-1">${statusBadge(u.status)}</div></div>
         <div class="detail-row col-span-2"><div class="detail-row-label">Description</div><div class="detail-row-value font-normal text-[#7288AE]">${u.desc || '—'}</div></div>
     `;
-
     document.getElementById('modal-usage-content').innerHTML = `
         <div class="usage-row"><span class="usage-row-label">Products using this unit</span><span class="usage-row-val">${u.products}</span></div>
         <div class="usage-row"><span class="usage-row-label">Purchase transactions</span><span class="usage-row-val">${u.purchases}</span></div>
         <div class="usage-row"><span class="usage-row-label">Sales transactions</span><span class="usage-row-val">${u.sales}</span></div>
         <div class="usage-row"><span class="usage-row-label">Total transactions</span><span class="usage-row-val">${u.purchases + u.sales}</span></div>
     `;
-
     document.getElementById('modal-log-content').innerHTML = `
         <div class="usage-row"><span class="usage-row-label">Created By</span><span class="usage-row-val">${u.createdBy}</span></div>
         <div class="usage-row"><span class="usage-row-label">Created Date</span><span class="usage-row-val">${u.createdDate}</span></div>
         <div class="usage-row"><span class="usage-row-label">Last Modified By</span><span class="usage-row-val">${u.modifiedBy}</span></div>
         <div class="usage-row"><span class="usage-row-label">Last Modified Date</span><span class="usage-row-val">${u.modifiedDate}</span></div>
     `;
-
-    document.getElementById('modal-edit-btn').onclick = () => { closeModal(); editUnit(id); };
+    document.getElementById('modal-edit-btn').onclick = () => { closeModal(); openEditUnitOverlay(id); };
     switchModalTab('overview');
     document.getElementById('detail-modal').classList.remove('hidden');
 }
 
-function editUnit(id) {
-    const u = unitsData.find(x => x.id === id);
-    if (!u) return;
-    editingUnitId = id;
-    document.getElementById('f-name').value = u.name;
-    document.getElementById('f-code').value = u.code;
-    document.getElementById('f-short').value = u.short;
-    document.getElementById('f-type').value = u.type;
-    document.getElementById('f-desc').value = u.desc || '';
-    switchTab('create');
-    showToast('Editing unit: ' + u.name, 'info');
-}
-
+// ─── TOGGLE STATUS ───────────────────────────────────────
 function toggleStatus(id) {
     const u = unitsData.find(x => x.id === id);
     if (!u) return;
-    const prev = u.status;
     u.status = u.status === 'Active' ? 'Inactive' : 'Active';
-    u.modifiedDate = new Date().toLocaleDateString('en-GB', { day: '2-digit', month: 'short', year: 'numeric' });
+    u.modifiedDate = today();
     renderTable();
-    showToast(`${u.name} ${u.status === 'Active' ? 'activated' : 'deactivated'} successfully`, u.status === 'Active' ? 'success' : 'info');
+    updateKPIs();
+    showToast(`${u.name} ${u.status === 'Active' ? 'activated' : 'deactivated'}`, u.status === 'Active' ? 'success' : 'info');
 }
 
-// -------- SAVE UNIT --------
+// ─── OVERLAY: ADD UNIT ───────────────────────────────────
+function openAddUnitOverlay() {
+    editingUnitId = null;
+    document.getElementById('overlay-title').textContent = 'Add New Unit';
+    document.getElementById('overlay-subtitle').textContent = 'Fill in the details below';
+    document.getElementById('ov-save-label').textContent = 'Save Unit';
+    document.getElementById('ov-delete-section').classList.add('hidden');
+    ['ov-name','ov-code','ov-short','ov-desc'].forEach(id => { const el = document.getElementById(id); if (el) el.value = ''; });
+    document.getElementById('ov-type').value = '';
+    document.querySelectorAll('.ov-type-card').forEach(c => c.classList.remove('selected'));
+    document.getElementById('unit-overlay').classList.add('open');
+}
+
+function openEditUnitOverlay(id) {
+    const u = unitsData.find(x => x.id === id);
+    if (!u) return;
+    editingUnitId = id;
+    document.getElementById('overlay-title').textContent = `Edit Unit — ${u.code}`;
+    document.getElementById('overlay-subtitle').textContent = 'Modify the fields and save';
+    document.getElementById('ov-save-label').textContent = 'Update Unit';
+    document.getElementById('ov-delete-section').classList.remove('hidden');
+    document.getElementById('ov-name').value = u.name;
+    document.getElementById('ov-code').value = u.code;
+    document.getElementById('ov-short').value = u.short;
+    document.getElementById('ov-type').value = u.type;
+    document.getElementById('ov-desc').value = u.desc || '';
+    // Sync type cards
+    document.querySelectorAll('.ov-type-card').forEach(c => {
+        c.classList.toggle('selected', c.dataset.type === u.type);
+    });
+    document.getElementById('ov-delete-btn').onclick = () => deleteUnit(id);
+    document.getElementById('unit-overlay').classList.add('open');
+}
+
+function closeUnitOverlay() {
+    document.getElementById('unit-overlay').classList.remove('open');
+    editingUnitId = null;
+}
+
+function saveOverlayUnit() {
+    const name  = document.getElementById('ov-name').value.trim();
+    const code  = document.getElementById('ov-code').value.trim().toUpperCase();
+    const short = document.getElementById('ov-short').value.trim();
+    const type  = document.getElementById('ov-type').value;
+    const desc  = document.getElementById('ov-desc').value.trim();
+
+    if (!name || !code || !type) {
+        showToast('Please fill required fields (Name, Code, Type)', 'error'); return;
+    }
+
+    if (editingUnitId) {
+        const u = unitsData.find(x => x.id === editingUnitId);
+        if (u) {
+            // Check code conflict with other units
+            const conflict = unitsData.find(x => x.code === code && x.id !== editingUnitId);
+            if (conflict) { showToast(`Unit code "${code}" already exists`, 'error'); return; }
+            u.name = name; u.code = code; u.short = short || code.toLowerCase();
+            u.type = type; u.desc = desc; u.modifiedDate = today(); u.modifiedBy = 'Admin';
+            showToast(`Unit "${name}" updated successfully`, 'success');
+        }
+    } else {
+        if (unitsData.find(u => u.code === code)) { showToast(`Unit code "${code}" already exists`, 'error'); return; }
+        unitsData.push({
+            id: nextId++, code, name, short: short || code.toLowerCase(),
+            type, status: 'Active', desc,
+            products: 0, purchases: 0, sales: 0,
+            createdBy: 'Admin', createdDate: today(), modifiedBy: 'Admin', modifiedDate: today(),
+        });
+        showToast(`Unit "${name}" created successfully`, 'success');
+    }
+
+    closeUnitOverlay();
+    renderTable();
+    updateKPIs();
+}
+
+function deleteUnit(id) {
+    const u = unitsData.find(x => x.id === id);
+    if (!u) return;
+    if (!confirm(`Delete unit "${u.name} (${u.code})"? This cannot be undone.`)) return;
+    unitsData = unitsData.filter(x => x.id !== id);
+    closeUnitOverlay();
+    renderTable();
+    updateKPIs();
+    showToast(`Unit "${u.name}" deleted`, 'info');
+}
+
+// ─── CREATE UNIT TAB (legacy, keep working) ──────────────
 function saveUnit(keepOpen = false) {
     const name = document.getElementById('f-name').value.trim();
     const code = document.getElementById('f-code').value.trim().toUpperCase();
     const short = document.getElementById('f-short').value.trim();
     const type = document.getElementById('f-type').value;
     const desc = document.getElementById('f-desc').value.trim();
-
-    if (!name || !code || !type) {
-        showToast('Please fill required fields (Name, Code, Type)', 'error');
-        return;
-    }
-
-    if (editingUnitId) {
-        const u = unitsData.find(x => x.id === editingUnitId);
-        if (u) {
-            u.name = name; u.code = code; u.short = short || code.toLowerCase();
-            u.type = type; u.desc = desc;
-            u.modifiedDate = new Date().toLocaleDateString('en-GB', { day: '2-digit', month: 'short', year: 'numeric' });
-            showToast(`Unit "${name}" updated successfully`, 'success');
-        }
-        editingUnitId = null;
-    } else {
-        const duplicate = unitsData.find(u => u.code === code);
-        if (duplicate) { showToast(`Unit code "${code}" already exists`, 'error'); return; }
-        unitsData.push({
-            id: nextId++, code, name, short: short || code.toLowerCase(),
-            type, status: 'Active', desc,
-            products: 0, purchases: 0, sales: 0,
-            createdBy: 'Admin',
-            createdDate: new Date().toLocaleDateString('en-GB', { day: '2-digit', month: 'short', year: 'numeric' }),
-            modifiedBy: 'Admin',
-            modifiedDate: new Date().toLocaleDateString('en-GB', { day: '2-digit', month: 'short', year: 'numeric' }),
-        });
-        showToast(`Unit "${name}" created successfully`, 'success');
-    }
-
-    if (!keepOpen) { resetForm(); switchTab('list'); }
-    else resetForm();
+    if (!name || !code || !type) { showToast('Please fill required fields', 'error'); return; }
+    if (unitsData.find(u => u.code === code)) { showToast(`Code "${code}" already exists`, 'error'); return; }
+    unitsData.push({ id: nextId++, code, name, short: short || code.toLowerCase(), type, status: 'Active', desc, products: 0, purchases: 0, sales: 0, createdBy: 'Admin', createdDate: today(), modifiedBy: 'Admin', modifiedDate: today() });
+    showToast(`Unit "${name}" created`, 'success');
+    if (!keepOpen) { resetForm(); switchTab('list'); } else resetForm();
 }
-
 function saveAndContinue() { saveUnit(true); }
-
 function resetForm() {
-    ['f-name', 'f-code', 'f-short', 'f-desc'].forEach(id => {
-        const el = document.getElementById(id);
-        if (el) el.value = '';
-    });
-    const sel = document.getElementById('f-type');
-    if (sel) sel.value = '';
+    ['f-name','f-code','f-short','f-desc'].forEach(id => { const el = document.getElementById(id); if (el) el.value = ''; });
+    const sel = document.getElementById('f-type'); if (sel) sel.value = '';
     editingUnitId = null;
     document.querySelectorAll('.type-ref-card').forEach(c => c.classList.remove('selected'));
 }
 
-// -------- CONVERSIONS --------
+// ─── CONVERSIONS ─────────────────────────────────────────
 function renderConversions() {
     const tbody = document.getElementById('conversion-tbody');
     if (!tbody) return;
     if (!conversionsData.length) {
         tbody.innerHTML = `<tr><td colspan="4" class="px-4 py-8 text-center text-xs text-[#7288AE]">No conversions defined yet.</td></tr>`;
-        return;
+    } else {
+        tbody.innerHTML = conversionsData.map(c => {
+            const bn = unitsData.find(u => u.code === c.base)?.name || '';
+            const tn = unitsData.find(u => u.code === c.target)?.name || '';
+            return `<tr class="tbl-row">
+                <td class="px-4 py-3"><span class="font-mono font-bold text-[#111844] text-xs bg-[#111844]/8 px-2 py-0.5 rounded-md">${c.base}</span> <span class="text-[10px] text-[#7288AE]">${bn}</span></td>
+                <td class="px-4 py-3"><span class="font-mono font-bold text-[#4B5694] text-xs bg-[#4B5694]/8 px-2 py-0.5 rounded-md">${c.target}</span> <span class="text-[10px] text-[#7288AE]">${tn}</span></td>
+                <td class="px-4 py-3 text-xs font-semibold text-[#111844]">× ${c.factor.toLocaleString()}</td>
+                <td class="px-4 py-3"><button onclick="deleteConversion(${c.id})" class="w-7 h-7 flex items-center justify-center rounded-lg text-red-500 hover:bg-red-50 transition-colors"><i class="fas fa-trash text-xs"></i></button></td>
+            </tr>`;
+        }).join('');
     }
-    tbody.innerHTML = conversionsData.map(c => {
-        const baseUnit = unitsData.find(u => u.code === c.base);
-        const tgtUnit  = unitsData.find(u => u.code === c.target);
-        return `
-        <tr class="tbl-row">
-            <td class="px-4 py-3">
-                <span class="font-mono font-bold text-[#111844] text-xs bg-[#111844]/8 px-2 py-0.5 rounded-md">${c.base}</span>
-                <span class="text-[10px] text-[#7288AE] ml-1">${baseUnit?.name || ''}</span>
-            </td>
-            <td class="px-4 py-3">
-                <span class="font-mono font-bold text-[#4B5694] text-xs bg-[#4B5694]/8 px-2 py-0.5 rounded-md">${c.target}</span>
-                <span class="text-[10px] text-[#7288AE] ml-1">${tgtUnit?.name || ''}</span>
-            </td>
-            <td class="px-4 py-3 text-xs font-semibold text-[#111844]">× ${c.factor.toLocaleString()}</td>
-            <td class="px-4 py-3">
-                <button onclick="deleteConversion(${c.id})" class="w-7 h-7 flex items-center justify-center rounded-lg text-red-500 hover:bg-red-50 transition-colors" title="Delete">
-                    <i class="fas fa-trash text-xs"></i>
-                </button>
-            </td>
-        </tr>`;
-    }).join('');
     populateConversionSelects();
+    updateKPIs();
 }
 
 function populateConversionSelects() {
     const activeUnits = unitsData.filter(u => u.status === 'Active');
-    ['c-base', 'c-target'].forEach(id => {
-        const sel = document.getElementById(id);
-        if (!sel) return;
-        const curVal = sel.value;
-        sel.innerHTML = `<option value="">Select unit</option>` +
-            activeUnits.map(u => `<option value="${u.code}" ${u.code === curVal ? 'selected' : ''}>${u.code} — ${u.name}</option>`).join('');
+    ['c-base','c-target'].forEach(id => {
+        const sel = document.getElementById(id); if (!sel) return;
+        const cur = sel.value;
+        sel.innerHTML = `<option value="">Select unit</option>` + activeUnits.map(u => `<option value="${u.code}" ${u.code === cur ? 'selected' : ''}>${u.code} — ${u.name}</option>`).join('');
     });
 }
 
@@ -280,14 +371,9 @@ function saveConversion() {
     const base   = document.getElementById('c-base')?.value;
     const target = document.getElementById('c-target')?.value;
     const factor = parseFloat(document.getElementById('c-factor')?.value);
-
-    if (!base || !target || !factor || isNaN(factor)) {
-        showToast('Please fill all conversion fields', 'error'); return;
-    }
-    if (base === target) { showToast('Base and target unit cannot be the same', 'error'); return; }
-    const exists = conversionsData.find(c => c.base === base && c.target === target);
-    if (exists) { showToast('This conversion already exists', 'error'); return; }
-
+    if (!base || !target || !factor || isNaN(factor)) { showToast('Please fill all conversion fields', 'error'); return; }
+    if (base === target) { showToast('Base and target cannot be same', 'error'); return; }
+    if (conversionsData.find(c => c.base === base && c.target === target)) { showToast('Conversion already exists', 'error'); return; }
     conversionsData.push({ id: nextConvId++, base, target, factor });
     document.getElementById('c-base').value = '';
     document.getElementById('c-target').value = '';
@@ -310,7 +396,6 @@ function openAddConversion() {
     document.getElementById('conversion-form-card')?.scrollIntoView({ behavior: 'smooth', block: 'center' });
 }
 
-// Live conversion preview
 function updateConversionPreview() {
     const base   = document.getElementById('c-base')?.value;
     const target = document.getElementById('c-target')?.value;
@@ -325,7 +410,7 @@ function updateConversionPreview() {
     }
 }
 
-// -------- MODAL --------
+// ─── MODAL ───────────────────────────────────────────────
 function switchModalTab(tab) {
     document.querySelectorAll('.modal-tab-content').forEach(el => el.classList.add('hidden'));
     document.querySelectorAll('.modal-tab-btn').forEach(btn => {
@@ -333,39 +418,41 @@ function switchModalTab(tab) {
         btn.classList.add('text-[#111844]/50');
     });
     document.getElementById('modal-' + tab)?.classList.remove('hidden');
-    const activeBtn = document.querySelector(`[data-modal-tab="${tab}"]`);
-    if (activeBtn) { activeBtn.classList.add('active-modal-tab'); activeBtn.classList.remove('text-[#111844]/50'); }
+    const btn = document.querySelector(`[data-modal-tab="${tab}"]`);
+    if (btn) { btn.classList.add('active-modal-tab'); btn.classList.remove('text-[#111844]/50'); }
 }
-
 function closeModal() { document.getElementById('detail-modal').classList.add('hidden'); }
 
-// -------- TOAST --------
+// ─── TOAST ───────────────────────────────────────────────
 function showToast(msg, type = 'info') {
     const container = document.getElementById('toast-container');
     const icons = { success: 'fa-check-circle text-emerald-600', error: 'fa-times-circle text-red-500', info: 'fa-info-circle text-[#4B5694]' };
     const toast = document.createElement('div');
-    toast.className = `toast toast-${type}`;
+    toast.className = `toast toast-${type} pointer-events-auto`;
     toast.innerHTML = `<i class="fas ${icons[type]} text-sm flex-shrink-0"></i><span>${msg}</span>`;
     container.appendChild(toast);
     setTimeout(() => toast.remove(), 3000);
 }
 
-// -------- EXPORT (stub) --------
+// ─── EXPORT ──────────────────────────────────────────────
 function openExport() {
     const rows = ['Unit Code,Unit Name,Short Name,Type,Status'];
     unitsData.forEach(u => rows.push(`${u.code},${u.name},${u.short},${u.type},${u.status}`));
     const blob = new Blob([rows.join('\n')], { type: 'text/csv' });
-    const a = document.createElement('a'); a.href = URL.createObjectURL(blob);
-    a.download = 'units_export.csv'; a.click();
+    const a = document.createElement('a');
+    a.href = URL.createObjectURL(blob);
+    a.download = 'units_export.csv';
+    a.click();
     showToast('Units exported as CSV', 'success');
 }
 
-// -------- SIDEBAR --------
+// ─── SIDEBAR ─────────────────────────────────────────────
 let isCollapsed = false;
 const sidebar = document.getElementById('sidebar');
 const mainWrapper = document.getElementById('main-wrapper');
 const sidebarToggle = document.getElementById('sidebar-toggle');
 const overlay = document.getElementById('sidebar-overlay');
+const sidebarToggleMobile = document.getElementById('sidebar-toggle-mobile');
 
 sidebarToggle?.addEventListener('click', () => {
     if (window.innerWidth < 1024) {
@@ -374,10 +461,15 @@ sidebarToggle?.addEventListener('click', () => {
     } else {
         isCollapsed = !isCollapsed;
         sidebar.classList.toggle('sidebar-collapsed', isCollapsed);
-        mainWrapper.style.marginLeft = isCollapsed ? '68px' : '';
+        mainWrapper.style.marginLeft = isCollapsed ? '68px' : '260px';
         const icon = sidebarToggle.querySelector('i');
-        if (icon) { icon.className = isCollapsed ? 'fas fa-chevron-right text-sm' : 'fas fa-chevron-left text-sm'; }
+        if (icon) icon.className = isCollapsed ? 'fas fa-chevron-right text-sm' : 'fas fa-chevron-left text-sm';
     }
+});
+
+sidebarToggleMobile?.addEventListener('click', () => {
+    sidebar.classList.toggle('sidebar-open');
+    overlay?.classList.toggle('hidden');
 });
 
 overlay?.addEventListener('click', () => {
@@ -385,9 +477,9 @@ overlay?.addEventListener('click', () => {
     overlay.classList.add('hidden');
 });
 
-// -------- NAV DROPDOWNS --------
+// Nav dropdowns
 document.querySelectorAll('.nav-group-header').forEach(header => {
-    header.addEventListener('click', function () {
+    header.addEventListener('click', function() {
         const items = this.nextElementSibling;
         const chevron = this.querySelector('.fa-chevron-down');
         items?.classList.toggle('hidden');
@@ -395,46 +487,62 @@ document.querySelectorAll('.nav-group-header').forEach(header => {
     });
 });
 
-// -------- USER / NOTIF MENUS --------
+// User / notif menus
 const userBtn = document.getElementById('user-menu-btn');
 const userMenu = document.getElementById('user-menu');
 const notifBtn = document.getElementById('notif-btn');
 const notifMenu = document.getElementById('notif-menu');
-
 userBtn?.addEventListener('click', e => { e.stopPropagation(); userMenu.classList.toggle('hidden'); notifMenu?.classList.add('hidden'); });
 notifBtn?.addEventListener('click', e => { e.stopPropagation(); notifMenu.classList.toggle('hidden'); userMenu?.classList.add('hidden'); });
 document.addEventListener('click', () => { userMenu?.classList.add('hidden'); notifMenu?.classList.add('hidden'); });
 
-// -------- TAB BUTTON LISTENERS --------
+// Tab buttons
 document.querySelectorAll('.tab-btn').forEach(btn => {
     btn.addEventListener('click', () => switchTab(btn.dataset.tab));
 });
 
-// -------- FILTER LISTENERS --------
-document.getElementById('search-input')?.addEventListener('input', renderTable);
-document.getElementById('filter-type')?.addEventListener('change', renderTable);
-document.getElementById('filter-status')?.addEventListener('change', renderTable);
+// Filters
+document.getElementById('search-input')?.addEventListener('input', () => { currentPage = 1; renderTable(); });
+document.getElementById('filter-type')?.addEventListener('change', () => { currentPage = 1; renderTable(); });
+document.getElementById('filter-status')?.addEventListener('change', () => { currentPage = 1; renderTable(); });
 
-// -------- TYPE CARD SELECT --------
-document.querySelectorAll('.type-ref-card').forEach(card => {
+// Type ref cards (create tab)
+document.querySelectorAll('.type-ref-card:not(.ov-type-card)').forEach(card => {
     card.addEventListener('click', () => {
-        document.querySelectorAll('.type-ref-card').forEach(c => c.classList.remove('selected'));
+        document.querySelectorAll('.type-ref-card:not(.ov-type-card)').forEach(c => c.classList.remove('selected'));
         card.classList.add('selected');
         const sel = document.getElementById('f-type');
         if (sel) sel.value = card.dataset.type;
     });
 });
 
-// -------- CONVERSION PREVIEW --------
-['c-base', 'c-target', 'c-factor'].forEach(id => {
+// Overlay type cards
+document.querySelectorAll('.ov-type-card').forEach(card => {
+    card.addEventListener('click', () => {
+        document.querySelectorAll('.ov-type-card').forEach(c => c.classList.remove('selected'));
+        card.classList.add('selected');
+        const sel = document.getElementById('ov-type');
+        if (sel) sel.value = card.dataset.type;
+    });
+});
+
+// Overlay type dropdown sync
+document.getElementById('ov-type')?.addEventListener('change', function() {
+    document.querySelectorAll('.ov-type-card').forEach(c => {
+        c.classList.toggle('selected', c.dataset.type === this.value);
+    });
+});
+
+// Conversion preview
+['c-base','c-target','c-factor'].forEach(id => {
     document.getElementById(id)?.addEventListener('input', updateConversionPreview);
     document.getElementById(id)?.addEventListener('change', updateConversionPreview);
 });
 
-// Close modal on backdrop click
-document.getElementById('detail-modal')?.addEventListener('click', function (e) {
-    if (e.target === this) closeModal();
-});
+// Close modals on backdrop click
+document.getElementById('detail-modal')?.addEventListener('click', function(e) { if (e.target === this) closeModal(); });
+document.getElementById('unit-overlay')?.addEventListener('click', function(e) { if (e.target === this) closeUnitOverlay(); });
 
-// -------- INIT --------
+// ─── INIT ────────────────────────────────────────────────
 renderTable();
+updateKPIs();

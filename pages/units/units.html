@@ -13,70 +13,80 @@
 <body class="bg-[#ebe6e6] text-[#111844] min-h-screen">
 
 <!-- SIDEBAR -->
-<aside id="sidebar" class="fixed top-0 left-0 h-full w-[260px] bg-[#FFFCFC] z-[100] flex flex-col transition-all duration-300 overflow-hidden shadow-lg">
-  <div class="flex items-center justify-between px-5 h-16 border border-[#4B5694]/20 shadow-sm">
+<aside id="sidebar" class="fixed top-0 left-0 h-full w-[260px] bg-[#FFFCFC] z-[100] flex flex-col shadow-lg overflow-hidden">
+  <div class="flex items-center justify-between px-5 h-16 border-b border-[#4B5694]/20 flex-shrink-0">
     <div class="flex items-center gap-3">
-        <div class="w-9 h-9 rounded-lg bg-[#111844] flex items-center justify-center text-[#FAFAFA] flex-shrink-0">
-            <i class="fas fa-cubes"></i>
-        </div>
-        <img src="/assets/logo.png" alt="Logo" class="h-8 w-auto object-contain">
+      <div class="w-9 h-9 rounded-lg bg-[#111844] flex items-center justify-center text-[#FAFAFA] flex-shrink-0">
+        <i class="fas fa-cubes"></i>
+      </div>
+      <img src="/assets/logo.png" alt="Logo" class="sidebar-brand-text h-8 w-auto object-contain">
     </div>
     <button id="sidebar-toggle" class="w-7 h-7 flex items-center justify-center rounded-lg text-[#4B5694] hover:bg-[#4B5694]/10 transition-colors">
-        <i class="fas fa-chevron-left text-sm"></i>
+      <i class="fas fa-chevron-left text-sm"></i>
     </button>
-</div>
-
+  </div>
   <nav class="flex-1 overflow-y-auto py-3 px-2 space-y-0.5">
-    <a href="/index.html" class="nav-item flex items-center gap-3 px-3 py-2.5 rounded-lg text-[#111844]/70 hover:bg-[#7288AE]/20 hover:text-[#111844] transition-colors duration-150 text-sm cursor-pointer border-b border-[#4B5694]/20 shadow-sm">
+    
+    <!-- 📊 DASHBOARD -->
+    <a href="/index.html" class="nav-item flex items-center gap-3 px-3 py-2.5 rounded-lg text-sm cursor-pointer border-b border-[#4B5694]/20 shadow-sm nav-active">
       <span class="nav-icon text-base flex-shrink-0 w-5"><i class="fas fa-chart-pie"></i></span>
       <span class="nav-label">Dashboard</span>
     </a>
 
+    <!-- 📦 MASTER MANAGEMENT -->
     <div class="nav-group">
-      <div class="nav-group-header flex items-center justify-between gap-3 px-3 py-2.5 rounded-lg text-[#111844] bg-[#111844]/5 hover:bg-[#7288AE]/20 transition-colors duration-150 text-sm cursor-pointer border-b border-[#4B5694]/20 shadow-sm">
-        <div class="flex items-center gap-3">
+      <div class="nav-group-header flex items-center justify-between gap-3 px-3 py-2.5 rounded-lg text-[#111844]/70 hover:bg-[#7288AE]/20 hover:text-[#111844] transition-colors duration-150 text-sm cursor-pointer border-b border-[#4B5694]/20 shadow-sm">
+        <div class="flex items-center gap-3" >
           <span class="nav-icon text-base flex-shrink-0 w-5"><i class="fas fa-database"></i></span>
-          <span class="nav-label font-medium">Master Management</span>
+          <span class="nav-label">Master Management</span>
         </div>
-        <i class="fas fa-chevron-down text-xs transition-transform duration-200" style="transform:rotate(180deg)"></i>
+        <i class="fas fa-chevron-down text-xs transition-transform duration-200"></i>
       </div>
-      <div class="nav-group-items ml-7 space-y-0.5 mt-1">
+      <div class="nav-group-items ml-7 space-y-0.5 mt-1 hidden">
         <a href="/pages/Product/product.html" class="nav-item flex items-center gap-3 px-3 py-2 rounded-lg text-[#111844]/70 hover:bg-[#7288AE]/20 hover:text-[#111844] transition-colors duration-150 text-xs cursor-pointer">
           <span class="nav-icon text-sm flex-shrink-0 w-4"><i class="fas fa-box"></i></span>
           <span class="nav-label">Products</span>
         </a>
-        <a href="/pages/suppliers/suppliers.html" class="nav-item flex items-center gap-3 px-3 py-2 rounded-lg text-[#111844]/70 hover:bg-[#7288AE]/20 hover:text-[#111844] transition-colors duration-150 text-xs cursor-pointer">
+
+        <a href="/pages/suppliers/supplier.html" class="nav-item flex items-center gap-3 px-3 py-2 rounded-lg text-[#111844]/70 hover:bg-[#7288AE]/20 hover:text-[#111844] transition-colors duration-150 text-xs cursor-pointer">
           <span class="nav-icon text-sm flex-shrink-0 w-4"><i class="fas fa-truck-loading"></i></span>
           <span class="nav-label">Suppliers</span>
         </a>
-        <a href="/pages/customers/customers.html" class="nav-item flex items-center gap-3 px-3 py-2 rounded-lg text-[#111844]/70 hover:bg-[#7288AE]/20 hover:text-[#111844] transition-colors duration-150 text-xs cursor-pointer">
+        <a href="/pages/customers/customer.html" class="nav-item flex items-center gap-3 px-3 py-2 rounded-lg text-[#111844]/70 hover:bg-[#7288AE]/20 hover:text-[#111844] transition-colors duration-150 text-xs cursor-pointer">
           <span class="nav-icon text-sm flex-shrink-0 w-4"><i class="fas fa-users"></i></span>
           <span class="nav-label">Customers</span>
         </a>
-        <a href="/pages/warehousemaster/warehousem.html" class="nav-item flex items-center gap-3 px-3 py-2 rounded-lg text-[#111844]/70 hover:bg-[#7288AE]/20 hover:text-[#111844] transition-colors duration-150 text-xs cursor-pointer">
+        <a href="pages/warehousemaster/warehousem.html" class="nav-item flex items-center gap-3 px-3 py-2 rounded-lg text-[#111844]/70 hover:bg-[#7288AE]/20 hover:text-[#111844] transition-colors duration-150 text-xs cursor-pointer">
           <span class="nav-icon text-sm flex-shrink-0 w-4"><i class="fas fa-warehouse"></i></span>
           <span class="nav-label">Warehouses</span>
         </a>
-        <a href="/pages/units/units.html" class="nav-item flex items-center gap-3 px-3 py-2 rounded-lg nav-active text-xs cursor-pointer">
+        <a href="/pages/units/units.html" class="nav-item flex items-center gap-3 px-3 py-2 rounded-lg text-[#111844]/70 hover:bg-[#7288AE]/20 hover:text-[#111844] transition-colors duration-150 text-xs cursor-pointer">
           <span class="nav-icon text-sm flex-shrink-0 w-4"><i class="fas fa-balance-scale"></i></span>
           <span class="nav-label">Units</span>
         </a>
       </div>
     </div>
 
+    <!-- 🛒 PURCHASE MANAGEMENT -->
     <a href="/pages/purchase/purchase.html" class="nav-item flex items-center gap-3 px-3 py-2.5 rounded-lg text-[#111844]/70 hover:bg-[#7288AE]/20 hover:text-[#111844] transition-colors duration-150 text-sm cursor-pointer border-b border-[#4B5694]/20 shadow-sm">
         <span class="nav-icon text-base flex-shrink-0 w-5"><i class="fas fa-shopping-cart"></i></span>
         <span class="nav-label">Purchase Management</span>
     </a>
+
+
+    <!-- 🏭 INVENTORY MANAGEMENT -->
     <a href="/pages/inventory/inventory.html" class="nav-item flex items-center gap-3 px-3 py-2.5 rounded-lg text-[#111844]/70 hover:bg-[#7288AE]/20 hover:text-[#111844] transition-colors duration-150 text-sm cursor-pointer border-b border-[#4B5694]/20 shadow-sm">
         <span class="nav-icon text-base flex-shrink-0 w-5"><i class="fas fa-boxes-stacked"></i></span>
         <span class="nav-label">Inventory Management</span>
     </a>
+
+    <!-- 🚚 WAREHOUSE OPERATIONS -->
     <a href="/pages/warehouse/warehouse.html" class="nav-item flex items-center gap-3 px-3 py-2.5 rounded-lg text-[#111844]/70 hover:bg-[#7288AE]/20 hover:text-[#111844] transition-colors duration-150 text-sm cursor-pointer border-b border-[#4B5694]/20 shadow-sm">
         <span class="nav-icon text-base flex-shrink-0 w-5"><i class="fas fa-warehouse"></i></span>
         <span class="nav-label">Warehouse Management</span>
     </a>
 
+    <!-- 📝 SALES & DISPATCH -->
     <div class="nav-group">
       <div class="nav-group-header flex items-center justify-between gap-3 px-3 py-2.5 rounded-lg text-[#111844]/70 hover:bg-[#7288AE]/20 hover:text-[#111844] transition-colors duration-150 text-sm cursor-pointer border-b border-[#4B5694]/20 shadow-sm">
         <div class="flex items-center gap-3">
@@ -86,7 +96,7 @@
         <i class="fas fa-chevron-down text-xs transition-transform duration-200"></i>
       </div>
       <div class="nav-group-items ml-7 space-y-0.5 mt-1 hidden">
-       <a href="/pages/sales/salesorders/salesorders.html" class="nav-item flex items-center gap-3 px-3 py-2 rounded-lg text-[#111844]/70 hover:bg-[#7288AE]/20 hover:text-[#111844] transition-colors duration-150 text-xs cursor-pointer">
+        <a href="/pages/sales/salesorders/salesorders.html" class="nav-item flex items-center gap-3 px-3 py-2 rounded-lg text-[#111844]/70 hover:bg-[#7288AE]/20 hover:text-[#111844] transition-colors duration-150 text-xs cursor-pointer">
           <span class="nav-icon text-sm flex-shrink-0 w-4"><i class="fas fa-receipt"></i></span>
           <span class="nav-label">Sales Orders</span>
         </a>
@@ -109,11 +119,13 @@
       </div>
     </div>
 
+    <!-- ↩️ RETURNS MANAGEMENT -->
     <a href="/pages/returns/returns.html" class="nav-item flex items-center gap-3 px-3 py-2.5 rounded-lg text-[#111844]/70 hover:bg-[#7288AE]/20 hover:text-[#111844] transition-colors duration-150 text-sm cursor-pointer border-b border-[#4B5694]/20 shadow-sm">
-        <span class="nav-icon text-base flex-shrink-0 w-5"><i class="fas fa-rotate-left"></i></span>
-        <span class="nav-label">Returns Management</span>
+          <span class="nav-icon text-base flex-shrink-0 w-5"><i class="fas fa-rotate-left"></i></span>
+          <span class="nav-label">Returns Management</span>
     </a>
 
+    <!-- 💰 FINANCE & BILLING -->
     <div class="nav-group">
       <div class="nav-group-header flex items-center justify-between gap-3 px-3 py-2.5 rounded-lg text-[#111844]/70 hover:bg-[#7288AE]/20 hover:text-[#111844] transition-colors duration-150 text-sm cursor-pointer border-b border-[#4B5694]/20 shadow-sm">
         <div class="flex items-center gap-3">
@@ -146,11 +158,13 @@
       </div>
     </div>
 
+    <!-- 📈 REPORTS & ANALYTICS -->
     <a href="/pages/reports&analytics/reports.html" class="nav-item flex items-center gap-3 px-3 py-2.5 rounded-lg text-[#111844]/70 hover:bg-[#7288AE]/20 hover:text-[#111844] transition-colors duration-150 text-sm cursor-pointer border-b border-[#4B5694]/20 shadow-sm">
           <span class="nav-icon text-base flex-shrink-0 w-5"><i class="fas fa-chart-bar"></i></span>
           <span class="nav-label">Reports & Analytics</span>
     </a>
 
+    <!-- 👥 USER MANAGEMENT -->
     <div class="nav-group">
       <div class="nav-group-header flex items-center justify-between gap-3 px-3 py-2.5 rounded-lg text-[#111844]/70 hover:bg-[#7288AE]/20 hover:text-[#111844] transition-colors duration-150 text-sm cursor-pointer border-b border-[#4B5694]/20 shadow-sm">
         <div class="flex items-center gap-3">
@@ -170,427 +184,402 @@
         </a>
       </div>
     </div>
-  </nav>
 
-  
+  </nav>
 </aside>
 
 <div id="sidebar-overlay" class="hidden fixed inset-0 bg-[#111844]/50 z-[90] lg:hidden"></div>
 
 <div id="main-wrapper" class="ml-[260px] flex flex-col min-h-screen transition-all duration-300">
-    <!-- TOP BAR -->
-    <header class="sticky top-0 z-[200] h-16 bg-[#FFFCFC] border-b border-[#4B5694]/20 flex items-center justify-between px-5 shadow-sm">
-        <div class="flex items-center gap-4">
-            <div>
-                <h1 class="text-sm font-semibold text-[#111844]">Unit Master</h1>
-                <p class="text-xs text-[#7288AE]">Masters → Unit Master</p>
-            </div>
+  <!-- TOP BAR -->
+  <header class="sticky top-0 z-[200] h-16 bg-[#FFFCFC] border-b border-[#4B5694]/20 flex items-center justify-between px-4 shadow-sm">
+    <div class="flex items-center gap-3">
+      <button id="sidebar-toggle-mobile" class="lg:hidden w-9 h-9 flex items-center justify-center rounded-lg text-[#4B5694] hover:bg-[#4B5694]/10 transition-colors">
+        <i class="fas fa-bars text-base"></i>
+      </button>
+      <div>
+        <h1 class="text-sm font-semibold text-[#111844]">Unit Master</h1>
+        <p class="text-xs text-[#7288AE] hidden sm:block">Masters → Unit Master</p>
+      </div>
+    </div>
+    <div class="flex items-center gap-2">
+      <div class="relative">
+        <button id="notif-btn" class="w-9 h-9 flex items-center justify-center rounded-lg text-[#4B5694] hover:bg-[#4B5694]/10 transition-colors relative">
+          <i class="fas fa-bell text-base"></i>
+          <span class="notif-badge"></span>
+        </button>
+        <div id="notif-menu" class="hidden absolute right-0 top-full mt-1 w-72 sm:w-80 bg-[#FFFCFC] border border-[#4B5694]/20 rounded-xl shadow-lg z-50 overflow-hidden">
+          <div class="flex items-center justify-between px-4 py-3 border-b border-[#4B5694]/15">
+            <span class="text-xs font-semibold text-[#111844]">Notifications</span>
+            <span class="text-[10px] px-2 py-0.5 rounded-full bg-[#111844]/10 text-[#111844] font-medium">3 new</span>
+          </div>
+          <div class="max-h-72 overflow-y-auto divide-y divide-[#4B5694]/10">
+            <div class="notif-item"><div class="notif-icon bg-red-100 text-red-600"><i class="fas fa-times-circle"></i></div><div><div class="notif-title">Out of stock: Aluminium Sheets</div><div class="notif-desc">Restock required immediately</div><div class="notif-time">10 min ago</div></div></div>
+            <div class="notif-item"><div class="notif-icon bg-amber-100 text-amber-600"><i class="fas fa-exclamation-triangle"></i></div><div><div class="notif-title">Low stock: Steel Pipes (25mm)</div><div class="notif-desc">Only 5 units remaining</div><div class="notif-time">42 min ago</div></div></div>
+            <div class="notif-item"><div class="notif-icon bg-emerald-100 text-emerald-700"><i class="fas fa-truck"></i></div><div><div class="notif-title">PO-2041 delivered</div><div class="notif-desc">142 units received</div><div class="notif-time">1 hour ago</div></div></div>
+          </div>
         </div>
-        <div class="flex items-center gap-2">
-            <div class="relative">
-                <button id="notif-btn" class="w-9 h-9 flex items-center justify-center rounded-lg text-[#4B5694] hover:bg-[#4B5694]/10 transition-colors relative">
-                    <i class="fas fa-bell text-base"></i>
-                    <span class="notif-badge"></span>
-                </button>
-                <div id="notif-menu" class="hidden absolute right-0 top-full mt-1 w-80 bg-[#FFFCFC] border border-[#4B5694]/20 rounded-xl shadow-lg z-50 overflow-hidden">
-                    <div class="flex items-center justify-between px-4 py-3 border-b border-[#4B5694]/15">
-                        <span class="text-xs font-semibold text-[#111844]">Notifications</span>
-                        <span class="text-[10px] px-2 py-0.5 rounded-full bg-[#111844]/10 text-[#111844] font-medium">4 new</span>
-                    </div>
-                    <div class="max-h-80 overflow-y-auto divide-y divide-[#4B5694]/10">
-                        <div class="notif-item">
-                            <div class="notif-icon bg-red-100 text-red-600"><i class="fas fa-times-circle"></i></div>
-                            <div>
-                                <div class="notif-title">Out of stock: Aluminium Sheets (4mm)</div>
-                                <div class="notif-desc">Restock required immediately</div>
-                                <div class="notif-time">10 minutes ago</div>
-                            </div>
-                        </div>
-                        <div class="notif-item">
-                            <div class="notif-icon bg-amber-100 text-amber-600"><i class="fas fa-exclamation-triangle"></i></div>
-                            <div>
-                                <div class="notif-title">Low stock: Steel Pipes (25mm)</div>
-                                <div class="notif-desc">Only 5 units remaining</div>
-                                <div class="notif-time">42 minutes ago</div>
-                            </div>
-                        </div>
-                        <div class="notif-item">
-                            <div class="notif-icon bg-emerald-100 text-emerald-700"><i class="fas fa-truck"></i></div>
-                            <div>
-                                <div class="notif-title">Purchase order #PO-2041 delivered</div>
-                                <div class="notif-desc">142 units received at Warehouse A</div>
-                                <div class="notif-time">1 hour ago</div>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="px-4 py-2.5 border-t border-[#4B5694]/15 text-center">
-                        <a href="#" class="text-xs font-medium text-[#111844] hover:underline">View all notifications</a>
-                    </div>
-                </div>
-            </div>
-            <div class="relative">
-                <button id="user-menu-btn" class="flex items-center gap-2 px-3 py-1.5 rounded-lg hover:bg-[#4B5694]/10 transition-colors">
-                    <div class="w-7 h-7 rounded-full bg-[#111844] flex items-center justify-center text-[#FAFAFA] text-xs font-bold">AD</div>
-                    <span class="text-xs font-medium text-[#111844] hidden sm:block">Admin</span>
-                    <i class="fas fa-chevron-down text-[10px] text-[#4B5694]"></i>
-                </button>
-                <div id="user-menu" class="hidden absolute right-0 top-full mt-1 w-44 bg-[#FFFCFC] border border-[#4B5694]/20 rounded-xl shadow-lg py-1 z-50">
-                    <a href="/profile.html" class="flex items-center gap-2 px-4 py-2 text-xs text-[#111844] hover:bg-[#7288AE]/10 transition-colors">
-                        <i class="fas fa-user-circle w-4"></i> My Profile
-                    </a>
-                    <div class="border-t border-[#4B5694]/10 my-1"></div>
-                    <a href="/login.html" class="flex items-center gap-2 px-4 py-2 text-xs text-red-600 hover:bg-red-50 transition-colors">
-                        <i class="fas fa-sign-out-alt w-4"></i> Logout
-                    </a>
-                </div>
-            </div>
+      </div>
+      <div class="relative">
+        <button id="user-menu-btn" class="flex items-center gap-2 px-2 sm:px-3 py-1.5 rounded-lg hover:bg-[#4B5694]/10 transition-colors">
+          <div class="w-7 h-7 rounded-full bg-[#111844] flex items-center justify-center text-[#FAFAFA] text-xs font-bold">AD</div>
+          <span class="text-xs font-medium text-[#111844] hidden sm:block">Admin</span>
+          <i class="fas fa-chevron-down text-[10px] text-[#4B5694] hidden sm:block"></i>
+        </button>
+        <div id="user-menu" class="hidden absolute right-0 top-full mt-1 w-44 bg-[#FFFCFC] border border-[#4B5694]/20 rounded-xl shadow-lg py-1 z-50">
+          <a href="#" class="flex items-center gap-2 px-4 py-2 text-xs text-[#111844] hover:bg-[#7288AE]/10"><i class="fas fa-user-circle w-4"></i> My Profile</a>
+          <div class="border-t border-[#4B5694]/10 my-1"></div>
+          <a href="#" class="flex items-center gap-2 px-4 py-2 text-xs text-red-600 hover:bg-red-50"><i class="fas fa-sign-out-alt w-4"></i> Logout</a>
         </div>
-    </header>
+      </div>
+    </div>
+  </header>
 
-    <main class="flex-1 p-5 space-y-5">
+  <main class="flex-1 p-3 sm:p-5 space-y-4">
 
-        <!-- Page Tabs -->
-        <div class="flex items-center gap-1 bg-[#FFFCFC] border border-[#4B5694]/20 rounded-xl p-1 w-fit shadow-sm">
-            <button data-tab="list" class="tab-btn active-tab px-4 py-2 rounded-lg text-xs font-medium transition-all duration-200">
-                <i class="fas fa-list mr-1.5"></i>Unit List
+    <!-- Tabs -->
+    <div class="tab-scroll">
+      <div class="flex items-center gap-1 bg-[#FFFCFC] border border-[#4B5694]/20 rounded-xl p-1 w-fit shadow-sm min-w-max">
+        <button data-tab="list" class="tab-btn active-tab px-3 sm:px-4 py-2 rounded-lg text-xs font-medium transition-all duration-200 whitespace-nowrap">
+          <i class="fas fa-list mr-1.5"></i>Unit List
+        </button>
+        <button data-tab="create" class="tab-btn px-3 sm:px-4 py-2 rounded-lg text-xs font-medium text-[#111844]/60 hover:text-[#111844] hover:bg-[#7288AE]/10 transition-all duration-200 whitespace-nowrap">
+          <i class="fas fa-plus mr-1.5"></i>Create Unit
+        </button>
+        <button data-tab="conversion" class="tab-btn px-3 sm:px-4 py-2 rounded-lg text-xs font-medium text-[#111844]/60 hover:text-[#111844] hover:bg-[#7288AE]/10 transition-all duration-200 whitespace-nowrap">
+          <i class="fas fa-exchange-alt mr-1.5"></i>Unit Conversion
+        </button>
+      </div>
+    </div>
+
+    <!-- ===== TAB: UNIT LIST ===== -->
+    <div id="tab-list" class="tab-content space-y-4">
+      <!-- KPI Cards -->
+      <div class="grid grid-cols-2 lg:grid-cols-4 gap-3">
+        <div class="widget-card">
+          <div><div class="widget-value" id="kpi-total">18</div><div class="widget-label">Total Units</div></div>
+          <div class="widget-icon bg-[#111844]/10 text-[#111844]"><i class="fas fa-balance-scale"></i></div>
+        </div>
+        <div class="widget-card">
+          <div><div class="widget-value" id="kpi-active">15</div><div class="widget-label">Active Units</div></div>
+          <div class="widget-icon bg-emerald-100 text-emerald-700"><i class="fas fa-check-circle"></i></div>
+        </div>
+        <div class="widget-card">
+          <div><div class="widget-value" id="kpi-inactive">3</div><div class="widget-label">Inactive Units</div></div>
+          <div class="widget-icon bg-amber-100 text-amber-700"><i class="fas fa-pause-circle"></i></div>
+        </div>
+        <div class="widget-card">
+          <div><div class="widget-value" id="kpi-conv">6</div><div class="widget-label">Conversions Set</div></div>
+          <div class="widget-icon bg-[#4B5694]/10 text-[#4B5694]"><i class="fas fa-exchange-alt"></i></div>
+        </div>
+      </div>
+
+      <!-- Table Card -->
+      <div class="chart-card">
+        <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-3 mb-4">
+          <div>
+            <div class="section-title"><i class="fas fa-balance-scale mr-1.5 text-[#4B5694]"></i>All Units</div>
+            <div class="section-sub">Manage measurement units used across the system</div>
+          </div>
+          <div class="flex items-center gap-2 flex-shrink-0">
+            <button onclick="openExport()" class="flex items-center gap-1.5 px-3 py-2 rounded-lg border border-[#4B5694]/30 text-[#4B5694] text-xs font-medium hover:bg-[#4B5694]/10 transition-colors">
+              <i class="fas fa-download text-xs"></i><span class="hidden sm:inline"> Export</span>
             </button>
-            <button data-tab="create" class="tab-btn px-4 py-2 rounded-lg text-xs font-medium text-[#111844]/60 hover:text-[#111844] hover:bg-[#7288AE]/10 transition-all duration-200">
-                <i class="fas fa-plus mr-1.5"></i>Create Unit
+            <button onclick="openAddUnitOverlay()" class="flex items-center gap-1.5 px-3 sm:px-4 py-2 rounded-lg bg-[#111844] text-[#FAFAFA] text-xs font-medium hover:bg-[#1a2155] transition-colors shadow-sm">
+              <i class="fas fa-plus text-xs"></i> Add Unit
             </button>
-            <button data-tab="conversion" class="tab-btn px-4 py-2 rounded-lg text-xs font-medium text-[#111844]/60 hover:text-[#111844] hover:bg-[#7288AE]/10 transition-all duration-200">
-                <i class="fas fa-exchange-alt mr-1.5"></i>Unit Conversion
-            </button>
+          </div>
         </div>
 
-        <!-- =========== TAB: UNIT LIST =========== -->
-        <div id="tab-list" class="tab-content space-y-4">
-            <!-- KPI Cards -->
+        <!-- Filters -->
+        <div class="flex flex-col sm:flex-row gap-2 mb-4">
+          <div class="relative flex-1">
+            <i class="fas fa-search absolute left-3 top-1/2 -translate-y-1/2 text-[#7288AE] text-xs"></i>
+            <input id="search-input" type="text" placeholder="Search by name or code..." class="w-full pl-8 pr-3 py-2 rounded-lg border border-[#4B5694]/25 bg-[#FAFAFA] text-xs text-[#111844] placeholder-[#7288AE] focus:outline-none focus:border-[#111844]/40 transition-colors">
+          </div>
+          <select id="filter-type" class="px-3 py-2 rounded-lg border border-[#4B5694]/25 bg-[#FAFAFA] text-xs text-[#111844] focus:outline-none focus:border-[#111844]/40 transition-colors">
+            <option value="">All Types</option>
+            <option value="Quantity">Quantity</option>
+            <option value="Weight">Weight</option>
+            <option value="Length">Length</option>
+            <option value="Volume">Volume</option>
+          </select>
+          <select id="filter-status" class="px-3 py-2 rounded-lg border border-[#4B5694]/25 bg-[#FAFAFA] text-xs text-[#111844] focus:outline-none focus:border-[#111844]/40 transition-colors">
+            <option value="">All Status</option>
+            <option value="Active">Active</option>
+            <option value="Inactive">Inactive</option>
+          </select>
+        </div>
+
+        <!-- Table -->
+        <div class="tab-scroll rounded-xl border border-[#4B5694]/15">
+          <table class="w-full text-xs min-w-[520px]">
+            <thead>
+              <tr class="bg-[#111844]/5 border-b border-[#4B5694]/15">
+                <th class="text-left px-4 py-3 font-semibold text-[#111844]">Code</th>
+                <th class="text-left px-4 py-3 font-semibold text-[#111844]">Name</th>
+                <th class="text-left px-4 py-3 font-semibold text-[#111844] hide-sm">Short</th>
+                <th class="text-left px-4 py-3 font-semibold text-[#111844]">Type</th>
+                <th class="text-left px-4 py-3 font-semibold text-[#111844]">Status</th>
+                <th class="text-left px-4 py-3 font-semibold text-[#111844]">Actions</th>
+              </tr>
+            </thead>
+            <tbody id="units-tbody" class="divide-y divide-[#4B5694]/10"></tbody>
+          </table>
+        </div>
+
+        <!-- Pagination -->
+        <div class="flex flex-col sm:flex-row items-start sm:items-center justify-between mt-3 gap-2">
+          <span id="table-info" class="text-xs text-[#7288AE]">Showing 0 units</span>
+          <div id="pagination-container" class="flex items-center gap-1"></div>
+        </div>
+      </div>
+    </div>
+
+    <!-- ===== TAB: CREATE UNIT ===== -->
+    <div id="tab-create" class="tab-content hidden">
+      <div class="grid grid-cols-1 lg:grid-cols-3 gap-5">
+        <div class="lg:col-span-2 space-y-4">
+          <div class="chart-card">
+            <div class="section-title mb-4"><i class="fas fa-info-circle mr-1.5 text-[#4B5694]"></i>Basic Information</div>
+            <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+              <div class="form-group">
+                <label class="form-label">Unit Name <span class="text-red-500">*</span></label>
+                <input id="f-name" type="text" placeholder="e.g. Kilogram" class="form-input">
+              </div>
+              <div class="form-group">
+                <label class="form-label">Unit Code <span class="text-red-500">*</span></label>
+                <input id="f-code" type="text" placeholder="e.g. KG" class="form-input" style="text-transform:uppercase">
+              </div>
+              <div class="form-group">
+                <label class="form-label">Short Name</label>
+                <input id="f-short" type="text" placeholder="e.g. kg" class="form-input">
+              </div>
+              <div class="form-group">
+                <label class="form-label">Unit Type <span class="text-red-500">*</span></label>
+                <select id="f-type" class="form-input">
+                  <option value="">Select type</option>
+                  <option value="Quantity">Quantity</option>
+                  <option value="Weight">Weight</option>
+                  <option value="Length">Length</option>
+                  <option value="Volume">Volume</option>
+                </select>
+              </div>
+              <div class="form-group sm:col-span-2">
+                <label class="form-label">Description</label>
+                <textarea id="f-desc" rows="3" placeholder="Optional description..." class="form-input resize-none"></textarea>
+              </div>
+            </div>
+          </div>
+          <div class="chart-card">
+            <div class="section-title mb-3"><i class="fas fa-tags mr-1.5 text-[#4B5694]"></i>Unit Type Reference</div>
             <div class="grid grid-cols-2 sm:grid-cols-4 gap-3">
-                <div class="widget-card">
-                    <div>
-                        <div class="widget-value">18</div>
-                        <div class="widget-label">Total Units</div>
-                    </div>
-                    <div class="widget-icon bg-[#111844]/10 text-[#111844]"><i class="fas fa-balance-scale"></i></div>
-                </div>
-                <div class="widget-card">
-                    <div>
-                        <div class="widget-value">15</div>
-                        <div class="widget-label">Active Units</div>
-                    </div>
-                    <div class="widget-icon bg-emerald-100 text-emerald-700"><i class="fas fa-check-circle"></i></div>
-                </div>
-                <div class="widget-card">
-                    <div>
-                        <div class="widget-value">3</div>
-                        <div class="widget-label">Inactive Units</div>
-                    </div>
-                    <div class="widget-icon bg-amber-100 text-amber-700"><i class="fas fa-pause-circle"></i></div>
-                </div>
-                <div class="widget-card">
-                    <div>
-                        <div class="widget-value">6</div>
-                        <div class="widget-label">Conversions Set</div>
-                    </div>
-                    <div class="widget-icon bg-[#4B5694]/10 text-[#4B5694]"><i class="fas fa-exchange-alt"></i></div>
-                </div>
+              <div class="type-ref-card" data-type="Quantity"><div class="type-ref-icon bg-[#111844]/10 text-[#111844]"><i class="fas fa-cubes"></i></div><div class="type-ref-label">Quantity</div><div class="type-ref-examples">PCS, BOX, CTN</div></div>
+              <div class="type-ref-card" data-type="Weight"><div class="type-ref-icon bg-amber-100 text-amber-700"><i class="fas fa-weight-hanging"></i></div><div class="type-ref-label">Weight</div><div class="type-ref-examples">KG, GM, TON</div></div>
+              <div class="type-ref-card" data-type="Length"><div class="type-ref-icon bg-[#4B5694]/10 text-[#4B5694]"><i class="fas fa-ruler"></i></div><div class="type-ref-label">Length</div><div class="type-ref-examples">MTR, CM, MM</div></div>
+              <div class="type-ref-card" data-type="Volume"><div class="type-ref-icon bg-emerald-100 text-emerald-700"><i class="fas fa-flask"></i></div><div class="type-ref-label">Volume</div><div class="type-ref-examples">LTR, ML</div></div>
             </div>
-
-            <!-- Filters + Table Card -->
-            <div class="chart-card">
-                <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-3 mb-4">
-                    <div>
-                        <div class="section-title"><i class="fas fa-balance-scale mr-1.5 text-[#4B5694]"></i>All Units</div>
-                        <div class="section-sub">Manage measurement units used across the system</div>
-                    </div>
-                    <div class="flex items-center gap-2">
-                        <button onclick="openExport()" class="flex items-center gap-1.5 px-3 py-2 rounded-lg border border-[#4B5694]/30 text-[#4B5694] text-xs font-medium hover:bg-[#4B5694]/10 transition-colors">
-                            <i class="fas fa-download text-xs"></i> Export
-                        </button>
-                        <button onclick="switchTab('create')" class="flex items-center gap-1.5 px-4 py-2 rounded-lg bg-[#111844] text-[#FAFAFA] text-xs font-medium hover:bg-[#1a2155] transition-colors shadow-sm">
-                            <i class="fas fa-plus text-xs"></i> Add Unit
-                        </button>
-                    </div>
-                </div>
-
-                <!-- Search & Filters -->
-                <div class="flex flex-col sm:flex-row gap-2 mb-4">
-                    <div class="relative flex-1">
-                        <i class="fas fa-search absolute left-3 top-1/2 -translate-y-1/2 text-[#7288AE] text-xs"></i>
-                        <input id="search-input" type="text" placeholder="Search by unit name or code..." class="w-full pl-8 pr-3 py-2 rounded-lg border border-[#4B5694]/25 bg-[#FAFAFA] text-xs text-[#111844] placeholder-[#7288AE] focus:outline-none focus:border-[#111844]/40 transition-colors">
-                    </div>
-                    <select id="filter-type" class="px-3 py-2 rounded-lg border border-[#4B5694]/25 bg-[#FAFAFA] text-xs text-[#111844] focus:outline-none focus:border-[#111844]/40 transition-colors">
-                        <option value="">All Types</option>
-                        <option value="Quantity">Quantity</option>
-                        <option value="Weight">Weight</option>
-                        <option value="Length">Length</option>
-                        <option value="Volume">Volume</option>
-                    </select>
-                    <select id="filter-status" class="px-3 py-2 rounded-lg border border-[#4B5694]/25 bg-[#FAFAFA] text-xs text-[#111844] focus:outline-none focus:border-[#111844]/40 transition-colors">
-                        <option value="">All Status</option>
-                        <option value="Active">Active</option>
-                        <option value="Inactive">Inactive</option>
-                    </select>
-                </div>
-
-                <!-- Table -->
-                <div class="overflow-x-auto rounded-xl border border-[#4B5694]/15">
-                    <table class="w-full text-xs">
-                        <thead>
-                            <tr class="bg-[#111844]/5 border-b border-[#4B5694]/15">
-                                <th class="text-left px-4 py-3 font-semibold text-[#111844] text-xs">Unit Code</th>
-                                <th class="text-left px-4 py-3 font-semibold text-[#111844] text-xs">Unit Name</th>
-                                <th class="text-left px-4 py-3 font-semibold text-[#111844] text-xs">Short Name</th>
-                                <th class="text-left px-4 py-3 font-semibold text-[#111844] text-xs">Type</th>
-                                <th class="text-left px-4 py-3 font-semibold text-[#111844] text-xs">Status</th>
-                                <th class="text-left px-4 py-3 font-semibold text-[#111844] text-xs">Actions</th>
-                            </tr>
-                        </thead>
-                        <tbody id="units-tbody" class="divide-y divide-[#4B5694]/10">
-                        </tbody>
-                    </table>
-                </div>
-
-                <!-- Pagination -->
-                <div class="flex items-center justify-between mt-3 text-xs text-[#7288AE]">
-                    <span id="table-info">Showing 1–10 of 18 units</span>
-                    <div class="flex items-center gap-1">
-                        <button class="px-2.5 py-1.5 rounded-lg border border-[#4B5694]/20 hover:bg-[#4B5694]/10 transition-colors">
-                            <i class="fas fa-chevron-left"></i>
-                        </button>
-                        <button class="px-2.5 py-1.5 rounded-lg bg-[#111844] text-[#FAFAFA]">1</button>
-                        <button class="px-2.5 py-1.5 rounded-lg border border-[#4B5694]/20 hover:bg-[#4B5694]/10 transition-colors">2</button>
-                        <button class="px-2.5 py-1.5 rounded-lg border border-[#4B5694]/20 hover:bg-[#4B5694]/10 transition-colors">
-                            <i class="fas fa-chevron-right"></i>
-                        </button>
-                    </div>
-                </div>
-            </div>
+          </div>
+          <div class="flex flex-wrap gap-3">
+            <button onclick="saveUnit()" class="flex items-center gap-2 px-5 py-2.5 rounded-lg bg-[#111844] text-[#FAFAFA] text-xs font-medium hover:bg-[#1a2155] transition-colors shadow-sm">
+              <i class="fas fa-save"></i> Save Unit
+            </button>
+            <button onclick="saveAndContinue()" class="flex items-center gap-2 px-5 py-2.5 rounded-lg bg-[#4B5694] text-[#FAFAFA] text-xs font-medium hover:bg-[#111844] transition-colors">
+              <i class="fas fa-plus-circle"></i> Save & Continue
+            </button>
+            <button onclick="switchTab('list')" class="flex items-center gap-2 px-5 py-2.5 rounded-lg border border-[#4B5694]/30 text-[#4B5694] text-xs font-medium hover:bg-[#4B5694]/10 transition-colors">
+              Cancel
+            </button>
+          </div>
         </div>
-
-        <!-- =========== TAB: CREATE UNIT =========== -->
-        <div id="tab-create" class="tab-content hidden">
-            <div class="grid grid-cols-1 lg:grid-cols-3 gap-5">
-                <!-- Form -->
-                <div class="lg:col-span-2 space-y-4">
-                    <div class="chart-card">
-                        <div class="section-title mb-4"><i class="fas fa-info-circle mr-1.5 text-[#4B5694]"></i>Basic Information</div>
-                        <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
-                            <div class="form-group">
-                                <label class="form-label">Unit Name <span class="text-red-500">*</span></label>
-                                <input id="f-name" type="text" placeholder="e.g. Kilogram" class="form-input">
-                            </div>
-                            <div class="form-group">
-                                <label class="form-label">Unit Code <span class="text-red-500">*</span></label>
-                                <input id="f-code" type="text" placeholder="e.g. KG" class="form-input uppercase">
-                            </div>
-                            <div class="form-group">
-                                <label class="form-label">Short Name</label>
-                                <input id="f-short" type="text" placeholder="e.g. kg" class="form-input">
-                            </div>
-                            <div class="form-group">
-                                <label class="form-label">Unit Type <span class="text-red-500">*</span></label>
-                                <select id="f-type" class="form-input">
-                                    <option value="">Select type</option>
-                                    <option value="Quantity">Quantity</option>
-                                    <option value="Weight">Weight</option>
-                                    <option value="Length">Length</option>
-                                    <option value="Volume">Volume</option>
-                                </select>
-                            </div>
-                            <div class="form-group sm:col-span-2">
-                                <label class="form-label">Description</label>
-                                <textarea id="f-desc" rows="3" placeholder="Optional description for this unit..." class="form-input resize-none"></textarea>
-                            </div>
-                        </div>
-                    </div>
-
-                    <div class="chart-card">
-                        <div class="section-title mb-3"><i class="fas fa-tags mr-1.5 text-[#4B5694]"></i>Unit Type Reference</div>
-                        <div class="grid grid-cols-2 sm:grid-cols-4 gap-3">
-                            <div class="type-ref-card" data-type="Quantity">
-                                <div class="type-ref-icon bg-[#111844]/10 text-[#111844]"><i class="fas fa-cubes"></i></div>
-                                <div class="type-ref-label">Quantity</div>
-                                <div class="type-ref-examples">PCS, BOX, CTN, PKT</div>
-                            </div>
-                            <div class="type-ref-card" data-type="Weight">
-                                <div class="type-ref-icon bg-amber-100 text-amber-700"><i class="fas fa-weight-hanging"></i></div>
-                                <div class="type-ref-label">Weight</div>
-                                <div class="type-ref-examples">KG, GM, TON</div>
-                            </div>
-                            <div class="type-ref-card" data-type="Length">
-                                <div class="type-ref-icon bg-[#4B5694]/10 text-[#4B5694]"><i class="fas fa-ruler"></i></div>
-                                <div class="type-ref-label">Length</div>
-                                <div class="type-ref-examples">MTR, CM, MM</div>
-                            </div>
-                            <div class="type-ref-card" data-type="Volume">
-                                <div class="type-ref-icon bg-emerald-100 text-emerald-700"><i class="fas fa-flask"></i></div>
-                                <div class="type-ref-label">Volume</div>
-                                <div class="type-ref-examples">LTR, ML</div>
-                            </div>
-                        </div>
-                    </div>
-
-                    <div class="flex gap-3">
-                        <button onclick="saveUnit()" class="flex items-center gap-2 px-5 py-2.5 rounded-lg bg-[#111844] text-[#FAFAFA] text-xs font-medium hover:bg-[#1a2155] transition-colors shadow-sm">
-                            <i class="fas fa-save"></i> Save Unit
-                        </button>
-                        <button onclick="saveAndContinue()" class="flex items-center gap-2 px-5 py-2.5 rounded-lg bg-[#4B5694] text-[#FAFAFA] text-xs font-medium hover:bg-[#111844] transition-colors">
-                            <i class="fas fa-plus-circle"></i> Save & Continue
-                        </button>
-                        <button onclick="switchTab('list')" class="flex items-center gap-2 px-5 py-2.5 rounded-lg border border-[#4B5694]/30 text-[#4B5694] text-xs font-medium hover:bg-[#4B5694]/10 transition-colors">
-                            Cancel
-                        </button>
-                    </div>
-                </div>
-
-                <!-- Sidebar info -->
-                <div class="space-y-4">
-                    <div class="chart-card">
-                        <div class="section-title mb-3"><i class="fas fa-lightbulb mr-1.5 text-amber-500"></i>Default Units</div>
-                        <div class="space-y-2">
-                            <div class="text-[10px] font-semibold text-[#7288AE] uppercase tracking-wide mb-1">Quantity</div>
-                            <div class="flex flex-wrap gap-1.5">
-                                <span class="unit-tag">PCS — Piece</span>
-                                <span class="unit-tag">BOX — Box</span>
-                                <span class="unit-tag">CTN — Carton</span>
-                                <span class="unit-tag">PKT — Pack</span>
-                            </div>
-                            <div class="text-[10px] font-semibold text-[#7288AE] uppercase tracking-wide mt-2 mb-1">Weight</div>
-                            <div class="flex flex-wrap gap-1.5">
-                                <span class="unit-tag">KG — Kilogram</span>
-                                <span class="unit-tag">GM — Gram</span>
-                                <span class="unit-tag">TON — Tonne</span>
-                            </div>
-                            <div class="text-[10px] font-semibold text-[#7288AE] uppercase tracking-wide mt-2 mb-1">Length</div>
-                            <div class="flex flex-wrap gap-1.5">
-                                <span class="unit-tag">MTR — Meter</span>
-                                <span class="unit-tag">CM — Centimeter</span>
-                            </div>
-                            <div class="text-[10px] font-semibold text-[#7288AE] uppercase tracking-wide mt-2 mb-1">Volume</div>
-                            <div class="flex flex-wrap gap-1.5">
-                                <span class="unit-tag">LTR — Liter</span>
-                                <span class="unit-tag">ML — Milliliter</span>
-                            </div>
-                        </div>
-                    </div>
-
-                    <div class="chart-card bg-amber-50/60 border-amber-200/50">
-                        <div class="section-title mb-2 text-amber-800"><i class="fas fa-triangle-exclamation mr-1.5"></i>Important Note</div>
-                        <p class="text-xs text-amber-700 leading-relaxed">Unit Master is a lightweight configuration module. Do not add stock management, pricing, or inventory tracking here. Units are only defined here and used by other modules.</p>
-                    </div>
-                </div>
+        <div class="space-y-4">
+          <div class="chart-card">
+            <div class="section-title mb-3"><i class="fas fa-lightbulb mr-1.5 text-amber-500"></i>Default Units</div>
+            <div class="space-y-2">
+              <div class="text-[10px] font-semibold text-[#7288AE] uppercase tracking-wide">Quantity</div>
+              <div class="flex flex-wrap gap-1.5"><span class="unit-tag">PCS</span><span class="unit-tag">BOX</span><span class="unit-tag">CTN</span><span class="unit-tag">PKT</span></div>
+              <div class="text-[10px] font-semibold text-[#7288AE] uppercase tracking-wide mt-2">Weight</div>
+              <div class="flex flex-wrap gap-1.5"><span class="unit-tag">KG</span><span class="unit-tag">GM</span><span class="unit-tag">TON</span></div>
+              <div class="text-[10px] font-semibold text-[#7288AE] uppercase tracking-wide mt-2">Length</div>
+              <div class="flex flex-wrap gap-1.5"><span class="unit-tag">MTR</span><span class="unit-tag">CM</span></div>
+              <div class="text-[10px] font-semibold text-[#7288AE] uppercase tracking-wide mt-2">Volume</div>
+              <div class="flex flex-wrap gap-1.5"><span class="unit-tag">LTR</span><span class="unit-tag">ML</span></div>
             </div>
+          </div>
+          <div class="chart-card bg-amber-50/60 border-amber-200/50">
+            <div class="section-title mb-2 text-amber-800"><i class="fas fa-triangle-exclamation mr-1.5"></i>Important Note</div>
+            <p class="text-xs text-amber-700 leading-relaxed">Unit Master is a lightweight configuration module. Units are only defined here and used by other modules.</p>
+          </div>
         </div>
+      </div>
+    </div>
 
-        <!-- =========== TAB: UNIT CONVERSION =========== -->
-        <div id="tab-conversion" class="tab-content hidden space-y-4">
-            <div class="grid grid-cols-1 lg:grid-cols-2 gap-5">
-                <!-- Conversion Table -->
-                <div class="chart-card">
-                    <div class="flex items-center justify-between mb-4">
-                        <div>
-                            <div class="section-title"><i class="fas fa-exchange-alt mr-1.5 text-[#4B5694]"></i>Conversion Rules</div>
-                            <div class="section-sub">Defined conversion factors between units</div>
-                        </div>
-                        <button onclick="openAddConversion()" class="flex items-center gap-1.5 px-3 py-2 rounded-lg bg-[#111844] text-[#FAFAFA] text-xs font-medium hover:bg-[#1a2155] transition-colors">
-                            <i class="fas fa-plus text-xs"></i> Add
-                        </button>
-                    </div>
-                    <div class="overflow-x-auto rounded-xl border border-[#4B5694]/15">
-                        <table class="w-full text-xs">
-                            <thead>
-                                <tr class="bg-[#111844]/5 border-b border-[#4B5694]/15">
-                                    <th class="text-left px-4 py-3 font-semibold text-[#111844]">Base Unit</th>
-                                    <th class="text-left px-4 py-3 font-semibold text-[#111844]">Target Unit</th>
-                                    <th class="text-left px-4 py-3 font-semibold text-[#111844]">Factor</th>
-                                    <th class="text-left px-4 py-3 font-semibold text-[#111844]">Actions</th>
-                                </tr>
-                            </thead>
-                            <tbody id="conversion-tbody" class="divide-y divide-[#4B5694]/10">
-                            </tbody>
-                        </table>
-                    </div>
-                </div>
-
-                <!-- Add Conversion Form -->
-                <div id="conversion-form-card" class="chart-card">
-                    <div class="section-title mb-4"><i class="fas fa-plus-circle mr-1.5 text-[#4B5694]"></i>Add Conversion Rule</div>
-                    <div class="space-y-4">
-                        <div class="form-group">
-                            <label class="form-label">Base Unit <span class="text-red-500">*</span></label>
-                            <select id="c-base" class="form-input">
-                                <option value="">Select base unit</option>
-                            </select>
-                        </div>
-                        <div class="flex items-center justify-center">
-                            <div class="flex items-center gap-2 text-[#7288AE]">
-                                <div class="h-px w-12 bg-[#4B5694]/20"></div>
-                                <i class="fas fa-arrow-right text-xs"></i>
-                                <div class="h-px w-12 bg-[#4B5694]/20"></div>
-                            </div>
-                        </div>
-                        <div class="form-group">
-                            <label class="form-label">Target Unit <span class="text-red-500">*</span></label>
-                            <select id="c-target" class="form-input">
-                                <option value="">Select target unit</option>
-                            </select>
-                        </div>
-                        <div class="form-group">
-                            <label class="form-label">Conversion Factor <span class="text-red-500">*</span></label>
-                            <input id="c-factor" type="number" min="0" step="0.001" placeholder="e.g. 1000" class="form-input">
-                            <p class="text-[10px] text-[#7288AE] mt-1">1 [Base Unit] = [Factor] [Target Unit]</p>
-                        </div>
-                        <div id="c-preview" class="hidden bg-[#111844]/5 rounded-lg p-3 text-xs text-[#111844] font-medium text-center"></div>
-                        <button onclick="saveConversion()" class="w-full flex items-center justify-center gap-2 px-5 py-2.5 rounded-lg bg-[#111844] text-[#FAFAFA] text-xs font-medium hover:bg-[#1a2155] transition-colors">
-                            <i class="fas fa-save"></i> Save Conversion
-                        </button>
-                    </div>
-                </div>
+    <!-- ===== TAB: UNIT CONVERSION ===== -->
+    <div id="tab-conversion" class="tab-content hidden space-y-4">
+      <div class="grid grid-cols-1 lg:grid-cols-2 gap-5">
+        <div class="chart-card">
+          <div class="flex items-center justify-between mb-4">
+            <div>
+              <div class="section-title"><i class="fas fa-exchange-alt mr-1.5 text-[#4B5694]"></i>Conversion Rules</div>
+              <div class="section-sub">Defined conversion factors</div>
             </div>
+            <button onclick="openAddConversion()" class="flex items-center gap-1.5 px-3 py-2 rounded-lg bg-[#111844] text-[#FAFAFA] text-xs font-medium hover:bg-[#1a2155] transition-colors">
+              <i class="fas fa-plus text-xs"></i> Add
+            </button>
+          </div>
+          <div class="tab-scroll rounded-xl border border-[#4B5694]/15">
+            <table class="w-full text-xs min-w-[360px]">
+              <thead>
+                <tr class="bg-[#111844]/5 border-b border-[#4B5694]/15">
+                  <th class="text-left px-4 py-3 font-semibold text-[#111844]">Base</th>
+                  <th class="text-left px-4 py-3 font-semibold text-[#111844]">Target</th>
+                  <th class="text-left px-4 py-3 font-semibold text-[#111844]">Factor</th>
+                  <th class="text-left px-4 py-3 font-semibold text-[#111844]">Actions</th>
+                </tr>
+              </thead>
+              <tbody id="conversion-tbody" class="divide-y divide-[#4B5694]/10"></tbody>
+            </table>
+          </div>
         </div>
+        <div id="conversion-form-card" class="chart-card">
+          <div class="section-title mb-4"><i class="fas fa-plus-circle mr-1.5 text-[#4B5694]"></i>Add Conversion Rule</div>
+          <div class="space-y-4">
+            <div class="form-group">
+              <label class="form-label">Base Unit <span class="text-red-500">*</span></label>
+              <select id="c-base" class="form-input"><option value="">Select base unit</option></select>
+            </div>
+            <div class="flex items-center justify-center">
+              <div class="flex items-center gap-2 text-[#7288AE]">
+                <div class="h-px w-12 bg-[#4B5694]/20"></div>
+                <i class="fas fa-arrow-right text-xs"></i>
+                <div class="h-px w-12 bg-[#4B5694]/20"></div>
+              </div>
+            </div>
+            <div class="form-group">
+              <label class="form-label">Target Unit <span class="text-red-500">*</span></label>
+              <select id="c-target" class="form-input"><option value="">Select target unit</option></select>
+            </div>
+            <div class="form-group">
+              <label class="form-label">Conversion Factor <span class="text-red-500">*</span></label>
+              <input id="c-factor" type="number" min="0" step="0.001" placeholder="e.g. 1000" class="form-input">
+              <p class="text-[10px] text-[#7288AE] mt-1">1 [Base Unit] = [Factor] [Target Unit]</p>
+            </div>
+            <div id="c-preview" class="hidden bg-[#111844]/5 rounded-lg p-3 text-xs text-[#111844] font-medium text-center"></div>
+            <button onclick="saveConversion()" class="w-full flex items-center justify-center gap-2 px-5 py-2.5 rounded-lg bg-[#111844] text-[#FAFAFA] text-xs font-medium hover:bg-[#1a2155] transition-colors">
+              <i class="fas fa-save"></i> Save Conversion
+            </button>
+          </div>
+        </div>
+      </div>
+    </div>
 
-    </main>
+  </main>
 </div>
 
-<!-- Unit Detail Modal -->
+<!-- ===== UNIT DETAIL MODAL (View) ===== -->
 <div id="detail-modal" class="hidden fixed inset-0 bg-[#111844]/50 z-[300] flex items-center justify-center p-4">
-    <div class="bg-[#FFFCFC] rounded-2xl w-full max-w-lg shadow-2xl overflow-hidden">
-        <div class="flex items-center justify-between px-6 py-4 border-b border-[#4B5694]/15">
-            <div class="section-title" id="modal-title">Unit Details</div>
-            <button onclick="closeModal()" class="w-7 h-7 flex items-center justify-center rounded-lg text-[#7288AE] hover:bg-[#4B5694]/10 transition-colors">
-                <i class="fas fa-times text-sm"></i>
-            </button>
-        </div>
-        <!-- Tabs inside modal -->
-        <div class="flex border-b border-[#4B5694]/15">
-            <button data-modal-tab="overview" onclick="switchModalTab('overview')" class="modal-tab-btn active-modal-tab flex-1 py-3 text-xs font-medium transition-colors">Overview</button>
-            <button data-modal-tab="usage" onclick="switchModalTab('usage')" class="modal-tab-btn flex-1 py-3 text-xs font-medium text-[#111844]/50 hover:text-[#111844] transition-colors">Usage Summary</button>
-            <button data-modal-tab="log" onclick="switchModalTab('log')" class="modal-tab-btn flex-1 py-3 text-xs font-medium text-[#111844]/50 hover:text-[#111844] transition-colors">Activity Log</button>
-        </div>
-        <div class="p-6">
-            <!-- Overview -->
-            <div id="modal-overview" class="modal-tab-content space-y-3">
-                <div class="grid grid-cols-2 gap-3" id="modal-fields"></div>
-            </div>
-            <!-- Usage Summary -->
-            <div id="modal-usage" class="modal-tab-content hidden">
-                <div class="space-y-3" id="modal-usage-content"></div>
-            </div>
-            <!-- Activity Log -->
-            <div id="modal-log" class="modal-tab-content hidden">
-                <div class="space-y-3" id="modal-log-content"></div>
-            </div>
-        </div>
-        <div class="px-6 pb-5 flex gap-2">
-            <button id="modal-edit-btn" class="flex-1 py-2.5 rounded-lg bg-[#111844] text-[#FAFAFA] text-xs font-medium hover:bg-[#1a2155] transition-colors">Edit Unit</button>
-            <button onclick="closeModal()" class="flex-1 py-2.5 rounded-lg border border-[#4B5694]/30 text-[#4B5694] text-xs font-medium hover:bg-[#4B5694]/10 transition-colors">Close</button>
-        </div>
+  <div class="bg-[#FFFCFC] rounded-2xl w-full max-w-lg shadow-2xl overflow-hidden">
+    <div class="flex items-center justify-between px-6 py-4 border-b border-[#4B5694]/15">
+      <div class="section-title" id="modal-title">Unit Details</div>
+      <button onclick="closeModal()" class="w-7 h-7 flex items-center justify-center rounded-lg text-[#7288AE] hover:bg-[#4B5694]/10"><i class="fas fa-times text-sm"></i></button>
     </div>
+    <div class="flex border-b border-[#4B5694]/15">
+      <button data-modal-tab="overview" onclick="switchModalTab('overview')" class="modal-tab-btn active-modal-tab flex-1 py-3 text-xs font-medium transition-colors">Overview</button>
+      <button data-modal-tab="usage" onclick="switchModalTab('usage')" class="modal-tab-btn flex-1 py-3 text-xs font-medium text-[#111844]/50 hover:text-[#111844] transition-colors">Usage Summary</button>
+      <button data-modal-tab="log" onclick="switchModalTab('log')" class="modal-tab-btn flex-1 py-3 text-xs font-medium text-[#111844]/50 hover:text-[#111844] transition-colors">Activity Log</button>
+    </div>
+    <div class="p-6">
+      <div id="modal-overview" class="modal-tab-content space-y-3"><div class="grid grid-cols-2 gap-3" id="modal-fields"></div></div>
+      <div id="modal-usage" class="modal-tab-content hidden"><div class="space-y-3" id="modal-usage-content"></div></div>
+      <div id="modal-log" class="modal-tab-content hidden"><div class="space-y-3" id="modal-log-content"></div></div>
+    </div>
+    <div class="px-6 pb-5 flex gap-2">
+      <button id="modal-edit-btn" class="flex-1 py-2.5 rounded-lg bg-[#111844] text-[#FAFAFA] text-xs font-medium hover:bg-[#1a2155] transition-colors">Edit Unit</button>
+      <button onclick="closeModal()" class="flex-1 py-2.5 rounded-lg border border-[#4B5694]/30 text-[#4B5694] text-xs font-medium hover:bg-[#4B5694]/10 transition-colors">Close</button>
+    </div>
+  </div>
+</div>
+
+<!-- ===== ADD / EDIT UNIT OVERLAY ===== -->
+<div id="unit-overlay" class="unit-overlay">
+  <div class="overlay-panel">
+    <div class="flex items-center justify-between px-6 py-4 border-b border-[#4B5694]/15 sticky top-0 bg-[#FFFCFC] z-10">
+      <div>
+        <div class="section-title" id="overlay-title">Add New Unit</div>
+        <div class="section-sub" id="overlay-subtitle">Fill in the details below</div>
+      </div>
+      <button onclick="closeUnitOverlay()" class="w-8 h-8 flex items-center justify-center rounded-lg text-[#7288AE] hover:bg-[#4B5694]/10 transition-colors">
+        <i class="fas fa-times"></i>
+      </button>
+    </div>
+    <div class="p-6 space-y-4">
+      <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+        <div class="form-group">
+          <label class="form-label">Unit Name <span class="text-red-500">*</span></label>
+          <input id="ov-name" type="text" placeholder="e.g. Kilogram" class="form-input">
+        </div>
+        <div class="form-group">
+          <label class="form-label">Unit Code <span class="text-red-500">*</span></label>
+          <input id="ov-code" type="text" placeholder="e.g. KG" class="form-input" oninput="this.value=this.value.toUpperCase()">
+        </div>
+        <div class="form-group">
+          <label class="form-label">Short Name</label>
+          <input id="ov-short" type="text" placeholder="e.g. kg" class="form-input">
+        </div>
+        <div class="form-group">
+          <label class="form-label">Unit Type <span class="text-red-500">*</span></label>
+          <select id="ov-type" class="form-input">
+            <option value="">Select type</option>
+            <option value="Quantity">Quantity</option>
+            <option value="Weight">Weight</option>
+            <option value="Length">Length</option>
+            <option value="Volume">Volume</option>
+          </select>
+        </div>
+        <div class="form-group sm:col-span-2">
+          <label class="form-label">Description</label>
+          <textarea id="ov-desc" rows="3" placeholder="Optional description..." class="form-input resize-none"></textarea>
+        </div>
+      </div>
+
+      <!-- Type quick-select cards -->
+      <div>
+        <div class="form-label mb-2">Quick Type Select</div>
+        <div class="grid grid-cols-4 gap-2">
+          <div class="type-ref-card ov-type-card" data-type="Quantity"><div class="type-ref-icon bg-[#111844]/10 text-[#111844]"><i class="fas fa-cubes"></i></div><div class="type-ref-label">Qty</div></div>
+          <div class="type-ref-card ov-type-card" data-type="Weight"><div class="type-ref-icon bg-amber-100 text-amber-700"><i class="fas fa-weight-hanging"></i></div><div class="type-ref-label">Weight</div></div>
+          <div class="type-ref-card ov-type-card" data-type="Length"><div class="type-ref-icon bg-[#4B5694]/10 text-[#4B5694]"><i class="fas fa-ruler"></i></div><div class="type-ref-label">Length</div></div>
+          <div class="type-ref-card ov-type-card" data-type="Volume"><div class="type-ref-icon bg-emerald-100 text-emerald-700"><i class="fas fa-flask"></i></div><div class="type-ref-label">Volume</div></div>
+        </div>
+      </div>
+
+      <!-- Edit-mode: delete field row -->
+      <div id="ov-delete-section" class="hidden">
+        <div class="rounded-lg border border-red-200 bg-red-50 p-3 flex items-center justify-between">
+          <div>
+            <div class="text-xs font-semibold text-red-700">Delete this unit</div>
+            <div class="text-[10px] text-red-500 mt-0.5">This action cannot be undone</div>
+          </div>
+          <button id="ov-delete-btn" class="flex items-center gap-1.5 px-3 py-2 rounded-lg bg-red-600 text-white text-xs font-medium hover:bg-red-700 transition-colors">
+            <i class="fas fa-trash text-xs"></i> Delete
+          </button>
+        </div>
+      </div>
+    </div>
+    <div class="px-6 pb-6 flex flex-col sm:flex-row gap-3 border-t border-[#4B5694]/10 pt-4">
+      <button onclick="saveOverlayUnit()" class="flex-1 flex items-center justify-center gap-2 py-2.5 rounded-lg bg-[#111844] text-[#FAFAFA] text-xs font-medium hover:bg-[#1a2155] transition-colors">
+        <i class="fas fa-save"></i> <span id="ov-save-label">Save Unit</span>
+      </button>
+      <button onclick="closeUnitOverlay()" class="flex-1 flex items-center justify-center gap-2 py-2.5 rounded-lg border border-[#4B5694]/30 text-[#4B5694] text-xs font-medium hover:bg-[#4B5694]/10 transition-colors">
+        Cancel
+      </button>
+    </div>
+  </div>
 </div>
 
 <!-- Toast -->
-<div id="toast-container" class="fixed bottom-5 right-5 z-[400] space-y-2"></div>
+<div id="toast-container" class="fixed bottom-5 right-5 z-[400] space-y-2 pointer-events-none"></div>
+
 
 <script src="/pages/units/units.js"></script>
 </body>
