@@ -782,19 +782,73 @@ function renderPickConfirmTable(filter = '') {
 }
 
 document.getElementById('confirm-search').addEventListener('input', e => renderPickConfirmTable(e.target.value.toLowerCase()));
-document.getElementById('btn-confirm-pick').addEventListener('click', () => {
-  const val = document.getElementById('confirm-search').value.trim();
-  if (!val) { showToast('Enter Pick List ID or scan barcode', 'error'); return; }
-  const found = DATA.pickConfirm.find(r => r.plId.toLowerCase().includes(val.toLowerCase()));
-  if (found) {
+// ============================================================
+// PICK CONFIRMATION - FIXED
+// ============================================================
+document.getElementById('btn-confirm-pick').addEventListener('click', function() {
+  const input = document.getElementById('confirm-search');
+  const val = input.value.trim();
+  
+  if (!val) { 
+    showToast('Please enter or scan a Pick List ID', 'error'); 
+    return; 
+  }
+  
+  // Search in pick confirm data
+  let found = DATA.pickConfirm.find(r => r.plId.toLowerCase() === val.toLowerCase());
+  
+  // If not found in confirm data, check if it exists in picklists
+  if (!found) {
+    const picklist = DATA.picklists.find(r => r.id.toLowerCase() === val.toLowerCase());
+    if (picklist) {
+      // Create a new confirmation record
+      const newConfirm = {
+        id: `PC-${String(DATA.pickConfirm.length + 1).padStart(3,'0')}`,
+        plId: picklist.id,
+        product: picklist.items > 0 ? 'Multiple Items' : 'No Items',
+        bin: '—',
+        reqQty: picklist.items,
+        pickedQty: picklist.items,
+        picker: picklist.picker,
+        confirmedAt: new Date().toLocaleTimeString('en-IN', { hour: '2-digit', minute: '2-digit' }),
+        status: 'Completed'
+      };
+      DATA.pickConfirm.unshift(newConfirm);
+      
+      // Update picklist status
+      picklist.status = 'Completed';
+      
+      renderPicklistTable();
+      renderPickConfirmTable(document.getElementById('confirm-search').value.toLowerCase());
+      showToast(`✅ Pick List ${picklist.id} confirmed successfully!`, 'success');
+      return;
+    }
+    
+    showToast('❌ Pick List not found. Please check the ID.', 'error');
+    return;
+  }
+  
+  // Update existing confirmation
+  if (found.status !== 'Completed') {
     found.status = 'Completed';
     found.pickedQty = found.reqQty;
-    found.confirmedAt = new Date().toLocaleTimeString('en-IN', { hour:'2-digit', minute:'2-digit' });
-    renderPickConfirmTable();
-    showToast(`Pick List ${found.plId} confirmed`);
+    found.confirmedAt = new Date().toLocaleTimeString('en-IN', { hour: '2-digit', minute: '2-digit' });
+    
+    // Also update the corresponding picklist
+    const picklist = DATA.picklists.find(r => r.id === found.plId);
+    if (picklist) {
+      picklist.status = 'Completed';
+      renderPicklistTable();
+    }
+    
+    renderPickConfirmTable(document.getElementById('confirm-search').value.toLowerCase());
+    showToast(`✅ Pick List ${found.plId} confirmed successfully!`, 'success');
   } else {
-    showToast('Pick List not found', 'error');
+    showToast(`ℹ️ Pick List ${found.plId} is already confirmed`, 'info');
   }
+  
+  // Clear input after confirmation
+  input.value = '';
 });
 
 /* ============================================================
@@ -902,12 +956,30 @@ function renderLabelTable(filter = '') {
       </td>
     </tr>`).join('') : `<tr><td colspan="8" class="text-center py-8 text-[#7288AE]">No labels found</td></tr>`;
 
-  tbody.querySelectorAll('.print-single').forEach(btn => {
-    btn.addEventListener('click', () => {
-      const rec = DATA.labels.find(r => r.id === btn.dataset.id);
-      if (rec) { rec.printed = true; renderLabelTable(document.getElementById('label-search').value.toLowerCase()); showToast(`Label ${rec.packId} printed`); }
-    });
-  });
+  // NEW CODE - ADD THIS:
+// Use event delegation for dynamic elements
+document.getElementById('label-tbody').addEventListener('click', function(e) {
+  const printBtn = e.target.closest('.print-single');
+  if (!printBtn) return;
+  
+  const id = printBtn.dataset.id;
+  const rec = DATA.labels.find(r => r.id === id);
+  if (!rec) return;
+  
+  rec.printed = true;
+  
+  // Update checkbox
+  const row = printBtn.closest('tr');
+  const chk = row?.querySelector('.label-chk');
+  if (chk) chk.checked = true;
+  
+  // Re-render label table with current filter
+  const searchVal = document.getElementById('label-search').value.toLowerCase();
+  renderLabelTable(searchVal);
+  
+  // Show success with details
+  showToast(`✅ Label for ${rec.packId} printed successfully!`, 'success');
+});
 }
 
 document.getElementById('label-search').addEventListener('input', e => renderLabelTable(e.target.value.toLowerCase()));
@@ -924,6 +996,53 @@ document.getElementById('btn-print-selected').addEventListener('click', () => {
 document.getElementById('select-all-labels').addEventListener('change', function() {
   document.querySelectorAll('.label-chk').forEach(chk => { chk.checked = this.checked; });
 });
+
+
+
+
+document.getElementById('select-all-labels').addEventListener('change', function() {
+  const isChecked = this.checked;
+  document.querySelectorAll('.label-chk').forEach(chk => {
+    chk.checked = isChecked;
+  });
+});
+
+// Add keyboard shortcut for print selected (Ctrl+P)
+document.addEventListener('keydown', function(e) {
+  if ((e.ctrlKey || e.metaKey) && e.key === 'p') {
+    // Check if we're on the label printing tab
+    const labelTab = document.getElementById('subtab-label-printing');
+    if (labelTab && !labelTab.classList.contains('hidden')) {
+      e.preventDefault();
+      document.getElementById('btn-print-selected').click();
+    }
+  }
+});
+
+// ============================================================
+// PRINT ALL LABELS - NEW FUNCTION
+// ============================================================
+function printAllLabels() {
+  const unprinted = DATA.labels.filter(r => !r.printed);
+  
+  if (unprinted.length === 0) {
+    showToast('ℹ️ All labels are already printed', 'info');
+    return;
+  }
+  
+  unprinted.forEach(rec => {
+    rec.printed = true;
+  });
+  
+  // Re-render label table
+  const searchVal = document.getElementById('label-search').value.toLowerCase();
+  renderLabelTable(searchVal);
+  
+  // Uncheck select all
+  document.getElementById('select-all-labels').checked = false;
+  
+  showToast(`✅ ${unprinted.length} label(s) printed successfully!`, 'success');
+}
 
 /* ============================================================
    ██████  CYCLE COUNT MODULE
@@ -1051,8 +1170,63 @@ function renderAuditTable(filter = '') {
 }
 
 document.getElementById('audit-search').addEventListener('input', e => renderAuditTable(e.target.value.toLowerCase()));
-document.getElementById('btn-export-audit').addEventListener('click', () => {
-  showToast('Audit report exported as CSV', 'info');
+// ============================================================
+// AUDIT EXPORT - FIXED
+// ============================================================
+document.getElementById('btn-export-audit').addEventListener('click', function() {
+  try {
+    // Get current filter value
+    const filter = document.getElementById('audit-search').value.toLowerCase();
+    
+    // Filter data
+    let exportData = DATA.audits;
+    if (filter) {
+      exportData = exportData.filter(r => 
+        r.id.toLowerCase().includes(filter) || 
+        r.warehouse.toLowerCase().includes(filter) || 
+        r.auditor.toLowerCase().includes(filter)
+      );
+    }
+    
+    if (exportData.length === 0) {
+      showToast('⚠️ No audit records to export', 'error');
+      return;
+    }
+    
+    // Create CSV content
+    const headers = ['Audit ID', 'Warehouse', 'Zone', 'Total Items', 'Discrepancies', 'Auditor', 'Date', 'Status'];
+    const rows = exportData.map(r => [
+      r.id,
+      r.warehouse,
+      r.zone,
+      r.totalItems,
+      r.discrepancies,
+      r.auditor,
+      r.date,
+      r.status
+    ]);
+    
+    // Build CSV
+    let csv = headers.join(',') + '\n';
+    rows.forEach(row => {
+      csv += row.join(',') + '\n';
+    });
+    
+    // Create and download file
+    const blob = new Blob([csv], { type: 'text/csv;charset=utf-8;' });
+    const url = URL.createObjectURL(blob);
+    const link = document.createElement('a');
+    link.href = url;
+    link.download = `Audit_Report_${new Date().toISOString().split('T')[0]}.csv`;
+    document.body.appendChild(link);
+    link.click();
+    document.body.removeChild(link);
+    URL.revokeObjectURL(url);
+    
+    showToast(`✅ Audit report exported with ${exportData.length} records`, 'success');
+  } catch (error) {
+    showToast('❌ Export failed: ' + error.message, 'error');
+  }
 });
 
 /* ============================================================

@@ -177,6 +177,58 @@
     /* ── Approval panel ── */
     .approval-row { display:grid; grid-template-columns:1fr 1fr auto auto auto; gap:10px; align-items:center; padding:10px 0; border-bottom:1px solid rgba(75,86,148,0.08); font-size:12px; }
     .approval-row:last-child { border-bottom:none; }
+
+    /* ── Responsive fixes ── */
+@media (max-width: 768px) {
+  .widget-card { min-height: 80px !important; padding: 12px 14px !important; }
+  .widget-value { font-size: 18px !important; }
+  .widget-label { font-size: 10px !important; }
+  .widget-icon { width: 32px !important; height: 32px !important; font-size: 14px !important; }
+  
+  .product-row, .product-row-header {
+    grid-template-columns: 1fr 1fr;
+    gap: 4px;
+    padding: 4px 0;
+  }
+  .product-row-header span { font-size: 9px; }
+  .product-row .form-select, .product-row .form-input { font-size: 10px !important; padding: 4px 6px; }
+  .product-row .btn-icon { width: 22px; height: 22px; font-size: 9px; }
+  
+  .modal-box { max-width: 100%; margin: 10px; }
+  .modal-body { padding: 12px; }
+  
+  .form-grid[style*="grid-template-columns:repeat(2,1fr)"] {
+    grid-template-columns: 1fr !important;
+  }
+  
+  .data-table { font-size: 10px; }
+  .data-table th, .data-table td { padding: 6px 8px; }
+  
+  #search-input { width: 120px !important; }
+  #filter-date { width: 120px !important; }
+  
+  .tab-bar { overflow-x: auto; flex-wrap: nowrap; }
+  .tab-btn { font-size: 10px; padding: 5px 10px; white-space: nowrap; }
+}
+
+@media (max-width: 480px) {
+  .grid-cols-2.sm\:grid-cols-3.lg\:grid-cols-5 {
+    grid-template-columns: repeat(2, 1fr);
+  }
+  .flex-wrap.items-center.justify-between.gap-3 {
+    flex-direction: column;
+    align-items: stretch !important;
+  }
+  .flex-wrap.items-center.justify-between.gap-3 > .flex.items-center.gap-2.flex-wrap {
+    flex-direction: column;
+    align-items: stretch !important;
+  }
+  .flex-wrap.items-center.justify-between.gap-3 input,
+  .flex-wrap.items-center.justify-between.gap-3 select,
+  .flex-wrap.items-center.justify-between.gap-3 button {
+    width: 100% !important;
+  }
+}
   </style>
 </head>
 <body class="bg-[#ebe6e6] text-[#111844] min-h-screen">
@@ -413,28 +465,28 @@
   <main class="flex-1 p-5 space-y-5">
 
     <!-- ── KPI Widgets ── -->
-    <div class="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-5 gap-3">
-      <div class="widget-card">
-        <div><div class="widget-value">127</div><div class="widget-label">Total Orders</div></div>
-        <div class="widget-icon bg-[#111844]/10 text-[#111844]"><i class="fas fa-receipt"></i></div>
-      </div>
-      <div class="widget-card">
-        <div><div class="widget-value">27</div><div class="widget-label">Pending Approval</div></div>
-        <div class="widget-icon bg-amber-100 text-amber-700"><i class="fas fa-clock"></i></div>
-      </div>
-      <div class="widget-card">
-        <div><div class="widget-value">18</div><div class="widget-label">Ready for Dispatch</div></div>
-        <div class="widget-icon bg-emerald-100 text-emerald-700"><i class="fas fa-truck"></i></div>
-      </div>
-      <div class="widget-card">
-        <div><div class="widget-value">9</div><div class="widget-label">Partially Allocated</div></div>
-        <div class="widget-icon bg-blue-100 text-blue-700"><i class="fas fa-layer-group"></i></div>
-      </div>
-      <div class="widget-card">
-        <div><div class="widget-value">₹8.4L</div><div class="widget-label">Orders Value (Month)</div></div>
-        <div class="widget-icon bg-indigo-100 text-indigo-700"><i class="fas fa-rupee-sign"></i></div>
-      </div>
-    </div>
+<div class="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-5 gap-4">
+  <div class="widget-card" style="padding: 18px 20px; min-height: 100px;">
+    <div><div class="widget-value" style="font-size: 24px;">127</div><div class="widget-label" style="font-size: 12px;">Total Orders</div></div>
+    <div class="widget-icon" style="width:44px;height:44px;font-size:18px;"><i class="fas fa-receipt"></i></div>
+  </div>
+  <div class="widget-card" style="padding: 18px 20px; min-height: 100px;">
+    <div><div class="widget-value" style="font-size: 24px;">27</div><div class="widget-label" style="font-size: 12px;">Pending Approval</div></div>
+    <div class="widget-icon" style="width:44px;height:44px;font-size:18px;background:#fef3c7;color:#d97706;"><i class="fas fa-clock"></i></div>
+  </div>
+  <div class="widget-card" style="padding: 18px 20px; min-height: 100px;">
+    <div><div class="widget-value" style="font-size: 24px;">18</div><div class="widget-label" style="font-size: 12px;">Ready for Dispatch</div></div>
+    <div class="widget-icon" style="width:44px;height:44px;font-size:18px;background:#dcfce7;color:#16a34a;"><i class="fas fa-truck"></i></div>
+  </div>
+  <div class="widget-card" style="padding: 18px 20px; min-height: 100px;">
+    <div><div class="widget-value" style="font-size: 24px;">9</div><div class="widget-label" style="font-size: 12px;">Partially Allocated</div></div>
+    <div class="widget-icon" style="width:44px;height:44px;font-size:18px;background:#dbeafe;color:#2563eb;"><i class="fas fa-layer-group"></i></div>
+  </div>
+  <div class="widget-card" style="padding: 18px 20px; min-height: 100px;">
+    <div><div class="widget-value" style="font-size: 24px;">₹8.4L</div><div class="widget-label" style="font-size: 12px;">Orders Value (Month)</div></div>
+    <div class="widget-icon" style="width:44px;height:44px;font-size:18px;background:#ede9fe;color:#7c3aed;"><i class="fas fa-rupee-sign"></i></div>
+  </div>
+</div>
 
     <!-- ── Order List ── -->
     <div class="chart-card">
@@ -445,21 +497,24 @@
           <div class="section-sub">All customer sales orders</div>
         </div>
         <div class="flex items-center gap-2 flex-wrap">
-          <input id="search-input" type="text" placeholder="Search order, customer…" class="form-input w-48" />
-          <select id="filter-status" class="form-select">
-            <option value="">All Status</option>
-            <option value="Draft">Draft</option>
-            <option value="Pending Approval">Pending Approval</option>
-            <option value="Approved">Approved</option>
-            <option value="Partially Allocated">Partially Allocated</option>
-            <option value="Allocated">Allocated</option>
-            <option value="Ready For Dispatch">Ready For Dispatch</option>
-            <option value="Cancelled">Cancelled</option>
-          </select>
-          <input id="filter-date" type="date" class="form-input" />
-          <button class="btn-secondary" onclick="exportOrders()"><i class="fas fa-download"></i> Export</button>
-          <button class="btn-primary" onclick="openCreate()"><i class="fas fa-plus"></i> Create Sales Order</button>
-        </div>
+  <input id="search-input" type="text" placeholder="Search order, customer…" class="form-input w-48" />
+  <select id="filter-status" class="form-select">
+    <option value="">All Status</option>
+    <option value="Draft">Draft</option>
+    <option value="Pending Approval">Pending Approval</option>
+    <option value="Approved">Approved</option>
+    <option value="Partially Allocated">Partially Allocated</option>
+    <option value="Allocated">Allocated</option>
+    <option value="Ready For Dispatch">Ready For Dispatch</option>
+    <option value="Cancelled">Cancelled</option>
+  </select>
+  <div class="flex items-center gap-1">
+    <input id="filter-date" type="date" class="form-input" style="width:150px;" />
+    <button onclick="clearAllFilters()" class="btn-secondary px-2 py-1.5 text-xs" title="Clear all filters"><i class="fas fa-times"></i> Clear</button>
+  </div>
+  <button class="btn-secondary" onclick="exportOrders()"><i class="fas fa-download"></i> Export</button>
+  <button class="btn-primary" onclick="openCreate()"><i class="fas fa-plus"></i> Create Sales Order</button>
+</div>
       </div>
 
       <!-- Table -->
@@ -480,16 +535,16 @@
           <tbody id="orders-tbody"></tbody>
         </table>
       </div>
-
       <!-- Pagination -->
-      <div class="flex items-center justify-between mt-3 text-xs text-[#7288AE]">
-        <span id="pagination-info">Showing 1–10 of 127</span>
-        <div class="flex gap-1">
-          <button class="btn-secondary px-3 py-1.5 text-xs">Prev</button>
-          <button class="btn-primary px-3 py-1.5 text-xs">Next</button>
+        <div class="flex items-center justify-between mt-3 text-xs text-[#7288AE]">
+          <span id="pagination-info">Showing 1–5 of 127</span>
+            <div class="flex gap-1 items-center">
+              <button class="pagination-prev btn-secondary px-3 py-1.5 text-xs" onclick="goToPage(currentPage - 1)" style="border:none;cursor:pointer;border-radius:6px;">Prev</button>
+                <div class="pagination-buttons flex gap-1"></div>
+                  <button class="pagination-next btn-secondary px-3 py-1.5 text-xs" onclick="goToPage(currentPage + 1)" style="border:none;cursor:pointer;border-radius:6px;">Next</button>
+                </div>
+            </div>
         </div>
-      </div>
-    </div>
 
   </main>
 </div>
@@ -522,23 +577,23 @@
           </div>
           <div class="form-field">
             <label class="form-label">Contact Person</label>
-            <input type="text" class="form-input" id="f-contact" placeholder="Auto-filled" readonly />
+            <input type="text" class="form-input" id="f-contact" placeholder="Auto-filled" />
           </div>
           <div class="form-field">
             <label class="form-label">Billing Address</label>
-            <input type="text" class="form-input" id="f-billing" placeholder="Auto-filled" readonly />
+            <input type="text" class="form-input" id="f-billing" placeholder="Auto-filled"/>
           </div>
           <div class="form-field">
             <label class="form-label">Shipping Address</label>
-            <input type="text" class="form-input" id="f-shipping" placeholder="Auto-filled" readonly />
+            <input type="text" class="form-input" id="f-shipping" placeholder="Auto-filled"/>
           </div>
           <div class="form-field">
             <label class="form-label">Credit Limit</label>
-            <input type="text" class="form-input" id="f-credit" placeholder="—" readonly />
+            <input type="text" class="form-input" id="f-credit" placeholder="—"/>
           </div>
           <div class="form-field">
             <label class="form-label">Outstanding Amount</label>
-            <input type="text" class="form-input" id="f-outstanding" placeholder="—" readonly />
+            <input type="text" class="form-input" id="f-outstanding" placeholder="—"/>
           </div>
         </div>
       </div>
@@ -801,7 +856,7 @@ function renderTable(data) {
       <td>
         <div class="flex gap-1">
           <button class="btn-icon btn-view" title="View" onclick='openDetail("${o.id}")'><i class="fas fa-eye"></i></button>
-          <button class="btn-icon btn-edit" title="Edit" onclick='toast("Edit coming soon","amber")'><i class="fas fa-pen"></i></button>
+          <button class="btn-icon btn-edit" title="Edit" onclick='openEdit("${o.id}")'><i class="fas fa-pen"></i></button>
           ${o.status==='Pending Approval'?`<button class="btn-icon btn-approve" title="Approve" onclick='quickApprove("${o.id}")'><i class="fas fa-check"></i></button>`:''}
           ${!['Cancelled','Ready For Dispatch'].includes(o.status)?`<button class="btn-icon btn-cancel" title="Cancel" onclick='quickCancel("${o.id}")'><i class="fas fa-times"></i></button>`:''}
         </div>
@@ -814,12 +869,14 @@ function filterTable() {
   const q = document.getElementById('search-input').value.toLowerCase();
   const s = document.getElementById('filter-status').value;
   const d = document.getElementById('filter-date').value;
-  const filtered = orders.filter(o =>
+  filteredOrders = orders.filter(o =>
     (!q || o.id.toLowerCase().includes(q) || o.customer.toLowerCase().includes(q)) &&
     (!s || o.status === s) &&
     (!d || o.date === d)
   );
-  renderTable(filtered);
+  currentPage = 1;
+  renderTable(getPaginatedData());
+  renderPagination();
 }
 
 document.getElementById('search-input').addEventListener('input', filterTable);
@@ -836,15 +893,16 @@ function quickCancel(id) {
   if (o) { o.status = 'Cancelled'; filterTable(); toast(`${id} cancelled`,'red'); }
 }
 
-// ── Create modal ──
 function openCreate() {
-  document.getElementById('f-date').value = new Date().toISOString().split('T')[0];
-  document.getElementById('product-rows').innerHTML = '';
-  addProductRow();
-  calcSummary();
+  resetCreateModal();
   document.getElementById('modal-create').classList.remove('hidden');
 }
-function closeCreate() { document.getElementById('modal-create').classList.add('hidden'); }
+
+function closeCreate() { 
+  document.getElementById('modal-create').classList.add('hidden');
+  // Reset modal when closed
+  setTimeout(resetCreateModal, 100);
+}
 
 const customerData = {
   'Ramesh Traders':    {contact:'Ramesh Patel', billing:'12 MG Road, Pune 411001', shipping:'Warehouse 3, MIDC Pune', credit:'₹2,00,000', outstanding:'₹45,000'},
@@ -884,13 +942,29 @@ function addProductRow() {
   document.getElementById('product-rows').appendChild(row);
 }
 
+
 function fillProduct(sel, id) {
-  const opt = sel.options[sel.selectedIndex];
   const p = products.find(x => x.name === sel.value);
-  if (!p) return;
+  if (!p) {
+    // Clear fields if no product selected
+    document.getElementById(`pr-sku-${id}`).value = '';
+    document.getElementById(`pr-stock-${id}`).value = '';
+    document.getElementById(`pr-price-${id}`).value = '';
+    document.getElementById(`pr-amt-${id}`).value = '';
+    calcSummary();
+    return;
+  }
   document.getElementById(`pr-sku-${id}`).value = p.sku;
   document.getElementById(`pr-stock-${id}`).value = p.stock;
   document.getElementById(`pr-price-${id}`).value = `₹${p.price}`;
+  
+  // Auto-calculate amount if quantity exists
+  const qtyInput = document.getElementById(`pr-qty-${id}`);
+  if (qtyInput && qtyInput.value) {
+    const qty = parseInt(qtyInput.value) || 0;
+    const amt = qty * p.price;
+    document.getElementById(`pr-amt-${id}`).value = amt ? `₹${amt.toFixed(2)}` : '';
+  }
   calcSummary();
 }
 
@@ -898,28 +972,696 @@ function removeRow(id) { document.getElementById(`pr-${id}`)?.remove(); calcSumm
 
 function calcSummary() {
   let totalQty = 0, subTotal = 0;
-  document.querySelectorAll('[id^="pr-qty-"]').forEach(input => {
-    const rowId = input.id.replace('pr-qty-','');
-    const qty = parseFloat(input.value)||0;
-    const priceEl = document.getElementById(`pr-price-${rowId}`);
-    const price = parseFloat((priceEl?.value||'0').replace('₹',''))||0;
+  const rows = document.querySelectorAll('.product-row');
+  
+  rows.forEach(row => {
+    const qtyInput = row.querySelector('[id^="pr-qty-"]');
+    const priceInput = row.querySelector('[id^="pr-price-"]');
+    const amtInput = row.querySelector('[id^="pr-amt-"]');
+    
+    if (!qtyInput || !priceInput) return;
+    
+    const qty = parseInt(qtyInput.value) || 0;
+    const priceText = priceInput.value.replace('₹', '').trim();
+    const price = parseFloat(priceText) || 0;
     const amt = qty * price;
-    const amtEl = document.getElementById(`pr-amt-${rowId}`);
-    if (amtEl) amtEl.value = amt ? `₹${amt.toFixed(2)}` : '';
-    totalQty += qty; subTotal += amt;
+    
+    if (amtInput) {
+      amtInput.value = amt ? `₹${amt.toFixed(2)}` : '';
+    }
+    
+    totalQty += qty;
+    subTotal += amt;
   });
+  
   const gst = subTotal * 0.18;
-  const disc = parseFloat(document.getElementById('s-discount-input')?.value)||0;
+  const discInput = document.getElementById('s-discount-input');
+  const disc = parseFloat(discInput?.value) || 0;
   const total = subTotal + gst - disc;
+  
   document.getElementById('s-qty').textContent = totalQty;
   document.getElementById('s-sub').textContent = `₹${subTotal.toFixed(2)}`;
   document.getElementById('s-gst').textContent = `₹${gst.toFixed(2)}`;
   document.getElementById('s-total').textContent = `₹${total.toFixed(2)}`;
 }
 
-function saveDraft() { closeCreate(); toast('Order saved as Draft','amber'); }
-function submitOrder() { closeCreate(); toast('Order submitted for approval','green'); }
-function exportOrders() { toast('Exporting orders…','blue'); }
+function saveDraft() {
+  // Validate at least customer and one product
+  const customer = document.getElementById('f-customer').value;
+  const rows = document.querySelectorAll('.product-row');
+  let hasProduct = false;
+  rows.forEach(row => {
+    const sel = row.querySelector('select');
+    if (sel && sel.value) hasProduct = true;
+  });
+  
+  if (!customer) {
+    toast('Please select a customer', 'red');
+    return;
+  }
+  if (!hasProduct) {
+    toast('Please add at least one product', 'red');
+    return;
+  }
+  
+  // Collect order data
+  const orderData = {
+    id: `SO-${Math.floor(Math.random() * 9000 + 1000)}`,
+    date: document.getElementById('f-date').value || new Date().toISOString().split('T')[0],
+    customer: customer,
+    items: document.querySelectorAll('.product-row').length,
+    value: document.getElementById('s-total').textContent,
+    priority: document.getElementById('f-priority').value,
+    status: 'Draft',
+    billing: document.getElementById('f-billing').value || '—',
+    shipping: document.getElementById('f-shipping').value || '—',
+    contact: document.getElementById('f-contact').value || '—',
+    credit: document.getElementById('f-credit').value || '—',
+    delivery: document.getElementById('f-delivery').value || '—',
+    remarks: document.querySelector('#modal-create input[placeholder="Optional remarks…"]')?.value || '—',
+    products: [],
+    alloc: [],
+    timeline: [{label:'Order Created (Draft)',time:new Date().toLocaleString(),done:true}]
+  };
+  
+  // Collect product data
+  rows.forEach(row => {
+    const sel = row.querySelector('select');
+    const qty = row.querySelector('[id^="pr-qty-"]');
+    const price = row.querySelector('[id^="pr-price-"]');
+    if (sel && sel.value && qty && qty.value) {
+      const productName = sel.value;
+      const productQty = parseInt(qty.value) || 0;
+      const productPrice = parseFloat(price?.value?.replace('₹','') || 0);
+      orderData.products.push({
+        name: productName,
+        qty: productQty,
+        price: productPrice,
+        gst: 18
+      });
+      orderData.alloc.push({
+        name: productName,
+        ordered: productQty,
+        allocated: 0
+      });
+    }
+  });
+  
+  orders.unshift(orderData);
+  closeCreate();
+  filterTable();
+  toast('✅ Order saved as Draft', 'amber');
+}
+
+function submitOrder() {
+  // Similar validation but with stricter checks
+  const customer = document.getElementById('f-customer').value;
+  const rows = document.querySelectorAll('.product-row');
+  let hasProduct = false;
+  let allValid = true;
+  
+  if (!customer) {
+    toast('Please select a customer', 'red');
+    return;
+  }
+  
+  rows.forEach(row => {
+    const sel = row.querySelector('select');
+    const qty = row.querySelector('[id^="pr-qty-"]');
+    if (sel && sel.value) {
+      hasProduct = true;
+      if (!qty || !qty.value || parseInt(qty.value) <= 0) {
+        allValid = false;
+      }
+    }
+  });
+  
+  if (!hasProduct) {
+    toast('Please add at least one product', 'red');
+    return;
+  }
+  if (!allValid) {
+    toast('Please enter valid quantity for all products', 'red');
+    return;
+  }
+  
+  // Create order with Pending Approval status
+  const orderData = {
+    id: `SO-${Math.floor(Math.random() * 9000 + 1000)}`,
+    date: document.getElementById('f-date').value || new Date().toISOString().split('T')[0],
+    customer: customer,
+    items: document.querySelectorAll('.product-row').length,
+    value: document.getElementById('s-total').textContent,
+    priority: document.getElementById('f-priority').value,
+    status: 'Pending Approval',
+    billing: document.getElementById('f-billing').value || '—',
+    shipping: document.getElementById('f-shipping').value || '—',
+    contact: document.getElementById('f-contact').value || '—',
+    credit: document.getElementById('f-credit').value || '—',
+    delivery: document.getElementById('f-delivery').value || '—',
+    remarks: document.querySelector('#modal-create input[placeholder="Optional remarks…"]')?.value || '—',
+    products: [],
+    alloc: [],
+    timeline: [
+      {label:'Order Created',time:new Date().toLocaleString(),done:true},
+      {label:'Pending Approval',time:new Date().toLocaleString(),done:true},
+      {label:'Approved',time:'—',done:false},
+      {label:'Stock Allocated',time:'—',done:false},
+      {label:'Ready For Dispatch',time:'—',done:false}
+    ]
+  };
+  
+  rows.forEach(row => {
+    const sel = row.querySelector('select');
+    const qty = row.querySelector('[id^="pr-qty-"]');
+    const price = row.querySelector('[id^="pr-price-"]');
+    if (sel && sel.value && qty && qty.value) {
+      const productName = sel.value;
+      const productQty = parseInt(qty.value) || 0;
+      const productPrice = parseFloat(price?.value?.replace('₹','') || 0);
+      orderData.products.push({
+        name: productName,
+        qty: productQty,
+        price: productPrice,
+        gst: 18
+      });
+      orderData.alloc.push({
+        name: productName,
+        ordered: productQty,
+        allocated: 0
+      });
+    }
+  });
+  
+  orders.unshift(orderData);
+  closeCreate();
+  filterTable();
+  toast('✅ Order submitted for approval', 'green');
+}
+
+
+// ── Edit Order ──
+function openEdit(orderId) {
+  const order = orders.find(o => o.id === orderId);
+  if (!order) {
+    toast('Order not found', 'red');
+    return;
+  }
+  
+  // Open the create modal
+  document.getElementById('modal-create').classList.remove('hidden');
+  
+  // Set the modal title for edit mode
+  const modalHeader = document.querySelector('#modal-create .modal-header div:first-child');
+  modalHeader.innerHTML = `
+    <div class="text-sm font-bold text-[#111844]">Edit Sales Order</div>
+    <div class="text-xs text-[#7288AE]">${order.id} — ${order.customer}</div>
+  `;
+  
+  // Fill customer details
+  document.getElementById('f-customer').value = order.customer;
+  fillCustomer();
+  
+  // Fill order details
+  document.getElementById('f-date').value = order.date;
+  document.getElementById('f-delivery').value = order.delivery || '';
+  document.getElementById('f-priority').value = order.priority || 'Medium';
+  
+  // Set remarks
+  const remarksInput = document.querySelector('#modal-create input[placeholder="Optional remarks…"]');
+  if (remarksInput) remarksInput.value = order.remarks || '';
+  
+  // Clear existing product rows
+  document.getElementById('product-rows').innerHTML = '';
+  rowCount = 0;
+  
+  // Add product rows with existing data
+  if (order.products && order.products.length > 0) {
+    order.products.forEach((product) => {
+      const id = rowCount++;
+      const opts = products.map(p => 
+        `<option value="${p.name}" ${p.name === product.name ? 'selected' : ''} data-stock="${p.stock}" data-price="${p.price}">${p.name}</option>`
+      ).join('');
+      
+      const row = document.createElement('div');
+      row.className = 'product-row';
+      row.id = `pr-${id}`;
+      row.innerHTML = `
+        <select class="form-select text-xs" onchange="fillProduct(this,${id})" id="pr-sel-${id}">
+          <option value="">Select product</option>${opts}
+        </select>
+        <input class="form-input text-xs" id="pr-sku-${id}" placeholder="SKU" value="${product.sku || ''}" readonly />
+        <input class="form-input text-xs" id="pr-stock-${id}" placeholder="Avail." value="${product.stock || ''}" readonly />
+        <input class="form-input text-xs" id="pr-qty-${id}" type="number" min="1" placeholder="Qty" value="${product.qty}" oninput="calcSummary()" />
+        <input class="form-input text-xs" id="pr-price-${id}" placeholder="Price" value="₹${product.price}" readonly />
+        <input class="form-input text-xs font-semibold" id="pr-amt-${id}" placeholder="₹0" value="₹${(product.qty * product.price).toFixed(2)}" readonly />
+        <button class="btn-icon btn-cancel" onclick="removeRow(${id})"><i class="fas fa-trash"></i></button>
+      `;
+      document.getElementById('product-rows').appendChild(row);
+    });
+  } else {
+    // Add one empty row if no products
+    addProductRow();
+  }
+  
+  // Calculate summary
+  calcSummary();
+  
+  // Store the order ID being edited
+  document.getElementById('modal-create').dataset.editId = orderId;
+  
+  // Change submit button text
+  const submitBtn = document.querySelector('#modal-create .modal-footer .btn-primary');
+  submitBtn.innerHTML = '<i class="fas fa-save"></i> Update Order';
+  submitBtn.onclick = updateOrder;
+  
+  // Show save draft button as "Cancel Edit"
+  const draftBtn = document.querySelector('#modal-create .modal-footer .btn-secondary:first-child');
+  draftBtn.textContent = 'Cancel Edit';
+  draftBtn.onclick = function() { 
+    closeCreate(); 
+    resetCreateModal();
+  };
+}
+
+// ── Reset Create Modal ──
+function resetCreateModal() {
+  const modalHeader = document.querySelector('#modal-create .modal-header div:first-child');
+  modalHeader.innerHTML = `
+    <div class="text-sm font-bold text-[#111844]">Create Sales Order</div>
+    <div class="text-xs text-[#7288AE]">Fill in customer, order info and products</div>
+  `;
+  
+  document.getElementById('f-customer').value = '';
+  document.getElementById('f-contact').value = '';
+  document.getElementById('f-billing').value = '';
+  document.getElementById('f-shipping').value = '';
+  document.getElementById('f-credit').value = '';
+  document.getElementById('f-outstanding').value = '';
+  document.getElementById('f-date').value = new Date().toISOString().split('T')[0];
+  document.getElementById('f-delivery').value = '';
+  document.getElementById('f-priority').value = 'Medium';
+  const remarksInput = document.querySelector('#modal-create input[placeholder="Optional remarks…"]');
+  if (remarksInput) remarksInput.value = '';
+  
+  document.getElementById('product-rows').innerHTML = '';
+  rowCount = 0;
+  addProductRow();
+  calcSummary();
+  
+  delete document.getElementById('modal-create').dataset.editId;
+  
+  const submitBtn = document.querySelector('#modal-create .modal-footer .btn-primary');
+  submitBtn.innerHTML = '<i class="fas fa-paper-plane"></i> Submit for Approval';
+  submitBtn.onclick = submitOrder;
+  
+  const draftBtn = document.querySelector('#modal-create .modal-footer .btn-secondary:first-child');
+  draftBtn.textContent = 'Save Draft';
+  draftBtn.onclick = saveDraft;
+}
+
+// ── Update Order ──
+function updateOrder() {
+  const editId = document.getElementById('modal-create').dataset.editId;
+  if (!editId) {
+    toast('No order being edited', 'red');
+    return;
+  }
+  
+  const orderIndex = orders.findIndex(o => o.id === editId);
+  if (orderIndex === -1) {
+    toast('Order not found', 'red');
+    return;
+  }
+  
+  // Validate
+  const customer = document.getElementById('f-customer').value;
+  const rows = document.querySelectorAll('.product-row');
+  let hasProduct = false;
+  let allValid = true;
+  
+  if (!customer) {
+    toast('Please select a customer', 'red');
+    return;
+  }
+  
+  rows.forEach(row => {
+    const sel = row.querySelector('select');
+    const qty = row.querySelector('[id^="pr-qty-"]');
+    if (sel && sel.value) {
+      hasProduct = true;
+      if (!qty || !qty.value || parseInt(qty.value) <= 0) {
+        allValid = false;
+      }
+    }
+  });
+  
+  if (!hasProduct) {
+    toast('Please add at least one product', 'red');
+    return;
+  }
+  if (!allValid) {
+    toast('Please enter valid quantity for all products', 'red');
+    return;
+  }
+  
+  // Update order
+  const order = orders[orderIndex];
+  order.date = document.getElementById('f-date').value || new Date().toISOString().split('T')[0];
+  order.customer = customer;
+  order.priority = document.getElementById('f-priority').value;
+  order.delivery = document.getElementById('f-delivery').value || '—';
+  order.remarks = document.querySelector('#modal-create input[placeholder="Optional remarks…"]')?.value || '—';
+  order.billing = document.getElementById('f-billing').value || '—';
+  order.shipping = document.getElementById('f-shipping').value || '—';
+  order.contact = document.getElementById('f-contact').value || '—';
+  order.credit = document.getElementById('f-credit').value || '—';
+  
+  // Update products
+  order.products = [];
+  order.alloc = [];
+  let totalValue = 0;
+  
+  rows.forEach(row => {
+    const sel = row.querySelector('select');
+    const qtyInput = row.querySelector('[id^="pr-qty-"]');
+    const priceInput = row.querySelector('[id^="pr-price-"]');
+    if (sel && sel.value && qtyInput && qtyInput.value) {
+      const productName = sel.value;
+      const productQty = parseInt(qtyInput.value) || 0;
+      const productPrice = parseFloat(priceInput?.value?.replace('₹','') || 0);
+      const amt = productQty * productPrice;
+      totalValue += amt;
+      
+      order.products.push({
+        name: productName,
+        qty: productQty,
+        price: productPrice,
+        gst: 18
+      });
+      
+      // Find existing allocation or create new
+      const existingAlloc = order.alloc.find(a => a.name === productName);
+      if (existingAlloc) {
+        existingAlloc.ordered = productQty;
+      } else {
+        order.alloc.push({
+          name: productName,
+          ordered: productQty,
+          allocated: 0
+        });
+      }
+    }
+  });
+  
+  order.items = order.products.length;
+  order.value = `₹${totalValue.toLocaleString()}`;
+  
+  // Add timeline entry
+  order.timeline.push({
+    label: 'Order Updated',
+    time: new Date().toLocaleString(),
+    done: true
+  });
+  
+  closeCreate();
+  filterTable();
+  resetCreateModal();
+  toast(`✅ Order ${order.id} updated successfully`, 'green');
+}
+
+
+// ── Edit Order ──
+function openEdit(orderId) {
+  const order = orders.find(o => o.id === orderId);
+  if (!order) {
+    toast('Order not found', 'red');
+    return;
+  }
+  
+  // Open the create modal
+  document.getElementById('modal-create').classList.remove('hidden');
+  
+  // Set the modal title for edit mode
+  const modalHeader = document.querySelector('#modal-create .modal-header div:first-child');
+  modalHeader.innerHTML = `
+    <div class="text-sm font-bold text-[#111844]">Edit Sales Order</div>
+    <div class="text-xs text-[#7288AE]">${order.id} — ${order.customer}</div>
+  `;
+  
+  // Fill customer details
+  document.getElementById('f-customer').value = order.customer;
+  fillCustomer();
+  
+  // Fill order details
+  document.getElementById('f-date').value = order.date;
+  document.getElementById('f-delivery').value = order.delivery || '';
+  document.getElementById('f-priority').value = order.priority || 'Medium';
+  
+  // Set remarks
+  const remarksInput = document.querySelector('#modal-create input[placeholder="Optional remarks…"]');
+  if (remarksInput) remarksInput.value = order.remarks || '';
+  
+  // Clear existing product rows
+  document.getElementById('product-rows').innerHTML = '';
+  rowCount = 0;
+  
+  // Add product rows with existing data
+  if (order.products && order.products.length > 0) {
+    order.products.forEach((product) => {
+      const id = rowCount++;
+      const opts = products.map(p => 
+        `<option value="${p.name}" ${p.name === product.name ? 'selected' : ''} data-stock="${p.stock}" data-price="${p.price}">${p.name}</option>`
+      ).join('');
+      
+      const row = document.createElement('div');
+      row.className = 'product-row';
+      row.id = `pr-${id}`;
+      row.innerHTML = `
+        <select class="form-select text-xs" onchange="fillProduct(this,${id})" id="pr-sel-${id}">
+          <option value="">Select product</option>${opts}
+        </select>
+        <input class="form-input text-xs" id="pr-sku-${id}" placeholder="SKU" value="${product.sku || ''}" readonly />
+        <input class="form-input text-xs" id="pr-stock-${id}" placeholder="Avail." value="${product.stock || ''}" readonly />
+        <input class="form-input text-xs" id="pr-qty-${id}" type="number" min="1" placeholder="Qty" value="${product.qty}" oninput="calcSummary()" />
+        <input class="form-input text-xs" id="pr-price-${id}" placeholder="Price" value="₹${product.price}" readonly />
+        <input class="form-input text-xs font-semibold" id="pr-amt-${id}" placeholder="₹0" value="₹${(product.qty * product.price).toFixed(2)}" readonly />
+        <button class="btn-icon btn-cancel" onclick="removeRow(${id})"><i class="fas fa-trash"></i></button>
+      `;
+      document.getElementById('product-rows').appendChild(row);
+    });
+  } else {
+    // Add one empty row if no products
+    addProductRow();
+  }
+  
+  // Calculate summary
+  calcSummary();
+  
+  // Store the order ID being edited
+  document.getElementById('modal-create').dataset.editId = orderId;
+  
+  // Change submit button text
+  const submitBtn = document.querySelector('#modal-create .modal-footer .btn-primary');
+  submitBtn.innerHTML = '<i class="fas fa-save"></i> Update Order';
+  submitBtn.onclick = updateOrder;
+  
+  // Show save draft button as "Cancel Edit"
+  const draftBtn = document.querySelector('#modal-create .modal-footer .btn-secondary:first-child');
+  draftBtn.textContent = 'Cancel Edit';
+  draftBtn.onclick = function() { 
+    closeCreate(); 
+    resetCreateModal();
+  };
+}
+
+// ── Reset Create Modal ──
+function resetCreateModal() {
+  const modalHeader = document.querySelector('#modal-create .modal-header div:first-child');
+  modalHeader.innerHTML = `
+    <div class="text-sm font-bold text-[#111844]">Create Sales Order</div>
+    <div class="text-xs text-[#7288AE]">Fill in customer, order info and products</div>
+  `;
+  
+  document.getElementById('f-customer').value = '';
+  document.getElementById('f-contact').value = '';
+  document.getElementById('f-billing').value = '';
+  document.getElementById('f-shipping').value = '';
+  document.getElementById('f-credit').value = '';
+  document.getElementById('f-outstanding').value = '';
+  document.getElementById('f-date').value = new Date().toISOString().split('T')[0];
+  document.getElementById('f-delivery').value = '';
+  document.getElementById('f-priority').value = 'Medium';
+  const remarksInput = document.querySelector('#modal-create input[placeholder="Optional remarks…"]');
+  if (remarksInput) remarksInput.value = '';
+  
+  document.getElementById('product-rows').innerHTML = '';
+  rowCount = 0;
+  addProductRow();
+  calcSummary();
+  
+  delete document.getElementById('modal-create').dataset.editId;
+  
+  const submitBtn = document.querySelector('#modal-create .modal-footer .btn-primary');
+  submitBtn.innerHTML = '<i class="fas fa-paper-plane"></i> Submit for Approval';
+  submitBtn.onclick = submitOrder;
+  
+  const draftBtn = document.querySelector('#modal-create .modal-footer .btn-secondary:first-child');
+  draftBtn.textContent = 'Save Draft';
+  draftBtn.onclick = saveDraft;
+}
+
+function updateOrder() {
+  const editId = document.getElementById('modal-create').dataset.editId;
+  if (!editId) {
+    toast('No order being edited', 'red');
+    return;
+  }
+  
+  const orderIndex = orders.findIndex(o => o.id === editId);
+  if (orderIndex === -1) {
+    toast('Order not found', 'red');
+    return;
+  }
+  
+  // Validate
+  const customer = document.getElementById('f-customer').value;
+  const rows = document.querySelectorAll('.product-row');
+  let hasProduct = false;
+  let allValid = true;
+  
+  if (!customer) {
+    toast('Please select a customer', 'red');
+    return;
+  }
+  
+  rows.forEach(row => {
+    const sel = row.querySelector('select');
+    const qty = row.querySelector('[id^="pr-qty-"]');
+    if (sel && sel.value) {
+      hasProduct = true;
+      if (!qty || !qty.value || parseInt(qty.value) <= 0) {
+        allValid = false;
+      }
+    }
+  });
+  
+  if (!hasProduct) {
+    toast('Please add at least one product', 'red');
+    return;
+  }
+  if (!allValid) {
+    toast('Please enter valid quantity for all products', 'red');
+    return;
+  }
+  
+  // Update order
+  const order = orders[orderIndex];
+  order.date = document.getElementById('f-date').value || new Date().toISOString().split('T')[0];
+  order.customer = customer;
+  order.priority = document.getElementById('f-priority').value;
+  order.delivery = document.getElementById('f-delivery').value || '—';
+  order.remarks = document.querySelector('#modal-create input[placeholder="Optional remarks…"]')?.value || '—';
+  order.billing = document.getElementById('f-billing').value || '—';
+  order.shipping = document.getElementById('f-shipping').value || '—';
+  order.contact = document.getElementById('f-contact').value || '—';
+  order.credit = document.getElementById('f-credit').value || '—';
+  
+  // Update products
+  order.products = [];
+  order.alloc = [];
+  let totalValue = 0;
+  
+  rows.forEach(row => {
+    const sel = row.querySelector('select');
+    const qtyInput = row.querySelector('[id^="pr-qty-"]');
+    const priceInput = row.querySelector('[id^="pr-price-"]');
+    if (sel && sel.value && qtyInput && qtyInput.value) {
+      const productName = sel.value;
+      const productQty = parseInt(qtyInput.value) || 0;
+      const productPrice = parseFloat(priceInput?.value?.replace('₹','') || 0);
+      const amt = productQty * productPrice;
+      totalValue += amt;
+      
+      order.products.push({
+        name: productName,
+        qty: productQty,
+        price: productPrice,
+        gst: 18
+      });
+      
+      // Find existing allocation or create new
+      const existingAlloc = order.alloc.find(a => a.name === productName);
+      if (existingAlloc) {
+        existingAlloc.ordered = productQty;
+      } else {
+        order.alloc.push({
+          name: productName,
+          ordered: productQty,
+          allocated: 0
+        });
+      }
+    }
+  });
+  
+  order.items = order.products.length;
+  order.value = `₹${totalValue.toLocaleString()}`;
+  
+  // Add timeline entry
+  order.timeline.push({
+    label: 'Order Updated',
+    time: new Date().toLocaleString(),
+    done: true
+  });
+  
+  closeCreate();
+  filterTable();
+  resetCreateModal();
+  toast(`✅ Order ${order.id} updated successfully`, 'green');
+}
+
+
+function exportOrders() {
+  try {
+    // Get current filtered data
+    const q = document.getElementById('search-input').value.toLowerCase();
+    const s = document.getElementById('filter-status').value;
+    const d = document.getElementById('filter-date').value;
+    let data = orders.filter(o =>
+      (!q || o.id.toLowerCase().includes(q) || o.customer.toLowerCase().includes(q)) &&
+      (!s || o.status === s) &&
+      (!d || o.date === d)
+    );
+    
+    if (data.length === 0) {
+      toast('No orders to export', 'red');
+      return;
+    }
+    
+    // Create CSV
+    const headers = ['Order No', 'Date', 'Customer', 'Items', 'Value', 'Priority', 'Status'];
+    let csv = headers.join(',') + '\n';
+    data.forEach(o => {
+      csv += [o.id, o.date, o.customer, o.items, o.value, o.priority, o.status].join(',') + '\n';
+    });
+    
+    // Download
+    const blob = new Blob([csv], { type: 'text/csv;charset=utf-8;' });
+    const url = URL.createObjectURL(blob);
+    const link = document.createElement('a');
+    link.href = url;
+    link.download = `Sales_Orders_${new Date().toISOString().split('T')[0]}.csv`;
+    document.body.appendChild(link);
+    link.click();
+    document.body.removeChild(link);
+    URL.revokeObjectURL(url);
+    toast(`✅ ${data.length} orders exported`, 'green');
+  } catch(e) {
+    toast('Export failed: ' + e.message, 'red');
+  }
+}
+
+
 
 // ── Detail modal ──
 let currentOrder = null;
@@ -1051,6 +1793,49 @@ document.querySelectorAll('.nav-group-header').forEach(h => {
   });
 });
 
+// ── Pagination State ──
+let currentPage = 1;
+const pageSize = 5;
+let filteredOrders = [...orders];
+
+function getPaginatedData() {
+  const start = (currentPage - 1) * pageSize;
+  const end = start + pageSize;
+  return filteredOrders.slice(start, end);
+}
+
+function renderPagination() {
+  const totalPages = Math.ceil(filteredOrders.length / pageSize);
+  const info = document.getElementById('pagination-info');
+  const prevBtn = document.querySelector('.pagination-prev');
+  const nextBtn = document.querySelector('.pagination-next');
+  const pageBtns = document.querySelector('.pagination-buttons');
+  
+  if (!info || !prevBtn || !nextBtn || !pageBtns) return;
+  
+  const start = (currentPage - 1) * pageSize + 1;
+  const end = Math.min(currentPage * pageSize, filteredOrders.length);
+  info.textContent = filteredOrders.length === 0 ? 'No records' : `Showing ${start}–${end} of ${filteredOrders.length}`;
+  
+  prevBtn.disabled = currentPage === 1;
+  nextBtn.disabled = currentPage === totalPages || totalPages === 0;
+  
+  // Build page buttons
+  let btns = '';
+  for (let i = 1; i <= totalPages; i++) {
+    btns += `<button class="page-btn ${i === currentPage ? 'btn-primary' : 'btn-secondary'}" style="padding:4px 10px;font-size:11px;border-radius:6px;border:none;cursor:pointer;" onclick="goToPage(${i})">${i}</button>`;
+  }
+  pageBtns.innerHTML = btns;
+}
+
+function goToPage(page) {
+  const totalPages = Math.ceil(filteredOrders.length / pageSize);
+  if (page < 1 || page > totalPages) return;
+  currentPage = page;
+  renderTable(getPaginatedData());
+  renderPagination();
+}
+
 // ── User / notif menus ──
 const userBtn = document.getElementById('user-menu-btn');
 const userMenu = document.getElementById('user-menu');
@@ -1064,8 +1849,19 @@ document.addEventListener('click', () => { userMenu?.classList.add('hidden'); no
 document.getElementById('modal-create').addEventListener('click', e => { if(e.target===e.currentTarget) closeCreate(); });
 document.getElementById('modal-detail').addEventListener('click', e => { if(e.target===e.currentTarget) closeDetail(); });
 
+
+function clearAllFilters() {
+  document.getElementById('filter-date').value = '';
+  document.getElementById('filter-status').value = '';
+  document.getElementById('search-input').value = '';
+  filterTable();
+  toast('All filters cleared', 'blue');
+}
+
 // ── Init ──
-renderTable(orders);
+filteredOrders = [...orders];
+renderTable(getPaginatedData());
+renderPagination();
 </script>
 </body>
 </html>
