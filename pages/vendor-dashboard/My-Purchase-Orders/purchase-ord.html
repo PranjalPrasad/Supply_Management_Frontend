@@ -1,0 +1,336 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>My Purchase Orders — Vendor Portal</title>
+  <link rel="stylesheet" href="/pages/vendor-dashboard/My-Purchase-Orders/purchase-ord.css" />
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css" />
+</head>
+<body>
+
+<!-- ============================================================
+     SIDEBAR
+     ============================================================ -->
+<aside id="sidebar">
+  <div class="sidebar-head">
+    <div class="sidebar-brand">
+      <div class="sidebar-brand-icon"><i class="fas fa-store"></i></div>
+      <div class="sidebar-brand-text">
+        Vendor Portal
+        <span>Supply Management</span>
+      </div>
+    </div>
+    <button class="sidebar-toggle-btn" id="sidebar-toggle">
+      <i class="fas fa-chevron-left"></i>
+    </button>
+  </div>
+
+  <nav class="sidebar-nav">
+    <a href="vendor-dashboard.html" class="nav-item">
+      <span class="nav-icon"><i class="fas fa-chart-pie"></i></span>
+      <span class="nav-label">Dashboard</span>
+    </a>
+    <a href="purchase-orders.html" class="nav-item nav-active">
+      <span class="nav-icon"><i class="fas fa-file-invoice"></i></span>
+      <span class="nav-label">My Purchase Orders</span>
+    </a>
+    <a href="#" class="nav-item">
+      <span class="nav-icon"><i class="fas fa-calendar-days"></i></span>
+      <span class="nav-label">Delivery Schedule</span>
+    </a>
+    <a href="#" class="nav-item">
+      <span class="nav-icon"><i class="fas fa-truck"></i></span>
+      <span class="nav-label">Shipment Status</span>
+    </a>
+    <a href="#" class="nav-item">
+      <span class="nav-icon"><i class="fas fa-rotate-left"></i></span>
+      <span class="nav-label">Return Management</span>
+    </a>
+    <a href="#" class="nav-item">
+      <span class="nav-icon"><i class="fas fa-rupee-sign"></i></span>
+      <span class="nav-label">Payment Status</span>
+    </a>
+    <a href="#" class="nav-item">
+      <span class="nav-icon"><i class="fas fa-folder-open"></i></span>
+      <span class="nav-label">Documents Center</span>
+    </a>
+    <a href="#" class="nav-item">
+      <span class="nav-icon"><i class="fas fa-user-circle"></i></span>
+      <span class="nav-label">Profile Management</span>
+    </a>
+  </nav>
+
+  <div class="sidebar-footer">
+    <div class="vendor-avatar">SK</div>
+    <div class="vendor-info">
+      <div class="vendor-name">Suresh Kumar</div>
+      <div class="vendor-role">Vendor User</div>
+    </div>
+  </div>
+</aside>
+
+<div id="sidebar-overlay"></div>
+
+<!-- ============================================================
+     MAIN WRAPPER
+     ============================================================ -->
+<div id="main-wrapper">
+
+  <!-- HEADER -->
+  <header class="top-header">
+    <div class="header-left">
+      <div class="page-title">My Purchase Orders</div>
+      <div class="page-sub">Shri Metals Pvt. Ltd. &mdash; View and manage all purchase orders</div>
+    </div>
+    <div class="header-right">
+      <!-- Notifications -->
+      <div class="dropdown-wrap">
+        <button class="icon-btn" id="notif-btn">
+          <i class="fas fa-bell"></i>
+          <span class="notif-dot"></span>
+        </button>
+        <div class="dropdown-menu notif-menu" id="notif-menu">
+          <div class="notif-header">
+            <span class="notif-header-title">Notifications</span>
+            <span class="notif-count-badge">3 new</span>
+          </div>
+          <div class="notif-list">
+            <div class="notif-item">
+              <div class="notif-icon" style="background:rgba(16,185,129,.12);color:#059669;"><i class="fas fa-file-invoice"></i></div>
+              <div class="notif-body">
+                <div class="notif-title">New PO #PO-2048 received</div>
+                <div class="notif-desc">Accept or reject by 25 Jun</div>
+                <div class="notif-time">10 minutes ago</div>
+              </div>
+            </div>
+            <div class="notif-item">
+              <div class="notif-icon" style="background:rgba(251,191,36,.15);color:#d97706;"><i class="fas fa-truck"></i></div>
+              <div class="notif-body">
+                <div class="notif-title">Delivery reminder: PO-2041</div>
+                <div class="notif-desc">Expected delivery: 26 Jun 2026</div>
+                <div class="notif-time">1 hour ago</div>
+              </div>
+            </div>
+            <div class="notif-item">
+              <div class="notif-icon" style="background:rgba(99,102,241,.12);color:#4f46e5;"><i class="fas fa-rotate-left"></i></div>
+              <div class="notif-body">
+                <div class="notif-title">Return #RET-109 approved</div>
+                <div class="notif-desc">Replacement dispatched</div>
+                <div class="notif-time">3 hours ago</div>
+              </div>
+            </div>
+          </div>
+          <div class="notif-footer"><a href="#">View all notifications</a></div>
+        </div>
+      </div>
+
+      <!-- User menu -->
+      <div class="dropdown-wrap">
+        <button class="user-menu-btn" id="user-menu-btn">
+          <div class="user-avatar">SK</div>
+          <span class="user-name">Suresh Kumar</span>
+          <i class="fas fa-chevron-down user-chevron"></i>
+        </button>
+        <div class="dropdown-menu user-dropdown" id="user-menu">
+          <a href="#"><i class="fas fa-user-circle" style="width:16px;"></i> My Profile</a>
+          <a href="#"><i class="fas fa-lock" style="width:16px;"></i> Change Password</a>
+          <div class="divider"></div>
+          <a href="#" class="danger" id="logout-btn"><i class="fas fa-sign-out-alt" style="width:16px;"></i> Logout</a>
+        </div>
+      </div>
+    </div>
+  </header>
+
+  <!-- MAIN CONTENT -->
+  <main class="main-content">
+
+    <!-- Page topbar -->
+    <div class="page-topbar">
+      <div class="page-topbar-left">
+        <div class="page-heading"><i class="fas fa-file-invoice" style="color:#4B5694;margin-right:6px;"></i>Purchase Orders</div>
+        <div class="page-sub">All purchase orders issued to your account</div>
+      </div>
+      <div class="page-topbar-right">
+        <button class="btn btn-outline" onclick="exportCSV()">
+          <i class="fas fa-download"></i> Export CSV
+        </button>
+        <button class="btn btn-primary" onclick="showToast('Printing…','info')">
+          <i class="fas fa-print"></i> Print
+        </button>
+      </div>
+    </div>
+
+    <!-- KPI WIDGETS -->
+    <div class="mini-widgets">
+      <div class="widget-card">
+        <div class="widget-body">
+          <div class="widget-value">48</div>
+          <div class="widget-label">Total POs</div>
+          <div class="widget-trend" style="background:rgba(17,24,68,.08);color:#4B5694;"><i class="fas fa-file-invoice"></i> All Time</div>
+        </div>
+        <div class="widget-icon" style="background:rgba(17,24,68,.10);color:#111844;"><i class="fas fa-file-invoice"></i></div>
+      </div>
+      <div class="widget-card">
+        <div class="widget-body">
+          <div class="widget-value">5</div>
+          <div class="widget-label">New / Pending</div>
+          <div class="widget-trend" style="background:rgba(99,102,241,.12);color:#4f46e5;"><i class="fas fa-clock"></i> Awaiting</div>
+        </div>
+        <div class="widget-icon" style="background:rgba(99,102,241,.12);color:#4f46e5;"><i class="fas fa-hourglass-half"></i></div>
+      </div>
+      <div class="widget-card">
+        <div class="widget-body">
+          <div class="widget-value">18</div>
+          <div class="widget-label">Accepted / In Progress</div>
+          <div class="widget-trend" style="background:rgba(245,158,11,.15);color:#b45309;"><i class="fas fa-spinner"></i> Active</div>
+        </div>
+        <div class="widget-icon" style="background:rgba(245,158,11,.15);color:#b45309;"><i class="fas fa-spinner"></i></div>
+      </div>
+      <div class="widget-card">
+        <div class="widget-body">
+          <div class="widget-value">22</div>
+          <div class="widget-label">Delivered / Closed</div>
+          <div class="widget-trend" style="background:rgba(16,185,129,.12);color:#059669;"><i class="fas fa-circle-check"></i> Done</div>
+        </div>
+        <div class="widget-icon" style="background:rgba(16,185,129,.12);color:#059669;"><i class="fas fa-circle-check"></i></div>
+      </div>
+      <div class="widget-card">
+        <div class="widget-body">
+          <div class="widget-value">₹18.6L</div>
+          <div class="widget-label">Total Order Value</div>
+          <div class="widget-trend" style="background:rgba(16,185,129,.12);color:#059669;"><i class="fas fa-arrow-up"></i> This Year</div>
+        </div>
+        <div class="widget-icon" style="background:rgba(16,185,129,.12);color:#059669;"><i class="fas fa-rupee-sign"></i></div>
+      </div>
+    </div>
+
+    <!-- FILTERS -->
+    <div class="filter-card">
+      <div class="search-wrap">
+        <i class="fas fa-search"></i>
+        <input class="search-input" type="text" id="search-input" placeholder="Search by PO number, product…" />
+      </div>
+      <select class="filter-select" id="filter-status">
+        <option value="">All Statuses</option>
+        <option value="New">New</option>
+        <option value="Accepted">Accepted</option>
+        <option value="In Progress">In Progress</option>
+        <option value="Delivered">Delivered</option>
+        <option value="Closed">Closed</option>
+        <option value="Rejected">Rejected</option>
+      </select>
+      <input class="filter-date" type="date" id="filter-from" title="From Date" />
+      <input class="filter-date" type="date" id="filter-to" title="To Date" />
+      <button class="btn btn-outline" onclick="resetFilters()"><i class="fas fa-rotate-right"></i> Reset</button>
+    </div>
+
+    <!-- TABLE CARD -->
+    <div class="table-card">
+      <div class="table-card-header">
+        <div>
+          <div class="table-card-title">Purchase Order List</div>
+          <div class="table-card-sub" id="table-subtitle">Showing all records</div>
+        </div>
+        <div class="table-header-actions">
+          <span style="font-size:11px;color:#7288AE;" id="record-count">48 records</span>
+        </div>
+      </div>
+
+      <div class="table-wrap">
+        <table id="po-table">
+          <thead>
+            <tr>
+              <th data-col="poNumber">PO Number <i class="fas fa-sort sort-icon"></i></th>
+              <th data-col="poDate">PO Date <i class="fas fa-sort sort-icon"></i></th>
+              <th data-col="deliveryDate">Delivery Date <i class="fas fa-sort sort-icon"></i></th>
+              <th data-col="items">Items</th>
+              <th data-col="orderValue">Order Value <i class="fas fa-sort sort-icon"></i></th>
+              <th data-col="status">Status <i class="fas fa-sort sort-icon"></i></th>
+              <th>Actions</th>
+            </tr>
+          </thead>
+          <tbody id="po-tbody">
+            <!-- Rows injected by JS -->
+          </tbody>
+        </table>
+        <div id="empty-state" class="empty-state" style="display:none;">
+          <i class="fas fa-file-invoice"></i>
+          <p>No purchase orders found</p>
+          <span>Try adjusting your search or filters</span>
+        </div>
+      </div>
+
+      <div class="pagination-bar">
+        <div class="pagination-info" id="pagination-info">Showing 1–10 of 48</div>
+        <div class="pagination-btns" id="pagination-btns"></div>
+      </div>
+    </div>
+
+  </main>
+</div>
+
+<!-- ============================================================
+     PO DETAIL MODAL
+     ============================================================ -->
+<div class="modal-overlay" id="po-detail-modal">
+  <div class="modal-box">
+    <div class="modal-header">
+      <div class="modal-title" id="modal-po-title">PO Details</div>
+      <button class="modal-close" onclick="closeModal('po-detail-modal')"><i class="fas fa-times"></i></button>
+    </div>
+    <div class="modal-body">
+      <!-- PO Info -->
+      <div>
+        <div class="modal-section-title">Purchase Order Info</div>
+        <div class="info-grid" id="modal-po-info"></div>
+      </div>
+      <div class="modal-divider"></div>
+      <!-- Items -->
+      <div>
+        <div class="modal-section-title">Order Items</div>
+        <div style="overflow-x:auto;">
+          <table class="modal-table">
+            <thead>
+              <tr>
+                <th>#</th>
+                <th>Product</th>
+                <th>Unit</th>
+                <th>Qty</th>
+                <th>Unit Price</th>
+                <th>Amount</th>
+              </tr>
+            </thead>
+            <tbody id="modal-items-tbody"></tbody>
+          </table>
+        </div>
+      </div>
+      <div class="modal-divider"></div>
+      <!-- Totals -->
+      <div style="display:flex;flex-direction:column;gap:6px;align-items:flex-end;" id="modal-totals"></div>
+    </div>
+    <div class="modal-footer" id="modal-footer-actions"></div>
+  </div>
+</div>
+
+<!-- CONFIRM MODAL -->
+<div class="modal-overlay" id="confirm-modal">
+  <div class="confirm-modal-box">
+    <div class="confirm-modal-body">
+      <div class="confirm-icon" id="confirm-icon">✅</div>
+      <div class="confirm-title" id="confirm-title">Accept this PO?</div>
+      <div class="confirm-desc"  id="confirm-desc">This action will notify the company.</div>
+    </div>
+    <div class="confirm-footer">
+      <button class="btn btn-outline" onclick="closeModal('confirm-modal')">Cancel</button>
+      <button class="btn btn-primary" id="confirm-action-btn">Confirm</button>
+    </div>
+  </div>
+</div>
+
+<!-- TOAST -->
+<div id="toast-container"></div>
+
+<script src="/pages/vendor-dashboard/My-Purchase-Orders/purchase-ord.js"></script>
+</body>
+</html>

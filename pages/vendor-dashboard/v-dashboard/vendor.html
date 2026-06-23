@@ -1,0 +1,507 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Vendor Dashboard — Vendor Portal</title>
+
+  <!-- Styles -->
+  <link rel="stylesheet" href="/pages/vendor-dashboard/v-dashboard/vendor.css" />
+
+  <!-- Icons -->
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css" />
+
+  <!-- Chart.js -->
+  <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.1/dist/chart.umd.min.js"></script>
+</head>
+<body>
+
+<!-- ============================================================
+     SIDEBAR
+     ============================================================ -->
+<aside id="sidebar">
+
+  <!-- Brand header -->
+  <div class="sidebar-head">
+    <div class="sidebar-brand">
+      <div class="sidebar-brand-icon"><i class="fas fa-store"></i></div>
+      <div class="sidebar-brand-text">
+        Vendor Portal
+        <span>Supply Management</span>
+      </div>
+    </div>
+    <button class="sidebar-toggle-btn" id="sidebar-toggle" title="Toggle sidebar">
+      <i class="fas fa-chevron-left"></i>
+    </button>
+  </div>
+
+  <!-- Navigation -->
+  <nav class="sidebar-nav">
+
+    <!-- Dashboard -->
+    <a href="vendor-dashboard.html" class="nav-item nav-active">
+      <span class="nav-icon"><i class="fas fa-chart-pie"></i></span>
+      <span class="nav-label">Dashboard</span>
+    </a>
+
+    <!-- My Purchase Orders -->
+    <a href="#" class="nav-item">
+      <span class="nav-icon"><i class="fas fa-file-invoice"></i></span>
+      <span class="nav-label">My Purchase Orders</span>
+    </a>
+
+    <!-- Delivery Schedule -->
+    <a href="#" class="nav-item">
+      <span class="nav-icon"><i class="fas fa-calendar-days"></i></span>
+      <span class="nav-label">Delivery Schedule</span>
+    </a>
+
+    <!-- Shipment Status -->
+    <a href="#" class="nav-item">
+      <span class="nav-icon"><i class="fas fa-truck"></i></span>
+      <span class="nav-label">Shipment Status</span>
+    </a>
+
+    <!-- Return Management -->
+    <a href="#" class="nav-item">
+      <span class="nav-icon"><i class="fas fa-rotate-left"></i></span>
+      <span class="nav-label">Return Management</span>
+    </a>
+
+    <!-- Payment Status -->
+    <a href="#" class="nav-item">
+      <span class="nav-icon"><i class="fas fa-rupee-sign"></i></span>
+      <span class="nav-label">Payment Status</span>
+    </a>
+
+    <!-- Documents Center -->
+    <a href="#" class="nav-item">
+      <span class="nav-icon"><i class="fas fa-folder-open"></i></span>
+      <span class="nav-label">Documents Center</span>
+    </a>
+
+    <!-- Profile Management -->
+    <a href="#" class="nav-item">
+      <span class="nav-icon"><i class="fas fa-user-circle"></i></span>
+      <span class="nav-label">Profile Management</span>
+    </a>
+
+  </nav>
+
+  <!-- Vendor footer info -->
+  <div class="sidebar-footer">
+    <div class="vendor-avatar">SK</div>
+    <div class="vendor-info">
+      <div class="vendor-name">Suresh Kumar</div>
+      <div class="vendor-role">Vendor User</div>
+    </div>
+  </div>
+
+</aside>
+
+<!-- Mobile overlay -->
+<div id="sidebar-overlay"></div>
+
+<!-- ============================================================
+     MAIN WRAPPER
+     ============================================================ -->
+<div id="main-wrapper">
+
+  <!-- ── TOP HEADER ── -->
+  <header class="top-header">
+    <div class="header-left">
+      <div class="page-title">Vendor Dashboard</div>
+      <div class="page-sub">Welcome back, Suresh Kumar &mdash; Shri Metals Pvt. Ltd.</div>
+    </div>
+
+    <div class="header-right">
+
+      <!-- Hamburger (mobile) -->
+      <button class="icon-btn" id="mobile-menu-btn" style="display:none;">
+        <i class="fas fa-bars"></i>
+      </button>
+
+      <!-- Notifications -->
+      <div class="dropdown-wrap">
+        <button class="icon-btn" id="notif-btn" title="Notifications">
+          <i class="fas fa-bell"></i>
+          <span class="notif-dot"></span>
+        </button>
+
+        <div class="dropdown-menu notif-menu" id="notif-menu">
+          <div class="notif-header">
+            <span class="notif-header-title">Notifications</span>
+            <span class="notif-count-badge">3 new</span>
+          </div>
+          <div class="notif-list">
+            <div class="notif-item">
+              <div class="notif-icon bg-emerald-100 text-emerald-700"
+                   style="background:rgba(52,211,153,.15);color:#059669;">
+                <i class="fas fa-file-invoice"></i>
+              </div>
+              <div class="notif-body">
+                <div class="notif-title">New PO #PO-2048 received</div>
+                <div class="notif-desc">Please accept or reject by 25 Jun</div>
+                <div class="notif-time">10 minutes ago</div>
+              </div>
+            </div>
+            <div class="notif-item">
+              <div class="notif-icon" style="background:rgba(251,191,36,.15);color:#d97706;">
+                <i class="fas fa-truck"></i>
+              </div>
+              <div class="notif-body">
+                <div class="notif-title">Delivery reminder: PO-2041</div>
+                <div class="notif-desc">Expected delivery date: 26 Jun 2026</div>
+                <div class="notif-time">1 hour ago</div>
+              </div>
+            </div>
+            <div class="notif-item">
+              <div class="notif-icon" style="background:rgba(99,102,241,.12);color:#4f46e5;">
+                <i class="fas fa-rotate-left"></i>
+              </div>
+              <div class="notif-body">
+                <div class="notif-title">Return request #RET-109 approved</div>
+                <div class="notif-desc">Replacement dispatched to your address</div>
+                <div class="notif-time">3 hours ago</div>
+              </div>
+            </div>
+            <div class="notif-item">
+              <div class="notif-icon" style="background:rgba(16,185,129,.12);color:#059669;">
+                <i class="fas fa-rupee-sign"></i>
+              </div>
+              <div class="notif-body">
+                <div class="notif-title">Payment received: ₹1,24,000</div>
+                <div class="notif-desc">Invoice #INV-5012 cleared</div>
+                <div class="notif-time">Yesterday</div>
+              </div>
+            </div>
+          </div>
+          <div class="notif-footer">
+            <a href="#">View all notifications</a>
+          </div>
+        </div>
+      </div>
+
+      <!-- User menu -->
+      <div class="dropdown-wrap">
+        <button class="user-menu-btn" id="user-menu-btn">
+          <div class="user-avatar">SK</div>
+          <span class="user-name">Suresh Kumar</span>
+          <i class="fas fa-chevron-down user-chevron"></i>
+        </button>
+
+        <div class="dropdown-menu user-dropdown" id="user-menu">
+          <a href="#"><i class="fas fa-user-circle" style="width:16px;"></i> My Profile</a>
+          <a href="#"><i class="fas fa-lock" style="width:16px;"></i> Change Password</a>
+          <div class="divider"></div>
+          <a href="#" class="danger" id="logout-btn">
+            <i class="fas fa-sign-out-alt" style="width:16px;"></i> Logout
+          </a>
+        </div>
+      </div>
+
+    </div>
+  </header>
+
+  <!-- ── MAIN CONTENT ── -->
+  <main class="main-content">
+
+    <!-- Page top bar -->
+    <div class="page-topbar">
+      <div class="page-topbar-left">
+        <div class="greeting">Good Morning, Suresh! 👋</div>
+        <div class="sub">Here's a summary of your account activity</div>
+      </div>
+      <div class="page-topbar-right">
+        <button class="btn btn-outline" onclick="showToast('Refreshed successfully', 'success')">
+          <i class="fas fa-rotate-right"></i> Refresh
+        </button>
+        <button class="btn btn-primary" onclick="showToast('Downloading report…', 'info')">
+          <i class="fas fa-download"></i> Download Report
+        </button>
+      </div>
+    </div>
+
+    <!-- ── KPI WIDGETS ── -->
+    <div class="widgets-grid">
+
+      <!-- Total POs -->
+      <div class="widget-card">
+        <div class="widget-body">
+          <div class="widget-value" id="kpi-total-po">48</div>
+          <div class="widget-label">Total Purchase Orders</div>
+          <div class="widget-trend" style="background:rgba(17,24,68,.08);color:#4B5694;">
+            <i class="fas fa-file-invoice"></i> All Time
+          </div>
+        </div>
+        <div class="widget-icon" style="background:rgba(17,24,68,.10);color:#111844;">
+          <i class="fas fa-file-invoice"></i>
+        </div>
+      </div>
+
+      <!-- Pending POs -->
+      <div class="widget-card">
+        <div class="widget-body">
+          <div class="widget-value" id="kpi-pending-po">5</div>
+          <div class="widget-label">Pending Purchase Orders</div>
+          <div class="widget-trend" style="background:rgba(251,191,36,.18);color:#d97706;">
+            <i class="fas fa-clock"></i> Awaiting Action
+          </div>
+        </div>
+        <div class="widget-icon" style="background:rgba(251,191,36,.18);color:#d97706;">
+          <i class="fas fa-hourglass-half"></i>
+        </div>
+      </div>
+
+      <!-- Pending Deliveries -->
+      <div class="widget-card">
+        <div class="widget-body">
+          <div class="widget-value" id="kpi-pending-del">3</div>
+          <div class="widget-label">Pending Deliveries</div>
+          <div class="widget-trend" style="background:rgba(99,102,241,.12);color:#4f46e5;">
+            <i class="fas fa-truck"></i> Scheduled
+          </div>
+        </div>
+        <div class="widget-icon" style="background:rgba(99,102,241,.12);color:#4f46e5;">
+          <i class="fas fa-truck"></i>
+        </div>
+      </div>
+
+      <!-- Completed Deliveries -->
+      <div class="widget-card">
+        <div class="widget-body">
+          <div class="widget-value" id="kpi-comp-del">40</div>
+          <div class="widget-label">Completed Deliveries</div>
+          <div class="widget-trend" style="background:rgba(16,185,129,.12);color:#059669;">
+            <i class="fas fa-circle-check"></i> Fulfilled
+          </div>
+        </div>
+        <div class="widget-icon" style="background:rgba(16,185,129,.12);color:#059669;">
+          <i class="fas fa-circle-check"></i>
+        </div>
+      </div>
+
+      <!-- Pending Payments -->
+      <div class="widget-card">
+        <div class="widget-body">
+          <div class="widget-value" id="kpi-pending-pay">₹2.4L</div>
+          <div class="widget-label">Pending Payments</div>
+          <div class="widget-trend" style="background:rgba(239,68,68,.12);color:#dc2626;">
+            <i class="fas fa-rupee-sign"></i> Outstanding
+          </div>
+        </div>
+        <div class="widget-icon" style="background:rgba(239,68,68,.12);color:#dc2626;">
+          <i class="fas fa-money-bill-wave"></i>
+        </div>
+      </div>
+
+      <!-- Open Return Requests -->
+      <div class="widget-card">
+        <div class="widget-body">
+          <div class="widget-value" id="kpi-returns">2</div>
+          <div class="widget-label">Open Return Requests</div>
+          <div class="widget-trend" style="background:rgba(251,191,36,.18);color:#b45309;">
+            <i class="fas fa-rotate-left"></i> In Progress
+          </div>
+        </div>
+        <div class="widget-icon" style="background:rgba(251,191,36,.18);color:#b45309;">
+          <i class="fas fa-rotate-left"></i>
+        </div>
+      </div>
+
+    </div>
+
+    <!-- ── CHARTS ROW ── -->
+    <div class="charts-grid">
+
+      <!-- PO Trend -->
+      <div class="chart-card">
+        <div class="card-header">
+          <div>
+            <div class="card-title">
+              <i class="fas fa-chart-bar" style="color:#4B5694;margin-right:6px;"></i>
+              Monthly Purchase Orders
+            </div>
+            <div class="card-sub">PO count over the last 6 months</div>
+          </div>
+        </div>
+        <canvas id="chart-po" height="180"></canvas>
+      </div>
+
+      <!-- Payment Trend -->
+      <div class="chart-card">
+        <div class="card-header">
+          <div>
+            <div class="card-title">
+              <i class="fas fa-chart-line" style="color:#4B5694;margin-right:6px;"></i>
+              Payment History
+            </div>
+            <div class="card-sub">Invoice vs Received (₹ in Lakhs)</div>
+          </div>
+        </div>
+        <canvas id="chart-payment" height="180"></canvas>
+      </div>
+
+    </div>
+
+    <!-- ── BOTTOM ROW ── -->
+    <div class="bottom-grid">
+
+      <!-- Recent Activities -->
+      <div class="activity-card">
+        <div class="card-header">
+          <div>
+            <div class="card-title">
+              <i class="fas fa-clock-rotate-left" style="color:#4B5694;margin-right:6px;"></i>
+              Recent Activities
+            </div>
+            <div class="card-sub">Latest updates on your orders, payments & returns</div>
+          </div>
+          <button class="btn btn-outline" style="font-size:11px;padding:5px 10px;">View All</button>
+        </div>
+
+        <div class="activity-list">
+
+          <div class="activity-row">
+            <div class="activity-icon" style="background:rgba(16,185,129,.12);color:#059669;">
+              <i class="fas fa-file-invoice"></i>
+            </div>
+            <div class="activity-body">
+              <div class="activity-title">New PO #PO-2048 received</div>
+              <div class="activity-desc">Steel Pipes (25mm) — 200 units — ₹84,000</div>
+            </div>
+            <div class="activity-meta">
+              <div class="activity-time">10 min ago</div>
+              <div class="activity-badge" style="background:rgba(16,185,129,.12);color:#059669;">New PO</div>
+            </div>
+          </div>
+
+          <div class="activity-row">
+            <div class="activity-icon" style="background:rgba(99,102,241,.12);color:#4f46e5;">
+              <i class="fas fa-truck"></i>
+            </div>
+            <div class="activity-body">
+              <div class="activity-title">Delivery update — PO #PO-2041</div>
+              <div class="activity-desc">Shipment #SHP-301 marked In Transit</div>
+            </div>
+            <div class="activity-meta">
+              <div class="activity-time">1 hr ago</div>
+              <div class="activity-badge" style="background:rgba(99,102,241,.12);color:#4f46e5;">In Transit</div>
+            </div>
+          </div>
+
+          <div class="activity-row">
+            <div class="activity-icon" style="background:rgba(16,185,129,.12);color:#059669;">
+              <i class="fas fa-rupee-sign"></i>
+            </div>
+            <div class="activity-body">
+              <div class="activity-title">Payment received — INV #INV-5012</div>
+              <div class="activity-desc">₹1,24,000 credited to your account</div>
+            </div>
+            <div class="activity-meta">
+              <div class="activity-time">Yesterday</div>
+              <div class="activity-badge" style="background:rgba(16,185,129,.12);color:#059669;">Paid</div>
+            </div>
+          </div>
+
+          <div class="activity-row">
+            <div class="activity-icon" style="background:rgba(239,68,68,.12);color:#dc2626;">
+              <i class="fas fa-rotate-left"></i>
+            </div>
+            <div class="activity-body">
+              <div class="activity-title">Return request #RET-109 approved</div>
+              <div class="activity-desc">Damaged Hydraulic Hoses — 6 units</div>
+            </div>
+            <div class="activity-meta">
+              <div class="activity-time">2 days ago</div>
+              <div class="activity-badge" style="background:rgba(239,68,68,.12);color:#dc2626;">Approved</div>
+            </div>
+          </div>
+
+          <div class="activity-row">
+            <div class="activity-icon" style="background:rgba(251,191,36,.18);color:#d97706;">
+              <i class="fas fa-circle-check"></i>
+            </div>
+            <div class="activity-body">
+              <div class="activity-title">PO #PO-2039 delivered</div>
+              <div class="activity-desc">Aluminium Sheets — 120 units — Warehouse A</div>
+            </div>
+            <div class="activity-meta">
+              <div class="activity-time">3 days ago</div>
+              <div class="activity-badge" style="background:rgba(16,185,129,.12);color:#059669;">Delivered</div>
+            </div>
+          </div>
+
+          <div class="activity-row">
+            <div class="activity-icon" style="background:rgba(75,86,148,.12);color:#4B5694;">
+              <i class="fas fa-file-alt"></i>
+            </div>
+            <div class="activity-body">
+              <div class="activity-title">Agreement document uploaded</div>
+              <div class="activity-desc">Annual supply agreement FY 2026-27</div>
+            </div>
+            <div class="activity-meta">
+              <div class="activity-time">4 days ago</div>
+              <div class="activity-badge" style="background:rgba(75,86,148,.12);color:#4B5694;">Document</div>
+            </div>
+          </div>
+
+        </div>
+      </div>
+
+      <!-- Payment Summary -->
+      <div class="summary-card">
+        <div class="card-header">
+          <div>
+            <div class="card-title">
+              <i class="fas fa-wallet" style="color:#4B5694;margin-right:6px;"></i>
+              Payment Summary
+            </div>
+            <div class="card-sub">Current billing overview</div>
+          </div>
+        </div>
+
+        <div class="summary-row">
+          <span class="summary-row-label">Total Invoice Amount</span>
+          <span class="summary-row-val">₹8,64,000</span>
+        </div>
+        <div class="summary-row">
+          <span class="summary-row-label">Paid Amount</span>
+          <span class="summary-row-val" style="color:#059669;">₹6,40,000</span>
+        </div>
+        <div class="summary-row">
+          <span class="summary-row-label">Pending Amount</span>
+          <span class="summary-row-val" style="color:#dc2626;">₹2,24,000</span>
+        </div>
+        <div class="summary-row">
+          <span class="summary-row-label">Open Invoices</span>
+          <span class="summary-row-val">4</span>
+        </div>
+
+        <!-- Donut chart -->
+        <div style="position:relative;height:160px;display:flex;align-items:center;justify-content:center;">
+          <canvas id="chart-payment-donut"></canvas>
+          <div style="position:absolute;text-align:center;pointer-events:none;">
+            <div style="font-size:16px;font-weight:700;color:#111844;">74%</div>
+            <div style="font-size:10px;color:#7288AE;">Cleared</div>
+          </div>
+        </div>
+
+        <button class="btn btn-primary" style="width:100%;justify-content:center;"
+                onclick="showToast('Navigating to Payment Status…','info')">
+          <i class="fas fa-arrow-right"></i> View Payment Details
+        </button>
+      </div>
+
+    </div>
+
+  </main>
+</div>
+
+<!-- Toast container -->
+<div id="toast-container"></div>
+
+<!-- JS -->
+<script src="/pages/vendor-dashboard/v-dashboard/vendor.js"></script>
+</body>
+</html>

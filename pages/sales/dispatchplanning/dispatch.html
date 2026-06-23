@@ -14,39 +14,36 @@
   <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@300;400;500;700&display=swap" rel="stylesheet" />
   <style>
     body { font-family:'Roboto',sans-serif; }
-
-    /* ── Sidebar ── */
     .sidebar-collapsed { width:68px !important; }
     .sidebar-collapsed .nav-label,.sidebar-collapsed .sidebar-brand-text,.sidebar-collapsed .sidebar-section-label { display:none !important; }
     .sidebar-collapsed .nav-item { justify-content:center; padding-left:0; padding-right:0; }
     .sidebar-collapsed .nav-icon { margin:0; }
-    @media(max-width:1023px){ #sidebar{transform:translateX(-100%)} #sidebar.sidebar-open{transform:translateX(0)} #main-wrapper{margin-left:0 !important} }
+    @media(max-width:1023px){
+      #sidebar{transform:translateX(-100%)}
+      #sidebar.sidebar-open{transform:translateX(0)}
+      #main-wrapper{margin-left:0 !important}
+    }
     .nav-active { background:#111844 !important; color:#FAFAFA !important; }
     .nav-active .nav-icon { color:#FAFAFA !important; }
-
-    /* ── Shared cards ── */
     .widget-card {
-      background:#FFFCFC; border:1px solid rgba(75,86,148,0.18); border-radius:12px;
-      padding:13px 14px; display:flex; align-items:flex-start; justify-content:space-between; gap:8px;
+      background:#FFFCFC; border:1px solid rgba(75,86,148,0.18); border-radius:14px;
+      padding:20px 18px; display:flex; align-items:flex-start; justify-content:space-between; gap:10px;
       transition:transform .25s cubic-bezier(.34,1.56,.64,1),box-shadow .2s ease,border-color .2s ease;
-      box-shadow:0 1px 2px rgba(17,24,68,0.04);
+      box-shadow:0 1px 4px rgba(17,24,68,0.06); min-height:100px;
     }
     .widget-card:hover { transform:translateY(-4px) scale(1.02); box-shadow:0 8px 18px rgba(17,24,68,0.12); border-color:#111844; }
-    .widget-icon { width:36px; height:36px; border-radius:9px; display:flex; align-items:center; justify-content:center; font-size:14px; flex-shrink:0; }
-    .widget-value { font-size:18px; font-weight:700; color:#111844; line-height:1.1; }
-    .widget-label { font-size:10.5px; color:#7288AE; font-weight:500; margin-top:2px; line-height:1.3; }
-
+    .widget-icon { width:44px; height:44px; border-radius:10px; display:flex; align-items:center; justify-content:center; font-size:16px; flex-shrink:0; }
+    .widget-value { font-size:26px; font-weight:700; color:#111844; line-height:1.1; }
+    .widget-label { font-size:11.5px; color:#7288AE; font-weight:500; margin-top:4px; line-height:1.4; }
     .chart-card {
       background:#FFFCFC; border:1px solid rgba(75,86,148,0.18); border-radius:12px;
-      padding:12px 14px; box-shadow:0 1px 2px rgba(17,24,68,0.04);
+      padding:16px 18px; box-shadow:0 1px 2px rgba(17,24,68,0.04);
       transition:transform .25s cubic-bezier(.34,1.56,.64,1),box-shadow .2s ease,border-color .2s ease;
     }
     .chart-card:hover { transform:translateY(-2px); box-shadow:0 8px 18px rgba(17,24,68,0.10); border-color:#4B5694; }
     .section-title { font-size:13px; font-weight:600; color:#111844; }
     .section-sub { font-size:11px; color:#7288AE; }
-
-    /* ── Status badges ── */
-    .badge { display:inline-flex; align-items:center; gap:4px; padding:3px 8px; border-radius:20px; font-size:10.5px; font-weight:600; white-space:nowrap; }
+    .badge { display:inline-flex; align-items:center; gap:4px; padding:3px 9px; border-radius:20px; font-size:10.5px; font-weight:600; white-space:nowrap; }
     .badge-pending    { background:#fef3c7; color:#d97706; }
     .badge-planned    { background:#dbeafe; color:#2563eb; }
     .badge-inprogress { background:#ede9fe; color:#7c3aed; }
@@ -56,16 +53,19 @@
     .badge-high       { background:#fef3c7; color:#d97706; }
     .badge-medium     { background:#dbeafe; color:#2563eb; }
     .badge-low        { background:#f1f5f9; color:#64748b; }
-
-    /* ── Table ── */
     .data-table { width:100%; border-collapse:collapse; }
-    .data-table th { background:#f8f9fb; color:#7288AE; font-size:10.5px; font-weight:600; text-transform:uppercase; letter-spacing:.04em; padding:9px 12px; text-align:left; border-bottom:1px solid rgba(75,86,148,0.15); white-space:nowrap; }
-    .data-table td { padding:10px 12px; font-size:12px; color:#111844; border-bottom:1px solid rgba(75,86,148,0.08); vertical-align:middle; }
+    .data-table th { background:#f8f9fb; color:#7288AE; font-size:10.5px; font-weight:600; text-transform:uppercase; letter-spacing:.04em; padding:10px 13px; text-align:left; border-bottom:1px solid rgba(75,86,148,0.15); white-space:nowrap; }
+    .data-table td { padding:11px 13px; font-size:12px; color:#111844; border-bottom:1px solid rgba(75,86,148,0.08); vertical-align:middle; }
     .data-table tbody tr:hover { background:rgba(114,136,174,0.06); }
     .data-table tbody tr:last-child td { border-bottom:none; }
-
-    /* ── Buttons ── */
-    .btn-icon { width:28px; height:28px; border-radius:7px; display:inline-flex; align-items:center; justify-content:center; font-size:11px; cursor:pointer; border:1px solid; transition:all .15s; }
+    /* NEW ROW HIGHLIGHT */
+    .data-table tbody tr.new-row-flash { animation: rowFlash 2s ease-out forwards; }
+    @keyframes rowFlash {
+      0%   { background: rgba(5,150,105,0.18); }
+      60%  { background: rgba(5,150,105,0.10); }
+      100% { background: transparent; }
+    }
+    .btn-icon { width:30px; height:30px; border-radius:7px; display:inline-flex; align-items:center; justify-content:center; font-size:12px; cursor:pointer; border:1px solid; transition:all .15s; flex-shrink:0; }
     .btn-view   { border-color:rgba(75,86,148,0.3); color:#4B5694; background:rgba(75,86,148,0.06); }
     .btn-view:hover   { background:#4B5694; color:#fff; border-color:#4B5694; }
     .btn-edit   { border-color:rgba(245,158,11,0.3); color:#d97706; background:rgba(245,158,11,0.06); }
@@ -74,40 +74,30 @@
     .btn-dispatch:hover { background:#059669; color:#fff; border-color:#059669; }
     .btn-cancel { border-color:rgba(220,38,38,0.3); color:#dc2626; background:rgba(220,38,38,0.06); }
     .btn-cancel:hover { background:#dc2626; color:#fff; border-color:#dc2626; }
-    .btn-primary { background:#111844; color:#FAFAFA; border:none; border-radius:8px; padding:7px 14px; font-size:12px; font-weight:500; cursor:pointer; display:inline-flex; align-items:center; gap:6px; transition:background .15s,transform .1s; }
+    .btn-primary { background:#111844; color:#FAFAFA; border:none; border-radius:8px; padding:8px 16px; font-size:12px; font-weight:500; cursor:pointer; display:inline-flex; align-items:center; gap:6px; transition:background .15s,transform .1s; }
     .btn-primary:hover { background:#1a2155; transform:translateY(-1px); }
-    .btn-secondary { background:#FFFCFC; color:#111844; border:1px solid rgba(75,86,148,0.3); border-radius:8px; padding:7px 14px; font-size:12px; font-weight:500; cursor:pointer; display:inline-flex; align-items:center; gap:6px; transition:all .15s; }
+    .btn-secondary { background:#FFFCFC; color:#111844; border:1px solid rgba(75,86,148,0.3); border-radius:8px; padding:8px 16px; font-size:12px; font-weight:500; cursor:pointer; display:inline-flex; align-items:center; gap:6px; transition:all .15s; }
     .btn-secondary:hover { border-color:#111844; background:#f8f9fb; }
-
-    /* ── Form ── */
-    .form-input,.form-select { border:1px solid rgba(75,86,148,0.25); border-radius:8px; padding:6px 10px; font-size:12px; font-family:'Roboto',sans-serif; color:#111844; background:#FFFCFC; outline:none; transition:border-color .15s,box-shadow .15s; width:100%; }
+    .form-input,.form-select { border:1px solid rgba(75,86,148,0.25); border-radius:8px; padding:7px 11px; font-size:12px; font-family:'Roboto',sans-serif; color:#111844; background:#FFFCFC; outline:none; transition:border-color .15s,box-shadow .15s; width:100%; }
     .form-input:focus,.form-select:focus { border-color:#4B5694; box-shadow:0 0 0 3px rgba(75,86,148,0.12); }
     .form-input::placeholder { color:#b0bcd4; }
     .form-label { font-size:11px; font-weight:500; color:#4B5694; margin-bottom:4px; display:block; }
     .form-section-title { font-size:11.5px; font-weight:700; color:#4B5694; text-transform:uppercase; letter-spacing:.05em; margin-bottom:10px; padding-bottom:6px; border-bottom:1px solid rgba(75,86,148,0.12); }
-
-    /* ── Modal ── */
     .modal-overlay { position:fixed; inset:0; background:rgba(17,24,68,0.45); z-index:500; display:flex; align-items:center; justify-content:center; padding:16px; }
     .modal-box { background:#FFFCFC; border-radius:14px; width:100%; max-width:680px; max-height:90vh; overflow-y:auto; box-shadow:0 20px 60px rgba(17,24,68,0.25); }
     .modal-header { padding:16px 20px; border-bottom:1px solid rgba(75,86,148,0.15); display:flex; align-items:center; justify-content:space-between; position:sticky; top:0; background:#FFFCFC; z-index:1; }
     .modal-body { padding:20px; }
     .modal-footer { padding:14px 20px; border-top:1px solid rgba(75,86,148,0.15); display:flex; justify-content:flex-end; gap:8px; background:#FFFCFC; position:sticky; bottom:0; }
-
-    /* ── Tabs ── */
     .tab-bar { display:flex; gap:2px; border-bottom:1px solid rgba(75,86,148,0.15); margin-bottom:16px; }
     .tab-btn { padding:7px 14px; font-size:12px; font-weight:500; color:#7288AE; border:none; background:none; cursor:pointer; border-bottom:2px solid transparent; margin-bottom:-1px; transition:all .15s; white-space:nowrap; }
     .tab-btn.active { color:#111844; border-bottom-color:#111844; font-weight:600; }
     .tab-btn:hover:not(.active) { color:#4B5694; }
     .tab-content { display:none; }
     .tab-content.active { display:block; }
-
-    /* ── Detail rows ── */
     .detail-row { display:flex; justify-content:space-between; padding:6px 0; border-bottom:1px solid rgba(75,86,148,0.07); font-size:12px; }
     .detail-row:last-child { border-bottom:none; }
     .detail-key { color:#7288AE; font-weight:500; }
     .detail-val { color:#111844; font-weight:600; text-align:right; }
-
-    /* ── Timeline ── */
     .timeline { position:relative; padding-left:20px; }
     .timeline::before { content:''; position:absolute; left:6px; top:6px; bottom:6px; width:2px; background:rgba(75,86,148,0.15); }
     .timeline-item { position:relative; padding-bottom:14px; }
@@ -117,74 +107,48 @@
     .timeline-dot.future { border-color:rgba(75,86,148,0.3); }
     .timeline-label { font-size:11.5px; font-weight:600; color:#111844; }
     .timeline-time { font-size:10.5px; color:#7288AE; margin-top:1px; }
-
-    /* ── Vehicle card ── */
-    .vehicle-card { border:1px solid rgba(75,86,148,0.18); border-radius:10px; padding:10px 12px; cursor:pointer; transition:all .15s; background:#FFFCFC; }
-    .vehicle-card:hover { border-color:#4B5694; background:#f8f9fb; }
-    .vehicle-card.selected { border-color:#111844; background:rgba(17,24,68,0.04); }
-
-    /* ── Progress bar ── */
-    .progress-bar { height:6px; border-radius:3px; background:#f1f5f9; overflow:hidden; }
-    .progress-fill { height:100%; border-radius:3px; background:linear-gradient(90deg,#4B5694,#111844); transition:width .4s; }
-
-    /* ── Notif ── */
+    .vehicle-card { border:1px solid rgba(75,86,148,0.18); border-radius:10px; padding:12px 14px; transition:all .15s; background:#FFFCFC; }
+    .vehicle-card.selectable:hover { border-color:#4B5694; background:#f8f9fb; cursor:pointer; }
+    .vehicle-card.selected { border-color:#111844; background:rgba(17,24,68,0.04); box-shadow: 0 0 0 2px #111844; }
+    /* NEW VEHICLE FLASH */
+    .vehicle-card.new-vehicle-flash { animation: vehicleFlash 2s ease-out forwards; }
+    @keyframes vehicleFlash {
+      0%   { border-color:#059669; box-shadow: 0 0 0 2px rgba(5,150,105,0.4); background: rgba(5,150,105,0.06); }
+      100% { border-color:rgba(75,86,148,0.18); box-shadow: none; background: #FFFCFC; }
+    }
+    .pagination { display:flex; align-items:center; gap:4px; }
+    .page-btn { min-width:30px; height:30px; border-radius:6px; display:inline-flex; align-items:center; justify-content:center; font-size:11.5px; font-weight:500; cursor:pointer; border:1px solid rgba(75,86,148,0.2); color:#4B5694; background:#FFFCFC; transition:all .15s; padding:0 8px; }
+    .page-btn:hover { background:#f1f5f9; border-color:#4B5694; }
+    .page-btn.active { background:#111844; color:#FAFAFA; border-color:#111844; }
+    .page-btn:disabled { opacity:0.4; cursor:not-allowed; }
+    .module-tab { font-size:12px; font-weight:500; padding:7px 14px; border-radius:8px; color:#7288AE; cursor:pointer; transition:all .15s ease; border:none; background:transparent; white-space:nowrap; }
+    .module-tab:hover { background:rgba(114,136,174,0.15); color:#111844; }
+    .module-tab.active { background:#111844; color:#FAFAFA; }
     .notif-badge { position:absolute; top:4px; right:4px; width:8px; height:8px; border-radius:50%; background:#ef4444; border:1.5px solid #FFFCFC; }
     .notif-item { display:flex; gap:10px; padding:10px 16px; transition:background-color .15s; cursor:pointer; }
     .notif-item:hover { background:rgba(114,136,174,0.12); }
     .notif-icon { width:32px; height:32px; border-radius:8px; display:flex; align-items:center; justify-content:center; font-size:13px; flex-shrink:0; }
-
-    /* ── Toast ── */
-    .toast { background:#111844; color:#FAFAFA; border-radius:10px; padding:10px 16px; font-size:12px; display:flex; align-items:center; gap:8px; animation:slideIn .2s ease-out; min-width:220px; box-shadow:0 4px 16px rgba(17,24,68,0.25); }
+    .toast { border-radius:10px; padding:10px 16px; font-size:12px; display:flex; align-items:center; gap:8px; animation:slideIn .2s ease-out; min-width:220px; box-shadow:0 4px 16px rgba(17,24,68,0.25); color:#fff; }
     @keyframes slideIn { from{opacity:0;transform:translateY(10px)} to{opacity:1;transform:translateY(0)} }
-
-    /* ── Module Tabs ── */
-    .module-tab {
-      font-size:12px; font-weight:500; padding:7px 14px;
-      border-radius:8px; color:#7288AE; cursor:pointer;
-      transition:all .15s ease; border:none; background:transparent; white-space:nowrap;
-    }
-    .module-tab:hover { background:rgba(114,136,174,0.15); color:#111844; }
-    .module-tab.active { background:#111844; color:#FAFAFA; }
-
     ::-webkit-scrollbar { width:6px; height:6px; }
     ::-webkit-scrollbar-thumb { background:rgba(75,86,148,0.25); border-radius:10px; }
-
-    /* Ensure button icons are visible */
-.btn-icon i {
-  pointer-events: none;
-}
-.btn-icon {
-  cursor: pointer;
-}
-.btn-dispatch, .btn-cancel, .btn-view, .btn-edit {
-  font-size: 12px;
-}
-
-/* Vehicle grid alignment fix */
-#vehicle-grid {
-  display: grid;
-  grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
-  gap: 12px;
-}
-
-@media (min-width: 1024px) {
-  #vehicle-grid {
-    grid-template-columns: repeat(4, 1fr);
-  }
-}
-
-.vehicle-card {
-  height: 100%;
-  display: flex;
-  flex-direction: column;
-}
+    @media(max-width:640px) {
+      .widget-card { padding:14px 12px; min-height:80px; }
+      .widget-value { font-size:20px; }
+      .modal-box { max-width:100%; border-radius:12px; }
+      .data-table th, .data-table td { padding:8px 10px; font-size:11px; }
+      .btn-primary, .btn-secondary { padding:7px 10px; font-size:11px; }
+    }
+    @media(max-width:480px) {
+      .module-tab { padding:6px 10px; font-size:11px; }
+    }
   </style>
 </head>
 <body class="bg-[#ebe6e6] text-[#111844] min-h-screen">
 
-<!-- ══════════════════════════════ SIDEBAR ══════════════════════════════ -->
+<!-- ═══════════════════════════ SIDEBAR ═══════════════════════════ -->
 <aside id="sidebar" class="fixed top-0 left-0 h-full w-[260px] bg-[#FFFCFC] z-[100] flex flex-col transition-all duration-300 overflow-hidden shadow-lg">
-  <div class="flex items-center justify-between px-5 h-16 border border-[#4B5694]/20 shadow-sm">
+  <div class="flex items-center justify-between px-5 h-16 border-b border-[#4B5694]/20 shadow-sm">
     <div class="flex items-center gap-3">
         <div class="w-9 h-9 rounded-lg bg-[#111844] flex items-center justify-center text-[#FAFAFA] flex-shrink-0">
             <i class="fas fa-cubes"></i>
@@ -196,81 +160,74 @@
     </button>
 </div>
   <nav class="flex-1 overflow-y-auto py-3 px-2 space-y-0.5">
-
-    <a href="/index.html" class="nav-item flex items-center gap-3 px-3 py-2.5 rounded-lg text-[#111844]/70 hover:bg-[#7288AE]/20 hover:text-[#111844] transition-colors text-sm cursor-pointer border-b border-[#4B5694]/20 shadow-sm">
-      <span class="nav-icon text-base flex-shrink-0 w-5"><i class="fas fa-chart-pie"></i></span>
-      <span class="nav-label">Dashboard</span>
+    <a href="/index.html" class="nav-item flex items-center gap-3 px-3 py-2.5 rounded-lg text-[#111844]/70 hover:bg-[#7288AE]/20 text-sm cursor-pointer border-b border-[#4B5694]/20">
+      <span class="nav-icon w-5"><i class="fas fa-chart-pie"></i></span><span class="nav-label">Dashboard</span>
     </a>
-
+    <!-- Master Management -->
     <div class="nav-group">
-      <div class="nav-group-header flex items-center justify-between gap-3 px-3 py-2.5 rounded-lg text-[#111844]/70 hover:bg-[#7288AE]/20 hover:text-[#111844] transition-colors text-sm cursor-pointer border-b border-[#4B5694]/20 shadow-sm">
-        <div class="flex items-center gap-3"><span class="nav-icon text-base flex-shrink-0 w-5"><i class="fas fa-database"></i></span><span class="nav-label">Master Management</span></div>
+      <div class="nav-group-header flex items-center justify-between gap-3 px-3 py-2.5 rounded-lg text-[#111844]/70 hover:bg-[#7288AE]/20 text-sm cursor-pointer border-b border-[#4B5694]/20">
+        <div class="flex items-center gap-3"><span class="nav-icon w-5"><i class="fas fa-database"></i></span><span class="nav-label">Master Management</span></div>
         <i class="fas fa-chevron-down text-xs transition-transform duration-200"></i>
       </div>
       <div class="nav-group-items ml-7 space-y-0.5 mt-1 hidden">
-        <a href="/pages/Product/product.html" class="nav-item flex items-center gap-3 px-3 py-2 rounded-lg text-[#111844]/70 hover:bg-[#7288AE]/20 transition-colors text-xs cursor-pointer"><span class="nav-icon text-sm flex-shrink-0 w-4"><i class="fas fa-box"></i></span><span class="nav-label">Products</span></a>
-        <a href="/pages/suppliers/supplier.html" class="nav-item flex items-center gap-3 px-3 py-2 rounded-lg text-[#111844]/70 hover:bg-[#7288AE]/20 transition-colors text-xs cursor-pointer"><span class="nav-icon text-sm flex-shrink-0 w-4"><i class="fas fa-truck-loading"></i></span><span class="nav-label">Suppliers</span></a>
-        <a href="/pages/customers/customer.html" class="nav-item flex items-center gap-3 px-3 py-2 rounded-lg text-[#111844]/70 hover:bg-[#7288AE]/20 transition-colors text-xs cursor-pointer"><span class="nav-icon text-sm flex-shrink-0 w-4"><i class="fas fa-users"></i></span><span class="nav-label">Customers</span></a>
-        <a href="/pages/warehousemaster/warehousem.html" class="nav-item flex items-center gap-3 px-3 py-2 rounded-lg text-[#111844]/70 hover:bg-[#7288AE]/20 transition-colors text-xs cursor-pointer"><span class="nav-icon text-sm flex-shrink-0 w-4"><i class="fas fa-warehouse"></i></span><span class="nav-label">Warehouses</span></a>
-        <a href="/pages/units/units.html" class="nav-item flex items-center gap-3 px-3 py-2 rounded-lg text-[#111844]/70 hover:bg-[#7288AE]/20 transition-colors text-xs cursor-pointer"><span class="nav-icon text-sm flex-shrink-0 w-4"><i class="fas fa-balance-scale"></i></span><span class="nav-label">Units</span></a>
+        <a href="/pages/Product/product.html" class="nav-item flex items-center gap-3 px-3 py-2 rounded-lg text-[#111844]/70 hover:bg-[#7288AE]/20 text-xs cursor-pointer"><span class="nav-icon w-4"><i class="fas fa-box"></i></span><span class="nav-label">Products</span></a>
+        <a href="/pages/suppliers/supplier.html" class="nav-item flex items-center gap-3 px-3 py-2 rounded-lg text-[#111844]/70 hover:bg-[#7288AE]/20 text-xs cursor-pointer"><span class="nav-icon w-4"><i class="fas fa-truck-loading"></i></span><span class="nav-label">Suppliers</span></a>
+        <a href="/pages/customers/customer.html" class="nav-item flex items-center gap-3 px-3 py-2 rounded-lg text-[#111844]/70 hover:bg-[#7288AE]/20 text-xs cursor-pointer"><span class="nav-icon w-4"><i class="fas fa-users"></i></span><span class="nav-label">Customers</span></a>
+        <a href="/pages/warehousemaster/warehousem.html" class="nav-item flex items-center gap-3 px-3 py-2 rounded-lg text-[#111844]/70 hover:bg-[#7288AE]/20 text-xs cursor-pointer"><span class="nav-icon w-4"><i class="fas fa-warehouse"></i></span><span class="nav-label">Warehouses</span></a>
+        <a href="/pages/units/units.html" class="nav-item flex items-center gap-3 px-3 py-2 rounded-lg text-[#111844]/70 hover:bg-[#7288AE]/20 hover:text-[#111844] transition-colors duration-150 text-xs cursor-pointer">
+          <span class="nav-icon text-sm flex-shrink-0 w-4"><i class="fas fa-balance-scale"></i></span>
+          <span class="nav-label">Units</span>
+        </a>
       </div>
     </div>
-
-    <a href="/pages/purchase/purchase.html" class="nav-item flex items-center gap-3 px-3 py-2.5 rounded-lg text-[#111844]/70 hover:bg-[#7288AE]/20 hover:text-[#111844] transition-colors text-sm cursor-pointer border-b border-[#4B5694]/20 shadow-sm">
-      <span class="nav-icon text-base flex-shrink-0 w-5"><i class="fas fa-shopping-cart"></i></span><span class="nav-label">Purchase Management</span>
-    </a>
-    <a href="/pages/inventory/inventory.html" class="nav-item flex items-center gap-3 px-3 py-2.5 rounded-lg text-[#111844]/70 hover:bg-[#7288AE]/20 hover:text-[#111844] transition-colors text-sm cursor-pointer border-b border-[#4B5694]/20 shadow-sm">
-      <span class="nav-icon text-base flex-shrink-0 w-5"><i class="fas fa-boxes-stacked"></i></span><span class="nav-label">Inventory Management</span>
-    </a>
-    <a href="/pages/warehouse/warehouse.html" class="nav-item flex items-center gap-3 px-3 py-2.5 rounded-lg text-[#111844]/70 hover:bg-[#7288AE]/20 hover:text-[#111844] transition-colors text-sm cursor-pointer border-b border-[#4B5694]/20 shadow-sm">
-      <span class="nav-icon text-base flex-shrink-0 w-5"><i class="fas fa-warehouse"></i></span><span class="nav-label">Warehouse Management</span>
-    </a>
-
-    <!-- Sales & Dispatch — active group -->
+    <a href="/pages/purchase/purchase.html" class="nav-item flex items-center gap-3 px-3 py-2.5 rounded-lg text-[#111844]/70 hover:bg-[#7288AE]/20 text-sm cursor-pointer border-b border-[#4B5694]/20"><span class="nav-icon w-5"><i class="fas fa-shopping-cart"></i></span><span class="nav-label">Purchase Management</span></a>
+    <a href="/pages/inventory/inventory.html" class="nav-item flex items-center gap-3 px-3 py-2.5 rounded-lg text-[#111844]/70 hover:bg-[#7288AE]/20 text-sm cursor-pointer border-b border-[#4B5694]/20"><span class="nav-icon w-5"><i class="fas fa-boxes-stacked"></i></span><span class="nav-label">Inventory Management</span></a>
+    <a href="/pages/warehouse/warehouse.html" class="nav-item flex items-center gap-3 px-3 py-2.5 rounded-lg text-[#111844]/70 hover:bg-[#7288AE]/20 text-sm cursor-pointer border-b border-[#4B5694]/20"><span class="nav-icon w-5"><i class="fas fa-warehouse"></i></span><span class="nav-label">Warehouse Management</span></a>
+    <!-- Sales & Dispatch — ACTIVE -->
     <div class="nav-group">
-      <div class="nav-group-header flex items-center justify-between gap-3 px-3 py-2.5 rounded-lg text-[#111844]/70 hover:bg-[#7288AE]/20 hover:text-[#111844] transition-colors text-sm cursor-pointer border-b border-[#4B5694]/20 shadow-sm">
-        <div class="flex items-center gap-3"><span class="nav-icon text-base flex-shrink-0 w-5"><i class="fas fa-truck"></i></span><span class="nav-label">Sales & Dispatch</span></div>
-        <i class="fas fa-chevron-down text-xs transition-transform duration-200" style="transform:rotate(180deg)"></i>
+      <div class="nav-group-header nav-active flex items-center justify-between gap-3 px-3 py-2.5 rounded-lg text-sm cursor-pointer border-b border-[#4B5694]/20">
+        <div class="flex items-center gap-3"><span class="nav-icon w-5"><i class="fas fa-truck"></i></span><span class="nav-label">Sales & Dispatch</span></div>
+        <i class="fas fa-chevron-down text-xs" style="transform:rotate(180deg)"></i>
       </div>
       <div class="nav-group-items ml-7 space-y-0.5 mt-1">
-        <a href="/pages/sales/salesorders/salesorders.html" class="nav-item flex items-center gap-3 px-3 py-2 rounded-lg text-[#111844]/70 hover:bg-[#7288AE]/20 transition-colors text-xs cursor-pointer"><span class="nav-icon text-sm flex-shrink-0 w-4"><i class="fas fa-receipt"></i></span><span class="nav-label">Sales Orders</span></a>
-        <a href="/pages/sales/dispatchplanning/dispatch.html" class="nav-item nav-active flex items-center gap-3 px-3 py-2 rounded-lg transition-colors text-xs cursor-pointer"><span class="nav-icon text-sm flex-shrink-0 w-4"><i class="fas fa-calendar-alt"></i></span><span class="nav-label">Dispatch Planning</span></a>
-        <a href="/pages/sales/delivery/deliveryc.html" class="nav-item flex items-center gap-3 px-3 py-2 rounded-lg text-[#111844]/70 hover:bg-[#7288AE]/20 transition-colors text-xs cursor-pointer"><span class="nav-icon text-sm flex-shrink-0 w-4"><i class="fas fa-file-alt"></i></span><span class="nav-label">Delivery Challan</span></a>
-        <a href="/pages/sales/invoices/invoice.html" class="nav-item flex items-center gap-3 px-3 py-2 rounded-lg text-[#111844]/70 hover:bg-[#7288AE]/20 transition-colors text-xs cursor-pointer"><span class="nav-icon text-sm flex-shrink-0 w-4"><i class="fas fa-file-invoice-dollar"></i></span><span class="nav-label">Invoices</span></a>
-        <a href="/pages/sales/shipment/Shipmenttracking.html" class="nav-item flex items-center gap-3 px-3 py-2 rounded-lg text-[#111844]/70 hover:bg-[#7288AE]/20 transition-colors text-xs cursor-pointer"><span class="nav-icon text-sm flex-shrink-0 w-4"><i class="fas fa-location-dot"></i></span><span class="nav-label">Shipment Tracking</span></a>
+        <a href="/pages/sales/salesorders/salesorders.html" class="nav-item flex items-center gap-3 px-3 py-2 rounded-lg text-[#111844]/70 hover:bg-[#7288AE]/20 text-xs cursor-pointer"><span class="nav-icon w-4"><i class="fas fa-receipt"></i></span><span class="nav-label">Sales Orders</span></a>
+        <a href="/pages/sales/dispatchplanning/dispatch.html" class="nav-item flex items-center gap-3 px-3 py-2 rounded-lg text-[#111844]/70 hover:bg-[#7288AE]/20 text-xs cursor-pointer"><span class="nav-icon w-4"><i class="fas fa-calendar-alt"></i></span><span class="nav-label">Dispatch Planning</span></a>
+        <a href="/pages/sales/delivery/deliveryc.html" class="nav-item flex items-center gap-3 px-3 py-2 rounded-lg text-[#111844]/70 hover:bg-[#7288AE]/20 text-xs cursor-pointer"><span class="nav-icon w-4"><i class="fas fa-file-alt"></i></span><span class="nav-label">Delivery Challan</span></a>
+        <a href="/pages/sales/invoices/invoice.html" class="nav-item nav-active flex items-center gap-3 px-3 py-2 rounded-lg text-xs cursor-pointer"><span class="nav-icon w-4"><i class="fas fa-file-invoice-dollar"></i></span><span class="nav-label">Invoices</span></a>
+        <a href="/pages/sales/shipment/Shipmenttracking.html" class="nav-item flex items-center gap-3 px-3 py-2 rounded-lg text-[#111844]/70 hover:bg-[#7288AE]/20 text-xs cursor-pointer"><span class="nav-icon w-4"><i class="fas fa-location-dot"></i></span><span class="nav-label">Shipment Tracking</span></a>
       </div>
     </div>
-
-    <a href="/pages/returns/returns.html" class="nav-item flex items-center gap-3 px-3 py-2.5 rounded-lg text-[#111844]/70 hover:bg-[#7288AE]/20 hover:text-[#111844] transition-colors text-sm cursor-pointer border-b border-[#4B5694]/20 shadow-sm">
-      <span class="nav-icon text-base flex-shrink-0 w-5"><i class="fas fa-rotate-left"></i></span><span class="nav-label">Returns Management</span>
-    </a>
-
+    <a href="/pages/returns/returns.html" class="nav-item flex items-center gap-3 px-3 py-2.5 rounded-lg text-[#111844]/70 hover:bg-[#7288AE]/20 text-sm cursor-pointer border-b border-[#4B5694]/20"><span class="nav-icon w-5"><i class="fas fa-rotate-left"></i></span><span class="nav-label">Returns Management</span></a>
+    <!-- Finance -->
     <div class="nav-group">
-      <div class="nav-group-header flex items-center justify-between gap-3 px-3 py-2.5 rounded-lg text-[#111844]/70 hover:bg-[#7288AE]/20 hover:text-[#111844] transition-colors text-sm cursor-pointer border-b border-[#4B5694]/20 shadow-sm">
-        <div class="flex items-center gap-3"><span class="nav-icon text-base flex-shrink-0 w-5"><i class="fas fa-coins"></i></span><span class="nav-label">Finance & Billing</span></div>
+      <div class="nav-group-header flex items-center justify-between gap-3 px-3 py-2.5 rounded-lg text-[#111844]/70 hover:bg-[#7288AE]/20 text-sm cursor-pointer border-b border-[#4B5694]/20">
+        <div class="flex items-center gap-3"><span class="nav-icon w-5"><i class="fas fa-coins"></i></span><span class="nav-label">Finance & Billing</span></div>
         <i class="fas fa-chevron-down text-xs transition-transform duration-200"></i>
       </div>
       <div class="nav-group-items ml-7 space-y-0.5 mt-1 hidden">
-        <a href="/pages/finance&Billing/receivables/receive.html" class="nav-item flex items-center gap-3 px-3 py-2 rounded-lg text-[#111844]/70 hover:bg-[#7288AE]/20 text-xs cursor-pointer"><span class="nav-icon text-sm flex-shrink-0 w-4"><i class="fas fa-hand-holding-usd"></i></span><span class="nav-label">Receivables</span></a>
-        <a href="/pages/finance&Billing/payables/pay.html" class="nav-item flex items-center gap-3 px-3 py-2 rounded-lg text-[#111844]/70 hover:bg-[#7288AE]/20 text-xs cursor-pointer"><span class="nav-icon text-sm flex-shrink-0 w-4"><i class="fas fa-money-bill-wave"></i></span><span class="nav-label">Payables</span></a>
-        <a href="/pages/finance&Billing/expenses/expense.html" class="nav-item flex items-center gap-3 px-3 py-2 rounded-lg text-[#111844]/70 hover:bg-[#7288AE]/20 text-xs cursor-pointer"><span class="nav-icon text-sm flex-shrink-0 w-4"><i class="fas fa-money-bill-wave"></i></span><span class="nav-label">Expenses</span></a>
-        <a href="/pages/finance&Billing/GSTM/gst.html" class="nav-item flex items-center gap-3 px-3 py-2 rounded-lg text-[#111844]/70 hover:bg-[#7288AE]/20 text-xs cursor-pointer"><span class="nav-icon text-sm flex-shrink-0 w-4"><i class="fas fa-percent"></i></span><span class="nav-label">GST Management</span></a>
-        <a href="/pages/finance&Billing/profitability/profit.html" class="nav-item flex items-center gap-3 px-3 py-2 rounded-lg text-[#111844]/70 hover:bg-[#7288AE]/20 text-xs cursor-pointer"><span class="nav-icon text-sm flex-shrink-0 w-4"><i class="fas fa-chart-simple"></i></span><span class="nav-label">Profitability</span></a>
+        <a href="/pages/finance&Billing/receivables/receive.html" class="nav-item flex items-center gap-3 px-3 py-2 rounded-lg text-[#111844]/70 hover:bg-[#7288AE]/20 text-xs cursor-pointer"><span class="nav-icon w-4"><i class="fas fa-hand-holding-usd"></i></span><span class="nav-label">Receivables</span></a>
+        <a href="/pages/finance&Billing/payables/pay.html" class="nav-item flex items-center gap-3 px-3 py-2 rounded-lg text-[#111844]/70 hover:bg-[#7288AE]/20 text-xs cursor-pointer"><span class="nav-icon w-4"><i class="fas fa-money-bill-wave"></i></span><span class="nav-label">Payables</span></a>
+        <a href="/pages/finance&Billing/expenses/expense.html" class="nav-item flex items-center gap-3 px-3 py-2 rounded-lg text-[#111844]/70 hover:bg-[#7288AE]/20 hover:text-[#111844] transition-colors duration-150 text-xs cursor-pointer">
+          <span class="nav-icon text-sm flex-shrink-0 w-4"><i class="fas fa-chart-line"></i></span>
+          <span class="nav-label">Expenses</span>
+        </a>
+        <a href="/pages/finance&Billing/GSTM/gst.html" class="nav-item flex items-center gap-3 px-3 py-2 rounded-lg text-[#111844]/70 hover:bg-[#7288AE]/20 text-xs cursor-pointer"><span class="nav-icon w-4"><i class="fas fa-percent"></i></span><span class="nav-label">GST Management</span></a>
+         <a href="/pages/finance&Billing/profitability/profit.html" class="nav-item flex items-center gap-3 px-3 py-2 rounded-lg text-[#111844]/70 hover:bg-[#7288AE]/20 hover:text-[#111844] transition-colors duration-150 text-xs cursor-pointer">
+          <span class="nav-icon text-sm flex-shrink-0 w-4"><i class="fas fa-chart-simple"></i></span>
+          <span class="nav-label">Profitability</span>
+        </a>
       </div>
     </div>
-
-    <a href="/pages/reports&analytics/reports.html" class="nav-item flex items-center gap-3 px-3 py-2.5 rounded-lg text-[#111844]/70 hover:bg-[#7288AE]/20 hover:text-[#111844] transition-colors text-sm cursor-pointer border-b border-[#4B5694]/20 shadow-sm">
-      <span class="nav-icon text-base flex-shrink-0 w-5"><i class="fas fa-chart-bar"></i></span><span class="nav-label">Reports & Analytics</span>
-    </a>
-
+    <a href="#" class="nav-item flex items-center gap-3 px-3 py-2.5 rounded-lg text-[#111844]/70 hover:bg-[#7288AE]/20 text-sm cursor-pointer border-b border-[#4B5694]/20"><span class="nav-icon w-5"><i class="fas fa-chart-bar"></i></span><span class="nav-label">Reports & Analytics</span></a>
+    <!-- User Management -->
     <div class="nav-group">
-      <div class="nav-group-header flex items-center justify-between gap-3 px-3 py-2.5 rounded-lg text-[#111844]/70 hover:bg-[#7288AE]/20 hover:text-[#111844] transition-colors text-sm cursor-pointer border-b border-[#4B5694]/20 shadow-sm">
-        <div class="flex items-center gap-3"><span class="nav-icon text-base flex-shrink-0 w-5"><i class="fas fa-users-gear"></i></span><span class="nav-label">User Management</span></div>
+      <div class="nav-group-header flex items-center justify-between gap-3 px-3 py-2.5 rounded-lg text-[#111844]/70 hover:bg-[#7288AE]/20 text-sm cursor-pointer border-b border-[#4B5694]/20">
+        <div class="flex items-center gap-3"><span class="nav-icon w-5"><i class="fas fa-users-gear"></i></span><span class="nav-label">User Management</span></div>
         <i class="fas fa-chevron-down text-xs transition-transform duration-200"></i>
       </div>
       <div class="nav-group-items ml-7 space-y-0.5 mt-1 hidden">
-        <a href="/pages/userM/user/User.html" class="nav-item flex items-center gap-3 px-3 py-2 rounded-lg text-[#111844]/70 hover:bg-[#7288AE]/20 text-xs cursor-pointer"><span class="nav-icon text-sm flex-shrink-0 w-4"><i class="fas fa-user"></i></span><span class="nav-label">Users</span></a>
-        <a href="/pages/userM/roles&permission/role.html" class="nav-item flex items-center gap-3 px-3 py-2 rounded-lg text-[#111844]/70 hover:bg-[#7288AE]/20 text-xs cursor-pointer"><span class="nav-icon text-sm flex-shrink-0 w-4"><i class="fas fa-lock"></i></span><span class="nav-label">Roles & Permissions</span></a>
+        <a href="/pages/userM/user/User.html" class="nav-item flex items-center gap-3 px-3 py-2 rounded-lg text-[#111844]/70 hover:bg-[#7288AE]/20 text-xs cursor-pointer"><span class="nav-icon w-4"><i class="fas fa-user"></i></span><span class="nav-label">Users</span></a>
+        <a href="/pages/userM/roles&permission/role.html" class="nav-item flex items-center gap-3 px-3 py-2 rounded-lg text-[#111844]/70 hover:bg-[#7288AE]/20 text-xs cursor-pointer"><span class="nav-icon w-4"><i class="fas fa-lock"></i></span><span class="nav-label">Roles & Permissions</span></a>
       </div>
     </div>
   </nav>
@@ -279,18 +236,13 @@
 
 <div id="sidebar-overlay" class="hidden fixed inset-0 bg-[#111844]/50 z-[90] lg:hidden"></div>
 
-<!-- ══════════════════════════════ MAIN ══════════════════════════════ -->
 <div id="main-wrapper" class="ml-[260px] flex flex-col min-h-screen transition-all duration-300">
-
-  <!-- TOPBAR -->
   <header class="sticky top-0 z-[200] h-16 bg-[#FFFCFC] border-b border-[#4B5694]/20 flex items-center justify-between px-5 shadow-sm">
     <div class="flex items-center gap-4">
-      <button id="mobile-menu-btn" class="lg:hidden w-9 h-9 flex items-center justify-center rounded-lg text-[#4B5694] hover:bg-[#4B5694]/10 transition-colors">
-        <i class="fas fa-bars text-base"></i>
-      </button>
+      <button id="mobile-menu-btn" class="lg:hidden w-9 h-9 flex items-center justify-center rounded-lg text-[#4B5694] hover:bg-[#4B5694]/10 transition-colors"><i class="fas fa-bars text-base"></i></button>
       <div>
         <h1 class="text-sm font-semibold text-[#111844]">Dispatch Planning</h1>
-        <p class="text-xs text-[#7288AE]">Sales & Dispatch → Dispatch Planning · Orders · Plans · Vehicles</p>
+        <p class="text-xs text-[#7288AE] hidden sm:block">Sales & Dispatch → Dispatch Planning · Orders · Plans · Vehicles</p>
       </div>
     </div>
     <div class="flex items-center gap-2">
@@ -304,18 +256,9 @@
             <span class="text-[10px] px-2 py-0.5 rounded-full bg-[#111844]/10 text-[#111844] font-medium">3 new</span>
           </div>
           <div class="max-h-72 overflow-y-auto divide-y divide-[#4B5694]/10">
-            <div class="notif-item">
-              <div class="notif-icon bg-emerald-100 text-emerald-700"><i class="fas fa-check-circle"></i></div>
-              <div><div class="text-xs font-semibold text-[#111844]">#SO-3180 ready for dispatch</div><div class="text-xs text-[#7288AE]">Kumar Industries — fully allocated</div><div class="text-[10px] text-[#7288AE] mt-1">30 min ago</div></div>
-            </div>
-            <div class="notif-item">
-              <div class="notif-icon bg-amber-100 text-amber-600"><i class="fas fa-calendar-alt"></i></div>
-              <div><div class="text-xs font-semibold text-[#111844]">2 dispatches scheduled for today</div><div class="text-xs text-[#7288AE]">DP-1041, DP-1040</div><div class="text-[10px] text-[#7288AE] mt-1">1 hour ago</div></div>
-            </div>
-            <div class="notif-item">
-              <div class="notif-icon bg-indigo-100 text-indigo-700"><i class="fas fa-truck"></i></div>
-              <div><div class="text-xs font-semibold text-[#111844]">Vehicle MH-12-AB-1234 available</div><div class="text-xs text-[#7288AE]">Returned from previous route</div><div class="text-[10px] text-[#7288AE] mt-1">2 hours ago</div></div>
-            </div>
+            <div class="notif-item"><div class="notif-icon bg-emerald-100 text-emerald-700"><i class="fas fa-check-circle"></i></div><div><div class="text-xs font-semibold text-[#111844]">#SO-3180 ready for dispatch</div><div class="text-xs text-[#7288AE]">Kumar Industries — fully allocated</div><div class="text-[10px] text-[#7288AE] mt-1">30 min ago</div></div></div>
+            <div class="notif-item"><div class="notif-icon bg-amber-100 text-amber-600"><i class="fas fa-calendar-alt"></i></div><div><div class="text-xs font-semibold text-[#111844]">2 dispatches scheduled for today</div><div class="text-xs text-[#7288AE]">DP-1041, DP-1040</div><div class="text-[10px] text-[#7288AE] mt-1">1 hour ago</div></div></div>
+            <div class="notif-item"><div class="notif-icon bg-indigo-100 text-indigo-700"><i class="fas fa-truck"></i></div><div><div class="text-xs font-semibold text-[#111844]">Vehicle MH-12-AB-1234 available</div><div class="text-xs text-[#7288AE]">Returned from previous route</div><div class="text-[10px] text-[#7288AE] mt-1">2 hours ago</div></div></div>
           </div>
           <div class="px-4 py-2.5 border-t border-[#4B5694]/15 text-center"><a href="#" class="text-xs font-medium text-[#111844] hover:underline">View all notifications</a></div>
         </div>
@@ -327,192 +270,118 @@
           <i class="fas fa-chevron-down text-[10px] text-[#4B5694]"></i>
         </button>
         <div id="user-menu" class="hidden absolute right-0 top-full mt-1 w-44 bg-[#FFFCFC] border border-[#4B5694]/20 rounded-xl shadow-lg py-1 z-50">
-          <a href="/profile.html" class="flex items-center gap-2 px-4 py-2 text-xs text-[#111844] hover:bg-[#7288AE]/10 transition-colors"><i class="fas fa-user-circle w-4"></i> My Profile</a>
+          <a href="#" class="flex items-center gap-2 px-4 py-2 text-xs text-[#111844] hover:bg-[#7288AE]/10 transition-colors"><i class="fas fa-user-circle w-4"></i> My Profile</a>
           <div class="border-t border-[#4B5694]/10 my-1"></div>
-          <a href="/login.html" class="flex items-center gap-2 px-4 py-2 text-xs text-red-600 hover:bg-red-50 transition-colors"><i class="fas fa-sign-out-alt w-4"></i> Logout</a>
+          <a href="#" class="flex items-center gap-2 px-4 py-2 text-xs text-red-600 hover:bg-red-50 transition-colors"><i class="fas fa-sign-out-alt w-4"></i> Logout</a>
         </div>
       </div>
     </div>
   </header>
 
-  <!-- PAGE CONTENT -->
-  <main class="flex-1 p-5 space-y-5">
-
-    <!-- ── KPI Widgets (always visible) ── -->
+  <main class="flex-1 p-4 sm:p-5 space-y-4 sm:space-y-5">
+    <!-- KPI Widgets -->
     <div class="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-5 gap-3">
-      <div class="widget-card">
-        <div><div class="widget-value">18</div><div class="widget-label">Ready for Dispatch</div></div>
-        <div class="widget-icon bg-emerald-100 text-emerald-700"><i class="fas fa-boxes-stacked"></i></div>
-      </div>
-      <div class="widget-card">
-        <div><div class="widget-value">7</div><div class="widget-label">Planned Today</div></div>
-        <div class="widget-icon bg-[#111844]/10 text-[#111844]"><i class="fas fa-calendar-check"></i></div>
-      </div>
-      <div class="widget-card">
-        <div><div class="widget-value">3</div><div class="widget-label">In Progress</div></div>
-        <div class="widget-icon bg-purple-100 text-purple-700"><i class="fas fa-spinner"></i></div>
-      </div>
-      <div class="widget-card">
-        <div><div class="widget-value">12</div><div class="widget-label">Vehicles Available</div></div>
-        <div class="widget-icon bg-[#4B5694]/10 text-[#4B5694]"><i class="fas fa-truck"></i></div>
-      </div>
-      <div class="widget-card">
-        <div><div class="widget-value">5</div><div class="widget-label">Dispatched Today</div></div>
-        <div class="widget-icon bg-amber-100 text-amber-700"><i class="fas fa-truck-fast"></i></div>
-      </div>
+      <div class="widget-card"><div><div class="widget-value" id="kpi-ready">18</div><div class="widget-label">Ready for Dispatch</div></div><div class="widget-icon bg-emerald-100 text-emerald-700"><i class="fas fa-boxes-stacked"></i></div></div>
+      <div class="widget-card"><div><div class="widget-value" id="kpi-planned">7</div><div class="widget-label">Planned Today</div></div><div class="widget-icon bg-[#111844]/10 text-[#111844]"><i class="fas fa-calendar-check"></i></div></div>
+      <div class="widget-card"><div><div class="widget-value" id="kpi-inprogress">3</div><div class="widget-label">In Progress</div></div><div class="widget-icon bg-purple-100 text-purple-700"><i class="fas fa-spinner"></i></div></div>
+      <div class="widget-card"><div><div class="widget-value" id="kpi-vehicles">12</div><div class="widget-label">Vehicles Available</div></div><div class="widget-icon bg-[#4B5694]/10 text-[#4B5694]"><i class="fas fa-truck"></i></div></div>
+      <div class="widget-card col-span-2 sm:col-span-1"><div><div class="widget-value" id="kpi-dispatched">5</div><div class="widget-label">Dispatched Today</div></div><div class="widget-icon bg-amber-100 text-amber-700"><i class="fas fa-truck-fast"></i></div></div>
     </div>
 
-    <!-- ── Module Tabs ── -->
-    <div class="flex flex-wrap gap-1 bg-[#FFFCFC] border border-[#4B5694]/20 rounded-xl p-1.5 shadow-sm" id="module-tabs">
-      <button class="module-tab active" data-module="orders">
-        <i class="fas fa-list-check mr-1.5"></i>Orders Queue
-      </button>
-      <button class="module-tab" data-module="plans">
-        <i class="fas fa-calendar-alt mr-1.5"></i>Dispatch Plans
-      </button>
-      <button class="module-tab" data-module="vehicles">
-        <i class="fas fa-truck mr-1.5"></i>Vehicle Availability
-      </button>
+    <!-- Module Tabs -->
+    <div class="flex flex-wrap gap-1 bg-[#FFFCFC] border border-[#4B5694]/20 rounded-xl p-1.5 shadow-sm overflow-x-auto" id="module-tabs">
+      <button class="module-tab active" data-module="orders"><i class="fas fa-list-check mr-1.5"></i>Orders Queue</button>
+      <button class="module-tab" data-module="plans"><i class="fas fa-calendar-alt mr-1.5"></i>Dispatch Plans</button>
+      <button class="module-tab" data-module="vehicles"><i class="fas fa-truck mr-1.5"></i>Vehicle Availability</button>
     </div>
 
-    <!-- ══════════ MODULE: Orders Queue ══════════ -->
+    <!-- Orders Queue -->
     <div id="module-orders" class="module-content space-y-5">
       <div class="chart-card">
-        <div class="flex flex-wrap items-center justify-between gap-3 mb-4">
-          <div>
-            <div class="section-title"><i class="fas fa-list-check mr-1.5 text-[#4B5694]"></i>Orders Ready for Dispatch</div>
-            <div class="section-sub">Approved & fully allocated orders waiting to be planned</div>
-          </div>
+        <div class="flex flex-wrap items-start sm:items-center justify-between gap-3 mb-4">
+          <div><div class="section-title"><i class="fas fa-list-check mr-1.5 text-[#4B5694]"></i>Orders Ready for Dispatch</div><div class="section-sub">Approved & fully allocated orders waiting to be planned</div></div>
           <div class="flex items-center gap-2 flex-wrap">
             <input id="search-queue" type="text" placeholder="Search order, customer…" class="form-input" style="width:180px" />
-            <select id="filter-priority" class="form-select" style="width:140px">
-              <option value="">All Priorities</option>
-              <option value="Urgent">Urgent</option>
-              <option value="High">High</option>
-              <option value="Medium">Medium</option>
-              <option value="Low">Low</option>
-            </select>
-            <button class="btn-primary" onclick="openPlan()"><i class="fas fa-plus"></i> Plan Dispatch</button>
+            <select id="filter-priority" class="form-select" style="width:140px"><option value="">All Priorities</option><option value="Urgent">Urgent</option><option value="High">High</option><option value="Medium">Medium</option><option value="Low">Low</option></select>
+            <button class="btn-primary" id="plan-dispatch-btn"><i class="fas fa-plus"></i> Plan Dispatch</button>
           </div>
         </div>
         <div class="overflow-x-auto rounded-xl border border-[#4B5694]/12">
           <table class="data-table" id="queue-table">
-            <thead>
-              <tr>
-                <th><input type="checkbox" id="check-all" class="rounded" onchange="toggleAll(this)" /></th>
-                <th>Sales Order</th>
-                <th>Customer</th>
-                <th>Items</th>
-                <th>Order Value</th>
-                <th>Delivery Date</th>
-                <th>Priority</th>
-                <th>Warehouse</th>
-                <th>Action</th>
-              </tr>
-            </thead>
+            <thead><tr><th><input type="checkbox" id="check-all" class="rounded" /></th><th>Sales Order</th><th>Customer</th><th>Items</th><th>Order Value</th><th>Delivery Date</th><th>Priority</th><th>Warehouse</th><th>Action</th></tr></thead>
             <tbody id="queue-tbody"></tbody>
           </table>
         </div>
-        <div class="flex items-center justify-between mt-3">
-          <span class="text-xs text-[#7288AE]" id="selected-info">0 orders selected</span>
-          <button class="btn-secondary text-xs" id="bulk-plan-btn" onclick="bulkPlan()" style="display:none"><i class="fas fa-calendar-alt"></i> Plan Selected</button>
+        <div class="flex flex-wrap items-center justify-between mt-3 gap-2">
+          <div class="flex items-center gap-4"><span class="text-xs text-[#7288AE]" id="queue-showing-info"></span><span class="text-xs text-[#4B5694] font-medium" id="selected-info"></span></div>
+          <div class="flex items-center gap-3"><div class="pagination" id="queue-pagination"></div><button class="btn-secondary text-xs" id="bulk-plan-btn" style="display:none"><i class="fas fa-calendar-alt"></i> Plan Selected</button></div>
         </div>
       </div>
-    </div><!-- end module-orders -->
+    </div>
 
-    <!-- ══════════ MODULE: Dispatch Plans ══════════ -->
+    <!-- Dispatch Plans -->
     <div id="module-plans" class="module-content hidden space-y-5">
       <div class="chart-card">
-        <div class="flex flex-wrap items-center justify-between gap-3 mb-4">
-          <div>
-            <div class="section-title"><i class="fas fa-calendar-alt mr-1.5 text-[#4B5694]"></i>Dispatch Plans</div>
-            <div class="section-sub">All created dispatch plans</div>
-          </div>
+        <div class="flex flex-wrap items-start sm:items-center justify-between gap-3 mb-4">
+          <div><div class="section-title"><i class="fas fa-calendar-alt mr-1.5 text-[#4B5694]"></i>Dispatch Plans</div><div class="section-sub">All created dispatch plans</div></div>
           <div class="flex items-center gap-2 flex-wrap">
-            <select id="filter-dp-status" class="form-select" style="width:160px" onchange="filterPlans()">
-              <option value="">All Status</option>
-              <option value="Planned">Planned</option>
-              <option value="In Progress">In Progress</option>
-              <option value="Dispatched">Dispatched</option>
-              <option value="Cancelled">Cancelled</option>
-            </select>
-            <input type="date" id="filter-dp-date" class="form-input" style="width:150px" onchange="filterPlans()" />
-            <button class="btn-secondary" onclick="toast('Exporting…','blue')"><i class="fas fa-download"></i> Export</button>
+            <select id="filter-dp-status" class="form-select" style="width:160px"><option value="">All Status</option><option value="Planned">Planned</option><option value="In Progress">In Progress</option><option value="Dispatched">Dispatched</option><option value="Cancelled">Cancelled</option></select>
+            <input type="date" id="filter-dp-date" class="form-input" style="width:150px" />
+            <button class="btn-secondary" id="export-btn"><i class="fas fa-download"></i> Export</button>
           </div>
         </div>
         <div class="overflow-x-auto rounded-xl border border-[#4B5694]/12">
           <table class="data-table">
-            <thead>
-              <tr>
-                <th>Plan ID</th>
-                <th>Sales Order</th>
-                <th>Customer</th>
-                <th>Dispatch Date</th>
-                <th>Vehicle</th>
-                <th>Route</th>
-                <th>Warehouse</th>
-                <th>Priority</th>
-                <th>Status</th>
-                <th>Actions</th>
-              </tr>
-            </thead>
+            <thead><tr><th>Plan ID</th><th>Sales Order</th><th>Customer</th><th>Dispatch Date</th><th>Vehicle</th><th>Route</th><th>Warehouse</th><th>Priority</th><th>Status</th><th>Actions</th></tr></thead>
             <tbody id="plans-tbody"></tbody>
           </table>
         </div>
+        <div class="flex justify-between items-center mt-3">
+          <span class="text-xs text-[#7288AE]" id="plans-info"></span>
+          <div class="pagination" id="plans-pagination"></div>
+        </div>
       </div>
-    </div><!-- end module-plans -->
+    </div>
 
-    <!-- ══════════ MODULE: Vehicle Availability ══════════ -->
+    <!-- Vehicle Availability -->
     <div id="module-vehicles" class="module-content hidden space-y-5">
       <div class="chart-card">
         <div class="flex items-center justify-between mb-4">
-  <div>
-    <div class="section-title"><i class="fas fa-truck mr-1.5 text-[#4B5694]"></i>Vehicle Availability</div>
-    <div class="section-sub">Fleet status for today's dispatches</div>
-  </div>
-  <button class="btn-secondary text-xs" onclick="openAddVehicleModal()"><i class="fas fa-plus"></i> Add Vehicle</button>
-</div>
-<div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-3" id="vehicle-grid"></div>
-    </div><!-- end module-vehicles -->
-
+          <div><div class="section-title"><i class="fas fa-truck mr-1.5 text-[#4B5694]"></i>Vehicle Availability</div><div class="section-sub">Fleet status for today's dispatches</div></div>
+          <button class="btn-secondary text-xs" id="add-vehicle-btn"><i class="fas fa-plus"></i> Add Vehicle</button>
+        </div>
+        <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-3" id="vehicle-grid"></div>
+        <div class="flex justify-between items-center mt-4">
+          <span class="text-xs text-[#7288AE]" id="vehicles-info"></span>
+          <div class="pagination" id="vehicles-pagination"></div>
+        </div>
+      </div>
+    </div>
   </main>
 </div>
 
-<!-- ══════════════════════════ PLAN DISPATCH MODAL ══════════════════════════ -->
-<div id="modal-plan" class="modal-overlay hidden">
+<!-- PLAN DISPATCH MODAL -->
+<div id="modal-plan" class="modal-overlay hidden" style="z-index:500">
   <div class="modal-box">
     <div class="modal-header">
-      <div>
-        <div class="text-sm font-bold text-[#111844]" id="plan-modal-title">Plan Dispatch</div>
-        <div class="text-xs text-[#7288AE]">Assign vehicle, route and schedule for dispatch</div>
-      </div>
-      <button onclick="closePlan()" class="w-8 h-8 flex items-center justify-center rounded-lg text-[#7288AE] hover:bg-[#f1f5f9]"><i class="fas fa-times"></i></button>
+      <div><div class="text-sm font-bold text-[#111844]" id="plan-modal-title">Plan Dispatch</div><div class="text-xs text-[#7288AE]">Assign vehicle, route and schedule for dispatch</div></div>
+      <button id="close-plan-btn" class="w-8 h-8 flex items-center justify-center rounded-lg text-[#7288AE] hover:bg-[#f1f5f9]"><i class="fas fa-times"></i></button>
     </div>
     <div class="modal-body space-y-5">
-
-      <!-- Order Info -->
       <div>
         <div class="form-section-title">Order Information</div>
-        <div class="grid grid-cols-2 gap-3">
-          <div><label class="form-label">Sales Order</label><input class="form-input" id="p-order"  /></div>
+        <div class="grid grid-cols-1 sm:grid-cols-2 gap-3">
+          <div><label class="form-label">Sales Order</label><input class="form-input" id="p-order" /></div>
           <div><label class="form-label">Customer</label><input class="form-input" id="p-customer" /></div>
           <div><label class="form-label">Order Value</label><input class="form-input" id="p-value" /></div>
-          <div><label class="form-label">Required Delivery Date</label><input class="form-input" id="p-delivery"  /></div>
+          <div><label class="form-label">Required Delivery Date</label><input class="form-input" id="p-delivery" /></div>
         </div>
       </div>
-
-      <!-- Dispatch Details -->
       <div>
         <div class="form-section-title">Dispatch Details</div>
-        <div class="grid grid-cols-2 gap-3">
-          <div>
-            <label class="form-label">Dispatch Date *</label>
-            <input type="date" class="form-input" id="p-date" />
-          </div>
-          <div>
-            <label class="form-label">Dispatch Time</label>
-            <input type="time" class="form-input" id="p-time" value="09:00" />
-          </div>
+        <div class="grid grid-cols-1 sm:grid-cols-2 gap-3">
+          <div><label class="form-label">Dispatch Date *</label><input type="date" class="form-input" id="p-date" /></div>
+          <div><label class="form-label">Dispatch Time</label><input type="time" class="form-input" id="p-time" value="09:00" /></div>
           <div>
             <label class="form-label">Warehouse *</label>
             <select class="form-select" id="p-warehouse">
@@ -525,55 +394,39 @@
           </div>
           <div>
             <label class="form-label">Dispatch Priority *</label>
-            <select class="form-select" id="p-priority">
-              <option>Low</option>
-              <option selected>Medium</option>
-              <option>High</option>
-              <option>Urgent</option>
-            </select>
+            <select class="form-select" id="p-priority"><option>Low</option><option selected>Medium</option><option>High</option><option>Urgent</option></select>
           </div>
-          <div style="grid-column:1/-1">
-            <label class="form-label">Route / Destination</label>
-            <input type="text" class="form-input" id="p-route" placeholder="e.g. Pune → Mumbai via Expressway" />
-          </div>
-          <div style="grid-column:1/-1">
-            <label class="form-label">Remarks</label>
-            <input type="text" class="form-input" id="p-remarks" placeholder="Optional notes for driver / warehouse…" />
-          </div>
+          <div style="grid-column:1/-1"><label class="form-label">Route / Destination</label><input type="text" class="form-input" id="p-route" placeholder="e.g. Pune → Mumbai via Expressway" /></div>
+          <div style="grid-column:1/-1"><label class="form-label">Remarks</label><input type="text" class="form-input" id="p-remarks" placeholder="Optional notes for driver / warehouse…" /></div>
         </div>
       </div>
-
-      <!-- Vehicle Selection -->
       <div>
         <div class="form-section-title">Vehicle Assignment</div>
         <div class="grid grid-cols-1 sm:grid-cols-2 gap-3" id="modal-vehicle-grid"></div>
         <input type="hidden" id="p-vehicle" />
+        <p class="text-xs text-[#7288AE] mt-2"><i class="fas fa-info-circle mr-1"></i>Click an Available vehicle to select it.</p>
       </div>
     </div>
     <div class="modal-footer">
-      <button onclick="closePlan()" class="btn-secondary">Cancel</button>
-      <button onclick="savePlan()" class="btn-primary"><i class="fas fa-calendar-check"></i> Confirm Plan</button>
+      <button id="cancel-plan-btn" class="btn-secondary">Cancel</button>
+      <button id="save-plan-btn" class="btn-primary"><i class="fas fa-calendar-check"></i> Confirm Plan</button>
     </div>
   </div>
 </div>
 
-<!-- ══════════════════════════ DETAIL MODAL ══════════════════════════ -->
-<div id="modal-detail" class="modal-overlay hidden">
+<!-- DETAIL MODAL -->
+<div id="modal-detail" class="modal-overlay hidden" style="z-index:500">
   <div class="modal-box">
     <div class="modal-header">
-      <div>
-        <div class="text-sm font-bold text-[#111844]" id="detail-title">Dispatch Plan Detail</div>
-        <div class="text-xs text-[#7288AE]" id="detail-sub">DP-1041</div>
-      </div>
-      <button onclick="closeDetail()" class="w-8 h-8 flex items-center justify-center rounded-lg text-[#7288AE] hover:bg-[#f1f5f9]"><i class="fas fa-times"></i></button>
+      <div><div class="text-sm font-bold text-[#111844]" id="detail-title">Dispatch Plan Detail</div><div class="text-xs text-[#7288AE]" id="detail-sub"></div></div>
+      <button id="close-detail-btn" class="w-8 h-8 flex items-center justify-center rounded-lg text-[#7288AE] hover:bg-[#f1f5f9]"><i class="fas fa-times"></i></button>
     </div>
     <div class="modal-body">
-      <div class="tab-bar">
-        <button class="tab-btn active" onclick="switchTab('dov')">Overview</button>
-        <button class="tab-btn" onclick="switchTab('ditems')">Order Items</button>
-        <button class="tab-btn" onclick="switchTab('dtimeline')">Timeline</button>
+      <div class="tab-bar" id="detail-tab-bar">
+        <button class="tab-btn active" data-tab="tab-dov">Overview</button>
+        <button class="tab-btn" data-tab="tab-ditems">Order Items</button>
+        <button class="tab-btn" data-tab="tab-dtimeline">Timeline</button>
       </div>
-
       <div class="tab-content active" id="tab-dov">
         <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
           <div>
@@ -594,69 +447,101 @@
           </div>
         </div>
       </div>
-
       <div class="tab-content" id="tab-ditems">
         <div class="overflow-x-auto rounded-xl border border-[#4B5694]/12">
-          <table class="data-table">
-            <thead><tr><th>Product</th><th>Qty</th><th>Unit Price</th><th>Amount</th></tr></thead>
-            <tbody id="dv-items-tbody"></tbody>
-          </table>
+          <table class="data-table"><thead><tr><th>Product</th><th>Qty</th><th>Unit Price</th><th>Amount</th></tr></thead><tbody id="dv-items-tbody"></tbody></table>
         </div>
       </div>
-
       <div class="tab-content" id="tab-dtimeline">
         <div class="timeline" id="dv-timeline"></div>
       </div>
     </div>
     <div class="modal-footer">
-      <button onclick="closeDetail()" class="btn-secondary">Close</button>
-      <button class="btn-primary" id="detail-mark-btn" onclick="markDispatched()"><i class="fas fa-truck-fast"></i> Mark as Dispatched</button>
+      <button id="close-detail-footer-btn" class="btn-secondary">Close</button>
+      <button class="btn-primary" id="detail-mark-btn"><i class="fas fa-truck-fast"></i> Mark as Dispatched</button>
     </div>
   </div>
 </div>
 
-<div id="toast-container" class="fixed bottom-5 right-5 z-[400] space-y-2"></div>
+<!-- ADD VEHICLE MODAL -->
+<div id="modal-add-vehicle" class="modal-overlay hidden" style="z-index:600">
+  <div class="modal-box" style="max-width:480px">
+    <div class="modal-header">
+      <div><div class="text-sm font-bold text-[#111844]">Add New Vehicle</div><div class="text-xs text-[#7288AE]">Register a new vehicle in fleet</div></div>
+      <button id="close-add-vehicle-btn" class="w-8 h-8 flex items-center justify-center rounded-lg text-[#7288AE] hover:bg-[#f1f5f9]"><i class="fas fa-times"></i></button>
+    </div>
+    <div class="modal-body space-y-4">
+      <div><label class="form-label">Registration Number *</label><input type="text" id="new-vehicle-reg" class="form-input" placeholder="e.g. MH-12-AB-1234" /></div>
+      <div><label class="form-label">Vehicle Type *</label><select id="new-vehicle-type" class="form-select"><option value="">Select Type</option><option>Mini Truck (1T)</option><option>Tempo (2T)</option><option>Truck (5T)</option><option>Heavy Truck (10T+)</option></select></div>
+      <div><label class="form-label">Driver Name *</label><input type="text" id="new-vehicle-driver" class="form-input" placeholder="Driver's full name" /></div>
+      <div><label class="form-label">Capacity</label><input type="text" id="new-vehicle-capacity" class="form-input" placeholder="e.g. 2,000 kg" /></div>
+      <div><label class="form-label">Status</label><select id="new-vehicle-status" class="form-select"><option>Available</option><option>On Route</option><option>Maintenance</option></select></div>
+    </div>
+    <div class="modal-footer">
+      <button id="cancel-add-vehicle-btn" class="btn-secondary">Cancel</button>
+      <button id="save-add-vehicle-btn" class="btn-primary"><i class="fas fa-save"></i> Save Vehicle</button>
+    </div>
+  </div>
+</div>
+
+<div id="toast-container" class="fixed bottom-5 right-5 z-[900] space-y-2"></div>
 
 <script>
-// ── Data ──
-const vehicles = [
-  { id:'V01', reg:'MH-12-AB-1234', type:'Mini Truck (1T)', driver:'Raju Patil',   capacity:'1,000 kg', status:'Available' },
-  { id:'V02', reg:'MH-14-CD-5678', type:'Tempo (2T)',      driver:'Sanjay More',  capacity:'2,000 kg', status:'Available' },
-  { id:'V03', reg:'MH-04-EF-9012', type:'Truck (5T)',      driver:'Ganesh Kadam', capacity:'5,000 kg', status:'On Route'  },
-  { id:'V04', reg:'MH-09-GH-3456', type:'Mini Truck (1T)', driver:'Pravin Shinde',capacity:'1,000 kg', status:'Available' },
-  { id:'V05', reg:'GJ-05-IJ-7890', type:'Tempo (2T)',      driver:'Nikhil Desai', capacity:'2,000 kg', status:'Available' },
-  { id:'V06', reg:'MH-12-KL-2345', type:'Truck (5T)',      driver:'Anil Bhosale', capacity:'5,000 kg', status:'Maintenance'},
-  { id:'V07', reg:'MH-14-MN-6789', type:'Mini Truck (1T)', driver:'Rakesh Jadhav',capacity:'1,000 kg', status:'Available' },
-  { id:'V08', reg:'MH-04-OP-0123', type:'Tempo (2T)',      driver:'Sunil Pawar',  capacity:'2,000 kg', status:'On Route'  },
+// ══════════════════════════════════════
+// DATA
+// ══════════════════════════════════════
+let vehicles = [
+  { id:'V01', reg:'MH-12-AB-1234', type:'Mini Truck (1T)', driver:'Raju Patil',    capacity:'1,000 kg', status:'Available' },
+  { id:'V02', reg:'MH-14-CD-5678', type:'Tempo (2T)',       driver:'Sanjay More',   capacity:'2,000 kg', status:'Available' },
+  { id:'V03', reg:'MH-04-EF-9012', type:'Truck (5T)',       driver:'Ganesh Kadam',  capacity:'5,000 kg', status:'On Route'  },
+  { id:'V04', reg:'MH-09-GH-3456', type:'Mini Truck (1T)',  driver:'Pravin Shinde', capacity:'1,000 kg', status:'Available' },
+  { id:'V05', reg:'GJ-05-IJ-7890', type:'Tempo (2T)',       driver:'Nikhil Desai',  capacity:'2,000 kg', status:'Available' },
+  { id:'V06', reg:'MH-12-KL-2345', type:'Truck (5T)',       driver:'Anil Bhosale',  capacity:'5,000 kg', status:'Maintenance'},
+  { id:'V07', reg:'MH-14-MN-6789', type:'Mini Truck (1T)',  driver:'Rakesh Jadhav', capacity:'1,000 kg', status:'Available' },
+  { id:'V08', reg:'MH-04-OP-0123', type:'Tempo (2T)',       driver:'Sunil Pawar',   capacity:'2,000 kg', status:'On Route'  },
 ];
 
-const readyOrders = [
-  { id:'SO-3180', customer:'Kumar Industries',    items:2, value:'₹96,000',   delivery:'2025-06-15', priority:'Urgent', warehouse:'Warehouse A — MIDC Pune' },
-  { id:'SO-3172', customer:'Ramesh Traders',      items:2, value:'₹22,000',   delivery:'2025-06-16', priority:'Medium', warehouse:'Warehouse B — Chakan Pune' },
-  { id:'SO-3165', customer:'Mehta Distributors',  items:4, value:'₹1,14,000', delivery:'2025-06-17', priority:'High',   warehouse:'Warehouse A — MIDC Pune' },
-  { id:'SO-3158', customer:'Joshi Steel Works',   items:1, value:'₹38,400',   delivery:'2025-06-18', priority:'Low',    warehouse:'Warehouse C — Nagpur' },
-  { id:'SO-3149', customer:'Sharma & Co.',        items:3, value:'₹27,600',   delivery:'2025-06-19', priority:'High',   warehouse:'Warehouse D — Surat' },
+let readyOrders = [
+  { id:'SO-3180', customer:'Kumar Industries',   items:2, value:'₹96,000',   delivery:'2025-06-15', priority:'Urgent', warehouse:'Warehouse A — MIDC Pune' },
+  { id:'SO-3172', customer:'Ramesh Traders',     items:2, value:'₹22,000',   delivery:'2025-06-16', priority:'Medium', warehouse:'Warehouse B — Chakan Pune' },
+  { id:'SO-3165', customer:'Mehta Distributors', items:4, value:'₹1,14,000', delivery:'2025-06-17', priority:'High',   warehouse:'Warehouse A — MIDC Pune' },
+  { id:'SO-3158', customer:'Joshi Steel Works',  items:1, value:'₹38,400',   delivery:'2025-06-18', priority:'Low',    warehouse:'Warehouse C — Nagpur' },
+  { id:'SO-3149', customer:'Sharma & Co.',       items:3, value:'₹27,600',   delivery:'2025-06-19', priority:'High',   warehouse:'Warehouse D — Surat' },
 ];
 
-const dispatchPlans = [
-  { id:'DP-1041', order:'SO-3180', customer:'Kumar Industries',   date:'2025-06-15', time:'09:00', vehicle:'MH-12-AB-1234 (Mini Truck)', route:'Nagpur → Butibori',  warehouse:'Warehouse A — MIDC Pune',    priority:'Urgent', status:'In Progress',
+let dispatchPlans = [
+  { id:'DP-1041', order:'SO-3180', customer:'Kumar Industries',   date:'2025-06-15', time:'09:00', vehicle:'MH-12-AB-1234 (Mini Truck)', route:'Nagpur → Butibori',  warehouse:'Warehouse A — MIDC Pune',   priority:'Urgent', status:'In Progress',
     items:[{name:'Motor Coupling Set',qty:20,price:2400},{name:'Hydraulic Hoses',qty:20,price:1200}],
     timeline:[{label:'Plan Created',time:'14 Jun 2025, 4:00 PM',done:true},{label:'Pick & Pack Started',time:'15 Jun 2025, 8:00 AM',done:true},{label:'In Transit',time:'15 Jun 2025, 9:30 AM',done:false},{label:'Delivered',time:'—',done:false}] },
-  { id:'DP-1040', order:'SO-3149', customer:'Sharma & Co.',       date:'2025-06-15', time:'11:00', vehicle:'MH-14-CD-5678 (Tempo)',     route:'Jaipur → Sitapura',  warehouse:'Warehouse D — Surat',        priority:'High',   status:'Planned',
+  { id:'DP-1040', order:'SO-3149', customer:'Sharma & Co.',       date:'2025-06-15', time:'11:00', vehicle:'MH-14-CD-5678 (Tempo)',      route:'Jaipur → Sitapura',  warehouse:'Warehouse D — Surat',       priority:'High',   status:'Planned',
     items:[{name:'Steel Pipes (25mm)',qty:30,price:320},{name:'Safety Gloves (XL)',qty:15,price:180},{name:'Bearings',qty:10,price:850}],
     timeline:[{label:'Plan Created',time:'13 Jun 2025, 2:00 PM',done:true},{label:'Pick & Pack',time:'—',done:false},{label:'In Transit',time:'—',done:false},{label:'Delivered',time:'—',done:false}] },
-  { id:'DP-1039', order:'SO-3112', customer:'Patel Enterprises',  date:'2025-06-13', time:'08:30', vehicle:'GJ-05-IJ-7890 (Tempo)',     route:'Surat → Vadodara',   warehouse:'Warehouse D — Surat',        priority:'Medium', status:'Dispatched',
+  { id:'DP-1039', order:'SO-3112', customer:'Patel Enterprises',  date:'2025-06-13', time:'08:30', vehicle:'GJ-05-IJ-7890 (Tempo)',      route:'Surat → Vadodara',   warehouse:'Warehouse D — Surat',       priority:'Medium', status:'Dispatched',
     items:[{name:'Packaging Cartons (L)',qty:200,price:45}],
     timeline:[{label:'Plan Created',time:'12 Jun 2025, 3:00 PM',done:true},{label:'Pick & Pack Done',time:'13 Jun 2025, 7:30 AM',done:true},{label:'In Transit',time:'13 Jun 2025, 8:30 AM',done:true},{label:'Delivered',time:'13 Jun 2025, 2:00 PM',done:true}] },
-  { id:'DP-1038', order:'SO-3098', customer:'National Traders',   date:'2025-06-12', time:'10:00', vehicle:'MH-09-GH-3456 (Mini Truck)',route:'Mumbai → Thane',      warehouse:'Warehouse B — Chakan Pune',  priority:'Low',    status:'Dispatched',
+  { id:'DP-1038', order:'SO-3098', customer:'National Traders',   date:'2025-06-12', time:'10:00', vehicle:'MH-09-GH-3456 (Mini Truck)', route:'Mumbai → Thane',     warehouse:'Warehouse B — Chakan Pune', priority:'Low',    status:'Dispatched',
     items:[{name:'Industrial Bearings',qty:40,price:850}],
     timeline:[{label:'Plan Created',time:'11 Jun 2025',done:true},{label:'Pick & Pack Done',time:'12 Jun 2025, 9:00 AM',done:true},{label:'In Transit',time:'12 Jun 2025, 10:00 AM',done:true},{label:'Delivered',time:'12 Jun 2025, 5:00 PM',done:true}] },
-  { id:'DP-1037', order:'SO-3090', customer:'Mehta Distributors', date:'2025-06-11', time:'09:00', vehicle:'—',                         route:'—',                   warehouse:'Warehouse A — MIDC Pune',    priority:'High',   status:'Cancelled',
+  { id:'DP-1037', order:'SO-3090', customer:'Mehta Distributors', date:'2025-06-11', time:'09:00', vehicle:'—', route:'—', warehouse:'Warehouse A — MIDC Pune', priority:'High', status:'Cancelled',
     items:[{name:'Steel Pipes (25mm)',qty:50,price:320}],
     timeline:[{label:'Plan Created',time:'10 Jun 2025',done:true},{label:'Cancelled',time:'11 Jun 2025',done:true}] },
 ];
 
-// ── Helpers ──
+// Track the last created plan ID to flash it
+let lastCreatedPlanId = null;
+// Track the last added vehicle reg to flash it
+let lastAddedVehicleReg = null;
+
+const PAGE_SIZE_QUEUE    = 3;
+const PAGE_SIZE_PLANS    = 4;
+const PAGE_SIZE_VEHICLES = 8;
+let queuePage    = 1;
+let plansPage    = 1;
+let vehiclesPage = 1;
+
+// ══════════════════════════════════════
+// HELPERS
+// ══════════════════════════════════════
 function statusBadge(s) {
   const m = { Planned:'badge-planned','In Progress':'badge-inprogress', Dispatched:'badge-dispatched', Cancelled:'badge-cancelled' };
   return `<span class="badge ${m[s]||'badge-planned'}">${s}</span>`;
@@ -670,409 +555,565 @@ function vehicleStatusColor(s) {
   if (s==='On Route')  return 'text-indigo-700 bg-indigo-100';
   return 'text-amber-700 bg-amber-100';
 }
-
-// ── Queue table ──
-function renderQueue(data) {
-  const tb = document.getElementById('queue-tbody');
-  if (!data.length) { tb.innerHTML=`<tr><td colspan="9" class="text-center py-8 text-[#7288AE]">No orders pending dispatch.</td></tr>`; return; }
-  tb.innerHTML = data.map(o => `
-    <tr>
-      <td><input type="checkbox" class="row-check rounded" data-id="${o.id}" onchange="updateSelected()" /></td>
-      <td class="font-semibold text-[#4B5694]">${o.id}</td>
-      <td>${o.customer}</td>
-      <td class="text-center">${o.items}</td>
-      <td class="font-semibold">${o.value}</td>
-      <td>${o.delivery}</td>
-      <td>${priorityBadge(o.priority)}</td>
-      <td class="text-xs text-[#7288AE]">${o.warehouse}</td>
-      <td><button class="btn-primary text-xs px-3 py-1.5" onclick='openPlanFor("${o.id}")'><i class="fas fa-calendar-alt"></i> Plan</button></td>
-    </tr>
-  `).join('');
+function toast(msg, type='green') {
+  const bg = { green:'#059669', amber:'#d97706', red:'#dc2626', blue:'#4B5694' };
+  const t = document.createElement('div');
+  t.className = 'toast';
+  t.style.background = bg[type] || '#111844';
+  t.innerHTML = `<i class="fas fa-check-circle"></i><span>${msg}</span>`;
+  document.getElementById('toast-container').appendChild(t);
+  setTimeout(() => t.remove(), 3200);
 }
 
-function filterQueue() {
+// Switch to a module tab programmatically
+function switchModule(module) {
+  document.querySelectorAll('.module-tab').forEach(b => b.classList.remove('active'));
+  document.querySelector(`.module-tab[data-module="${module}"]`).classList.add('active');
+  document.querySelectorAll('.module-content').forEach(el => el.classList.add('hidden'));
+  document.getElementById(`module-${module}`).classList.remove('hidden');
+}
+
+// Update KPI widgets based on live data
+function updateKPIs() {
+  document.getElementById('kpi-vehicles').textContent = vehicles.filter(v => v.status === 'Available').length;
+  document.getElementById('kpi-planned').textContent  = dispatchPlans.filter(p => p.status === 'Planned').length;
+  document.getElementById('kpi-inprogress').textContent = dispatchPlans.filter(p => p.status === 'In Progress').length;
+  document.getElementById('kpi-dispatched').textContent = dispatchPlans.filter(p => p.status === 'Dispatched').length;
+}
+
+// ══════════════════════════════════════
+// PAGINATION
+// ══════════════════════════════════════
+function renderPagination(containerId, currentPage, totalPages, onPageChange) {
+  const el = document.getElementById(containerId);
+  if (!el) return;
+  if (totalPages <= 1) { el.innerHTML = ''; return; }
+  let html = `<button class="page-btn" ${currentPage===1?'disabled':''} data-p="${currentPage-1}"><i class="fas fa-chevron-left text-[10px]"></i></button>`;
+  for (let i = 1; i <= totalPages; i++) {
+    if (totalPages > 6 && i > 2 && i < totalPages - 1 && Math.abs(i - currentPage) > 1) {
+      if (i === 3 || i === totalPages - 2) html += `<span class="page-btn" style="cursor:default;border:none;color:#7288AE">…</span>`;
+      continue;
+    }
+    html += `<button class="page-btn ${i===currentPage?'active':''}" data-p="${i}">${i}</button>`;
+  }
+  html += `<button class="page-btn" ${currentPage===totalPages?'disabled':''} data-p="${currentPage+1}"><i class="fas fa-chevron-right text-[10px]"></i></button>`;
+  el.innerHTML = html;
+  el.querySelectorAll('.page-btn[data-p]').forEach(btn => {
+    btn.addEventListener('click', () => {
+      const p = parseInt(btn.dataset.p);
+      if (p < 1 || p > totalPages) return;
+      onPageChange(p);
+    });
+  });
+}
+
+// ══════════════════════════════════════
+// ORDERS QUEUE
+// ══════════════════════════════════════
+function getFilteredQueue() {
   const q = document.getElementById('search-queue').value.toLowerCase();
   const p = document.getElementById('filter-priority').value;
-  renderQueue(readyOrders.filter(o => (!q || o.id.toLowerCase().includes(q) || o.customer.toLowerCase().includes(q)) && (!p || o.priority===p)));
+  return readyOrders.filter(o =>
+    (!q || o.id.toLowerCase().includes(q) || o.customer.toLowerCase().includes(q)) &&
+    (!p || o.priority === p)
+  );
 }
-document.getElementById('search-queue').addEventListener('input', filterQueue);
-document.getElementById('filter-priority').addEventListener('change', filterQueue);
 
-function toggleAll(cb) {
-  document.querySelectorAll('.row-check').forEach(c => c.checked = cb.checked);
-  updateSelected();
+function renderQueue() {
+  const data = getFilteredQueue();
+  const totalPages = Math.max(1, Math.ceil(data.length / PAGE_SIZE_QUEUE));
+  if (queuePage > totalPages) queuePage = totalPages;
+  const start = (queuePage - 1) * PAGE_SIZE_QUEUE;
+  const slice = data.slice(start, start + PAGE_SIZE_QUEUE);
+  const tb = document.getElementById('queue-tbody');
+  const infoEl = document.getElementById('queue-showing-info');
+  if (infoEl) infoEl.textContent = data.length ? `Showing ${start+1}–${start+slice.length} of ${data.length} orders` : '';
+  if (!slice.length) {
+    tb.innerHTML = `<tr><td colspan="9" class="text-center py-8 text-[#7288AE]">No orders pending dispatch.</td></tr>`;
+  } else {
+    tb.innerHTML = slice.map(o => `
+      <tr>
+        <td><input type="checkbox" class="row-check rounded" data-id="${o.id}" /></td>
+        <td class="font-semibold text-[#4B5694]">${o.id}</td>
+        <td>${o.customer}</td>
+        <td class="text-center">${o.items}</td>
+        <td class="font-semibold">${o.value}</td>
+        <td>${o.delivery}</td>
+        <td>${priorityBadge(o.priority)}</td>
+        <td class="text-xs text-[#7288AE] max-w-[140px] truncate">${o.warehouse}</td>
+        <td><button class="btn-primary text-xs px-3 py-1.5" data-plan-for="${o.id}"><i class="fas fa-calendar-alt"></i> Plan</button></td>
+      </tr>
+    `).join('');
+    tb.querySelectorAll('[data-plan-for]').forEach(btn => btn.addEventListener('click', () => openPlanFor(btn.dataset.planFor)));
+    tb.querySelectorAll('.row-check').forEach(cb => cb.addEventListener('change', updateSelected));
+  }
+  renderPagination('queue-pagination', queuePage, totalPages, p => { queuePage = p; renderQueue(); });
 }
+
+document.getElementById('search-queue').addEventListener('input', () => { queuePage = 1; renderQueue(); });
+document.getElementById('filter-priority').addEventListener('change', () => { queuePage = 1; renderQueue(); });
+document.getElementById('check-all').addEventListener('change', function() {
+  document.querySelectorAll('.row-check').forEach(c => c.checked = this.checked);
+  updateSelected();
+});
 function updateSelected() {
   const n = document.querySelectorAll('.row-check:checked').length;
-  document.getElementById('selected-info').textContent = `${n} order${n!==1?'s':''} selected`;
+  const sel = document.getElementById('selected-info');
+  if (sel) sel.textContent = n > 0 ? `${n} order${n!==1?'s':''} selected` : '';
   document.getElementById('bulk-plan-btn').style.display = n > 1 ? '' : 'none';
 }
-function bulkPlan() { toast(`Planning ${document.querySelectorAll('.row-check:checked').length} orders…`,'blue'); }
+document.getElementById('bulk-plan-btn').addEventListener('click', () => {
+  const n = document.querySelectorAll('.row-check:checked').length;
+  toast(`Planning ${n} orders…`, 'blue');
+});
 
-// ── Plans table ──
-function renderPlans(data) {
-  const tb = document.getElementById('plans-tbody');
-  if (!data.length) { 
-    tb.innerHTML = '<tr><td colspan="10" class="text-center py-8 text-[#7288AE]">No plans found.</td></tr>'; 
-    return; 
-  }
-  tb.innerHTML = data.map(p => {
-    let actions = '';
-    actions += '<button class="btn-icon btn-view" title="View" onclick="openDetail(\'' + p.id + '\')"><i class="fas fa-eye"></i></button>';
-    if (p.status === 'Planned') {
-      actions += '<button class="btn-icon btn-edit" title="Edit" onclick="openEditPlan(\'' + p.id + '\')"><i class="fas fa-pen"></i></button>';
-      actions += '<button class="btn-icon btn-dispatch" title="Mark Dispatched" onclick="markPlanDispatched(\'' + p.id + '\')"><i class="fas fa-truck-fast"></i></button>';
-      actions += '<button class="btn-icon btn-cancel" title="Cancel" onclick="cancelPlan(\'' + p.id + '\')"><i class="fas fa-times"></i></button>';
-    }
-    return `
-      <tr>
-        <td class="font-semibold text-[#4B5694]">${p.id}</td>
-        <td>${p.order}</td>
-        <td>${p.customer}</td>
-        <td>${p.date}</td>
-        <td class="text-xs">${p.vehicle}</td>
-        <td class="text-xs text-[#7288AE]">${p.route}</td>
-        <td class="text-xs text-[#7288AE]">${p.warehouse.split('—')[0].trim()}</td>
-        <td>${priorityBadge(p.priority)}</td>
-        <td>${statusBadge(p.status)}</td>
-        <td><div class="flex gap-1" style="flex-wrap:wrap; gap:4px;">${actions}</div></td>
-      </tr>
-    `;
-  }).join('');
-}
-
-function filterPlans() {
+// ══════════════════════════════════════
+// DISPATCH PLANS
+// ══════════════════════════════════════
+function getFilteredPlans() {
   const s = document.getElementById('filter-dp-status').value;
   const d = document.getElementById('filter-dp-date').value;
-  renderPlans(dispatchPlans.filter(p => (!s||p.status===s) && (!d||p.date===d)));
+  return dispatchPlans.filter(p => (!s || p.status === s) && (!d || p.date === d));
 }
 
-// ── Vehicle grid ──
-function renderVehicles(containerId, selectable=false) {
+function renderPlans(highlightId) {
+  const data = getFilteredPlans();
+  const totalPages = Math.max(1, Math.ceil(data.length / PAGE_SIZE_PLANS));
+  if (plansPage > totalPages) plansPage = totalPages;
+  const slice = data.slice((plansPage-1)*PAGE_SIZE_PLANS, plansPage*PAGE_SIZE_PLANS);
+  const tb = document.getElementById('plans-tbody');
+  document.getElementById('plans-info').textContent = `Showing ${slice.length} of ${data.length} plans`;
+  if (!slice.length) {
+    tb.innerHTML = `<tr><td colspan="10" class="text-center py-8 text-[#7288AE]">No plans found.</td></tr>`;
+  } else {
+    tb.innerHTML = slice.map(p => {
+      let actions = `<button class="btn-icon btn-view" data-view="${p.id}" title="View"><i class="fas fa-eye"></i></button>`;
+      if (p.status === 'Planned' || p.status === 'In Progress') {
+        if (p.status === 'Planned') actions += `<button class="btn-icon btn-edit" data-edit="${p.id}" title="Edit"><i class="fas fa-pen"></i></button>`;
+        actions += `<button class="btn-icon btn-dispatch" data-dispatch="${p.id}" title="Mark Dispatched"><i class="fas fa-truck-fast"></i></button>`;
+        if (p.status === 'Planned') actions += `<button class="btn-icon btn-cancel" data-cancel="${p.id}" title="Cancel"><i class="fas fa-times"></i></button>`;
+      }
+      const isNew = highlightId && p.id === highlightId;
+      return `
+        <tr class="${isNew ? 'new-row-flash' : ''}">
+          <td class="font-semibold text-[#4B5694]">${p.id}</td>
+          <td>${p.order}</td>
+          <td>${p.customer}</td>
+          <td>${p.date}</td>
+          <td class="text-xs">${p.vehicle}</td>
+          <td class="text-xs text-[#7288AE]">${p.route}</td>
+          <td class="text-xs text-[#7288AE]">${p.warehouse.split('—')[0].trim()}</td>
+          <td>${priorityBadge(p.priority)}</td>
+          <td>${statusBadge(p.status)}</td>
+          <td><div style="display:flex;gap:4px;flex-wrap:wrap;">${actions}</div></td>
+        </tr>
+      `;
+    }).join('');
+    tb.querySelectorAll('[data-view]').forEach(btn => btn.addEventListener('click', () => openDetail(btn.dataset.view)));
+    tb.querySelectorAll('[data-edit]').forEach(btn => btn.addEventListener('click', () => openEditPlan(btn.dataset.edit)));
+    tb.querySelectorAll('[data-dispatch]').forEach(btn => btn.addEventListener('click', () => markPlanDispatched(btn.dataset.dispatch)));
+    tb.querySelectorAll('[data-cancel]').forEach(btn => btn.addEventListener('click', () => cancelPlan(btn.dataset.cancel)));
+  }
+  renderPagination('plans-pagination', plansPage, totalPages, p => { plansPage = p; renderPlans(); });
+}
+
+document.getElementById('filter-dp-status').addEventListener('change', () => { plansPage = 1; renderPlans(); });
+document.getElementById('filter-dp-date').addEventListener('change', () => { plansPage = 1; renderPlans(); });
+document.getElementById('export-btn').addEventListener('click', () => {
+  const data = getFilteredPlans();
+  const headers = ['Plan ID','Sales Order','Customer','Dispatch Date','Time','Vehicle','Route','Warehouse','Priority','Status'];
+  const rows = data.map(p => [p.id,p.order,p.customer,p.date,p.time,p.vehicle,p.route,p.warehouse,p.priority,p.status]);
+  const csv = [headers, ...rows].map(r => r.map(c => `"${c}"`).join(',')).join('\n');
+  const blob = new Blob([csv], { type:'text/csv' });
+  const url = URL.createObjectURL(blob);
+  const a = document.createElement('a'); a.href = url; a.download = 'dispatch_plans.csv'; a.click();
+  URL.revokeObjectURL(url);
+  toast('Exported as CSV', 'blue');
+});
+
+// ══════════════════════════════════════
+// VEHICLES
+// ══════════════════════════════════════
+function renderVehicles(containerId, selectable, highlightReg) {
   const el = document.getElementById(containerId);
-  el.innerHTML = vehicles.map(v => `
-    <div class="vehicle-card ${selectable&&v.status==='Available'?'cursor-pointer':''}" id="vc-${containerId}-${v.id}"
-      ${selectable&&v.status==='Available'?`onclick="selectVehicle('${v.id}','${v.reg}','${containerId}')"`:''}>
-      <div class="flex items-center gap-2 mb-2">
-        <div class="w-8 h-8 rounded-lg bg-[#111844]/10 flex items-center justify-center text-[#111844] text-sm"><i class="fas fa-truck"></i></div>
+  if (!el) return;
+  if (containerId === 'vehicle-grid') {
+    const totalPages = Math.max(1, Math.ceil(vehicles.length / PAGE_SIZE_VEHICLES));
+    if (vehiclesPage > totalPages) vehiclesPage = totalPages;
+    const slice = vehicles.slice((vehiclesPage-1)*PAGE_SIZE_VEHICLES, vehiclesPage*PAGE_SIZE_VEHICLES);
+    el.innerHTML = slice.map(v => vehicleCardHtml(v, selectable, highlightReg)).join('');
+    const vi = document.getElementById('vehicles-info');
+    if (vi) vi.textContent = `Showing ${slice.length} of ${vehicles.length} vehicles`;
+    renderPagination('vehicles-pagination', vehiclesPage, totalPages, p => { vehiclesPage = p; renderVehicles('vehicle-grid', false); });
+  } else {
+    el.innerHTML = vehicles.map(v => vehicleCardHtml(v, selectable, null)).join('');
+  }
+  if (selectable) {
+    el.querySelectorAll('.vehicle-card.selectable').forEach(card => {
+      card.addEventListener('click', () => {
+        el.querySelectorAll('.vehicle-card').forEach(c => c.classList.remove('selected'));
+        card.classList.add('selected');
+        document.getElementById('p-vehicle').value = card.dataset.vreg;
+      });
+    });
+  }
+}
+
+function vehicleCardHtml(v, selectable, highlightReg) {
+  const canSelect = selectable && v.status === 'Available';
+  const isNew = highlightReg && v.reg === highlightReg;
+  return `
+    <div class="vehicle-card ${canSelect ? 'selectable' : ''} ${isNew ? 'new-vehicle-flash' : ''}" data-vid="${v.id}" data-vreg="${v.reg}">
+      <div style="display:flex;align-items:center;gap:8px;margin-bottom:8px;">
+        <div style="width:32px;height:32px;border-radius:8px;background:rgba(17,24,68,0.1);display:flex;align-items:center;justify-content:center;color:#111844;font-size:14px;flex-shrink:0;"><i class="fas fa-truck"></i></div>
         <div class="font-semibold text-sm text-[#111844]">${v.reg}</div>
       </div>
       <div class="text-xs text-[#7288AE] mb-1">${v.type}</div>
       <div class="text-xs text-[#7288AE] mb-2"><i class="fas fa-user mr-1"></i>${v.driver}</div>
-      <div class="flex items-center justify-between">
+      <div style="display:flex;align-items:center;justify-content:space-between;">
         <span class="text-xs text-[#7288AE]">${v.capacity}</span>
         <span class="badge text-[10px] px-2 py-0.5 ${vehicleStatusColor(v.status)}">${v.status}</span>
       </div>
+      ${canSelect ? '<div class="text-[10px] text-[#4B5694] mt-2 text-center font-medium">Click to select</div>' : ''}
     </div>
-  `).join('');
+  `;
 }
 
-let selectedVehicleId = null;
-function selectVehicle(id, reg, containerId) {
-  selectedVehicleId = id;
-  document.getElementById('p-vehicle').value = reg;
-  document.querySelectorAll(`[id^="vc-${containerId}-"]`).forEach(el => el.classList.remove('selected'));
-  document.getElementById(`vc-${containerId}-${id}`)?.classList.add('selected');
+// ══════════════════════════════════════
+// PLAN DISPATCH MODAL
+// ══════════════════════════════════════
+let planningFor  = null;
+let editingPlanId = null;
+
+function setOrderFieldsReadonly(readonly) {
+  ['p-order','p-customer','p-value','p-delivery'].forEach(id => {
+    const el = document.getElementById(id);
+    if (readonly) el.setAttribute('readonly', true);
+    else          el.removeAttribute('readonly');
+  });
 }
 
-// ── Plan modal ──
-let planningFor = null;
 function openPlan() {
-  planningFor = null;
-  document.getElementById('p-order').value = '';
+  planningFor   = null;
+  editingPlanId = null;
+  document.getElementById('p-order').value    = '';
   document.getElementById('p-customer').value = '';
-  document.getElementById('p-value').value = '';
+  document.getElementById('p-value').value    = '';
   document.getElementById('p-delivery').value = '';
+  setOrderFieldsReadonly(false);
   document.getElementById('plan-modal-title').textContent = 'Plan Dispatch';
   _openPlanModal();
 }
+
 function openPlanFor(orderId) {
-  const o = readyOrders.find(x => x.id===orderId);
+  const o = readyOrders.find(x => x.id === orderId);
   if (!o) return;
-  planningFor = o;
-  document.getElementById('p-order').value = o.id;
+  planningFor   = o;
+  editingPlanId = null;
+  document.getElementById('p-order').value    = o.id;
   document.getElementById('p-customer').value = o.customer;
-  document.getElementById('p-value').value = o.value;
+  document.getElementById('p-value').value    = o.value;
   document.getElementById('p-delivery').value = o.delivery;
+  setOrderFieldsReadonly(true);
   document.getElementById('plan-modal-title').textContent = `Plan Dispatch — ${o.id}`;
   _openPlanModal();
 }
-function _openPlanModal() {
-  document.getElementById('p-date').value = new Date().toISOString().split('T')[0];
-  selectedVehicleId = null;
-  document.getElementById('p-vehicle').value = '';
-  document.getElementById('p-route').value = '';
-  document.getElementById('p-remarks').value = '';
-  renderVehicles('modal-vehicle-grid', true);
-  document.getElementById('modal-plan').classList.remove('hidden');
-}
-function closePlan() { document.getElementById('modal-plan').classList.add('hidden'); }
 
-function savePlan() {
-  const order    = document.getElementById('p-order').value;
-  const vehicle  = document.getElementById('p-vehicle').value;
-  const warehouse= document.getElementById('p-warehouse').value;
-  const date     = document.getElementById('p-date').value;
-  if (!order && !planningFor) { toast('Please select a sales order','amber'); return; }
-  if (!vehicle)   { toast('Please select a vehicle','amber'); return; }
-  if (!warehouse) { toast('Please select a warehouse','amber'); return; }
-  if (!date)      { toast('Please set a dispatch date','amber'); return; }
-
-  const newPlan = {
-    id: `DP-${1042 + dispatchPlans.length}`,
-    order: order || (planningFor?.id||'—'),
-    customer: document.getElementById('p-customer').value || (planningFor?.customer||'—'),
-    date, time: document.getElementById('p-time').value,
-    vehicle: `${vehicle} (${vehicles.find(v=>v.reg===vehicle)?.type||''})`,
-    route: document.getElementById('p-route').value || '—',
-    warehouse, priority: document.getElementById('p-priority').value,
-    status:'Planned',
-    items: planningFor ? [{name:'Order Items',qty:'—',price:'—'}] : [],
-    timeline:[{label:'Plan Created',time: new Date().toLocaleDateString('en-IN',{day:'numeric',month:'short',year:'numeric'}),done:true},{label:'Pick & Pack',time:'—',done:false},{label:'In Transit',time:'—',done:false},{label:'Delivered',time:'—',done:false}]
-  };
-  dispatchPlans.unshift(newPlan);
-  renderPlans(dispatchPlans);
-  closePlan();
-  toast(`Dispatch plan ${newPlan.id} created`,'green');
-}
-
-// ── Detail modal ──
-let currentPlan = null;
-function openDetail(id) {
-  const p = dispatchPlans.find(x=>x.id===id);
-  if (!p) return;
-  currentPlan = p;
-  document.getElementById('detail-title').textContent = `Dispatch Plan — ${p.id}`;
-  document.getElementById('detail-sub').textContent = `${p.order} · ${p.customer}`;
-  document.getElementById('dv-planid').textContent = p.id;
-  document.getElementById('dv-order').textContent = p.order;
-  document.getElementById('dv-date').textContent = p.date;
-  document.getElementById('dv-time').textContent = p.time;
-  document.getElementById('dv-status').innerHTML = statusBadge(p.status);
-  document.getElementById('dv-customer').textContent = p.customer;
-  document.getElementById('dv-warehouse').textContent = p.warehouse;
-  document.getElementById('dv-vehicle').textContent = p.vehicle;
-  document.getElementById('dv-route').textContent = p.route;
-  document.getElementById('dv-priority').innerHTML = priorityBadge(p.priority);
-  document.getElementById('dv-items-tbody').innerHTML = p.items.map(i=>`<tr><td>${i.name}</td><td>${i.qty}</td><td>${i.price!=='—'?'₹'+i.price:'—'}</td><td>${(i.qty!=='—'&&i.price!=='—')?'₹'+(i.qty*i.price).toLocaleString():'—'}</td></tr>`).join('');
-  document.getElementById('dv-timeline').innerHTML = p.timeline.map(t=>`<div class="timeline-item"><div class="timeline-dot ${t.done?'done':'future'}"></div><div class="timeline-label">${t.label}</div><div class="timeline-time">${t.time}</div></div>`).join('');
-  document.getElementById('detail-mark-btn').style.display = ['Planned','In Progress'].includes(p.status)?'':'none';
-  switchTab('dov');
-  document.getElementById('modal-detail').classList.remove('hidden');
-}
-function closeDetail() { document.getElementById('modal-detail').classList.add('hidden'); currentPlan=null; }
-
-function markDispatched() {
-  if (!currentPlan) return;
-  currentPlan.status='Dispatched';
-  document.getElementById('dv-status').innerHTML = statusBadge('Dispatched');
-  document.getElementById('detail-mark-btn').style.display = 'none';
-  renderPlans(dispatchPlans);
-  toast(`${currentPlan.id} marked as Dispatched`,'green');
-}
-function markPlanDispatched(id) {
-  const p = dispatchPlans.find(x => x.id === id);
-  if (p && (p.status === 'Planned' || p.status === 'In Progress')) { 
-    p.status = 'Dispatched'; 
-    renderPlans(dispatchPlans); 
-    renderQueue(readyOrders);
-    toast(`${id} marked as Dispatched`, 'green'); 
-  }
-}
-function cancelPlan(id) {
-  const p = dispatchPlans.find(x => x.id === id);
-  if (p && p.status === 'Planned') { 
-    p.status = 'Cancelled'; 
-    renderPlans(dispatchPlans); 
-    toast(`${id} cancelled`, 'red'); 
-  }
-}
-
-// ── Detail modal tabs ──
-function switchTab(name) {
-  document.querySelectorAll('.tab-btn').forEach(b=>b.classList.remove('active'));
-  document.querySelectorAll('.tab-content').forEach(c=>c.classList.remove('active'));
-  document.querySelector(`.tab-btn[onclick*="${name}"]`).classList.add('active');
-  document.getElementById(`tab-${name}`).classList.add('active');
-}
-
-// ── Module Tab Switching ──
-document.getElementById('module-tabs').addEventListener('click', e => {
-  const btn = e.target.closest('.module-tab');
-  if (!btn) return;
-  document.querySelectorAll('.module-tab').forEach(b => b.classList.remove('active'));
-  btn.classList.add('active');
-  const mod = btn.dataset.module;
-  document.querySelectorAll('.module-content').forEach(el => el.classList.add('hidden'));
-  document.getElementById(`module-${mod}`).classList.remove('hidden');
-});
-
-// ── Toast ──
-function toast(msg, type='green') {
-  const colors = { green:'bg-emerald-700', amber:'bg-amber-600', red:'bg-red-600', blue:'bg-[#4B5694]' };
-  const t = document.createElement('div');
-  t.className = `toast ${colors[type]||'bg-[#111844]'}`;
-  t.innerHTML = `<i class="fas fa-check-circle"></i><span>${msg}</span>`;
-  document.getElementById('toast-container').appendChild(t);
-  setTimeout(()=>t.remove(), 3000);
-}
-
-// ── Sidebar ──
-let isCollapsed = false;
-const sidebar = document.getElementById('sidebar');
-const mainWrapper = document.getElementById('main-wrapper');
-const sidebarToggle = document.getElementById('sidebar-toggle');
-const overlay = document.getElementById('sidebar-overlay');
-sidebarToggle?.addEventListener('click', ()=>{
-  if (window.innerWidth<1024) { sidebar.classList.toggle('sidebar-open'); overlay?.classList.toggle('hidden'); }
-  else {
-    isCollapsed=!isCollapsed;
-    sidebar.classList.toggle('sidebar-collapsed',isCollapsed);
-    mainWrapper.style.marginLeft=isCollapsed?'68px':'';
-    sidebarToggle.querySelector('i').className=isCollapsed?'fas fa-chevron-right text-sm':'fas fa-chevron-left text-sm';
-  }
-});
-overlay?.addEventListener('click',()=>{ sidebar.classList.remove('sidebar-open'); overlay.classList.add('hidden'); });
-document.getElementById('mobile-menu-btn')?.addEventListener('click',()=>{ sidebar.classList.add('sidebar-open'); overlay?.classList.remove('hidden'); });
-
-// ── Nav dropdowns ──
-document.querySelectorAll('.nav-group-header').forEach(h=>{
-  h.addEventListener('click',()=>{
-    const items=h.nextElementSibling; const chev=h.querySelector('.fa-chevron-down');
-    items?.classList.toggle('hidden');
-    if(chev) chev.style.transform=items?.classList.contains('hidden')?'rotate(0deg)':'rotate(180deg)';
-  });
-});
-
-// ── Menus ──
-const userBtn=document.getElementById('user-menu-btn'), userMenu=document.getElementById('user-menu');
-const notifBtn=document.getElementById('notif-btn'), notifMenu=document.getElementById('notif-menu');
-userBtn?.addEventListener('click',e=>{e.stopPropagation();userMenu.classList.toggle('hidden');});
-notifBtn?.addEventListener('click',e=>{e.stopPropagation();notifMenu.classList.toggle('hidden');userMenu.classList.add('hidden');});
-document.addEventListener('click',()=>{userMenu?.classList.add('hidden');notifMenu?.classList.add('hidden');});
-
-// ── Close modals on backdrop ──
-document.getElementById('modal-plan').addEventListener('click',e=>{if(e.target===e.currentTarget)closePlan();});
-document.getElementById('modal-detail').addEventListener('click',e=>{if(e.target===e.currentTarget)closeDetail();});
-
-
-// ── Add Vehicle Modal & Functions ──
-function openAddVehicleModal() {
-  const modalHtml = `
-    <div id="add-vehicle-modal" class="modal-overlay hidden" style="z-index:600">
-      <div class="modal-box" style="max-width:500px">
-        <div class="modal-header">
-          <div>
-            <div class="text-sm font-bold text-[#111844]">Add New Vehicle</div>
-            <div class="text-xs text-[#7288AE]">Register a new vehicle in fleet</div>
-          </div>
-          <button onclick="closeAddVehicleModal()" class="w-8 h-8 flex items-center justify-center rounded-lg text-[#7288AE] hover:bg-[#f1f5f9]"><i class="fas fa-times"></i></button>
-        </div>
-        <div class="modal-body">
-          <div class="space-y-4">
-            <div>
-              <label class="form-label">Registration Number *</label>
-              <input type="text" id="new-vehicle-reg" class="form-input" placeholder="e.g. MH-12-AB-1234" />
-            </div>
-            <div>
-              <label class="form-label">Vehicle Type *</label>
-              <select id="new-vehicle-type" class="form-select">
-                <option value="">Select Type</option>
-                <option>Mini Truck (1T)</option>
-                <option>Tempo (2T)</option>
-                <option>Truck (5T)</option>
-                <option>Heavy Truck (10T+)</option>
-              </select>
-            </div>
-            <div>
-              <label class="form-label">Driver Name *</label>
-              <input type="text" id="new-vehicle-driver" class="form-input" placeholder="Driver's full name" />
-            </div>
-            <div>
-              <label class="form-label">Capacity</label>
-              <input type="text" id="new-vehicle-capacity" class="form-input" placeholder="e.g. 2,000 kg" />
-            </div>
-            <div>
-              <label class="form-label">Status</label>
-              <select id="new-vehicle-status" class="form-select">
-                <option>Available</option>
-                <option>On Route</option>
-                <option>Maintenance</option>
-              </select>
-            </div>
-          </div>
-        </div>
-        <div class="modal-footer">
-          <button onclick="closeAddVehicleModal()" class="btn-secondary">Cancel</button>
-          <button onclick="saveNewVehicle()" class="btn-primary"><i class="fas fa-save"></i> Save Vehicle</button>
-        </div>
-      </div>
-    </div>
-  `;
-  
-  const existingModal = document.getElementById('add-vehicle-modal');
-  if (existingModal) existingModal.remove();
-  document.body.insertAdjacentHTML('beforeend', modalHtml);
-  const modal = document.getElementById('add-vehicle-modal');
-  modal.classList.remove('hidden');
-  modal.addEventListener('click', (e) => { if (e.target === modal) closeAddVehicleModal(); });
-}
-
-function closeAddVehicleModal() {
-  const modal = document.getElementById('add-vehicle-modal');
-  if (modal) modal.remove();
-}
-
-function saveNewVehicle() {
-  const reg = document.getElementById('new-vehicle-reg')?.value.trim();
-  const type = document.getElementById('new-vehicle-type')?.value;
-  const driver = document.getElementById('new-vehicle-driver')?.value.trim();
-  const capacity = document.getElementById('new-vehicle-capacity')?.value.trim() || '—';
-  const status = document.getElementById('new-vehicle-status')?.value;
-  
-  if (!reg) { toast('Registration number is required', 'amber'); return; }
-  if (!type) { toast('Please select vehicle type', 'amber'); return; }
-  if (!driver) { toast('Driver name is required', 'amber'); return; }
-  if (vehicles.some(v => v.reg === reg)) { toast('Vehicle already exists!', 'red'); return; }
-  
-  const newId = `V${String(vehicles.length + 1).padStart(2, '0')}`;
-  vehicles.push({ id: newId, reg, type, driver, capacity, status });
-  renderVehicles('vehicle-grid', false);
-  if (document.getElementById('modal-vehicle-grid')) renderVehicles('modal-vehicle-grid', true);
-  toast(`Vehicle ${reg} added successfully!`, 'green');
-  closeAddVehicleModal();
-}
-
-// ── Edit Plan Function ──
 function openEditPlan(id) {
   const plan = dispatchPlans.find(p => p.id === id);
   if (!plan) return;
-  
-  planningFor = readyOrders.find(o => o.id === plan.order);
-  document.getElementById('p-order').value = plan.order;
+  planningFor   = null;
+  editingPlanId = id;
+  document.getElementById('p-order').value    = plan.order;
   document.getElementById('p-customer').value = plan.customer;
-  document.getElementById('p-value').value = plan.value || '—';
+  document.getElementById('p-value').value    = '—';
   document.getElementById('p-delivery').value = plan.date;
-  document.getElementById('p-date').value = plan.date;
-  document.getElementById('p-time').value = plan.time;
+  setOrderFieldsReadonly(true);
+  document.getElementById('p-date').value      = plan.date;
+  document.getElementById('p-time').value      = plan.time;
   document.getElementById('p-warehouse').value = plan.warehouse;
-  document.getElementById('p-priority').value = plan.priority;
-  document.getElementById('p-route').value = plan.route;
-  document.getElementById('p-remarks').value = '';
+  document.getElementById('p-priority').value  = plan.priority;
+  document.getElementById('p-route').value     = plan.route === '—' ? '' : plan.route;
+  document.getElementById('p-remarks').value   = '';
+  document.getElementById('p-vehicle').value   = '';
   document.getElementById('plan-modal-title').textContent = `Edit Dispatch — ${plan.id}`;
-  
   renderVehicles('modal-vehicle-grid', true);
   document.getElementById('modal-plan').classList.remove('hidden');
-  
-  // Remove old plan after edit
-  const index = dispatchPlans.findIndex(p => p.id === id);
-  if (index !== -1) dispatchPlans.splice(index, 1);
 }
 
-// ── Init ──
-renderQueue(readyOrders);
-renderPlans(dispatchPlans);
+function _openPlanModal() {
+  document.getElementById('p-date').value      = new Date().toISOString().split('T')[0];
+  document.getElementById('p-time').value      = '09:00';
+  document.getElementById('p-warehouse').value = planningFor ? planningFor.warehouse : '';
+  document.getElementById('p-priority').value  = planningFor ? planningFor.priority  : 'Medium';
+  document.getElementById('p-route').value     = '';
+  document.getElementById('p-remarks').value   = '';
+  document.getElementById('p-vehicle').value   = '';
+  renderVehicles('modal-vehicle-grid', true);
+  document.getElementById('modal-plan').classList.remove('hidden');
+}
+
+function closePlan() {
+  document.getElementById('modal-plan').classList.add('hidden');
+  planningFor   = null;
+  editingPlanId = null;
+}
+
+function savePlan() {
+  const order     = document.getElementById('p-order').value.trim();
+  const customer  = document.getElementById('p-customer').value.trim();
+  const vehicle   = document.getElementById('p-vehicle').value.trim();
+  const warehouse = document.getElementById('p-warehouse').value;
+  const date      = document.getElementById('p-date').value;
+  const time      = document.getElementById('p-time').value;
+  const priority  = document.getElementById('p-priority').value;
+  const route     = document.getElementById('p-route').value.trim() || '—';
+
+  if (!order)     { toast('Please enter a Sales Order number', 'amber'); return; }
+  if (!vehicle)   { toast('Please select a vehicle from the list below', 'amber'); return; }
+  if (!warehouse) { toast('Please select a warehouse', 'amber'); return; }
+  if (!date)      { toast('Please set a dispatch date', 'amber'); return; }
+
+  const vehicleObj   = vehicles.find(v => v.reg === vehicle);
+  const vehicleLabel = vehicleObj ? `${vehicle} (${vehicleObj.type})` : vehicle;
+
+  if (editingPlanId) {
+    // — EDIT existing plan —
+    const idx = dispatchPlans.findIndex(p => p.id === editingPlanId);
+    if (idx !== -1) {
+      dispatchPlans[idx] = { ...dispatchPlans[idx], customer, date, time, vehicle: vehicleLabel, route, warehouse, priority };
+      closePlan();
+      // Stay on plans tab, highlight the edited row
+      plansPage = 1;
+      renderPlans(editingPlanId);
+      switchModule('plans');
+      updateKPIs();
+      toast(`Plan ${editingPlanId} updated`, 'green');
+    }
+  } else {
+    // — CREATE new plan —
+    // Generate a unique incrementing ID based on current max
+    const maxNum = dispatchPlans.reduce((max, p) => {
+      const n = parseInt(p.id.replace('DP-', ''));
+      return isNaN(n) ? max : Math.max(max, n);
+    }, 1041);
+    const newId = `DP-${maxNum + 1}`;
+
+    dispatchPlans.unshift({
+      id: newId,
+      order,
+      customer: customer || '—',
+      date, time, vehicle: vehicleLabel, route, warehouse, priority, status: 'Planned',
+      items: planningFor ? (planningFor.items || [{ name:'Order Items', qty:'—', price:'—' }]) : [{ name:'Order Items', qty:'—', price:'—' }],
+      timeline: [
+        { label:'Plan Created',  time: new Date().toLocaleDateString('en-IN',{day:'numeric',month:'short',year:'numeric'}), done:true },
+        { label:'Pick & Pack',   time:'—', done:false },
+        { label:'In Transit',    time:'—', done:false },
+        { label:'Delivered',     time:'—', done:false }
+      ]
+    });
+
+    closePlan();
+    // Switch to Dispatch Plans tab and show page 1 with the new row highlighted
+    plansPage = 1;
+    renderPlans(newId);
+    switchModule('plans');
+    updateKPIs();
+    toast(`Dispatch plan ${newId} created successfully`, 'green');
+  }
+}
+
+// ══════════════════════════════════════
+// DETAIL MODAL
+// ══════════════════════════════════════
+let currentPlan = null;
+
+function openDetail(id) {
+  const p = dispatchPlans.find(x => x.id === id);
+  if (!p) return;
+  currentPlan = p;
+  document.getElementById('detail-title').textContent    = `Dispatch Plan — ${p.id}`;
+  document.getElementById('detail-sub').textContent      = `${p.order} · ${p.customer}`;
+  document.getElementById('dv-planid').textContent       = p.id;
+  document.getElementById('dv-order').textContent        = p.order;
+  document.getElementById('dv-date').textContent         = p.date;
+  document.getElementById('dv-time').textContent         = p.time;
+  document.getElementById('dv-status').innerHTML         = statusBadge(p.status);
+  document.getElementById('dv-customer').textContent     = p.customer;
+  document.getElementById('dv-warehouse').textContent    = p.warehouse;
+  document.getElementById('dv-vehicle').textContent      = p.vehicle;
+  document.getElementById('dv-route').textContent        = p.route;
+  document.getElementById('dv-priority').innerHTML       = priorityBadge(p.priority);
+  document.getElementById('dv-items-tbody').innerHTML    = p.items.map(i => {
+    const amt = (i.qty !== '—' && i.price !== '—') ? '₹' + (i.qty * i.price).toLocaleString() : '—';
+    return `<tr><td>${i.name}</td><td>${i.qty}</td><td>${i.price !== '—' ? '₹'+i.price : '—'}</td><td>${amt}</td></tr>`;
+  }).join('');
+  document.getElementById('dv-timeline').innerHTML = p.timeline.map(t => `
+    <div class="timeline-item">
+      <div class="timeline-dot ${t.done?'done':'future'}"></div>
+      <div class="timeline-label">${t.label}</div>
+      <div class="timeline-time">${t.time}</div>
+    </div>
+  `).join('');
+  document.getElementById('detail-mark-btn').style.display = ['Planned','In Progress'].includes(p.status) ? '' : 'none';
+  switchDetailTab('tab-dov');
+  document.getElementById('modal-detail').classList.remove('hidden');
+}
+
+function closeDetail() {
+  document.getElementById('modal-detail').classList.add('hidden');
+  currentPlan = null;
+}
+
+function markDispatched() {
+  if (!currentPlan) return;
+  currentPlan.status = 'Dispatched';
+  document.getElementById('dv-status').innerHTML = statusBadge('Dispatched');
+  document.getElementById('detail-mark-btn').style.display = 'none';
+  renderPlans();
+  updateKPIs();
+  toast(`${currentPlan.id} marked as Dispatched`, 'green');
+}
+
+function markPlanDispatched(id) {
+  const p = dispatchPlans.find(x => x.id === id);
+  if (p && ['Planned','In Progress'].includes(p.status)) {
+    p.status = 'Dispatched';
+    renderPlans();
+    updateKPIs();
+    toast(`${id} marked as Dispatched`, 'green');
+  }
+}
+
+function cancelPlan(id) {
+  const p = dispatchPlans.find(x => x.id === id);
+  if (p && p.status === 'Planned') {
+    p.status = 'Cancelled';
+    renderPlans();
+    updateKPIs();
+    toast(`${id} cancelled`, 'red');
+  }
+}
+
+function switchDetailTab(tabId) {
+  document.querySelectorAll('#detail-tab-bar .tab-btn').forEach(b => b.classList.remove('active'));
+  document.querySelectorAll('#modal-detail .tab-content').forEach(c => c.classList.remove('active'));
+  document.querySelector(`#detail-tab-bar [data-tab="${tabId}"]`).classList.add('active');
+  document.getElementById(tabId).classList.add('active');
+}
+document.getElementById('detail-tab-bar').addEventListener('click', e => {
+  const btn = e.target.closest('.tab-btn');
+  if (btn) switchDetailTab(btn.dataset.tab);
+});
+
+// ══════════════════════════════════════
+// ADD VEHICLE MODAL
+// ══════════════════════════════════════
+function openAddVehicleModal() {
+  ['new-vehicle-reg','new-vehicle-driver','new-vehicle-capacity'].forEach(id => document.getElementById(id).value = '');
+  document.getElementById('new-vehicle-type').value   = '';
+  document.getElementById('new-vehicle-status').value = 'Available';
+  document.getElementById('modal-add-vehicle').classList.remove('hidden');
+}
+function closeAddVehicleModal() {
+  document.getElementById('modal-add-vehicle').classList.add('hidden');
+}
+function saveNewVehicle() {
+  const reg      = document.getElementById('new-vehicle-reg').value.trim();
+  const type     = document.getElementById('new-vehicle-type').value;
+  const driver   = document.getElementById('new-vehicle-driver').value.trim();
+  const capacity = document.getElementById('new-vehicle-capacity').value.trim() || '—';
+  const status   = document.getElementById('new-vehicle-status').value;
+  if (!reg)    { toast('Registration number is required', 'amber'); return; }
+  if (!type)   { toast('Please select vehicle type', 'amber'); return; }
+  if (!driver) { toast('Driver name is required', 'amber'); return; }
+  if (vehicles.some(v => v.reg === reg)) { toast('Vehicle already exists!', 'red'); return; }
+
+  vehicles.push({ id:`V${String(vehicles.length+1).padStart(2,'0')}`, reg, type, driver, capacity, status });
+
+  closeAddVehicleModal();
+
+  // Switch to Vehicle tab, go to last page (where the new entry will be), flash it
+  vehiclesPage = Math.ceil(vehicles.length / PAGE_SIZE_VEHICLES);
+  renderVehicles('vehicle-grid', false, reg);
+  switchModule('vehicles');
+  updateKPIs();
+  toast(`Vehicle ${reg} added successfully!`, 'green');
+}
+
+// ══════════════════════════════════════
+// MODULE TAB SWITCHER
+// ══════════════════════════════════════
+document.getElementById('module-tabs').addEventListener('click', e => {
+  const btn = e.target.closest('.module-tab');
+  if (!btn) return;
+  switchModule(btn.dataset.module);
+});
+
+// ══════════════════════════════════════
+// BUTTON BINDINGS
+// ══════════════════════════════════════
+document.getElementById('plan-dispatch-btn').addEventListener('click', openPlan);
+document.getElementById('close-plan-btn').addEventListener('click', closePlan);
+document.getElementById('cancel-plan-btn').addEventListener('click', closePlan);
+document.getElementById('save-plan-btn').addEventListener('click', savePlan);
+document.getElementById('close-detail-btn').addEventListener('click', closeDetail);
+document.getElementById('close-detail-footer-btn').addEventListener('click', closeDetail);
+document.getElementById('detail-mark-btn').addEventListener('click', markDispatched);
+document.getElementById('add-vehicle-btn').addEventListener('click', openAddVehicleModal);
+document.getElementById('close-add-vehicle-btn').addEventListener('click', closeAddVehicleModal);
+document.getElementById('cancel-add-vehicle-btn').addEventListener('click', closeAddVehicleModal);
+document.getElementById('save-add-vehicle-btn').addEventListener('click', saveNewVehicle);
+
+document.getElementById('modal-plan').addEventListener('click', e => { if (e.target===e.currentTarget) closePlan(); });
+document.getElementById('modal-detail').addEventListener('click', e => { if (e.target===e.currentTarget) closeDetail(); });
+document.getElementById('modal-add-vehicle').addEventListener('click', e => { if (e.target===e.currentTarget) closeAddVehicleModal(); });
+
+// ══════════════════════════════════════
+// SIDEBAR
+// ══════════════════════════════════════
+let isCollapsed = false;
+const sidebar       = document.getElementById('sidebar');
+const mainWrapper   = document.getElementById('main-wrapper');
+const sidebarToggle = document.getElementById('sidebar-toggle');
+const overlay       = document.getElementById('sidebar-overlay');
+
+sidebarToggle.addEventListener('click', () => {
+  if (window.innerWidth < 1024) {
+    sidebar.classList.toggle('sidebar-open');
+    overlay.classList.toggle('hidden');
+  } else {
+    isCollapsed = !isCollapsed;
+    sidebar.classList.toggle('sidebar-collapsed', isCollapsed);
+    mainWrapper.style.marginLeft = isCollapsed ? '68px' : '';
+    sidebarToggle.querySelector('i').className = isCollapsed ? 'fas fa-chevron-right text-sm' : 'fas fa-chevron-left text-sm';
+  }
+});
+overlay.addEventListener('click', () => { sidebar.classList.remove('sidebar-open'); overlay.classList.add('hidden'); });
+document.getElementById('mobile-menu-btn').addEventListener('click', () => { sidebar.classList.add('sidebar-open'); overlay.classList.remove('hidden'); });
+
+document.querySelectorAll('.nav-group-header').forEach(h => {
+  h.addEventListener('click', () => {
+    const items = h.nextElementSibling;
+    const chev  = h.querySelector('.fa-chevron-down');
+    items?.classList.toggle('hidden');
+    if (chev) chev.style.transform = items?.classList.contains('hidden') ? 'rotate(0deg)' : 'rotate(180deg)';
+  });
+});
+
+const userBtn  = document.getElementById('user-menu-btn'),  userMenu  = document.getElementById('user-menu');
+const notifBtn = document.getElementById('notif-btn'),       notifMenu = document.getElementById('notif-menu');
+userBtn.addEventListener('click',  e => { e.stopPropagation(); userMenu.classList.toggle('hidden');  notifMenu.classList.add('hidden'); });
+notifBtn.addEventListener('click', e => { e.stopPropagation(); notifMenu.classList.toggle('hidden'); userMenu.classList.add('hidden');  });
+document.addEventListener('click', () => { userMenu.classList.add('hidden'); notifMenu.classList.add('hidden'); });
+
+// ══════════════════════════════════════
+// INIT
+// ══════════════════════════════════════
+renderQueue();
+renderPlans();
 renderVehicles('vehicle-grid', false);
+updateKPIs();
 </script>
 </body>
 </html>

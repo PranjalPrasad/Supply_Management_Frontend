@@ -9,13 +9,12 @@
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
   <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@300;400;500;700&display=swap" rel="stylesheet"/>
   <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
-  <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf-autotabl
-  e/3.8.2/jspdf.plugin.autotable.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf-autotable/3.8.2/jspdf.plugin.autotable.min.js"></script>
   <link rel="stylesheet" href="/pages/sales/delivery/deliveryc.css">
 </head>
 <body class="bg-[#ebe6e6] text-[#111844] min-h-screen">
 
-<!-- ============ SIDEBAR ============ -->
+<!-- ════════════════════════════════ SIDEBAR ════════════════════════════════ -->
 <aside id="sidebar" class="fixed top-0 left-0 h-full w-[260px] bg-[#FFFCFC] z-[100] flex flex-col transition-all duration-300 overflow-hidden shadow-lg">
   <div class="flex items-center justify-between px-5 h-16 border border-[#4B5694]/20 shadow-sm">
     <div class="flex items-center gap-3">
@@ -28,58 +27,134 @@
         <i class="fas fa-chevron-left text-sm"></i>
     </button>
 </div>
+
   <nav class="flex-1 overflow-y-auto py-3 px-2 space-y-0.5">
-    <a href="/index.html" class="nav-item flex items-center gap-3 px-3 py-2.5 rounded-lg text-[#111844]/70 hover:bg-[#7288AE]/20 hover:text-[#111844] transition-colors duration-150 text-sm cursor-pointer border-b border-[#4B5694]/20 shadow-sm">
-      <span class="nav-icon text-base flex-shrink-0 w-5"><i class="fas fa-chart-pie"></i></span><span class="nav-label">Dashboard</span>
+    <!-- Dashboard -->
+    <a href="/index.html" class="nav-item flex items-center gap-3 px-3 py-2.5 rounded-lg text-[#111844]/70 hover:bg-[#7288AE]/20 hover:text-[#111844] transition-colors text-sm cursor-pointer border-b border-[#4B5694]/20 shadow-sm">
+      <span class="nav-icon text-base flex-shrink-0 w-5"><i class="fas fa-chart-pie"></i></span>
+      <span class="nav-label">Dashboard</span>
     </a>
+
+    <!-- Master Management -->
     <div class="nav-group">
-      <div class="nav-group-header flex items-center justify-between gap-3 px-3 py-2.5 rounded-lg text-[#111844]/70 hover:bg-[#7288AE]/20 hover:text-[#111844] transition-colors duration-150 text-sm cursor-pointer border-b border-[#4B5694]/20 shadow-sm">
-        <div class="flex items-center gap-3"><span class="nav-icon text-base flex-shrink-0 w-5"><i class="fas fa-database"></i></span><span class="nav-label">Master Management</span></div>
+      <div class="nav-group-header flex items-center justify-between gap-3 px-3 py-2.5 rounded-lg text-[#111844]/70 hover:bg-[#7288AE]/20 hover:text-[#111844] transition-colors text-sm cursor-pointer border-b border-[#4B5694]/20 shadow-sm">
+        <div class="flex items-center gap-3">
+          <span class="nav-icon text-base flex-shrink-0 w-5"><i class="fas fa-database"></i></span>
+          <span class="nav-label">Master Management</span>
+        </div>
         <i class="fas fa-chevron-down text-xs transition-transform duration-200"></i>
       </div>
       <div class="nav-group-items ml-7 space-y-0.5 mt-1 hidden">
-        <a href="/pages/Product/product.html" class="nav-item flex items-center gap-3 px-3 py-2 rounded-lg text-[#111844]/70 hover:bg-[#7288AE]/20 text-xs cursor-pointer"><span class="nav-icon text-sm flex-shrink-0 w-4"><i class="fas fa-box"></i></span><span class="nav-label">Products</span></a>
-        <a href="/pages/suppliers/supplier.html" class="nav-item flex items-center gap-3 px-3 py-2 rounded-lg text-[#111844]/70 hover:bg-[#7288AE]/20 text-xs cursor-pointer"><span class="nav-icon text-sm flex-shrink-0 w-4"><i class="fas fa-truck-loading"></i></span><span class="nav-label">Suppliers</span></a>
-        <a href="/pages/customers/customer.html" class="nav-item flex items-center gap-3 px-3 py-2 rounded-lg text-[#111844]/70 hover:bg-[#7288AE]/20 text-xs cursor-pointer"><span class="nav-icon text-sm flex-shrink-0 w-4"><i class="fas fa-users"></i></span><span class="nav-label">Customers</span></a>
-        <a href="/pages/warehousemaster/warehousem.html" class="nav-item flex items-center gap-3 px-3 py-2 rounded-lg text-[#111844]/70 hover:bg-[#7288AE]/20 text-xs cursor-pointer"><span class="nav-icon text-sm flex-shrink-0 w-4"><i class="fas fa-warehouse"></i></span><span class="nav-label">Warehouses</span></a>
-        <a href="/pages/units/units.html" class="nav-item flex items-center gap-3 px-3 py-2 rounded-lg text-[#111844]/70 hover:bg-[#7288AE]/20 text-xs cursor-pointer"><span class="nav-icon text-sm flex-shrink-0 w-4"><i class="fas fa-balance-scale"></i></span><span class="nav-label">Units</span></a>
+        <a href="/pages/Product/product.html" class="nav-item flex items-center gap-3 px-3 py-2 rounded-lg text-[#111844]/70 hover:bg-[#7288AE]/20 hover:text-[#111844] transition-colors text-xs cursor-pointer">
+          <span class="nav-icon text-sm flex-shrink-0 w-4"><i class="fas fa-box"></i></span>
+          <span class="nav-label">Products</span>
+        </a>
+        <a href="/pages/suppliers/supplier.html" class="nav-item flex items-center gap-3 px-3 py-2 rounded-lg text-[#111844]/70 hover:bg-[#7288AE]/20 hover:text-[#111844] transition-colors text-xs cursor-pointer">
+          <span class="nav-icon text-sm flex-shrink-0 w-4"><i class="fas fa-truck-loading"></i></span>
+          <span class="nav-label">Suppliers</span>
+        </a>
+        <a href="/pages/customers/customer.html" class="nav-item flex items-center gap-3 px-3 py-2 rounded-lg text-[#111844]/70 hover:bg-[#7288AE]/20 hover:text-[#111844] transition-colors text-xs cursor-pointer">
+          <span class="nav-icon text-sm flex-shrink-0 w-4"><i class="fas fa-users"></i></span>
+          <span class="nav-label">Customers</span>
+        </a>
+        <a href="/pages/warehousemaster/warehousem.html" class="nav-item flex items-center gap-3 px-3 py-2 rounded-lg text-[#111844]/70 hover:bg-[#7288AE]/20 hover:text-[#111844] transition-colors text-xs cursor-pointer">
+          <span class="nav-icon text-sm flex-shrink-0 w-4"><i class="fas fa-warehouse"></i></span>
+          <span class="nav-label">Warehouses</span>
+        </a>
+        <a href="/pages/units/units.html" class="nav-item flex items-center gap-3 px-3 py-2 rounded-lg text-[#111844]/70 hover:bg-[#7288AE]/20 hover:text-[#111844] transition-colors text-xs cursor-pointer">
+          <span class="nav-icon text-sm flex-shrink-0 w-4"><i class="fas fa-balance-scale"></i></span>
+          <span class="nav-label">Units</span>
+        </a>
       </div>
     </div>
-    <a href="/pages/purchase/purchase.html" class="nav-item flex items-center gap-3 px-3 py-2.5 rounded-lg text-[#111844]/70 hover:bg-[#7288AE]/20 text-sm cursor-pointer border-b border-[#4B5694]/20 shadow-sm"><span class="nav-icon text-base flex-shrink-0 w-5"><i class="fas fa-shopping-cart"></i></span><span class="nav-label">Purchase Management</span></a>
-    <a href="/pages/inventory/inventory.html" class="nav-item flex items-center gap-3 px-3 py-2.5 rounded-lg text-[#111844]/70 hover:bg-[#7288AE]/20 text-sm cursor-pointer border-b border-[#4B5694]/20 shadow-sm"><span class="nav-icon text-base flex-shrink-0 w-5"><i class="fas fa-boxes-stacked"></i></span><span class="nav-label">Inventory Management</span></a>
-    <a href="/pages/warehouse/warehouse.html" class="nav-item flex items-center gap-3 px-3 py-2.5 rounded-lg text-[#111844]/70 hover:bg-[#7288AE]/20 text-sm cursor-pointer border-b border-[#4B5694]/20 shadow-sm"><span class="nav-icon text-base flex-shrink-0 w-5"><i class="fas fa-warehouse"></i></span><span class="nav-label">Warehouse Management</span></a>
+
+    <a href="/pages/purchase/purchase.html" class="nav-item flex items-center gap-3 px-3 py-2.5 rounded-lg text-[#111844]/70 hover:bg-[#7288AE]/20 hover:text-[#111844] transition-colors text-sm cursor-pointer border-b border-[#4B5694]/20 shadow-sm">
+      <span class="nav-icon text-base flex-shrink-0 w-5"><i class="fas fa-shopping-cart"></i></span>
+      <span class="nav-label">Purchase Management</span>
+    </a>
+    <a href="/pages/inventory/inventory.html" class="nav-item flex items-center gap-3 px-3 py-2.5 rounded-lg text-[#111844]/70 hover:bg-[#7288AE]/20 hover:text-[#111844] transition-colors text-sm cursor-pointer border-b border-[#4B5694]/20 shadow-sm">
+      <span class="nav-icon text-base flex-shrink-0 w-5"><i class="fas fa-boxes-stacked"></i></span>
+      <span class="nav-label">Inventory Management</span>
+    </a>
+    <a href="/pages/warehouse/warehouse.html" class="nav-item flex items-center gap-3 px-3 py-2.5 rounded-lg text-[#111844]/70 hover:bg-[#7288AE]/20 hover:text-[#111844] transition-colors text-sm cursor-pointer border-b border-[#4B5694]/20 shadow-sm">
+      <span class="nav-icon text-base flex-shrink-0 w-5"><i class="fas fa-warehouse"></i></span>
+      <span class="nav-label">Warehouse Management</span>
+    </a>
+
+    <!-- Sales & Dispatch — ACTIVE GROUP -->
     <div class="nav-group">
-      <div class="nav-group-header flex items-center justify-between gap-3 px-3 py-2.5 rounded-lg text-[#111844] bg-[#111844]/5 hover:bg-[#7288AE]/20 transition-colors text-sm cursor-pointer border-b border-[#4B5694]/20 shadow-sm font-medium">
-        <div class="flex items-center gap-3"><span class="nav-icon text-base flex-shrink-0 w-5"><i class="fas fa-truck"></i></span><span class="nav-label">Sales & Dispatch</span></div>
+      <div class="nav-group-header flex items-center justify-between gap-3 px-3 py-2.5 rounded-lg text-[#111844]/70 hover:bg-[#7288AE]/20 hover:text-[#111844] transition-colors text-sm cursor-pointer border-b border-[#4B5694]/20 shadow-sm">
+        <div class="flex items-center gap-3">
+          <span class="nav-icon text-base flex-shrink-0 w-5"><i class="fas fa-truck"></i></span>
+          <span class="nav-label">Sales & Dispatch</span>
+        </div>
         <i class="fas fa-chevron-down text-xs transition-transform duration-200" style="transform:rotate(180deg)"></i>
       </div>
       <div class="nav-group-items ml-7 space-y-0.5 mt-1">
-        <a href="/pages/sales/salesorders/salesorders.html" class="nav-item flex items-center gap-3 px-3 py-2 rounded-lg text-[#111844]/70 hover:bg-[#7288AE]/20 text-xs cursor-pointer"><span class="nav-icon text-sm flex-shrink-0 w-4"><i class="fas fa-receipt"></i></span><span class="nav-label">Sales Orders</span></a>
-        <a href="/pages/sales/dispatchplanning/dispatch.html" class="nav-item flex items-center gap-3 px-3 py-2 rounded-lg text-[#111844]/70 hover:bg-[#7288AE]/20 text-xs cursor-pointer"><span class="nav-icon text-sm flex-shrink-0 w-4"><i class="fas fa-calendar-alt"></i></span><span class="nav-label">Dispatch Planning</span></a>
-        <a href="/pages/sales/delivery/deliveryc.html" class="nav-item nav-active flex items-center gap-3 px-3 py-2 rounded-lg text-xs cursor-pointer"><span class="nav-icon text-sm flex-shrink-0 w-4"><i class="fas fa-file-alt"></i></span><span class="nav-label">Delivery Challan</span></a>
-        <a href="/pages/sales/invoices/invoice.html" class="nav-item flex items-center gap-3 px-3 py-2 rounded-lg text-[#111844]/70 hover:bg-[#7288AE]/20 text-xs cursor-pointer"><span class="nav-icon text-sm flex-shrink-0 w-4"><i class="fas fa-file-invoice-dollar"></i></span><span class="nav-label">Invoices</span></a>
-        <a href="/pages/sales/shipment/Shipmenttracking.html" class="nav-item flex items-center gap-3 px-3 py-2 rounded-lg text-[#111844]/70 hover:bg-[#7288AE]/20 text-xs cursor-pointer"><span class="nav-icon text-sm flex-shrink-0 w-4"><i class="fas fa-location-dot"></i></span><span class="nav-label">Shipment Tracking</span></a>
+        <a href="/pages/sales/salesorders/salesorders.html" class="nav-item nav-active flex items-center gap-3 px-3 py-2 rounded-lg transition-colors text-xs cursor-pointer">
+          <span class="nav-icon text-sm flex-shrink-0 w-4"><i class="fas fa-receipt"></i></span>
+          <span class="nav-label">Sales Orders</span>
+        </a>
+        <a href="/pages/sales/dispatchplanning/dispatch.html" class="nav-item flex items-center gap-3 px-3 py-2 rounded-lg text-[#111844]/70 hover:bg-[#7288AE]/20 hover:text-[#111844] transition-colors text-xs cursor-pointer">
+          <span class="nav-icon text-sm flex-shrink-0 w-4"><i class="fas fa-calendar-alt"></i></span>
+          <span class="nav-label">Dispatch Planning</span>
+        </a>
+        <a href="/pages/sales/delivery/deliveryc.html" class="nav-item flex items-center gap-3 px-3 py-2 rounded-lg text-[#111844]/70 hover:bg-[#7288AE]/20 hover:text-[#111844] transition-colors text-xs cursor-pointer">
+          <span class="nav-icon text-sm flex-shrink-0 w-4"><i class="fas fa-file-alt"></i></span>
+          <span class="nav-label">Delivery Challan</span>
+        </a>
+        <a href="/pages/sales/invoices/invoice.html" class="nav-item flex items-center gap-3 px-3 py-2 rounded-lg text-[#111844]/70 hover:bg-[#7288AE]/20 hover:text-[#111844] transition-colors text-xs cursor-pointer">
+          <span class="nav-icon text-sm flex-shrink-0 w-4"><i class="fas fa-file-invoice-dollar"></i></span>
+          <span class="nav-label">Invoices</span>
+        </a>
+        <a href="/pages/sales/shipment/Shipmenttracking.html" class="nav-item flex items-center gap-3 px-3 py-2 rounded-lg text-[#111844]/70 hover:bg-[#7288AE]/20 hover:text-[#111844] transition-colors text-xs cursor-pointer">
+          <span class="nav-icon text-sm flex-shrink-0 w-4"><i class="fas fa-location-dot"></i></span>
+          <span class="nav-label">Shipment Tracking</span>
+        </a>
       </div>
     </div>
-    <a href="/pages/returns/returns.html" class="nav-item flex items-center gap-3 px-3 py-2.5 rounded-lg text-[#111844]/70 hover:bg-[#7288AE]/20 text-sm cursor-pointer border-b border-[#4B5694]/20 shadow-sm"><span class="nav-icon text-base flex-shrink-0 w-5"><i class="fas fa-rotate-left"></i></span><span class="nav-label">Returns Management</span></a>
+
+    <a href="/pages/returns/returns.html" class="nav-item flex items-center gap-3 px-3 py-2.5 rounded-lg text-[#111844]/70 hover:bg-[#7288AE]/20 hover:text-[#111844] transition-colors text-sm cursor-pointer border-b border-[#4B5694]/20 shadow-sm">
+      <span class="nav-icon text-base flex-shrink-0 w-5"><i class="fas fa-rotate-left"></i></span>
+      <span class="nav-label">Returns Management</span>
+    </a>
+
+    <!-- Finance & Billing -->
     <div class="nav-group">
-      <div class="nav-group-header flex items-center justify-between gap-3 px-3 py-2.5 rounded-lg text-[#111844]/70 hover:bg-[#7288AE]/20 text-sm cursor-pointer border-b border-[#4B5694]/20 shadow-sm">
-        <div class="flex items-center gap-3"><span class="nav-icon text-base flex-shrink-0 w-5"><i class="fas fa-coins"></i></span><span class="nav-label">Finance & Billing</span></div>
+      <div class="nav-group-header flex items-center justify-between gap-3 px-3 py-2.5 rounded-lg text-[#111844]/70 hover:bg-[#7288AE]/20 hover:text-[#111844] transition-colors text-sm cursor-pointer border-b border-[#4B5694]/20 shadow-sm">
+        <div class="flex items-center gap-3">
+          <span class="nav-icon text-base flex-shrink-0 w-5"><i class="fas fa-coins"></i></span>
+          <span class="nav-label">Finance & Billing</span>
+        </div>
         <i class="fas fa-chevron-down text-xs transition-transform duration-200"></i>
       </div>
       <div class="nav-group-items ml-7 space-y-0.5 mt-1 hidden">
         <a href="/pages/finance&Billing/receivables/receive.html" class="nav-item flex items-center gap-3 px-3 py-2 rounded-lg text-[#111844]/70 hover:bg-[#7288AE]/20 text-xs cursor-pointer"><span class="nav-icon text-sm flex-shrink-0 w-4"><i class="fas fa-hand-holding-usd"></i></span><span class="nav-label">Receivables</span></a>
         <a href="/pages/finance&Billing/payables/pay.html" class="nav-item flex items-center gap-3 px-3 py-2 rounded-lg text-[#111844]/70 hover:bg-[#7288AE]/20 text-xs cursor-pointer"><span class="nav-icon text-sm flex-shrink-0 w-4"><i class="fas fa-money-bill-wave"></i></span><span class="nav-label">Payables</span></a>
-        <a href="/pages/finance&Billing/expenses/expense.html" class="nav-item flex items-center gap-3 px-3 py-2 rounded-lg text-[#111844]/70 hover:bg-[#7288AE]/20 text-xs cursor-pointer"><span class="nav-icon text-sm flex-shrink-0 w-4"><i class="fas fa-money-bill-wave"></i></span><span class="nav-label">Expenses</span></a>
-        <a href="/pages/finance&Billing/GSTM/gst.html" class="nav-item flex items-center gap-3 px-3 py-2 rounded-lg text-[#111844]/70 hover:bg-[#7288AE]/20 text-xs cursor-pointer"><span class="nav-icon text-sm flex-shrink-0 w-4"><i class="fas fa-percent"></i></span><span class="nav-label">GST Management</span></a>
-        <a href="/pages/finance&Billing/profitability/profit.html" class="nav-item flex items-center gap-3 px-3 py-2 rounded-lg text-[#111844]/70 hover:bg-[#7288AE]/20 text-xs cursor-pointer"><span class="nav-icon text-sm flex-shrink-0 w-4"><i class="fas fa-money-bill-wave"></i></span><span class="nav-label">Profitability</span></a>
-
+        <a href="/pages/finance&Billing/expenses/expense.html" class="nav-item flex items-center gap-3 px-3 py-2 rounded-lg text-[#111844]/70 hover:bg-[#7288AE]/20 hover:text-[#111844] transition-colors duration-150 text-xs cursor-pointer">
+          <span class="nav-icon text-sm flex-shrink-0 w-4"><i class="fas fa-chart-line"></i></span>
+          <span class="nav-label">Expenses</span>
+        </a>
+        <a href="/pages/finance&Billing/expenses/expense.html" class="nav-item flex items-center gap-3 px-3 py-2 rounded-lg text-[#111844]/70 hover:bg-[#7288AE]/20 text-xs cursor-pointer"><span class="nav-icon text-sm flex-shrink-0 w-4"><i class="fas fa-percent"></i></span><span class="nav-label">GST Management</span></a>
+         <a href="/pages/finance&Billing/profitability/profit.html" class="nav-item flex items-center gap-3 px-3 py-2 rounded-lg text-[#111844]/70 hover:bg-[#7288AE]/20 hover:text-[#111844] transition-colors duration-150 text-xs cursor-pointer">
+          <span class="nav-icon text-sm flex-shrink-0 w-4"><i class="fas fa-chart-simple"></i></span>
+          <span class="nav-label">Profitability</span>
+        </a>
       </div>
     </div>
-    <a href="/pages/reports&analytics/reports.html" class="nav-item flex items-center gap-3 px-3 py-2.5 rounded-lg text-[#111844]/70 hover:bg-[#7288AE]/20 text-sm cursor-pointer border-b border-[#4B5694]/20 shadow-sm"><span class="nav-icon text-base flex-shrink-0 w-5"><i class="fas fa-chart-bar"></i></span><span class="nav-label">Reports & Analytics</span></a>
+
+    <a href="/pages/reports&analytics/reports.html" class="nav-item flex items-center gap-3 px-3 py-2.5 rounded-lg text-[#111844]/70 hover:bg-[#7288AE]/20 hover:text-[#111844] transition-colors text-sm cursor-pointer border-b border-[#4B5694]/20 shadow-sm">
+      <span class="nav-icon text-base flex-shrink-0 w-5"><i class="fas fa-chart-bar"></i></span>
+      <span class="nav-label">Reports & Analytics</span>
+    </a>
+
+    <!-- User Management -->
     <div class="nav-group">
-      <div class="nav-group-header flex items-center justify-between gap-3 px-3 py-2.5 rounded-lg text-[#111844]/70 hover:bg-[#7288AE]/20 text-sm cursor-pointer border-b border-[#4B5694]/20 shadow-sm">
-        <div class="flex items-center gap-3"><span class="nav-icon text-base flex-shrink-0 w-5"><i class="fas fa-users-gear"></i></span><span class="nav-label">User Management</span></div>
+      <div class="nav-group-header flex items-center justify-between gap-3 px-3 py-2.5 rounded-lg text-[#111844]/70 hover:bg-[#7288AE]/20 hover:text-[#111844] transition-colors text-sm cursor-pointer border-b border-[#4B5694]/20 shadow-sm">
+        <div class="flex items-center gap-3">
+          <span class="nav-icon text-base flex-shrink-0 w-5"><i class="fas fa-users-gear"></i></span>
+          <span class="nav-label">User Management</span>
+        </div>
         <i class="fas fa-chevron-down text-xs transition-transform duration-200"></i>
       </div>
       <div class="nav-group-items ml-7 space-y-0.5 mt-1 hidden">
@@ -88,6 +163,7 @@
       </div>
     </div>
   </nav>
+
   
 </aside>
 
@@ -99,9 +175,12 @@
   <!-- TOPBAR -->
   <header class="sticky top-0 z-[200] h-16 bg-[#FFFCFC] border-b border-[#4B5694]/20 flex items-center justify-between px-5 shadow-sm">
     <div class="flex items-center gap-4">
+      <button id="mobile-menu-btn" class="lg:hidden w-8 h-8 flex items-center justify-center rounded-lg text-[#4B5694] hover:bg-[#4B5694]/10">
+        <i class="fas fa-bars text-sm"></i>
+      </button>
       <div>
         <h1 class="text-sm font-semibold text-[#111844]">Delivery Challan</h1>
-        <p class="text-xs text-[#7288AE]">Sales & Dispatch → Delivery Challan</p>
+        <p class="text-xs text-[#7288AE] hidden sm:block">Sales &amp; Dispatch → Delivery Challan</p>
       </div>
     </div>
     <div class="flex items-center gap-2">
@@ -117,7 +196,7 @@
           <div class="max-h-80 overflow-y-auto divide-y divide-[#4B5694]/10">
             <div class="notif-item"><div class="notif-icon bg-indigo-100 text-indigo-700"><i class="fas fa-file-alt"></i></div><div><div class="notif-title">Challan DC-2041 ready for dispatch</div><div class="notif-desc">Kumar Steel Works — 2 items packed</div><div class="notif-time">15 minutes ago</div></div></div>
             <div class="notif-item"><div class="notif-icon bg-emerald-100 text-emerald-700"><i class="fas fa-truck"></i></div><div><div class="notif-title">DC-2040 dispatched successfully</div><div class="notif-desc">Vehicle MH14-CD-5678 en route</div><div class="notif-time">1 hour ago</div></div></div>
-            <div class="notif-item"><div class="notif-icon bg-amber-100 text-amber-700"><i class="fas fa-exclamation-triangle"></i></div><div><div class="notif-title">DC-2039 delivered & confirmed</div><div class="notif-desc">Ramesh Traders — signature received</div><div class="notif-time">3 hours ago</div></div></div>
+            <div class="notif-item"><div class="notif-icon bg-amber-100 text-amber-700"><i class="fas fa-exclamation-triangle"></i></div><div><div class="notif-title">DC-2039 delivered &amp; confirmed</div><div class="notif-desc">Ramesh Traders — signature received</div><div class="notif-time">3 hours ago</div></div></div>
           </div>
           <div class="px-4 py-2.5 border-t border-[#4B5694]/15 text-center"><a href="#" class="text-xs font-medium text-[#111844] hover:underline">View all notifications</a></div>
         </div>
@@ -129,23 +208,35 @@
           <i class="fas fa-chevron-down text-[10px] text-[#4B5694]"></i>
         </button>
         <div id="user-menu" class="hidden absolute right-0 top-full mt-1 w-44 bg-[#FFFCFC] border border-[#4B5694]/20 rounded-xl shadow-lg py-1 z-50">
-          <a href="/profile.html" class="flex items-center gap-2 px-4 py-2 text-xs text-[#111844] hover:bg-[#7288AE]/10 transition-colors"><i class="fas fa-user-circle w-4"></i> My Profile</a>
+          <a href="/profile.html"  class="flex items-center gap-2 px-4 py-2 text-xs text-[#111844] hover:bg-[#7288AE]/10 transition-colors"><i class="fas fa-user-circle w-4"></i> My Profile</a>
           <div class="border-t border-[#4B5694]/10 my-1"></div>
-          <a href="/login.html" class="flex items-center gap-2 px-4 py-2 text-xs text-red-600 hover:bg-red-50 transition-colors"><i class="fas fa-sign-out-alt w-4"></i> Logout</a>
+          <a href="/login.html"    class="flex items-center gap-2 px-4 py-2 text-xs text-red-600 hover:bg-red-50 transition-colors"><i class="fas fa-sign-out-alt w-4"></i> Logout</a>
         </div>
       </div>
     </div>
   </header>
 
-  <!-- MAIN CONTENT (LIST PAGE ONLY) -->
+  <!-- MAIN CONTENT -->
   <main class="flex-1 p-5 space-y-5">
 
     <!-- KPI Row -->
     <div class="grid grid-cols-2 sm:grid-cols-4 gap-3">
-      <div class="dc-kpi-card"><div class="dc-kpi-icon bg-[#111844]/10 text-[#111844]"><i class="fas fa-file-alt"></i></div><div><div class="dc-kpi-value" id="kpi-total">8</div><div class="dc-kpi-label">Total Challans</div></div></div>
-      <div class="dc-kpi-card"><div class="dc-kpi-icon bg-amber-100 text-amber-700"><i class="fas fa-clock"></i></div><div><div class="dc-kpi-value" id="kpi-ready">1</div><div class="dc-kpi-label">Ready to Dispatch</div></div></div>
-      <div class="dc-kpi-card"><div class="dc-kpi-icon bg-indigo-100 text-indigo-700"><i class="fas fa-truck"></i></div><div><div class="dc-kpi-value" id="kpi-dispatched">2</div><div class="dc-kpi-label">In Transit</div></div></div>
-      <div class="dc-kpi-card"><div class="dc-kpi-icon bg-emerald-100 text-emerald-700"><i class="fas fa-circle-check"></i></div><div><div class="dc-kpi-value" id="kpi-delivered">1</div><div class="dc-kpi-label">Delivered</div></div></div>
+      <div class="dc-kpi-card">
+        <div class="dc-kpi-icon bg-[#111844]/10 text-[#111844]"><i class="fas fa-file-alt"></i></div>
+        <div><div class="dc-kpi-value" id="kpi-total">8</div><div class="dc-kpi-label">Total Challans</div></div>
+      </div>
+      <div class="dc-kpi-card">
+        <div class="dc-kpi-icon bg-amber-100 text-amber-700"><i class="fas fa-clock"></i></div>
+        <div><div class="dc-kpi-value" id="kpi-ready">1</div><div class="dc-kpi-label">Ready to Dispatch</div></div>
+      </div>
+      <div class="dc-kpi-card">
+        <div class="dc-kpi-icon bg-indigo-100 text-indigo-700"><i class="fas fa-truck"></i></div>
+        <div><div class="dc-kpi-value" id="kpi-dispatched">2</div><div class="dc-kpi-label">In Transit</div></div>
+      </div>
+      <div class="dc-kpi-card">
+        <div class="dc-kpi-icon bg-emerald-100 text-emerald-700"><i class="fas fa-circle-check"></i></div>
+        <div><div class="dc-kpi-value" id="kpi-delivered">1</div><div class="dc-kpi-label">Delivered</div></div>
+      </div>
     </div>
 
     <!-- List Card -->
@@ -155,14 +246,17 @@
           <h2 class="text-sm font-semibold text-[#111844]"><i class="fas fa-list mr-1.5 text-[#4B5694]"></i>Challan List</h2>
           <p class="text-xs text-[#7288AE] mt-0.5">All delivery challans</p>
         </div>
-        <div class="flex items-center gap-2">
+        <div class="flex items-center gap-2 flex-wrap">
           <button onclick="DC.openExport()" class="dc-btn-outline"><i class="fas fa-download mr-1.5"></i>Export</button>
-<button onclick="DC.openCreate()" class="dc-btn-primary"><i class="fas fa-plus mr-1.5"></i>Create Challan</button>        </div>
+          <button onclick="DC.openCreate()" class="dc-btn-primary"><i class="fas fa-plus mr-1.5"></i>Create Challan</button>
+        </div>
       </div>
+
+      <!-- Filters -->
       <div class="flex flex-wrap gap-2 mb-4">
-        <div class="relative">
+        <div class="relative flex-1 min-w-[160px]">
           <i class="fas fa-search absolute left-3 top-1/2 -translate-y-1/2 text-[#7288AE] text-xs"></i>
-          <input id="search-input" type="text" placeholder="Search challan, order, customer…" class="dc-input pl-8 w-56" oninput="DC.filterTable()">
+          <input id="search-input" type="text" placeholder="Search challan, order, customer…" class="dc-input pl-8 w-full" oninput="DC.filterTable()">
         </div>
         <select id="filter-status" class="dc-input" onchange="DC.filterTable()">
           <option value="">All Status</option>
@@ -173,9 +267,11 @@
           <option value="Delivered">Delivered</option>
           <option value="Cancelled">Cancelled</option>
         </select>
-        <input id="filter-date" type="date" class="dc-input" onchange="DC.filterTable()">
+        <input id="filter-date" type="date" class="dc-input" onchange="DC.filterTable()" title="Filter by dispatch date">
         <button onclick="DC.clearFilters()" class="dc-btn-ghost"><i class="fas fa-xmark mr-1"></i>Clear</button>
       </div>
+
+      <!-- Table -->
       <div class="overflow-x-auto">
         <table class="w-full text-xs">
           <thead>
@@ -198,14 +294,17 @@
           <p class="text-xs mt-1">Try adjusting filters or create a new challan</p>
         </div>
       </div>
-      <div class="flex items-center justify-between mt-4 text-xs text-[#7288AE]">
-        <span id="pagination-info">Showing 1–8 of 8</span>
-        <div class="flex items-center gap-1">
-          <button class="dc-page-btn" onclick="DC.prevPage()"><i class="fas fa-chevron-left"></i></button>
-          <span id="page-display" class="px-2 font-medium text-[#111844]">1</span>
-          <button class="dc-page-btn" onclick="DC.nextPage()"><i class="fas fa-chevron-right"></i></button>
-        </div>
-      </div>
+
+      <!-- Pagination -->
+      <!-- Pagination -->
+<div class="flex items-center justify-between mt-4 text-xs text-[#7288AE]">
+  <span id="pagination-info">Showing 1–8 of 8</span>
+  <div class="flex items-center gap-2">
+    <button class="dc-page-btn" onclick="DC.prevPage()" id="prev-page-btn" title="Previous page"><i class="fas fa-chevron-left"></i></button>
+    <span id="page-display" class="px-2 font-medium text-[#111844] min-w-[48px] text-center">1 / 1</span>
+    <button class="dc-page-btn" onclick="DC.nextPage()" id="next-page-btn" title="Next page"><i class="fas fa-chevron-right"></i></button>
+  </div>
+</div>
     </div>
   </main>
 </div>
@@ -220,20 +319,21 @@
         <div class="dc-overlay-title"><i class="fas fa-plus-circle mr-2 text-[#4B5694]"></i>Create Delivery Challan</div>
         <p class="text-[10px] text-[#7288AE] mt-0.5">Generate challan from approved dispatch order</p>
       </div>
-<button onclick="DC.closeOverlay('overlay-create')" class="dc-btn-ghost">Cancel</button>
+      <button onclick="DC.closeOverlay('overlay-create')" class="dc-close-btn"><i class="fas fa-xmark"></i></button>
     </div>
     <div class="dc-overlay-body">
       <div class="grid grid-cols-1 lg:grid-cols-3 gap-5">
-        <!-- Form left (2 cols) -->
+        <!-- Form (2 cols) -->
         <div class="lg:col-span-2 space-y-4">
 
           <!-- Section 1 -->
           <div>
             <div class="dc-step"><div class="dc-step-num">1</div>Reference Information</div>
             <div class="grid grid-cols-2 gap-3">
-              <div><label class="dc-label">Challan Number</label><input type="text" value="DC-2047" class="dc-input w-full" readonly></div>
+              <div><label class="dc-label">Challan Number</label><input type="text" value="DC-2047" class="dc-input w-full"></div>
               <div><label class="dc-label">Challan Date</label><input type="date" id="c-date" class="dc-input w-full"></div>
-              <div><label class="dc-label">Sales Order <span class="text-red-500">*</span></label>
+              <div>
+                <label class="dc-label">Sales Order <span class="text-red-500">*</span></label>
                 <select id="c-so" class="dc-input w-full" onchange="DC.fillFromSO(this.value)">
                   <option value="">Select Sales Order…</option>
                   <option value="SO-3187">SO-3187 — Kumar Steel Works</option>
@@ -272,7 +372,15 @@
             <div class="dc-step"><div class="dc-step-num">4</div>Products <span class="text-[#7288AE] font-normal normal-case tracking-normal ml-1">(from picking/packing)</span></div>
             <div class="overflow-x-auto rounded-lg border border-[#4B5694]/15">
               <table class="w-full text-xs">
-                <thead><tr class="bg-[#111844]/5 text-[#4B5694]"><th class="dc-th">Product</th><th class="dc-th">SKU</th><th class="dc-th text-center">Ordered</th><th class="dc-th text-center">Dispatch</th><th class="dc-th">Unit</th></tr></thead>
+                <thead>
+                  <tr class="bg-[#111844]/5 text-[#4B5694]">
+                    <th class="dc-th">Product</th>
+                    <th class="dc-th">SKU</th>
+                    <th class="dc-th text-center">Ordered</th>
+                    <th class="dc-th text-center">Dispatch</th>
+                    <th class="dc-th">Unit</th>
+                  </tr>
+                </thead>
                 <tbody id="c-product-tbody" class="divide-y divide-[#4B5694]/10">
                   <tr><td colspan="5" class="py-8 text-center text-[#7288AE]"><i class="fas fa-box-open text-2xl mb-2 block"></i>Select a Sales Order to load products</td></tr>
                 </tbody>
@@ -290,7 +398,7 @@
           </div>
         </div>
 
-        <!-- Summary right -->
+        <!-- Summary sidebar -->
         <div>
           <div class="dc-form-card sticky top-0">
             <div class="dc-section-header"><i class="fas fa-clipboard-check mr-1.5"></i>Summary</div>
@@ -307,7 +415,8 @@
     </div>
     <div class="dc-overlay-footer">
       <button onclick="DC.closeOverlay('overlay-create')" class="dc-btn-ghost">Cancel</button>
-<button onclick="DC.generateChallan()" class="dc-btn-primary"><i class="fas fa-file-circle-check mr-1.5"></i>Generate Challan</button>    </div>
+      <button onclick="DC.generateChallan()" class="dc-btn-primary"><i class="fas fa-file-circle-check mr-1.5"></i>Generate Challan</button>
+    </div>
   </div>
 </div>
 
@@ -321,78 +430,91 @@
         <div class="dc-overlay-title"><i class="fas fa-file-alt mr-2 text-[#4B5694]"></i>Challan Details — <span id="ov-challan-no">DC-2039</span></div>
         <div id="ov-status-badge" class="mt-1"></div>
       </div>
-      <div class="flex items-center gap-2">
+      <div class="flex items-center gap-2 flex-wrap">
         <button onclick="DC.openPrint()" class="dc-btn-outline"><i class="fas fa-print mr-1.5"></i>Print</button>
         <button onclick="DC.downloadPDF()" class="dc-btn-outline"><i class="fas fa-download mr-1.5"></i>Download PDF</button>
-<button id="ov-dispatch-btn" onclick="DC.openDispatch()" class="dc-btn-primary hidden"><i class="fas fa-truck mr-1.5"></i>Dispatch</button>        <button class="dc-close-btn" onclick="DC.closeOverlay('overlay-view')"><i class="fas fa-xmark"></i></button>
+        <button id="ov-dispatch-btn" onclick="DC.openDispatch()" class="dc-btn-primary hidden"><i class="fas fa-truck mr-1.5"></i>Dispatch</button>
+        <button class="dc-close-btn" onclick="DC.closeOverlay('overlay-view')"><i class="fas fa-xmark"></i></button>
       </div>
     </div>
     <div class="dc-overlay-body">
       <!-- Summary strip -->
       <div class="grid grid-cols-2 sm:grid-cols-5 gap-4 text-xs mb-5 p-4 rounded-xl bg-[#111844]/4 border border-[#4B5694]/12">
-        <div><div class="text-[#7288AE] mb-0.5">Challan No.</div><div class="font-semibold" id="ov-d-challan">DC-2039</div></div>
-        <div><div class="text-[#7288AE] mb-0.5">Sales Order</div><div class="font-semibold" id="ov-d-so">SO-3185</div></div>
-        <div><div class="text-[#7288AE] mb-0.5">Customer</div><div class="font-semibold" id="ov-d-customer">Ramesh Traders</div></div>
-        <div><div class="text-[#7288AE] mb-0.5">Dispatch Date</div><div class="font-semibold" id="ov-d-date">12 Jun 2025</div></div>
-        <div><div class="text-[#7288AE] mb-0.5">Vehicle</div><div class="font-semibold" id="ov-d-vehicle">MH12-AB-1234</div></div>
+        <div><div class="text-[#7288AE] mb-0.5">Challan No.</div><div class="font-semibold" id="ov-d-challan">—</div></div>
+        <div><div class="text-[#7288AE] mb-0.5">Sales Order</div><div class="font-semibold" id="ov-d-so">—</div></div>
+        <div><div class="text-[#7288AE] mb-0.5">Customer</div><div class="font-semibold" id="ov-d-customer">—</div></div>
+        <div><div class="text-[#7288AE] mb-0.5">Dispatch Date</div><div class="font-semibold" id="ov-d-date">—</div></div>
+        <div><div class="text-[#7288AE] mb-0.5">Vehicle</div><div class="font-semibold" id="ov-d-vehicle">—</div></div>
       </div>
+
       <!-- Tabs -->
-      <div class="border-b border-[#4B5694]/20 mb-4">
-        <div class="flex gap-1" id="view-tabs">
+      <div class="border-b border-[#4B5694]/20 mb-4 overflow-x-auto">
+        <div class="flex gap-1 min-w-max" id="view-tabs">
           <button class="dc-tab dc-tab-active" data-tab="vt-overview">Overview</button>
           <button class="dc-tab" data-tab="vt-products">Products</button>
           <button class="dc-tab" data-tab="vt-transport">Transport</button>
           <button class="dc-tab" data-tab="vt-timeline">Activity</button>
         </div>
       </div>
+
       <!-- Tab: Overview -->
       <div id="vt-overview">
         <div class="grid grid-cols-1 lg:grid-cols-2 gap-4">
           <div class="dc-form-card">
             <div class="dc-section-header"><i class="fas fa-user mr-1.5"></i>Customer Information</div>
             <div class="mt-3 space-y-2 text-xs">
-              <div class="flex justify-between py-1.5 border-b border-[#4B5694]/10"><span class="text-[#7288AE]">Name</span><span class="font-medium" id="ov-cname">Ramesh Traders</span></div>
-              <div class="flex justify-between py-1.5 border-b border-[#4B5694]/10"><span class="text-[#7288AE]">Contact</span><span class="font-medium" id="ov-contact">Ramesh Kumar</span></div>
-              <div class="flex justify-between py-1.5 border-b border-[#4B5694]/10"><span class="text-[#7288AE]">Mobile</span><span class="font-medium" id="ov-mobile">+91 98765 43210</span></div>
-              <div class="flex justify-between py-1.5"><span class="text-[#7288AE]">Address</span><span class="font-medium text-right max-w-[200px]" id="ov-address">B-12, MIDC Bhosari, Pune 411026</span></div>
+              <div class="flex justify-between py-1.5 border-b border-[#4B5694]/10"><span class="text-[#7288AE]">Name</span><span class="font-medium" id="ov-cname">—</span></div>
+              <div class="flex justify-between py-1.5 border-b border-[#4B5694]/10"><span class="text-[#7288AE]">Contact</span><span class="font-medium" id="ov-contact">—</span></div>
+              <div class="flex justify-between py-1.5 border-b border-[#4B5694]/10"><span class="text-[#7288AE]">Mobile</span><span class="font-medium" id="ov-mobile">—</span></div>
+              <div class="flex justify-between py-1.5"><span class="text-[#7288AE]">Address</span><span class="font-medium text-right max-w-[200px]" id="ov-address">—</span></div>
             </div>
           </div>
           <div class="dc-form-card">
             <div class="dc-section-header"><i class="fas fa-info-circle mr-1.5"></i>Challan Info</div>
             <div class="mt-3 space-y-2 text-xs">
-              <div class="flex justify-between py-1.5 border-b border-[#4B5694]/10"><span class="text-[#7288AE]">Challan No.</span><span class="font-medium" id="ov-i-challan">DC-2039</span></div>
-              <div class="flex justify-between py-1.5 border-b border-[#4B5694]/10"><span class="text-[#7288AE]">Date</span><span class="font-medium" id="ov-i-date">12 Jun 2025</span></div>
-              <div class="flex justify-between py-1.5 border-b border-[#4B5694]/10"><span class="text-[#7288AE]">Sales Order</span><span class="font-medium" id="ov-i-so">SO-3185</span></div>
-              <div class="flex justify-between py-1.5"><span class="text-[#7288AE]">Dispatch Plan</span><span class="font-medium" id="ov-i-dp">DP-1042</span></div>
+              <div class="flex justify-between py-1.5 border-b border-[#4B5694]/10"><span class="text-[#7288AE]">Challan No.</span><span class="font-medium" id="ov-i-challan">—</span></div>
+              <div class="flex justify-between py-1.5 border-b border-[#4B5694]/10"><span class="text-[#7288AE]">Date</span><span class="font-medium" id="ov-i-date">—</span></div>
+              <div class="flex justify-between py-1.5 border-b border-[#4B5694]/10"><span class="text-[#7288AE]">Sales Order</span><span class="font-medium" id="ov-i-so">—</span></div>
+              <div class="flex justify-between py-1.5"><span class="text-[#7288AE]">Dispatch Plan</span><span class="font-medium" id="ov-i-dp">—</span></div>
             </div>
           </div>
         </div>
       </div>
+
       <!-- Tab: Products -->
       <div id="vt-products" class="hidden">
         <div class="dc-form-card">
           <div class="dc-section-header"><i class="fas fa-boxes-stacked mr-1.5"></i>Products Dispatched</div>
           <div class="overflow-x-auto mt-3">
             <table class="w-full text-xs">
-              <thead><tr class="bg-[#111844]/5 text-[#4B5694]"><th class="dc-th">Product</th><th class="dc-th">SKU</th><th class="dc-th text-center">Qty</th><th class="dc-th">Unit</th></tr></thead>
+              <thead>
+                <tr class="bg-[#111844]/5 text-[#4B5694]">
+                  <th class="dc-th">Product</th>
+                  <th class="dc-th">SKU</th>
+                  <th class="dc-th text-center">Qty</th>
+                  <th class="dc-th">Unit</th>
+                </tr>
+              </thead>
               <tbody id="ov-prod-tbody" class="divide-y divide-[#4B5694]/10"></tbody>
             </table>
           </div>
         </div>
       </div>
+
       <!-- Tab: Transport -->
       <div id="vt-transport" class="hidden">
         <div class="dc-form-card max-w-lg">
           <div class="dc-section-header"><i class="fas fa-truck mr-1.5"></i>Transport Details</div>
           <div class="mt-3 space-y-2 text-xs">
-            <div class="flex justify-between py-1.5 border-b border-[#4B5694]/10"><span class="text-[#7288AE]">Vehicle</span><span class="font-medium" id="ov-t-vehicle">MH12-AB-1234</span></div>
-            <div class="flex justify-between py-1.5 border-b border-[#4B5694]/10"><span class="text-[#7288AE]">Driver</span><span class="font-medium" id="ov-t-driver">Suresh Patil</span></div>
-            <div class="flex justify-between py-1.5 border-b border-[#4B5694]/10"><span class="text-[#7288AE]">Warehouse</span><span class="font-medium" id="ov-t-warehouse">Warehouse A</span></div>
-            <div class="flex justify-between py-1.5"><span class="text-[#7288AE]">Dispatch Time</span><span class="font-medium" id="ov-t-date">12 Jun 2025, 10:30 AM</span></div>
+            <div class="flex justify-between py-1.5 border-b border-[#4B5694]/10"><span class="text-[#7288AE]">Vehicle</span><span class="font-medium" id="ov-t-vehicle">—</span></div>
+            <div class="flex justify-between py-1.5 border-b border-[#4B5694]/10"><span class="text-[#7288AE]">Driver</span><span class="font-medium" id="ov-t-driver">—</span></div>
+            <div class="flex justify-between py-1.5 border-b border-[#4B5694]/10"><span class="text-[#7288AE]">Warehouse</span><span class="font-medium" id="ov-t-warehouse">—</span></div>
+            <div class="flex justify-between py-1.5"><span class="text-[#7288AE]">Dispatch Date</span><span class="font-medium" id="ov-t-date">—</span></div>
           </div>
         </div>
       </div>
-      <!-- Tab: Timeline -->
+
+      <!-- Tab: Activity Timeline -->
       <div id="vt-timeline" class="hidden">
         <div class="dc-form-card max-w-md">
           <div class="dc-section-header"><i class="fas fa-timeline mr-1.5"></i>Activity Timeline</div>
@@ -413,7 +535,7 @@
       <button class="dc-close-btn" onclick="DC.closeOverlay('overlay-print')"><i class="fas fa-xmark"></i></button>
     </div>
     <div class="dc-overlay-body">
-      <div id="print-doc" class="bg-white rounded-xl border border-[#4B5694]/15 p-8 text-[#111844] font-['Roboto']">
+      <div id="print-doc" class="bg-white rounded-xl border border-[#4B5694]/15 p-8 text-[#111844]">
         <div class="flex justify-between items-start mb-6">
           <div>
             <div class="w-10 h-10 rounded-lg bg-[#111844] flex items-center justify-center text-white text-lg mb-2"><i class="fas fa-cubes"></i></div>
@@ -423,36 +545,44 @@
           </div>
           <div class="text-right">
             <div class="text-xl font-bold">DELIVERY CHALLAN</div>
-            <div class="text-xs text-[#7288AE] mt-1">Challan No: <span class="font-semibold text-[#111844]" id="pr-challan">DC-2039</span></div>
-            <div class="text-xs text-[#7288AE]">Date: <span class="font-semibold text-[#111844]" id="pr-date">12 Jun 2025</span></div>
-            <div class="text-xs text-[#7288AE]">SO: <span class="font-semibold text-[#111844]" id="pr-so">SO-3185</span></div>
+            <div class="text-xs text-[#7288AE] mt-1">Challan No: <span class="font-semibold text-[#111844]" id="pr-challan">—</span></div>
+            <div class="text-xs text-[#7288AE]">Date: <span class="font-semibold text-[#111844]" id="pr-date">—</span></div>
+            <div class="text-xs text-[#7288AE]">SO: <span class="font-semibold text-[#111844]" id="pr-so">—</span></div>
           </div>
         </div>
         <div class="h-px bg-[#111844]/15 mb-5"></div>
         <div class="grid grid-cols-2 gap-6 mb-5">
           <div>
             <div class="text-[10px] font-semibold text-[#4B5694] uppercase tracking-wide mb-2">Bill To / Ship To</div>
-            <div class="text-xs font-semibold" id="pr-cname">Ramesh Traders</div>
-            <div class="text-xs text-[#7288AE]" id="pr-contact">Ramesh Kumar</div>
-            <div class="text-xs text-[#7288AE]" id="pr-mobile">+91 98765 43210</div>
-            <div class="text-xs text-[#7288AE]" id="pr-address">B-12, MIDC Bhosari, Pune 411026</div>
+            <div class="text-xs font-semibold" id="pr-cname">—</div>
+            <div class="text-xs text-[#7288AE]" id="pr-contact">—</div>
+            <div class="text-xs text-[#7288AE]" id="pr-mobile">—</div>
+            <div class="text-xs text-[#7288AE]" id="pr-address">—</div>
           </div>
           <div>
             <div class="text-[10px] font-semibold text-[#4B5694] uppercase tracking-wide mb-2">Transport Details</div>
-            <div class="text-xs text-[#7288AE]">Vehicle: <span class="text-[#111844] font-medium" id="pr-vehicle">MH12-AB-1234</span></div>
-            <div class="text-xs text-[#7288AE]">Driver: <span class="text-[#111844] font-medium" id="pr-driver">Suresh Patil</span></div>
-            <div class="text-xs text-[#7288AE]">Warehouse: <span class="text-[#111844] font-medium" id="pr-warehouse">Warehouse A</span></div>
-            <div class="text-xs text-[#7288AE]">Dispatch: <span class="text-[#111844] font-medium" id="pr-dispdate">12 Jun 2025</span></div>
+            <div class="text-xs text-[#7288AE]">Vehicle: <span class="text-[#111844] font-medium" id="pr-vehicle">—</span></div>
+            <div class="text-xs text-[#7288AE]">Driver: <span class="text-[#111844] font-medium" id="pr-driver">—</span></div>
+            <div class="text-xs text-[#7288AE]">Warehouse: <span class="text-[#111844] font-medium" id="pr-warehouse">—</span></div>
+            <div class="text-xs text-[#7288AE]">Dispatch: <span class="text-[#111844] font-medium" id="pr-dispdate">—</span></div>
           </div>
         </div>
         <table class="w-full text-xs mb-6 border-collapse">
-          <thead><tr class="bg-[#111844] text-white"><th class="px-3 py-2 text-left">#</th><th class="px-3 py-2 text-left">Product</th><th class="px-3 py-2 text-left">SKU</th><th class="px-3 py-2 text-center">Qty</th><th class="px-3 py-2 text-left">Unit</th></tr></thead>
+          <thead>
+            <tr class="bg-[#111844] text-white">
+              <th class="px-3 py-2 text-left">#</th>
+              <th class="px-3 py-2 text-left">Product</th>
+              <th class="px-3 py-2 text-left">SKU</th>
+              <th class="px-3 py-2 text-center">Qty</th>
+              <th class="px-3 py-2 text-left">Unit</th>
+            </tr>
+          </thead>
           <tbody id="pr-products" class="divide-y divide-[#4B5694]/15"></tbody>
         </table>
         <div class="h-px bg-[#111844]/15 mb-5"></div>
         <div class="grid grid-cols-2 gap-10 mt-8">
           <div class="text-center"><div class="h-12 border-b border-[#111844]/30 mb-2"></div><div class="text-xs text-[#7288AE]">Authorized Signatory</div><div class="text-[10px] text-[#7288AE]">SupplyManager Pvt. Ltd.</div></div>
-          <div class="text-center"><div class="h-12 border-b border-[#111844]/30 mb-2"></div><div class="text-xs text-[#7288AE]">Receiver's Signature</div><div class="text-[10px] text-[#7288AE]">With Stamp & Date</div></div>
+          <div class="text-center"><div class="h-12 border-b border-[#111844]/30 mb-2"></div><div class="text-xs text-[#7288AE]">Receiver's Signature</div><div class="text-[10px] text-[#7288AE]">With Stamp &amp; Date</div></div>
         </div>
       </div>
     </div>
@@ -472,7 +602,7 @@
     <div class="dc-overlay-header">
       <div>
         <div class="dc-overlay-title"><i class="fas fa-truck mr-2 text-[#4B5694]"></i>Dispatch Verification</div>
-        <p class="text-[10px] text-[#7288AE] mt-0.5">Verify all items before confirming dispatch — <span id="dv-challan-ref" class="font-semibold text-[#111844]">DC-2041</span></p>
+        <p class="text-[10px] text-[#7288AE] mt-0.5">Verify all items before confirming dispatch — <span id="dv-challan-ref" class="font-semibold text-[#111844]">—</span></p>
       </div>
       <button class="dc-close-btn" onclick="DC.closeOverlay('overlay-dispatch')"><i class="fas fa-xmark"></i></button>
     </div>
@@ -499,18 +629,20 @@
           </div>
           <div id="dv-progress" class="mt-4">
             <div class="flex justify-between text-xs mb-1"><span class="text-[#7288AE]">Verification Progress</span><span id="dv-count" class="font-semibold text-[#111844]">0/8</span></div>
-            <div class="w-full h-2 rounded-full bg-[#FAFAFA] border border-[#4B5694]/15 overflow-hidden"><div id="dv-bar" class="h-full rounded-full bg-gradient-to-r from-[#4B5694] to-[#111844] transition-all duration-300" style="width:0%"></div></div>
+            <div class="w-full h-2 rounded-full bg-[#FAFAFA] border border-[#4B5694]/15 overflow-hidden">
+              <div id="dv-bar" class="h-full rounded-full bg-gradient-to-r from-[#4B5694] to-[#111844] transition-all duration-300" style="width:0%"></div>
+            </div>
           </div>
         </div>
         <div class="dc-form-card">
           <div class="dc-section-header mb-3"><i class="fas fa-eye mr-1.5"></i>Challan Preview</div>
           <div class="space-y-2 text-xs">
-            <div class="flex justify-between py-1.5 border-b border-[#4B5694]/10"><span class="text-[#7288AE]">Challan</span><span class="font-medium" id="dv-c-challan">DC-2041</span></div>
-            <div class="flex justify-between py-1.5 border-b border-[#4B5694]/10"><span class="text-[#7288AE]">Customer</span><span class="font-medium" id="dv-c-cust">Kumar Steel Works</span></div>
-            <div class="flex justify-between py-1.5 border-b border-[#4B5694]/10"><span class="text-[#7288AE]">Address</span><span class="font-medium text-right max-w-[150px]" id="dv-c-addr">Plot C-8, Chakan</span></div>
-            <div class="flex justify-between py-1.5 border-b border-[#4B5694]/10"><span class="text-[#7288AE]">Vehicle</span><span class="font-medium" id="dv-c-veh">MH12-EF-9012</span></div>
-            <div class="flex justify-between py-1.5 border-b border-[#4B5694]/10"><span class="text-[#7288AE]">Driver</span><span class="font-medium" id="dv-c-drv">Ramesh Jadhav</span></div>
-            <div class="flex justify-between py-1.5"><span class="text-[#7288AE]">Items</span><span class="font-semibold text-[#111844]" id="dv-c-items">2 products</span></div>
+            <div class="flex justify-between py-1.5 border-b border-[#4B5694]/10"><span class="text-[#7288AE]">Challan</span><span class="font-medium" id="dv-c-challan">—</span></div>
+            <div class="flex justify-between py-1.5 border-b border-[#4B5694]/10"><span class="text-[#7288AE]">Customer</span><span class="font-medium" id="dv-c-cust">—</span></div>
+            <div class="flex justify-between py-1.5 border-b border-[#4B5694]/10"><span class="text-[#7288AE]">Address</span><span class="font-medium text-right max-w-[150px]" id="dv-c-addr">—</span></div>
+            <div class="flex justify-between py-1.5 border-b border-[#4B5694]/10"><span class="text-[#7288AE]">Vehicle</span><span class="font-medium" id="dv-c-veh">—</span></div>
+            <div class="flex justify-between py-1.5 border-b border-[#4B5694]/10"><span class="text-[#7288AE]">Driver</span><span class="font-medium" id="dv-c-drv">—</span></div>
+            <div class="flex justify-between py-1.5"><span class="text-[#7288AE]">Items</span><span class="font-semibold text-[#111844]" id="dv-c-items">—</span></div>
           </div>
         </div>
       </div>
@@ -519,15 +651,23 @@
       <button onclick="DC.rejectDispatch()" class="dc-btn-danger"><i class="fas fa-ban mr-1.5"></i>Reject</button>
       <button onclick="DC.closeOverlay('overlay-dispatch')" class="dc-btn-ghost">Cancel</button>
       <button id="btn-confirm-dispatch" onclick="DC.confirmDispatch()" class="dc-btn-success opacity-50 cursor-not-allowed" disabled>
-        <i class="fas fa-circle-check mr-1.5"></i>Verify & Dispatch
+        <i class="fas fa-circle-check mr-1.5"></i>Verify &amp; Dispatch
       </button>
     </div>
   </div>
 </div>
 
 <!-- Toast -->
-<div id="toast-container" class="fixed bottom-5 right-5 z-[600] space-y-2"></div>
+<div id="toast-container" class="fixed bottom-5 right-5 z-[600] space-y-2 pointer-events-none"></div>
 
 <script src="/pages/sales/delivery/deliveryc.js"></script>
+
+<!-- Mobile menu button wiring -->
+<script>
+  document.getElementById('mobile-menu-btn')?.addEventListener('click', () => {
+    document.getElementById('sidebar')?.classList.toggle('sidebar-open');
+    document.getElementById('sidebar-overlay')?.classList.toggle('hidden');
+  });
+</script>
 </body>
 </html>
